@@ -1,0 +1,275 @@
+Mplus VERSION 8 DEMO
+MUTHEN & MUTHEN
+05/02/2018  12:53 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "multistate.dat";
+  VARIABLE:
+  NAMES = y11 y21 y12 y22;
+  MISSING=.;
+
+  MODEL:
+  eta1 by y11@1
+  y21 ( la211 ) ;
+
+  eta2 by y12@1
+  y22 ( la221 ) ;
+
+  theta by eta1@1 eta2@1 ;
+
+  [ eta1@0 eta2 * theta * ] ;
+  [y11@0 y12@0 ] ;
+
+  eta1 ( varzeta1 ) ;
+  eta2 ( varzeta2 ) ;
+  theta ( vartheta ) ;
+
+  y11 ( vareps11 ) ;
+  y21 ( vareps21 ) ;
+  y12 ( vareps12 ) ;
+  y22 ( vareps22 ) ;
+
+  MODEL CONSTRAINT:
+  NEW( rely11 rely21 rely12 rely22 ) ;
+  NEW( spey11 spey21 spey12 spey22 ) ;
+  NEW( cony11 cony21 cony12 cony22 ) ;
+
+  rely11 = ( vartheta + varzeta1 ) / ( vartheta + varzeta1 + vareps11 ) ;
+  rely21 = ( la211 ^2* vartheta + la211 ^2* varzeta1 ) /
+  ( la211 ^2* vartheta + la211 ^2* varzeta1 + vareps21 ) ;
+  rely12 = ( vartheta + varzeta2 ) / ( vartheta + varzeta2 + vareps12 ) ;
+  rely22 = ( la221 ^2* vartheta + la221 ^2* varzeta2 ) /
+  ( la221 ^2* vartheta + la221 ^2* varzeta2 + vareps22 ) ;
+
+  spey11 = varzeta1 / ( vartheta + varzeta1 + vareps11 ) ;
+  spey21 = la211 ^2* varzeta1 / ( la211 ^2* vartheta + la211 ^2* varzeta1 + vareps21 ) ;
+  spey12 = varzeta2 / ( vartheta + varzeta2 + vareps12 ) ;
+  spey22 = la221 ^2* varzeta2 / ( la221 ^2* vartheta + la221 ^2* varzeta2 + vareps22 ) ;
+
+  cony11 = vartheta / ( vartheta + varzeta1 + vareps11 ) ;
+  cony21 = la211 ^2* vartheta / ( la211 ^2* vartheta + la211 ^2* varzeta1 + vareps21 ) ;
+  cony12 = vartheta / ( vartheta + varzeta2 + vareps12 ) ;
+  cony22 = la221 ^2* vartheta / ( la221 ^2* vartheta + la221 ^2* varzeta2 + vareps22 ) ;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         400
+
+Number of dependent variables                                    4
+Number of independent variables                                  0
+Number of continuous latent variables                            3
+
+Observed dependent variables
+
+  Continuous
+   Y11         Y21         Y12         Y22
+
+Continuous latent variables
+   ETA1        ETA2        THETA
+
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  multistate.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              Y11           Y21           Y12           Y22
+              ________      ________      ________      ________
+ Y11            1.000
+ Y21            1.000         1.000
+ Y12            1.000         1.000         1.000
+ Y22            1.000         1.000         1.000         1.000
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     Y11                   0.466       0.169      -4.898    0.25%      -1.050      0.028      0.419
+             400.000       3.365       0.332       7.033    0.25%       0.785      1.911
+     Y21                   0.968       0.084      -3.678    0.25%      -0.562      0.498      0.952
+             400.000       3.176      -0.021       7.231    0.25%       1.424      2.364
+     Y12                   0.952      -0.024      -4.474    0.25%      -0.520      0.465      0.935
+             400.000       3.634       0.312       6.501    0.25%       1.365      2.485
+     Y22                   1.639       0.070      -3.289    0.25%       0.220      1.165      1.602
+             400.000       3.347       0.263       7.191    0.25%       2.033      3.104
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       13
+
+Loglikelihood
+
+          H0 Value                       -2373.694
+          H1 Value                       -2373.247
+
+Information Criteria
+
+          Akaike (AIC)                    4773.388
+          Bayesian (BIC)                  4825.277
+          Sample-Size Adjusted BIC        4784.027
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                              0.894
+          Degrees of Freedom                     1
+          P-Value                           0.3444
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.000
+          90 Percent C.I.                    0.000  0.129
+          Probability RMSEA <= .05           0.548
+
+CFI/TLI
+
+          CFI                                1.000
+          TLI                                1.000
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1741.023
+          Degrees of Freedom                     6
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.001
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ ETA1     BY
+    Y11                1.000      0.000    999.000    999.000
+    Y21                0.968      0.030     32.339      0.000
+
+ ETA2     BY
+    Y12                1.000      0.000    999.000    999.000
+    Y22                0.952      0.029     32.973      0.000
+
+ THETA    BY
+    ETA1               1.000      0.000    999.000    999.000
+    ETA2               1.000      0.000    999.000    999.000
+
+ Means
+    THETA              0.466      0.092      5.076      0.000
+
+ Intercepts
+    Y11                0.000      0.000    999.000    999.000
+    Y21                0.518      0.038     13.502      0.000
+    Y12                0.000      0.000    999.000    999.000
+    Y22                0.732      0.045     16.207      0.000
+    ETA1               0.000      0.000    999.000    999.000
+    ETA2               0.487      0.079      6.133      0.000
+
+ Variances
+    THETA              2.240      0.207     10.803      0.000
+
+ Residual Variances
+    Y11                0.261      0.074      3.519      0.000
+    Y21                0.265      0.070      3.783      0.000
+    Y12                0.254      0.079      3.218      0.001
+    Y22                0.285      0.072      3.932      0.000
+    ETA1               0.863      0.161      5.369      0.000
+    ETA2               1.140      0.173      6.569      0.000
+
+New/Additional Parameters
+    RELY11             0.922      0.023     40.732      0.000
+    RELY21             0.917      0.023     40.382      0.000
+    RELY12             0.930      0.022     41.912      0.000
+    RELY22             0.915      0.022     40.961      0.000
+    SPEY11             0.256      0.042      6.097      0.000
+    SPEY21             0.255      0.039      6.486      0.000
+    SPEY12             0.314      0.040      7.881      0.000
+    SPEY22             0.308      0.036      8.541      0.000
+    CONY11             0.666      0.040     16.741      0.000
+    CONY21             0.662      0.046     14.453      0.000
+    CONY12             0.617      0.037     16.741      0.000
+    CONY22             0.606      0.042     14.397      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.264E-03
+       (ratio of smallest to largest eigenvalue)
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    c:\users\sebastian\dropbox\research_master\2017-2018\master thesis\lst-simulation\multistatesingletrait.dgm
+
+     Beginning Time:  12:53:01
+        Ending Time:  12:53:01
+       Elapsed Time:  00:00:00
+
+
+Mplus VERSION 8 DEMO has the following limitations:
+  Maximum number of dependent variables: 6
+  Maximum number of independent variables: 2
+  Maximum number of between variables: 2
+  Maximum number of continuous latent variables in time series analysis: 2
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

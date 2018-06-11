@@ -1,0 +1,13 @@
+# History files
+.Rhistory
+.Rapp.history
+# Session Data files
+.RData
+
+# RStudio files
+.Rproj.user/
+
+
+# Other files
+.Ruserdata
+appendixrevised.R

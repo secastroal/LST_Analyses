@@ -1,0 +1,189 @@
+DATA: File is BPD_Tag2_wide.dat;
+
+  VARIABLE:
+          NAMES ARE VP Gruppe 
+          Anspannung_1 Anspannung_2 Anspannung_3 
+          Anspannung_4 Anspannung_5 Anspannung_6 
+	 Anspannung_7 Anspannung_8 Anspannung_9 
+	 Anspannung_10 Anspannung_11 Anspannung_12
+	 SW1_1 SW1_2 SW1_3 SW1_4 SW1_5 SW1_6
+	 SW1_7 SW1_8 SW1_9 SW1_10 SW1_11 SW1_12 
+	 SW4_1 SW4_2 SW4_3 SW4_4 SW4_5 SW4_6      
+	 SW4_7 SW4_8 SW4_9 SW4_10 SW4_11 SW4_12
+	 dysV_1 dysV_2 dysV_3 dysV_4 dysV_5 dysV_6 
+	 dysV_7 dysV_8 dysV_9 dysV_10 dysV_11 dysV_12
+	 stim1_1 stim1_2 stim1_3 stim1_4 stim1_5 stim1_6      
+	 stim1_7 stim1_8 stim1_9 stim1_10 stim1_11 stim1_12      
+	 stim2_1 stim2_2 stim2_3 stim2_4 stim2_5 stim2_6       
+	 stim2_7 stim2_8 stim2_9 stim2_10 stim2_11 stim2_12      
+ 	 stim3_1 stim3_2 stim3_3 stim3_4 stim3_5 stim3_6      
+	 stim3_7 stim3_8 stim3_9 stim3_10 stim3_11 stim3_12      
+	 stim4_1 stim4_2 stim4_3 stim4_4 stim4_5 stim4_6       
+	 stim4_7 stim4_8 stim4_9 stim4_10 stim4_11 stim4_12      
+	 stim5_1 stim5_2 stim5_3 stim5_4 stim5_5 stim5_6      
+	 stim5_7 stim5_8 stim5_9 stim5_10 stim5_11 stim5_12      
+	 stim6_1 stim6_2 stim6_3 stim6_4 stim6_5 stim6_6       
+	 stim6_7 stim6_8 stim6_9 stim6_10 stim6_11 stim6_12 
+	 SW2_1 SW2_2 SW2_3 SW2_4 SW2_5 SW2_6        
+	 SW2_7 SW2_8 SW2_9 SW2_10 SW2_11 SW2_12        
+	 SW3_1 SW3_2 SW3_3 SW3_4 SW3_5 SW3_6         
+	 SW3_7 SW3_8 SW3_9 SW3_10 SW3_11 SW3_12;
+
+   USEVARIABLES ARE
+	 stim2_1 stim2_2 stim2_3 stim2_4 !stim1_5 stim1_6
+	 stim5_1 stim5_2 stim5_3 stim5_4 !stim6_5 stim6_6           
+	 Gruppe;
+
+
+   MISSING ARE ALL (-99);
+
+   GROUPING IS Gruppe (1=Borderline 2=Control);
+
+ANALYSIS:
+
+H1iterations=10000;
+Estimator=MLR;
+
+MODEL:
+
+
+! Item specific trait factors
+
+T_SW1 by stim2_1@1
+         stim2_2@1
+         stim2_3@1
+         stim2_4@1
+    ;
+
+T_SW2 by stim5_1@1
+         stim5_2@1
+         stim5_3@1
+         stim5_4@1
+    ;
+
+
+
+! Situation specific deviations 
+
+  O1 by stim2_1@1 
+  	stim5_1 (lamO);
+  	
+  O2 by stim2_2@1 
+  	stim5_2 (lamO);
+
+  O3 by stim2_3@1 
+  	stim5_3 (lamO);
+
+  O4 by stim2_4@1 
+  	stim5_4 (lamO); 
+ 
+
+
+  [O1@0 O2@0 O3@0 O4@0 ];
+ 
+ 
+ ! intercepts 
+  
+    	 [stim2_1*] (alph1);
+  	 [stim2_2*] (alph1);
+  	 [stim2_3*] (alph1);
+  	 [stim2_4*] (alph1);
+
+	 
+  	 [stim5_1*] (alph2);
+  	 [stim5_2*] (alph2);
+  	 [stim5_3*] (alph2);
+  	 [stim5_4*] (alph2);
+    
+  
+  ! zero correlations
+  
+O1 with T_SW1@0
+	T_SW2@0
+	O2@0 
+	O3@0 
+	O4@0  
+;
+	
+O2 with T_SW1@0
+	T_SW2@0
+	O3@0 
+	O4@0  
+;	
+
+O3 with T_SW1@0
+	T_SW2@0
+	O4@0  
+;
+
+O4 with T_SW1@0
+	T_SW2@0 
+;			
+ 
+
+	
+! autoregressive effects 
+
+ O4 on O3 (beta1)
+ ;
+ O3 on O2 (beta1)
+ ;
+ O2 on O1 (beta1)
+ ;
+ 
+ ! state residual variances
+
+O1* (Ovar1)
+;
+O2* (Ovar1)
+;
+O3* (Ovar1)
+;
+O4* (Ovar1)
+;
+
+
+! error variances
+ 
+  	 stim2_1 stim2_2 stim2_3 stim2_4 (resvar1)
+    ;
+	 stim5_1 stim5_2 stim5_3 stim5_4 (resvar2)
+     ;           
+  
+  
+    
+  !! Second group
+ 
+
+    Model Control:  
+
+  
+ [T_SW1*];
+ [T_SW2*]; 
+
+T_SW1*;
+T_SW2*;
+
+O1* (Ovar2)
+;
+O2* (Ovar2)
+;
+O3 (Ovar2)
+;
+O4* (Ovar2)
+;
+
+ O4 on O3 (beta2)
+ ;
+ O3 on O2 (beta2)
+ ;
+ O2 on O1 (beta2)
+ ;
+
+     	 stim2_1 stim2_2 stim2_3 stim2_4 (resvar11)
+    ;
+	 stim5_1 stim5_2 stim5_3 stim5_4 (resvar12)
+     ; 
+   
+OUTPUT: STDyx modindices tech4 sampstat;
+   

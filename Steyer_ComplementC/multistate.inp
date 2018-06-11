@@ -1,0 +1,30 @@
+TITLE: Your title goes here
+DATA: FILE = "multistate.dat";
+VARIABLE: 
+NAMES = y11 y21 y12 y22; 
+MISSING=.;
+
+MODEL:
+eta1 by y11@1
+y21 ( la211 ) ;
+
+eta2 by y12@1
+y22 ( la221 ) ;
+
+[ eta1 * eta2 * ] ;
+[y11@0 y12@0 ] ;
+
+eta1 ( vareta1 ) ;
+eta2 ( vareta2 ) ;
+
+y11 ( vareps11 ) ;
+y21 ( vareps21 ) ;
+y12 ( vareps12 ) ;
+y22 ( vareps22 ) ;
+
+MODEL CONSTRAINT:
+NEW( rely11 rely21 rely12 rely22 ) ;
+rely11 = vareta1 / ( vareta1 + vareps11 ) ;
+rely21 = la211 * la211 * vareta1 / ( la211 * la211 * vareta1 + vareps21 ) ;
+rely12 = vareta2 / ( vareta2 + vareps12 ) ;
+rely22 = la221 * la221 * vareta2 / ( la221 * la221 * vareta2 + vareps22 ) ;

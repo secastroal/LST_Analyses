@@ -1,0 +1,280 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+05/03/2018   1:40 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "multistate02.dat";
+  VARIABLE:
+  NAMES = y11 y21 y31 y12 y22 y32 y13 y23 y33;
+  MISSING=.;
+
+  MODEL:
+  eta1 by y11@1
+  y21 (la211)
+  y31 (la311);
+
+  eta2 by y12@1
+  y22 (la221)
+  y32 (la321);
+
+  eta3 by y13@1
+  y23 (la231)
+  y33 (la331);
+
+  [ eta1 * eta2 * eta3 *] ;
+  [y11@0 y12@0 y13@0 ] ;
+
+  eta1 ( vareta1 ) ;
+  eta2 ( vareta2 ) ;
+  eta3 ( vareta3 ) ;
+
+
+  y11 ( vareps11 ) ;
+  y21 ( vareps21 ) ;
+  y31 ( vareps31 ) ;
+  y12 ( vareps12 ) ;
+  y22 ( vareps22 ) ;
+  y32 ( vareps32 ) ;
+  y13 ( vareps13 ) ;
+  y23 ( vareps23 ) ;
+  y33 ( vareps33 ) ;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        1000
+
+Number of dependent variables                                    9
+Number of independent variables                                  0
+Number of continuous latent variables                            3
+
+Observed dependent variables
+
+  Continuous
+   Y11         Y21         Y31         Y12         Y22         Y32
+   Y13         Y23         Y33
+
+Continuous latent variables
+   ETA1        ETA2        ETA3
+
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  multistate02.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              Y11           Y21           Y31           Y12           Y22
+              ________      ________      ________      ________      ________
+ Y11            1.000
+ Y21            1.000         1.000
+ Y31            1.000         1.000         1.000
+ Y12            1.000         1.000         1.000         1.000
+ Y22            1.000         1.000         1.000         1.000         1.000
+ Y32            1.000         1.000         1.000         1.000         1.000
+ Y13            1.000         1.000         1.000         1.000         1.000
+ Y23            1.000         1.000         1.000         1.000         1.000
+ Y33            1.000         1.000         1.000         1.000         1.000
+
+
+           Covariance Coverage
+              Y32           Y13           Y23           Y33
+              ________      ________      ________      ________
+ Y32            1.000
+ Y13            1.000         1.000
+ Y23            1.000         1.000         1.000
+ Y33            1.000         1.000         1.000         1.000
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     Y11                   0.611      -0.102      -5.843    0.10%      -1.024      0.133      0.645
+            1000.000       3.914      -0.087       6.145    0.10%       1.117      2.272
+     Y21                   0.963      -0.135      -7.221    0.10%      -0.910      0.427      0.964
+            1000.000       5.116       0.078       6.852    0.10%       1.551      2.857
+     Y31                   1.059       0.008      -4.744    0.10%      -0.330      0.606      1.018
+            1000.000       2.853       0.124       6.786    0.10%       1.456      2.423
+     Y12                   1.071       0.005      -5.139    0.10%      -0.697      0.587      1.035
+            1000.000       3.967      -0.160       7.839    0.10%       1.562      2.835
+     Y22                   1.509       0.063      -5.430    0.10%      -0.573      0.901      1.525
+            1000.000       5.483      -0.091       9.323    0.10%       2.027      3.502
+     Y32                   1.405      -0.069      -4.259    0.10%       0.021      0.983      1.349
+            1000.000       2.765      -0.061       6.224    0.10%       1.803      2.810
+     Y13                   0.495       0.015      -6.232    0.10%      -1.157      0.010      0.516
+            1000.000       3.897       0.051       6.770    0.10%       1.021      2.085
+     Y23                   0.873      -0.031      -6.114    0.10%      -1.146      0.303      0.935
+            1000.000       5.511      -0.030       8.249    0.10%       1.530      2.852
+     Y33                   0.984      -0.064      -5.256    0.10%      -0.438      0.566      1.011
+            1000.000       2.912       0.127       6.245    0.10%       1.434      2.373
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       30
+
+Loglikelihood
+
+          H0 Value                      -15689.140
+          H1 Value                      -15673.127
+
+Information Criteria
+
+          Akaike (AIC)                   31438.279
+          Bayesian (BIC)                 31585.512
+          Sample-Size Adjusted BIC       31490.230
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                             32.025
+          Degrees of Freedom                    24
+          P-Value                           0.1264
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.018
+          90 Percent C.I.                    0.000  0.033
+          Probability RMSEA <= .05           1.000
+
+CFI/TLI
+
+          CFI                                0.999
+          TLI                                0.998
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           6472.759
+          Degrees of Freedom                    36
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.012
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ ETA1     BY
+    Y11                1.000      0.000    999.000    999.000
+    Y21                1.221      0.034     35.570      0.000
+    Y31                0.801      0.027     30.096      0.000
+
+ ETA2     BY
+    Y12                1.000      0.000    999.000    999.000
+    Y22                1.211      0.032     37.642      0.000
+    Y32                0.772      0.024     31.797      0.000
+
+ ETA3     BY
+    Y13                1.000      0.000    999.000    999.000
+    Y23                1.233      0.035     35.245      0.000
+    Y33                0.828      0.026     31.283      0.000
+
+ ETA2     WITH
+    ETA1               2.041      0.132     15.495      0.000
+
+ ETA3     WITH
+    ETA1               1.856      0.126     14.752      0.000
+    ETA2               2.039      0.131     15.540      0.000
+
+ Means
+    ETA1               0.611      0.063      9.758      0.000
+    ETA2               1.071      0.063     17.009      0.000
+    ETA3               0.495      0.062      7.924      0.000
+
+ Intercepts
+    Y11                0.000      0.000    999.000    999.000
+    Y21                0.217      0.054      4.029      0.000
+    Y31                0.570      0.044     12.809      0.000
+    Y12                0.000      0.000    999.000    999.000
+    Y22                0.212      0.060      3.546      0.000
+    Y32                0.578      0.047     12.350      0.000
+    Y13                0.000      0.000    999.000    999.000
+    Y23                0.262      0.055      4.784      0.000
+    Y33                0.574      0.043     13.459      0.000
+
+ Variances
+    ETA1               2.845      0.175     16.234      0.000
+    ETA2               3.035      0.179     16.986      0.000
+    ETA3               2.869      0.175     16.405      0.000
+
+ Residual Variances
+    Y11                1.070      0.068     15.710      0.000
+    Y21                0.874      0.079     11.025      0.000
+    Y31                1.029      0.056     18.248      0.000
+    Y12                0.932      0.063     14.876      0.000
+    Y22                1.036      0.082     12.664      0.000
+    Y32                0.956      0.053     18.120      0.000
+    Y13                1.028      0.067     15.440      0.000
+    Y23                1.146      0.088     13.003      0.000
+    Y33                0.944      0.055     17.151      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.384E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  13:40:38
+        Ending Time:  13:40:40
+       Elapsed Time:  00:00:02
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

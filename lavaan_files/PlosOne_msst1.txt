@@ -1,0 +1,755 @@
+eta1 =~ 1*worry1
+eta1 =~ la211*fear1
+eta1 =~ la311*sad1
+eta2 =~ 1*worry2
+eta2 =~ la211*fear2
+eta2 =~ la311*sad2
+eta3 =~ 1*worry3
+eta3 =~ la211*fear3
+eta3 =~ la311*sad3
+eta4 =~ 1*worry4
+eta4 =~ la211*fear4
+eta4 =~ la311*sad4
+eta5 =~ 1*worry5
+eta5 =~ la211*fear5
+eta5 =~ la311*sad5
+eta6 =~ 1*worry6
+eta6 =~ la211*fear6
+eta6 =~ la311*sad6
+eta7 =~ 1*worry7
+eta7 =~ la211*fear7
+eta7 =~ la311*sad7
+eta8 =~ 1*worry8
+eta8 =~ la211*fear8
+eta8 =~ la311*sad8
+eta9 =~ 1*worry9
+eta9 =~ la211*fear9
+eta9 =~ la311*sad9
+eta10 =~ 1*worry10
+eta10 =~ la211*fear10
+eta10 =~ la311*sad10
+eta11 =~ 1*worry11
+eta11 =~ la211*fear11
+eta11 =~ la311*sad11
+eta12 =~ 1*worry12
+eta12 =~ la211*fear12
+eta12 =~ la311*sad12
+eta13 =~ 1*worry13
+eta13 =~ la211*fear13
+eta13 =~ la311*sad13
+eta14 =~ 1*worry14
+eta14 =~ la211*fear14
+eta14 =~ la311*sad14
+eta15 =~ 1*worry15
+eta15 =~ la211*fear15
+eta15 =~ la311*sad15
+eta16 =~ 1*worry16
+eta16 =~ la211*fear16
+eta16 =~ la311*sad16
+eta17 =~ 1*worry17
+eta17 =~ la211*fear17
+eta17 =~ la311*sad17
+eta18 =~ 1*worry18
+eta18 =~ la211*fear18
+eta18 =~ la311*sad18
+eta19 =~ 1*worry19
+eta19 =~ la211*fear19
+eta19 =~ la311*sad19
+eta20 =~ 1*worry20
+eta20 =~ la211*fear20
+eta20 =~ la311*sad20
+eta21 =~ 1*worry21
+eta21 =~ la211*fear21
+eta21 =~ la311*sad21
+eta22 =~ 1*worry22
+eta22 =~ la211*fear22
+eta22 =~ la311*sad22
+eta23 =~ 1*worry23
+eta23 =~ la211*fear23
+eta23 =~ la311*sad23
+eta24 =~ 1*worry24
+eta24 =~ la211*fear24
+eta24 =~ la311*sad24
+eta25 =~ 1*worry25
+eta25 =~ la211*fear25
+eta25 =~ la311*sad25
+eta26 =~ 1*worry26
+eta26 =~ la211*fear26
+eta26 =~ la311*sad26
+eta27 =~ 1*worry27
+eta27 =~ la211*fear27
+eta27 =~ la311*sad27
+eta28 =~ 1*worry28
+eta28 =~ la211*fear28
+eta28 =~ la311*sad28
+eta29 =~ 1*worry29
+eta29 =~ la211*fear29
+eta29 =~ la311*sad29
+eta30 =~ 1*worry30
+eta30 =~ la211*fear30
+eta30 =~ la311*sad30
+worry1 ~ 0*1
+fear1 ~ la210*1
+sad1 ~ la310*1
+worry2 ~ 0*1
+fear2 ~ la210*1
+sad2 ~ la310*1
+worry3 ~ 0*1
+fear3 ~ la210*1
+sad3 ~ la310*1
+worry4 ~ 0*1
+fear4 ~ la210*1
+sad4 ~ la310*1
+worry5 ~ 0*1
+fear5 ~ la210*1
+sad5 ~ la310*1
+worry6 ~ 0*1
+fear6 ~ la210*1
+sad6 ~ la310*1
+worry7 ~ 0*1
+fear7 ~ la210*1
+sad7 ~ la310*1
+worry8 ~ 0*1
+fear8 ~ la210*1
+sad8 ~ la310*1
+worry9 ~ 0*1
+fear9 ~ la210*1
+sad9 ~ la310*1
+worry10 ~ 0*1
+fear10 ~ la210*1
+sad10 ~ la310*1
+worry11 ~ 0*1
+fear11 ~ la210*1
+sad11 ~ la310*1
+worry12 ~ 0*1
+fear12 ~ la210*1
+sad12 ~ la310*1
+worry13 ~ 0*1
+fear13 ~ la210*1
+sad13 ~ la310*1
+worry14 ~ 0*1
+fear14 ~ la210*1
+sad14 ~ la310*1
+worry15 ~ 0*1
+fear15 ~ la210*1
+sad15 ~ la310*1
+worry16 ~ 0*1
+fear16 ~ la210*1
+sad16 ~ la310*1
+worry17 ~ 0*1
+fear17 ~ la210*1
+sad17 ~ la310*1
+worry18 ~ 0*1
+fear18 ~ la210*1
+sad18 ~ la310*1
+worry19 ~ 0*1
+fear19 ~ la210*1
+sad19 ~ la310*1
+worry20 ~ 0*1
+fear20 ~ la210*1
+sad20 ~ la310*1
+worry21 ~ 0*1
+fear21 ~ la210*1
+sad21 ~ la310*1
+worry22 ~ 0*1
+fear22 ~ la210*1
+sad22 ~ la310*1
+worry23 ~ 0*1
+fear23 ~ la210*1
+sad23 ~ la310*1
+worry24 ~ 0*1
+fear24 ~ la210*1
+sad24 ~ la310*1
+worry25 ~ 0*1
+fear25 ~ la210*1
+sad25 ~ la310*1
+worry26 ~ 0*1
+fear26 ~ la210*1
+sad26 ~ la310*1
+worry27 ~ 0*1
+fear27 ~ la210*1
+sad27 ~ la310*1
+worry28 ~ 0*1
+fear28 ~ la210*1
+sad28 ~ la310*1
+worry29 ~ 0*1
+fear29 ~ la210*1
+sad29 ~ la310*1
+worry30 ~ 0*1
+fear30 ~ la210*1
+sad30 ~ la310*1
+eta1 ~ 0*1
+eta2 ~ 0*1
+eta3 ~ 0*1
+eta4 ~ 0*1
+eta5 ~ 0*1
+eta6 ~ 0*1
+eta7 ~ 0*1
+eta8 ~ 0*1
+eta9 ~ 0*1
+eta10 ~ 0*1
+eta11 ~ 0*1
+eta12 ~ 0*1
+eta13 ~ 0*1
+eta14 ~ 0*1
+eta15 ~ 0*1
+eta16 ~ 0*1
+eta17 ~ 0*1
+eta18 ~ 0*1
+eta19 ~ 0*1
+eta20 ~ 0*1
+eta21 ~ 0*1
+eta22 ~ 0*1
+eta23 ~ 0*1
+eta24 ~ 0*1
+eta25 ~ 0*1
+eta26 ~ 0*1
+eta27 ~ 0*1
+eta28 ~ 0*1
+eta29 ~ 0*1
+eta30 ~ 0*1
+worry1 ~~ eps11*worry1
+fear1 ~~ eps21*fear1
+sad1 ~~ eps31*sad1
+worry2 ~~ eps12*worry2
+fear2 ~~ eps22*fear2
+sad2 ~~ eps32*sad2
+worry3 ~~ eps13*worry3
+fear3 ~~ eps23*fear3
+sad3 ~~ eps33*sad3
+worry4 ~~ eps14*worry4
+fear4 ~~ eps24*fear4
+sad4 ~~ eps34*sad4
+worry5 ~~ eps15*worry5
+fear5 ~~ eps25*fear5
+sad5 ~~ eps35*sad5
+worry6 ~~ eps16*worry6
+fear6 ~~ eps26*fear6
+sad6 ~~ eps36*sad6
+worry7 ~~ eps17*worry7
+fear7 ~~ eps27*fear7
+sad7 ~~ eps37*sad7
+worry8 ~~ eps18*worry8
+fear8 ~~ eps28*fear8
+sad8 ~~ eps38*sad8
+worry9 ~~ eps19*worry9
+fear9 ~~ eps29*fear9
+sad9 ~~ eps39*sad9
+worry10 ~~ eps110*worry10
+fear10 ~~ eps210*fear10
+sad10 ~~ eps310*sad10
+worry11 ~~ eps111*worry11
+fear11 ~~ eps211*fear11
+sad11 ~~ eps311*sad11
+worry12 ~~ eps112*worry12
+fear12 ~~ eps212*fear12
+sad12 ~~ eps312*sad12
+worry13 ~~ eps113*worry13
+fear13 ~~ eps213*fear13
+sad13 ~~ eps313*sad13
+worry14 ~~ eps114*worry14
+fear14 ~~ eps214*fear14
+sad14 ~~ eps314*sad14
+worry15 ~~ eps115*worry15
+fear15 ~~ eps215*fear15
+sad15 ~~ eps315*sad15
+worry16 ~~ eps116*worry16
+fear16 ~~ eps216*fear16
+sad16 ~~ eps316*sad16
+worry17 ~~ eps117*worry17
+fear17 ~~ eps217*fear17
+sad17 ~~ eps317*sad17
+worry18 ~~ eps118*worry18
+fear18 ~~ eps218*fear18
+sad18 ~~ eps318*sad18
+worry19 ~~ eps119*worry19
+fear19 ~~ eps219*fear19
+sad19 ~~ eps319*sad19
+worry20 ~~ eps120*worry20
+fear20 ~~ eps220*fear20
+sad20 ~~ eps320*sad20
+worry21 ~~ eps121*worry21
+fear21 ~~ eps221*fear21
+sad21 ~~ eps321*sad21
+worry22 ~~ eps122*worry22
+fear22 ~~ eps222*fear22
+sad22 ~~ eps322*sad22
+worry23 ~~ eps123*worry23
+fear23 ~~ eps223*fear23
+sad23 ~~ eps323*sad23
+worry24 ~~ eps124*worry24
+fear24 ~~ eps224*fear24
+sad24 ~~ eps324*sad24
+worry25 ~~ eps125*worry25
+fear25 ~~ eps225*fear25
+sad25 ~~ eps325*sad25
+worry26 ~~ eps126*worry26
+fear26 ~~ eps226*fear26
+sad26 ~~ eps326*sad26
+worry27 ~~ eps127*worry27
+fear27 ~~ eps227*fear27
+sad27 ~~ eps327*sad27
+worry28 ~~ eps128*worry28
+fear28 ~~ eps228*fear28
+sad28 ~~ eps328*sad28
+worry29 ~~ eps129*worry29
+fear29 ~~ eps229*fear29
+sad29 ~~ eps329*sad29
+worry30 ~~ eps130*worry30
+fear30 ~~ eps230*fear30
+sad30 ~~ eps330*sad30
+eta1 ~~ psi1*eta1
+eta2 ~~ psi2*eta2
+eta3 ~~ psi3*eta3
+eta4 ~~ psi4*eta4
+eta5 ~~ psi5*eta5
+eta6 ~~ psi6*eta6
+eta7 ~~ psi7*eta7
+eta8 ~~ psi8*eta8
+eta9 ~~ psi9*eta9
+eta10 ~~ psi10*eta10
+eta11 ~~ psi11*eta11
+eta12 ~~ psi12*eta12
+eta13 ~~ psi13*eta13
+eta14 ~~ psi14*eta14
+eta15 ~~ psi15*eta15
+eta16 ~~ psi16*eta16
+eta17 ~~ psi17*eta17
+eta18 ~~ psi18*eta18
+eta19 ~~ psi19*eta19
+eta20 ~~ psi20*eta20
+eta21 ~~ psi21*eta21
+eta22 ~~ psi22*eta22
+eta23 ~~ psi23*eta23
+eta24 ~~ psi24*eta24
+eta25 ~~ psi25*eta25
+eta26 ~~ psi26*eta26
+eta27 ~~ psi27*eta27
+eta28 ~~ psi28*eta28
+eta29 ~~ psi29*eta29
+eta30 ~~ psi30*eta30
+theta1 =~ 1*eta1
+theta1 =~ 1*eta2
+theta1 =~ 1*eta3
+theta1 =~ 1*eta4
+theta1 =~ 1*eta5
+theta1 =~ 1*eta6
+theta1 =~ 1*eta7
+theta1 =~ 1*eta8
+theta1 =~ 1*eta9
+theta1 =~ 1*eta10
+theta1 =~ 1*eta11
+theta1 =~ 1*eta12
+theta1 =~ 1*eta13
+theta1 =~ 1*eta14
+theta1 =~ 1*eta15
+theta1 =~ 1*eta16
+theta1 =~ 1*eta17
+theta1 =~ 1*eta18
+theta1 =~ 1*eta19
+theta1 =~ 1*eta20
+theta1 =~ 1*eta21
+theta1 =~ 1*eta22
+theta1 =~ 1*eta23
+theta1 =~ 1*eta24
+theta1 =~ 1*eta25
+theta1 =~ 1*eta26
+theta1 =~ 1*eta27
+theta1 =~ 1*eta28
+theta1 =~ 1*eta29
+theta1 =~ 1*eta30
+theta1 ~~ vartheta1*theta1
+theta1 ~ mtheta1*1
+
+vareta1 := 1^2 * vartheta1 + psi1
+vareta2 := 1^2 * vartheta1 + psi2
+vareta3 := 1^2 * vartheta1 + psi3
+vareta4 := 1^2 * vartheta1 + psi4
+vareta5 := 1^2 * vartheta1 + psi5
+vareta6 := 1^2 * vartheta1 + psi6
+vareta7 := 1^2 * vartheta1 + psi7
+vareta8 := 1^2 * vartheta1 + psi8
+vareta9 := 1^2 * vartheta1 + psi9
+vareta10 := 1^2 * vartheta1 + psi10
+vareta11 := 1^2 * vartheta1 + psi11
+vareta12 := 1^2 * vartheta1 + psi12
+vareta13 := 1^2 * vartheta1 + psi13
+vareta14 := 1^2 * vartheta1 + psi14
+vareta15 := 1^2 * vartheta1 + psi15
+vareta16 := 1^2 * vartheta1 + psi16
+vareta17 := 1^2 * vartheta1 + psi17
+vareta18 := 1^2 * vartheta1 + psi18
+vareta19 := 1^2 * vartheta1 + psi19
+vareta20 := 1^2 * vartheta1 + psi20
+vareta21 := 1^2 * vartheta1 + psi21
+vareta22 := 1^2 * vartheta1 + psi22
+vareta23 := 1^2 * vartheta1 + psi23
+vareta24 := 1^2 * vartheta1 + psi24
+vareta25 := 1^2 * vartheta1 + psi25
+vareta26 := 1^2 * vartheta1 + psi26
+vareta27 := 1^2 * vartheta1 + psi27
+vareta28 := 1^2 * vartheta1 + psi28
+vareta29 := 1^2 * vartheta1 + psi29
+vareta30 := 1^2 * vartheta1 + psi30
+vary11 := 1^2 * vareta1 + eps11
+vary21 := la211^2 * vareta1 + eps21
+vary31 := la311^2 * vareta1 + eps31
+vary12 := 1^2 * vareta2 + eps12
+vary22 := la211^2 * vareta2 + eps22
+vary32 := la311^2 * vareta2 + eps32
+vary13 := 1^2 * vareta3 + eps13
+vary23 := la211^2 * vareta3 + eps23
+vary33 := la311^2 * vareta3 + eps33
+vary14 := 1^2 * vareta4 + eps14
+vary24 := la211^2 * vareta4 + eps24
+vary34 := la311^2 * vareta4 + eps34
+vary15 := 1^2 * vareta5 + eps15
+vary25 := la211^2 * vareta5 + eps25
+vary35 := la311^2 * vareta5 + eps35
+vary16 := 1^2 * vareta6 + eps16
+vary26 := la211^2 * vareta6 + eps26
+vary36 := la311^2 * vareta6 + eps36
+vary17 := 1^2 * vareta7 + eps17
+vary27 := la211^2 * vareta7 + eps27
+vary37 := la311^2 * vareta7 + eps37
+vary18 := 1^2 * vareta8 + eps18
+vary28 := la211^2 * vareta8 + eps28
+vary38 := la311^2 * vareta8 + eps38
+vary19 := 1^2 * vareta9 + eps19
+vary29 := la211^2 * vareta9 + eps29
+vary39 := la311^2 * vareta9 + eps39
+vary110 := 1^2 * vareta10 + eps110
+vary210 := la211^2 * vareta10 + eps210
+vary310 := la311^2 * vareta10 + eps310
+vary111 := 1^2 * vareta11 + eps111
+vary211 := la211^2 * vareta11 + eps211
+vary311 := la311^2 * vareta11 + eps311
+vary112 := 1^2 * vareta12 + eps112
+vary212 := la211^2 * vareta12 + eps212
+vary312 := la311^2 * vareta12 + eps312
+vary113 := 1^2 * vareta13 + eps113
+vary213 := la211^2 * vareta13 + eps213
+vary313 := la311^2 * vareta13 + eps313
+vary114 := 1^2 * vareta14 + eps114
+vary214 := la211^2 * vareta14 + eps214
+vary314 := la311^2 * vareta14 + eps314
+vary115 := 1^2 * vareta15 + eps115
+vary215 := la211^2 * vareta15 + eps215
+vary315 := la311^2 * vareta15 + eps315
+vary116 := 1^2 * vareta16 + eps116
+vary216 := la211^2 * vareta16 + eps216
+vary316 := la311^2 * vareta16 + eps316
+vary117 := 1^2 * vareta17 + eps117
+vary217 := la211^2 * vareta17 + eps217
+vary317 := la311^2 * vareta17 + eps317
+vary118 := 1^2 * vareta18 + eps118
+vary218 := la211^2 * vareta18 + eps218
+vary318 := la311^2 * vareta18 + eps318
+vary119 := 1^2 * vareta19 + eps119
+vary219 := la211^2 * vareta19 + eps219
+vary319 := la311^2 * vareta19 + eps319
+vary120 := 1^2 * vareta20 + eps120
+vary220 := la211^2 * vareta20 + eps220
+vary320 := la311^2 * vareta20 + eps320
+vary121 := 1^2 * vareta21 + eps121
+vary221 := la211^2 * vareta21 + eps221
+vary321 := la311^2 * vareta21 + eps321
+vary122 := 1^2 * vareta22 + eps122
+vary222 := la211^2 * vareta22 + eps222
+vary322 := la311^2 * vareta22 + eps322
+vary123 := 1^2 * vareta23 + eps123
+vary223 := la211^2 * vareta23 + eps223
+vary323 := la311^2 * vareta23 + eps323
+vary124 := 1^2 * vareta24 + eps124
+vary224 := la211^2 * vareta24 + eps224
+vary324 := la311^2 * vareta24 + eps324
+vary125 := 1^2 * vareta25 + eps125
+vary225 := la211^2 * vareta25 + eps225
+vary325 := la311^2 * vareta25 + eps325
+vary126 := 1^2 * vareta26 + eps126
+vary226 := la211^2 * vareta26 + eps226
+vary326 := la311^2 * vareta26 + eps326
+vary127 := 1^2 * vareta27 + eps127
+vary227 := la211^2 * vareta27 + eps227
+vary327 := la311^2 * vareta27 + eps327
+vary128 := 1^2 * vareta28 + eps128
+vary228 := la211^2 * vareta28 + eps228
+vary328 := la311^2 * vareta28 + eps328
+vary129 := 1^2 * vareta29 + eps129
+vary229 := la211^2 * vareta29 + eps229
+vary329 := la311^2 * vareta29 + eps329
+vary130 := 1^2 * vareta30 + eps130
+vary230 := la211^2 * vareta30 + eps230
+vary330 := la311^2 * vareta30 + eps330
+rely11 := 1^2 * vareta1 / vary11
+rely21 := la211^2 * vareta1 / vary21
+rely31 := la311^2 * vareta1 / vary31
+rely12 := 1^2 * vareta2 / vary12
+rely22 := la211^2 * vareta2 / vary22
+rely32 := la311^2 * vareta2 / vary32
+rely13 := 1^2 * vareta3 / vary13
+rely23 := la211^2 * vareta3 / vary23
+rely33 := la311^2 * vareta3 / vary33
+rely14 := 1^2 * vareta4 / vary14
+rely24 := la211^2 * vareta4 / vary24
+rely34 := la311^2 * vareta4 / vary34
+rely15 := 1^2 * vareta5 / vary15
+rely25 := la211^2 * vareta5 / vary25
+rely35 := la311^2 * vareta5 / vary35
+rely16 := 1^2 * vareta6 / vary16
+rely26 := la211^2 * vareta6 / vary26
+rely36 := la311^2 * vareta6 / vary36
+rely17 := 1^2 * vareta7 / vary17
+rely27 := la211^2 * vareta7 / vary27
+rely37 := la311^2 * vareta7 / vary37
+rely18 := 1^2 * vareta8 / vary18
+rely28 := la211^2 * vareta8 / vary28
+rely38 := la311^2 * vareta8 / vary38
+rely19 := 1^2 * vareta9 / vary19
+rely29 := la211^2 * vareta9 / vary29
+rely39 := la311^2 * vareta9 / vary39
+rely110 := 1^2 * vareta10 / vary110
+rely210 := la211^2 * vareta10 / vary210
+rely310 := la311^2 * vareta10 / vary310
+rely111 := 1^2 * vareta11 / vary111
+rely211 := la211^2 * vareta11 / vary211
+rely311 := la311^2 * vareta11 / vary311
+rely112 := 1^2 * vareta12 / vary112
+rely212 := la211^2 * vareta12 / vary212
+rely312 := la311^2 * vareta12 / vary312
+rely113 := 1^2 * vareta13 / vary113
+rely213 := la211^2 * vareta13 / vary213
+rely313 := la311^2 * vareta13 / vary313
+rely114 := 1^2 * vareta14 / vary114
+rely214 := la211^2 * vareta14 / vary214
+rely314 := la311^2 * vareta14 / vary314
+rely115 := 1^2 * vareta15 / vary115
+rely215 := la211^2 * vareta15 / vary215
+rely315 := la311^2 * vareta15 / vary315
+rely116 := 1^2 * vareta16 / vary116
+rely216 := la211^2 * vareta16 / vary216
+rely316 := la311^2 * vareta16 / vary316
+rely117 := 1^2 * vareta17 / vary117
+rely217 := la211^2 * vareta17 / vary217
+rely317 := la311^2 * vareta17 / vary317
+rely118 := 1^2 * vareta18 / vary118
+rely218 := la211^2 * vareta18 / vary218
+rely318 := la311^2 * vareta18 / vary318
+rely119 := 1^2 * vareta19 / vary119
+rely219 := la211^2 * vareta19 / vary219
+rely319 := la311^2 * vareta19 / vary319
+rely120 := 1^2 * vareta20 / vary120
+rely220 := la211^2 * vareta20 / vary220
+rely320 := la311^2 * vareta20 / vary320
+rely121 := 1^2 * vareta21 / vary121
+rely221 := la211^2 * vareta21 / vary221
+rely321 := la311^2 * vareta21 / vary321
+rely122 := 1^2 * vareta22 / vary122
+rely222 := la211^2 * vareta22 / vary222
+rely322 := la311^2 * vareta22 / vary322
+rely123 := 1^2 * vareta23 / vary123
+rely223 := la211^2 * vareta23 / vary223
+rely323 := la311^2 * vareta23 / vary323
+rely124 := 1^2 * vareta24 / vary124
+rely224 := la211^2 * vareta24 / vary224
+rely324 := la311^2 * vareta24 / vary324
+rely125 := 1^2 * vareta25 / vary125
+rely225 := la211^2 * vareta25 / vary225
+rely325 := la311^2 * vareta25 / vary325
+rely126 := 1^2 * vareta26 / vary126
+rely226 := la211^2 * vareta26 / vary226
+rely326 := la311^2 * vareta26 / vary326
+rely127 := 1^2 * vareta27 / vary127
+rely227 := la211^2 * vareta27 / vary227
+rely327 := la311^2 * vareta27 / vary327
+rely128 := 1^2 * vareta28 / vary128
+rely228 := la211^2 * vareta28 / vary228
+rely328 := la311^2 * vareta28 / vary328
+rely129 := 1^2 * vareta29 / vary129
+rely229 := la211^2 * vareta29 / vary229
+rely329 := la311^2 * vareta29 / vary329
+rely130 := 1^2 * vareta30 / vary130
+rely230 := la211^2 * vareta30 / vary230
+rely330 := la311^2 * vareta30 / vary330
+spey11 := 1^2 * psi1 / vary11
+spey21 := la211^2 * psi1 / vary21
+spey31 := la311^2 * psi1 / vary31
+spey12 := 1^2 * psi2 / vary12
+spey22 := la211^2 * psi2 / vary22
+spey32 := la311^2 * psi2 / vary32
+spey13 := 1^2 * psi3 / vary13
+spey23 := la211^2 * psi3 / vary23
+spey33 := la311^2 * psi3 / vary33
+spey14 := 1^2 * psi4 / vary14
+spey24 := la211^2 * psi4 / vary24
+spey34 := la311^2 * psi4 / vary34
+spey15 := 1^2 * psi5 / vary15
+spey25 := la211^2 * psi5 / vary25
+spey35 := la311^2 * psi5 / vary35
+spey16 := 1^2 * psi6 / vary16
+spey26 := la211^2 * psi6 / vary26
+spey36 := la311^2 * psi6 / vary36
+spey17 := 1^2 * psi7 / vary17
+spey27 := la211^2 * psi7 / vary27
+spey37 := la311^2 * psi7 / vary37
+spey18 := 1^2 * psi8 / vary18
+spey28 := la211^2 * psi8 / vary28
+spey38 := la311^2 * psi8 / vary38
+spey19 := 1^2 * psi9 / vary19
+spey29 := la211^2 * psi9 / vary29
+spey39 := la311^2 * psi9 / vary39
+spey110 := 1^2 * psi10 / vary110
+spey210 := la211^2 * psi10 / vary210
+spey310 := la311^2 * psi10 / vary310
+spey111 := 1^2 * psi11 / vary111
+spey211 := la211^2 * psi11 / vary211
+spey311 := la311^2 * psi11 / vary311
+spey112 := 1^2 * psi12 / vary112
+spey212 := la211^2 * psi12 / vary212
+spey312 := la311^2 * psi12 / vary312
+spey113 := 1^2 * psi13 / vary113
+spey213 := la211^2 * psi13 / vary213
+spey313 := la311^2 * psi13 / vary313
+spey114 := 1^2 * psi14 / vary114
+spey214 := la211^2 * psi14 / vary214
+spey314 := la311^2 * psi14 / vary314
+spey115 := 1^2 * psi15 / vary115
+spey215 := la211^2 * psi15 / vary215
+spey315 := la311^2 * psi15 / vary315
+spey116 := 1^2 * psi16 / vary116
+spey216 := la211^2 * psi16 / vary216
+spey316 := la311^2 * psi16 / vary316
+spey117 := 1^2 * psi17 / vary117
+spey217 := la211^2 * psi17 / vary217
+spey317 := la311^2 * psi17 / vary317
+spey118 := 1^2 * psi18 / vary118
+spey218 := la211^2 * psi18 / vary218
+spey318 := la311^2 * psi18 / vary318
+spey119 := 1^2 * psi19 / vary119
+spey219 := la211^2 * psi19 / vary219
+spey319 := la311^2 * psi19 / vary319
+spey120 := 1^2 * psi20 / vary120
+spey220 := la211^2 * psi20 / vary220
+spey320 := la311^2 * psi20 / vary320
+spey121 := 1^2 * psi21 / vary121
+spey221 := la211^2 * psi21 / vary221
+spey321 := la311^2 * psi21 / vary321
+spey122 := 1^2 * psi22 / vary122
+spey222 := la211^2 * psi22 / vary222
+spey322 := la311^2 * psi22 / vary322
+spey123 := 1^2 * psi23 / vary123
+spey223 := la211^2 * psi23 / vary223
+spey323 := la311^2 * psi23 / vary323
+spey124 := 1^2 * psi24 / vary124
+spey224 := la211^2 * psi24 / vary224
+spey324 := la311^2 * psi24 / vary324
+spey125 := 1^2 * psi25 / vary125
+spey225 := la211^2 * psi25 / vary225
+spey325 := la311^2 * psi25 / vary325
+spey126 := 1^2 * psi26 / vary126
+spey226 := la211^2 * psi26 / vary226
+spey326 := la311^2 * psi26 / vary326
+spey127 := 1^2 * psi27 / vary127
+spey227 := la211^2 * psi27 / vary227
+spey327 := la311^2 * psi27 / vary327
+spey128 := 1^2 * psi28 / vary128
+spey228 := la211^2 * psi28 / vary228
+spey328 := la311^2 * psi28 / vary328
+spey129 := 1^2 * psi29 / vary129
+spey229 := la211^2 * psi29 / vary229
+spey329 := la311^2 * psi29 / vary329
+spey130 := 1^2 * psi30 / vary130
+spey230 := la211^2 * psi30 / vary230
+spey330 := la311^2 * psi30 / vary330
+cony11 := 1^2 * 1^2 * vartheta1 / vary11
+cony21 := la211^2 * 1^2 * vartheta1 / vary21
+cony31 := la311^2 * 1^2 * vartheta1 / vary31
+cony12 := 1^2 * 1^2 * vartheta1 / vary12
+cony22 := la211^2 * 1^2 * vartheta1 / vary22
+cony32 := la311^2 * 1^2 * vartheta1 / vary32
+cony13 := 1^2 * 1^2 * vartheta1 / vary13
+cony23 := la211^2 * 1^2 * vartheta1 / vary23
+cony33 := la311^2 * 1^2 * vartheta1 / vary33
+cony14 := 1^2 * 1^2 * vartheta1 / vary14
+cony24 := la211^2 * 1^2 * vartheta1 / vary24
+cony34 := la311^2 * 1^2 * vartheta1 / vary34
+cony15 := 1^2 * 1^2 * vartheta1 / vary15
+cony25 := la211^2 * 1^2 * vartheta1 / vary25
+cony35 := la311^2 * 1^2 * vartheta1 / vary35
+cony16 := 1^2 * 1^2 * vartheta1 / vary16
+cony26 := la211^2 * 1^2 * vartheta1 / vary26
+cony36 := la311^2 * 1^2 * vartheta1 / vary36
+cony17 := 1^2 * 1^2 * vartheta1 / vary17
+cony27 := la211^2 * 1^2 * vartheta1 / vary27
+cony37 := la311^2 * 1^2 * vartheta1 / vary37
+cony18 := 1^2 * 1^2 * vartheta1 / vary18
+cony28 := la211^2 * 1^2 * vartheta1 / vary28
+cony38 := la311^2 * 1^2 * vartheta1 / vary38
+cony19 := 1^2 * 1^2 * vartheta1 / vary19
+cony29 := la211^2 * 1^2 * vartheta1 / vary29
+cony39 := la311^2 * 1^2 * vartheta1 / vary39
+cony110 := 1^2 * 1^2 * vartheta1 / vary110
+cony210 := la211^2 * 1^2 * vartheta1 / vary210
+cony310 := la311^2 * 1^2 * vartheta1 / vary310
+cony111 := 1^2 * 1^2 * vartheta1 / vary111
+cony211 := la211^2 * 1^2 * vartheta1 / vary211
+cony311 := la311^2 * 1^2 * vartheta1 / vary311
+cony112 := 1^2 * 1^2 * vartheta1 / vary112
+cony212 := la211^2 * 1^2 * vartheta1 / vary212
+cony312 := la311^2 * 1^2 * vartheta1 / vary312
+cony113 := 1^2 * 1^2 * vartheta1 / vary113
+cony213 := la211^2 * 1^2 * vartheta1 / vary213
+cony313 := la311^2 * 1^2 * vartheta1 / vary313
+cony114 := 1^2 * 1^2 * vartheta1 / vary114
+cony214 := la211^2 * 1^2 * vartheta1 / vary214
+cony314 := la311^2 * 1^2 * vartheta1 / vary314
+cony115 := 1^2 * 1^2 * vartheta1 / vary115
+cony215 := la211^2 * 1^2 * vartheta1 / vary215
+cony315 := la311^2 * 1^2 * vartheta1 / vary315
+cony116 := 1^2 * 1^2 * vartheta1 / vary116
+cony216 := la211^2 * 1^2 * vartheta1 / vary216
+cony316 := la311^2 * 1^2 * vartheta1 / vary316
+cony117 := 1^2 * 1^2 * vartheta1 / vary117
+cony217 := la211^2 * 1^2 * vartheta1 / vary217
+cony317 := la311^2 * 1^2 * vartheta1 / vary317
+cony118 := 1^2 * 1^2 * vartheta1 / vary118
+cony218 := la211^2 * 1^2 * vartheta1 / vary218
+cony318 := la311^2 * 1^2 * vartheta1 / vary318
+cony119 := 1^2 * 1^2 * vartheta1 / vary119
+cony219 := la211^2 * 1^2 * vartheta1 / vary219
+cony319 := la311^2 * 1^2 * vartheta1 / vary319
+cony120 := 1^2 * 1^2 * vartheta1 / vary120
+cony220 := la211^2 * 1^2 * vartheta1 / vary220
+cony320 := la311^2 * 1^2 * vartheta1 / vary320
+cony121 := 1^2 * 1^2 * vartheta1 / vary121
+cony221 := la211^2 * 1^2 * vartheta1 / vary221
+cony321 := la311^2 * 1^2 * vartheta1 / vary321
+cony122 := 1^2 * 1^2 * vartheta1 / vary122
+cony222 := la211^2 * 1^2 * vartheta1 / vary222
+cony322 := la311^2 * 1^2 * vartheta1 / vary322
+cony123 := 1^2 * 1^2 * vartheta1 / vary123
+cony223 := la211^2 * 1^2 * vartheta1 / vary223
+cony323 := la311^2 * 1^2 * vartheta1 / vary323
+cony124 := 1^2 * 1^2 * vartheta1 / vary124
+cony224 := la211^2 * 1^2 * vartheta1 / vary224
+cony324 := la311^2 * 1^2 * vartheta1 / vary324
+cony125 := 1^2 * 1^2 * vartheta1 / vary125
+cony225 := la211^2 * 1^2 * vartheta1 / vary225
+cony325 := la311^2 * 1^2 * vartheta1 / vary325
+cony126 := 1^2 * 1^2 * vartheta1 / vary126
+cony226 := la211^2 * 1^2 * vartheta1 / vary226
+cony326 := la311^2 * 1^2 * vartheta1 / vary326
+cony127 := 1^2 * 1^2 * vartheta1 / vary127
+cony227 := la211^2 * 1^2 * vartheta1 / vary227
+cony327 := la311^2 * 1^2 * vartheta1 / vary327
+cony128 := 1^2 * 1^2 * vartheta1 / vary128
+cony228 := la211^2 * 1^2 * vartheta1 / vary228
+cony328 := la311^2 * 1^2 * vartheta1 / vary328
+cony129 := 1^2 * 1^2 * vartheta1 / vary129
+cony229 := la211^2 * 1^2 * vartheta1 / vary229
+cony329 := la311^2 * 1^2 * vartheta1 / vary329
+cony130 := 1^2 * 1^2 * vartheta1 / vary130
+cony230 := la211^2 * 1^2 * vartheta1 / vary230
+cony330 := la311^2 * 1^2 * vartheta1 / vary330
+
+

@@ -1,0 +1,37 @@
+TITLE: Your title goes here
+DATA: FILE = "multistate02.dat";
+VARIABLE: 
+NAMES = y11 y21 y31 y12 y22 y32 y13 y23 y33; 
+MISSING=.;
+
+MODEL:
+! definition of state variables 
+eta1 by y11@1
+y21 (la211)
+y31 (la311);
+
+eta2 by y12@1
+y22 (la221)
+y32 (la321);
+
+eta3 by y13@1
+y23 (la231)
+y33 (la331);
+
+[ eta1 * eta2 * eta3 *] ;
+[y11@0 y12@0 y13@0 ] ;
+
+eta1 ( vareta1 ) ;
+eta2 ( vareta2 ) ;
+eta3 ( vareta3 ) ;
+
+
+y11 ( vareps11 ) ;
+y21 ( vareps21 ) ;
+y31 ( vareps31 ) ;
+y12 ( vareps12 ) ;
+y22 ( vareps22 ) ;
+y32 ( vareps32 ) ;
+y13 ( vareps13 ) ;
+y23 ( vareps23 ) ;
+y33 ( vareps33 ) ;
