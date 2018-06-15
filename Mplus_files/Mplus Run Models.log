@@ -1,10 +1,10 @@
-------Begin Mplus Model Run: 08jun.2018 18:55:34------
+------Begin Mplus Model Run: 15jun.2018 11:25:40------
 Target directory: C:/Users/Sebastian/Dropbox/Research_Master/2017-2018/Master Thesis/LST_Analyses/Mplus_files
 Run options:
 	Recursive (run models in subdirectories): FALSE
 	Show output on console: FALSE
 	Replace existing outfile: always
 ------
-Currently running model: msst30.inp
+Currently running model: cuts30.inp
 
-------End Mplus Model Run: 08jun.2018 19:02:12------
+------End Mplus Model Run: 15jun.2018 11:27:50------

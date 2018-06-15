@@ -203,7 +203,7 @@ intercepts_syntax <- paste0("[", obs, "*]", " (",ins,")", " ;", collapse = "\n")
 
 occ_mean_syntax <- paste0("[", occ, "@0] ;", collapse = "\n" )
 
-trait_mean_syntax <- paste0("[", theta, "] ;", collapse = "\n")
+trait_mean_syntax <- paste0("[", theta, "* ] ;", collapse = "\n")
 
 # write 0 correlations among occasions  and traits
 latent.v <- c(occ, theta)
@@ -227,7 +227,7 @@ beta_syntax <- paste0(occ[2:nocc], " ON ", occ[1:(nocc-1)], " (", beta, ") ;",
 
 var_syntax <- paste(paste0(obs, " (", o_red, ") ;", collapse = "\n"),
                      paste0(occ, " (", occ_var, ") ;", collapse = "\n"),
-                     paste0(theta, " (", t_var, ") ;", collapse =  "\n"),
+                     paste0(theta, "* (", t_var, ") ;", collapse =  "\n"),
                      sep = "\n")
 
 # define computed parameters

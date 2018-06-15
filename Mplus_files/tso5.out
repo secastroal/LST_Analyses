@@ -1,0 +1,910 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+06/15/2018  11:20 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "Mplus_files/tso5.dat";
+  VARIABLE:
+  NAMES = worry1 fear1 sad1 worry2 fear2 sad2 worry3 fear3 sad3 worry4 fear4 sad4
+       worry5 fear5 sad5;
+  MISSING=.;
+
+  MODEL:
+
+  ! Latent occasion variables
+  occ1 BY worry1@1
+  fear1 (las21)
+  sad1 (las31) ;
+  occ2 BY worry2@1
+  fear2 (las22)
+  sad2 (las32) ;
+  occ3 BY worry3@1
+  fear3 (las23)
+  sad3 (las33) ;
+  occ4 BY worry4@1
+  fear4 (las24)
+  sad4 (las34) ;
+  occ5 BY worry5@1
+  fear5 (las25)
+  sad5 (las35) ;
+
+  ! Latent trait variable or trait indicators
+  theta1 BY worry1@1
+  worry2@1
+  worry3@1
+  worry4@1
+  worry5@1 ;
+  theta2 BY fear1@1
+  fear2@1
+  fear3@1
+  fear4@1
+  fear5@1 ;
+  theta3 BY sad1@1
+  sad2@1
+  sad3@1
+  sad4@1
+  sad5@1 ;
+
+  ! Intercepts and means
+  [worry1*] (ins11) ;
+  [fear1*] (ins21) ;
+  [sad1*] (ins31) ;
+  [worry2*] (ins12) ;
+  [fear2*] (ins22) ;
+  [sad2*] (ins32) ;
+  [worry3*] (ins13) ;
+  [fear3*] (ins23) ;
+  [sad3*] (ins33) ;
+  [worry4*] (ins14) ;
+  [fear4*] (ins24) ;
+  [sad4*] (ins34) ;
+  [worry5*] (ins15) ;
+  [fear5*] (ins25) ;
+  [sad5*] (ins35) ;
+  [occ1@0] ;
+  [occ2@0] ;
+  [occ3@0] ;
+  [occ4@0] ;
+  [occ5@0] ;
+  [theta1*] ;
+  [theta2*] ;
+  [theta3*] ;
+
+  ! Set 0 correlations
+  occ1 WITH occ2@0
+  occ3@0
+  occ4@0
+  occ5@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ2 WITH occ3@0
+  occ4@0
+  occ5@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ3 WITH occ4@0
+  occ5@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ4 WITH occ5@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ5 WITH theta1@0
+  theta2@0
+  theta3@0 ;
+
+  ! autoregressive effects
+  occ2 ON occ1 (beta1) ;
+  occ3 ON occ2 (beta2) ;
+  occ4 ON occ3 (beta3) ;
+  occ5 ON occ4 (beta4) ;
+
+  ! Variance components
+  worry1 (err11) ;
+  fear1 (err21) ;
+  sad1 (err31) ;
+  worry2 (err12) ;
+  fear2 (err22) ;
+  sad2 (err32) ;
+  worry3 (err13) ;
+  fear3 (err23) ;
+  sad3 (err33) ;
+  worry4 (err14) ;
+  fear4 (err24) ;
+  sad4 (err34) ;
+  worry5 (err15) ;
+  fear5 (err25) ;
+  sad5 (err35) ;
+  occ1 (oc_var1) ;
+  occ2 (oc_var2) ;
+  occ3 (oc_var3) ;
+  occ4 (oc_var4) ;
+  occ5 (oc_var5) ;
+  theta1* (t_var1) ;
+  theta2* (t_var2) ;
+  theta3* (t_var3) ;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         129
+
+Number of dependent variables                                   15
+Number of independent variables                                  0
+Number of continuous latent variables                            8
+
+Observed dependent variables
+
+  Continuous
+   WORRY1      FEAR1       SAD1        WORRY2      FEAR2       SAD2
+   WORRY3      FEAR3       SAD3        WORRY4      FEAR4       SAD4
+   WORRY5      FEAR5       SAD5
+
+Continuous latent variables
+   OCC1        OCC2        OCC3        OCC4        OCC5        THETA1
+   THETA2      THETA3
+
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  Mplus_files/tso5.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            28
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              WORRY1        FEAR1         SAD1          WORRY2        FEAR2
+              ________      ________      ________      ________      ________
+ WORRY1         0.690
+ FEAR1          0.690         0.690
+ SAD1           0.682         0.682         0.682
+ WORRY2         0.628         0.628         0.628         0.806
+ FEAR2          0.636         0.636         0.636         0.798         0.806
+ SAD2           0.636         0.636         0.636         0.806         0.806
+ WORRY3         0.597         0.597         0.597         0.705         0.705
+ FEAR3          0.597         0.597         0.597         0.705         0.705
+ SAD3           0.597         0.597         0.597         0.705         0.705
+ WORRY4         0.612         0.612         0.612         0.705         0.705
+ FEAR4          0.612         0.612         0.612         0.705         0.705
+ SAD4           0.612         0.612         0.612         0.705         0.705
+ WORRY5         0.597         0.597         0.589         0.705         0.713
+ FEAR5          0.605         0.605         0.597         0.721         0.729
+ SAD5           0.605         0.605         0.597         0.713         0.721
+
+
+           Covariance Coverage
+              SAD2          WORRY3        FEAR3         SAD3          WORRY4
+              ________      ________      ________      ________      ________
+ SAD2           0.814
+ WORRY3         0.713         0.837
+ FEAR3          0.713         0.837         0.837
+ SAD3           0.713         0.829         0.829         0.829
+ WORRY4         0.713         0.744         0.744         0.736         0.868
+ FEAR4          0.713         0.744         0.744         0.736         0.868
+ SAD4           0.713         0.744         0.744         0.736         0.868
+ WORRY5         0.713         0.744         0.744         0.736         0.752
+ FEAR5          0.729         0.752         0.752         0.744         0.760
+ SAD5           0.721         0.752         0.752         0.744         0.760
+
+
+           Covariance Coverage
+              FEAR4         SAD4          WORRY5        FEAR5         SAD5
+              ________      ________      ________      ________      ________
+ FEAR4          0.868
+ SAD4           0.868         0.868
+ WORRY5         0.752         0.752         0.868
+ FEAR5          0.760         0.760         0.860         0.876
+ SAD5           0.760         0.760         0.860         0.868         0.876
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     WORRY1                3.775      -0.080       1.000   17.98%       2.000      3.000      4.000
+              89.000       3.680      -1.331       7.000    4.49%       5.000      6.000
+     FEAR1                 2.281       1.074       1.000   42.70%       1.000      1.000      2.000
+              89.000       2.269       0.189       7.000    1.12%       2.000      4.000
+     SAD1                  3.023       0.501       1.000   28.41%       1.000      2.000      3.000
+              88.000       3.204      -0.841       7.000    3.41%       3.000      5.000
+     WORRY2                3.731      -0.015       1.000   22.12%       1.000      3.000      4.000
+             104.000       3.947      -1.283       7.000    7.69%       4.000      6.000
+     FEAR2                 2.221       1.136       1.000   49.04%       1.000      1.000      2.000
+             104.000       2.518       0.039       7.000    0.96%       2.000      4.000
+     SAD2                  3.057       0.468       1.000   25.71%       1.000      2.000      3.000
+             105.000       3.140      -0.870       7.000    3.81%       4.000      5.000
+     WORRY3                3.278       0.401       1.000   25.00%       1.000      2.000      3.000
+             108.000       3.997      -1.241       7.000    6.48%       4.000      5.000
+     FEAR3                 2.019       1.325       1.000   54.63%       1.000      1.000      1.000
+             108.000       2.055       0.574       6.000    2.78%       2.000      3.000
+     SAD3                  2.804       0.610       1.000   32.71%       1.000      2.000      2.000
+             107.000       3.036      -0.801       7.000    1.87%       3.000      4.000
+     WORRY4                3.009       0.559       1.000   33.04%       1.000      2.000      3.000
+             112.000       3.670      -0.900       7.000    5.36%       3.000      5.000
+     FEAR4                 1.839       1.617       1.000   56.25%       1.000      1.000      1.000
+             112.000       1.546       1.847       6.000    1.79%       2.000      2.000
+     SAD4                  2.402       0.668       1.000   38.39%       1.000      2.000      2.000
+             112.000       2.062      -0.802       6.000    0.89%       3.000      4.000
+     WORRY5                3.027       0.444       1.000   33.93%       1.000      2.000      3.000
+             112.000       3.580      -1.100       7.000    2.68%       3.000      5.000
+     FEAR5                 1.752       1.829       1.000   62.83%       1.000      1.000      1.000
+             113.000       1.567       2.508       6.000    1.77%       1.000      2.000
+     SAD5                  2.540       0.976       1.000   34.51%       1.000      2.000      2.000
+             113.000       2.585       0.136       7.000    2.65%       3.000      4.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES COULD NOT BE
+     COMPUTED.  THE MODEL MAY NOT BE IDENTIFIED.  CHECK YOUR MODEL.
+     PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 41, [ THETA1 ]
+
+     THE CONDITION NUMBER IS       0.337D-16.
+
+
+
+MODEL RESULTS
+
+                    Estimate
+
+ OCC1     BY
+    WORRY1             1.000
+    FEAR1              0.598
+    SAD1               0.825
+
+ OCC2     BY
+    WORRY2             1.000
+    FEAR2              0.620
+    SAD2               0.856
+
+ OCC3     BY
+    WORRY3             1.000
+    FEAR3              0.608
+    SAD3               0.818
+
+ OCC4     BY
+    WORRY4             1.000
+    FEAR4              0.406
+    SAD4               0.524
+
+ OCC5     BY
+    WORRY5             1.000
+    FEAR5              0.502
+    SAD5               0.901
+
+ THETA1   BY
+    WORRY1             1.000
+    WORRY2             1.000
+    WORRY3             1.000
+    WORRY4             1.000
+    WORRY5             1.000
+
+ THETA2   BY
+    FEAR1              1.000
+    FEAR2              1.000
+    FEAR3              1.000
+    FEAR4              1.000
+    FEAR5              1.000
+
+ THETA3   BY
+    SAD1               1.000
+    SAD2               1.000
+    SAD3               1.000
+    SAD4               1.000
+    SAD5               1.000
+
+ OCC2     ON
+    OCC1               0.676
+
+ OCC3     ON
+    OCC2               0.820
+
+ OCC4     ON
+    OCC3               0.465
+
+ OCC5     ON
+    OCC4               0.444
+
+ OCC1     WITH
+    OCC2               0.000
+    OCC3               0.000
+    OCC4               0.000
+    OCC5               0.000
+    THETA1             0.000
+    THETA2             0.000
+    THETA3             0.000
+
+ OCC2     WITH
+    OCC3               0.000
+    OCC4               0.000
+    OCC5               0.000
+    THETA1             0.000
+    THETA2             0.000
+    THETA3             0.000
+
+ OCC3     WITH
+    OCC4               0.000
+    OCC5               0.000
+    THETA1             0.000
+    THETA2             0.000
+    THETA3             0.000
+
+ OCC4     WITH
+    OCC5               0.000
+    THETA1             0.000
+    THETA2             0.000
+    THETA3             0.000
+
+ OCC5     WITH
+    THETA1             0.000
+    THETA2             0.000
+    THETA3             0.000
+
+ THETA2   WITH
+    THETA1             0.275
+
+ THETA3   WITH
+    THETA1             0.297
+    THETA2             0.392
+
+ Means
+    OCC1               0.000
+    THETA1             0.008
+    THETA2             0.019
+    THETA3             0.018
+
+ Intercepts
+    WORRY1             3.827
+    FEAR1              2.302
+    SAD1               3.050
+    WORRY2             3.742
+    FEAR2              2.209
+    SAD2               3.056
+    WORRY3             3.292
+    FEAR3              2.023
+    SAD3               2.812
+    WORRY4             3.011
+    FEAR4              1.876
+    SAD4               2.426
+    WORRY5             2.994
+    FEAR5              1.738
+    SAD5               2.528
+    OCC2               0.000
+    OCC3               0.000
+    OCC4               0.000
+    OCC5               0.000
+
+ Variances
+    OCC1               2.118
+    THETA1             0.890
+    THETA2             0.615
+    THETA3             0.768
+
+ Residual Variances
+    WORRY1             0.719
+    FEAR1              1.109
+    SAD1               0.793
+    WORRY2             1.398
+    FEAR2              1.244
+    SAD2               1.234
+    WORRY3             0.965
+    FEAR3              0.487
+    SAD3               0.686
+    WORRY4             0.524
+    FEAR4              0.571
+    SAD4               0.738
+    WORRY5             0.961
+    FEAR5              0.649
+    SAD5               0.606
+    OCC2               0.833
+    OCC3               1.104
+    OCC4               1.602
+    OCC5               1.259
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     occ1 BY worry1@1;
+     occ1 BY fear1*0.59783 (las21);
+     occ1 BY sad1*0.82458 (las31);
+     occ2 BY worry2@1;
+     occ2 BY fear2*0.62039 (las22);
+     occ2 BY sad2*0.85551 (las32);
+     occ3 BY worry3@1;
+     occ3 BY fear3*0.60810 (las23);
+     occ3 BY sad3*0.81812 (las33);
+     occ4 BY worry4@1;
+     occ4 BY fear4*0.40644 (las24);
+     occ4 BY sad4*0.52421 (las34);
+     occ5 BY worry5@1;
+     occ5 BY fear5*0.50207 (las25);
+     occ5 BY sad5*0.90074 (las35);
+     theta1 BY worry1@1;
+     theta1 BY worry2@1;
+     theta1 BY worry3@1;
+     theta1 BY worry4@1;
+     theta1 BY worry5@1;
+     theta2 BY fear1@1;
+     theta2 BY fear2@1;
+     theta2 BY fear3@1;
+     theta2 BY fear4@1;
+     theta2 BY fear5@1;
+     theta3 BY sad1@1;
+     theta3 BY sad2@1;
+     theta3 BY sad3@1;
+     theta3 BY sad4@1;
+     theta3 BY sad5@1;
+
+     occ2 ON occ1*0.67641 (beta1);
+     occ3 ON occ2*0.81978 (beta2);
+     occ4 ON occ3*0.46535 (beta3);
+     occ5 ON occ4*0.44361 (beta4);
+
+     occ1 WITH occ2@0;
+     occ1 WITH occ3@0;
+     occ1 WITH occ4@0;
+     occ1 WITH occ5@0;
+     occ1 WITH theta1@0;
+     occ1 WITH theta2@0;
+     occ1 WITH theta3@0;
+     occ2 WITH occ3@0;
+     occ2 WITH occ4@0;
+     occ2 WITH occ5@0;
+     occ2 WITH theta1@0;
+     occ2 WITH theta2@0;
+     occ2 WITH theta3@0;
+     occ3 WITH occ4@0;
+     occ3 WITH occ5@0;
+     occ3 WITH theta1@0;
+     occ3 WITH theta2@0;
+     occ3 WITH theta3@0;
+     occ4 WITH occ5@0;
+     occ4 WITH theta1@0;
+     occ4 WITH theta2@0;
+     occ4 WITH theta3@0;
+     occ5 WITH theta1@0;
+     occ5 WITH theta2@0;
+     occ5 WITH theta3@0;
+     theta2 WITH theta1*0.27493;
+     theta3 WITH theta1*0.29687;
+     theta3 WITH theta2*0.39169;
+
+     [ worry1*3.82660 ] (ins11);
+     [ fear1*2.30221 ] (ins21);
+     [ sad1*3.05004 ] (ins31);
+     [ worry2*3.74157 ] (ins12);
+     [ fear2*2.20900 ] (ins22);
+     [ sad2*3.05613 ] (ins32);
+     [ worry3*3.29243 ] (ins13);
+     [ fear3*2.02295 ] (ins23);
+     [ sad3*2.81209 ] (ins33);
+     [ worry4*3.01096 ] (ins14);
+     [ fear4*1.87636 ] (ins24);
+     [ sad4*2.42622 ] (ins34);
+     [ worry5*2.99399 ] (ins15);
+     [ fear5*1.73760 ] (ins25);
+     [ sad5*2.52765 ] (ins35);
+     [ occ1@0 ];
+     [ occ2@0 ];
+     [ occ3@0 ];
+     [ occ4@0 ];
+     [ occ5@0 ];
+     [ theta1*0.00803 ];
+     [ theta2*0.01950 ];
+     [ theta3*0.01808 ];
+
+     worry1*0.71926 (err11);
+     fear1*1.10918 (err21);
+     sad1*0.79310 (err31);
+     worry2*1.39787 (err12);
+     fear2*1.24417 (err22);
+     sad2*1.23411 (err32);
+     worry3*0.96474 (err13);
+     fear3*0.48713 (err23);
+     sad3*0.68596 (err33);
+     worry4*0.52409 (err14);
+     fear4*0.57097 (err24);
+     sad4*0.73820 (err34);
+     worry5*0.96101 (err15);
+     fear5*0.64883 (err25);
+     sad5*0.60595 (err35);
+     occ1*2.11793 (oc_var1);
+     occ2*0.83276 (oc_var2);
+     occ3*1.10373 (oc_var3);
+     occ4*1.60202 (oc_var4);
+     occ5*1.25875 (oc_var5);
+     theta1*0.88958 (t_var1);
+     theta2*0.61456 (t_var2);
+     theta3*0.76827 (t_var3);
+
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              WORRY1        FEAR1         SAD1          WORRY2        FEAR2
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           NU
+              SAD2          WORRY3        FEAR3         SAD3          WORRY4
+              ________      ________      ________      ________      ________
+                  6             7             8             9            10
+
+
+           NU
+              FEAR4         SAD4          WORRY5        FEAR5         SAD5
+              ________      ________      ________      ________      ________
+                 11            12            13            14            15
+
+
+           LAMBDA
+              OCC1          OCC2          OCC3          OCC4          OCC5
+              ________      ________      ________      ________      ________
+ WORRY1             0             0             0             0             0
+ FEAR1             16             0             0             0             0
+ SAD1              17             0             0             0             0
+ WORRY2             0             0             0             0             0
+ FEAR2              0            18             0             0             0
+ SAD2               0            19             0             0             0
+ WORRY3             0             0             0             0             0
+ FEAR3              0             0            20             0             0
+ SAD3               0             0            21             0             0
+ WORRY4             0             0             0             0             0
+ FEAR4              0             0             0            22             0
+ SAD4               0             0             0            23             0
+ WORRY5             0             0             0             0             0
+ FEAR5              0             0             0             0            24
+ SAD5               0             0             0             0            25
+
+
+           LAMBDA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ WORRY1             0             0             0
+ FEAR1              0             0             0
+ SAD1               0             0             0
+ WORRY2             0             0             0
+ FEAR2              0             0             0
+ SAD2               0             0             0
+ WORRY3             0             0             0
+ FEAR3              0             0             0
+ SAD3               0             0             0
+ WORRY4             0             0             0
+ FEAR4              0             0             0
+ SAD4               0             0             0
+ WORRY5             0             0             0
+ FEAR5              0             0             0
+ SAD5               0             0             0
+
+
+           THETA
+              WORRY1        FEAR1         SAD1          WORRY2        FEAR2
+              ________      ________      ________      ________      ________
+ WORRY1            26
+ FEAR1              0            27
+ SAD1               0             0            28
+ WORRY2             0             0             0            29
+ FEAR2              0             0             0             0            30
+ SAD2               0             0             0             0             0
+ WORRY3             0             0             0             0             0
+ FEAR3              0             0             0             0             0
+ SAD3               0             0             0             0             0
+ WORRY4             0             0             0             0             0
+ FEAR4              0             0             0             0             0
+ SAD4               0             0             0             0             0
+ WORRY5             0             0             0             0             0
+ FEAR5              0             0             0             0             0
+ SAD5               0             0             0             0             0
+
+
+           THETA
+              SAD2          WORRY3        FEAR3         SAD3          WORRY4
+              ________      ________      ________      ________      ________
+ SAD2              31
+ WORRY3             0            32
+ FEAR3              0             0            33
+ SAD3               0             0             0            34
+ WORRY4             0             0             0             0            35
+ FEAR4              0             0             0             0             0
+ SAD4               0             0             0             0             0
+ WORRY5             0             0             0             0             0
+ FEAR5              0             0             0             0             0
+ SAD5               0             0             0             0             0
+
+
+           THETA
+              FEAR4         SAD4          WORRY5        FEAR5         SAD5
+              ________      ________      ________      ________      ________
+ FEAR4             36
+ SAD4               0            37
+ WORRY5             0             0            38
+ FEAR5              0             0             0            39
+ SAD5               0             0             0             0            40
+
+
+           ALPHA
+              OCC1          OCC2          OCC3          OCC4          OCC5
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           ALPHA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+                 41            42            43
+
+
+           BETA
+              OCC1          OCC2          OCC3          OCC4          OCC5
+              ________      ________      ________      ________      ________
+ OCC1               0             0             0             0             0
+ OCC2              44             0             0             0             0
+ OCC3               0            45             0             0             0
+ OCC4               0             0            46             0             0
+ OCC5               0             0             0            47             0
+ THETA1             0             0             0             0             0
+ THETA2             0             0             0             0             0
+ THETA3             0             0             0             0             0
+
+
+           BETA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ OCC1               0             0             0
+ OCC2               0             0             0
+ OCC3               0             0             0
+ OCC4               0             0             0
+ OCC5               0             0             0
+ THETA1             0             0             0
+ THETA2             0             0             0
+ THETA3             0             0             0
+
+
+           PSI
+              OCC1          OCC2          OCC3          OCC4          OCC5
+              ________      ________      ________      ________      ________
+ OCC1              48
+ OCC2               0            49
+ OCC3               0             0            50
+ OCC4               0             0             0            51
+ OCC5               0             0             0             0            52
+ THETA1             0             0             0             0             0
+ THETA2             0             0             0             0             0
+ THETA3             0             0             0             0             0
+
+
+           PSI
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ THETA1            53
+ THETA2            54            55
+ THETA3            56            57            58
+
+
+     STARTING VALUES
+
+
+           NU
+              WORRY1        FEAR1         SAD1          WORRY2        FEAR2
+              ________      ________      ________      ________      ________
+                3.775         2.281         3.023         3.731         2.221
+
+
+           NU
+              SAD2          WORRY3        FEAR3         SAD3          WORRY4
+              ________      ________      ________      ________      ________
+                3.057         3.278         2.019         2.804         3.009
+
+
+           NU
+              FEAR4         SAD4          WORRY5        FEAR5         SAD5
+              ________      ________      ________      ________      ________
+                1.839         2.402         3.027         1.752         2.540
+
+
+           LAMBDA
+              OCC1          OCC2          OCC3          OCC4          OCC5
+              ________      ________      ________      ________      ________
+ WORRY1         1.000         0.000         0.000         0.000         0.000
+ FEAR1          1.000         0.000         0.000         0.000         0.000
+ SAD1           1.000         0.000         0.000         0.000         0.000
+ WORRY2         0.000         1.000         0.000         0.000         0.000
+ FEAR2          0.000         1.000         0.000         0.000         0.000
+ SAD2           0.000         1.000         0.000         0.000         0.000
+ WORRY3         0.000         0.000         1.000         0.000         0.000
+ FEAR3          0.000         0.000         1.000         0.000         0.000
+ SAD3           0.000         0.000         1.000         0.000         0.000
+ WORRY4         0.000         0.000         0.000         1.000         0.000
+ FEAR4          0.000         0.000         0.000         1.000         0.000
+ SAD4           0.000         0.000         0.000         1.000         0.000
+ WORRY5         0.000         0.000         0.000         0.000         1.000
+ FEAR5          0.000         0.000         0.000         0.000         1.000
+ SAD5           0.000         0.000         0.000         0.000         1.000
+
+
+           LAMBDA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ WORRY1         1.000         0.000         0.000
+ FEAR1          0.000         1.000         0.000
+ SAD1           0.000         0.000         1.000
+ WORRY2         1.000         0.000         0.000
+ FEAR2          0.000         1.000         0.000
+ SAD2           0.000         0.000         1.000
+ WORRY3         1.000         0.000         0.000
+ FEAR3          0.000         1.000         0.000
+ SAD3           0.000         0.000         1.000
+ WORRY4         1.000         0.000         0.000
+ FEAR4          0.000         1.000         0.000
+ SAD4           0.000         0.000         1.000
+ WORRY5         1.000         0.000         0.000
+ FEAR5          0.000         1.000         0.000
+ SAD5           0.000         0.000         1.000
+
+
+           THETA
+              WORRY1        FEAR1         SAD1          WORRY2        FEAR2
+              ________      ________      ________      ________      ________
+ WORRY1         1.840
+ FEAR1          0.000         1.135
+ SAD1           0.000         0.000         1.602
+ WORRY2         0.000         0.000         0.000         1.973
+ FEAR2          0.000         0.000         0.000         0.000         1.259
+ SAD2           0.000         0.000         0.000         0.000         0.000
+ WORRY3         0.000         0.000         0.000         0.000         0.000
+ FEAR3          0.000         0.000         0.000         0.000         0.000
+ SAD3           0.000         0.000         0.000         0.000         0.000
+ WORRY4         0.000         0.000         0.000         0.000         0.000
+ FEAR4          0.000         0.000         0.000         0.000         0.000
+ SAD4           0.000         0.000         0.000         0.000         0.000
+ WORRY5         0.000         0.000         0.000         0.000         0.000
+ FEAR5          0.000         0.000         0.000         0.000         0.000
+ SAD5           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              SAD2          WORRY3        FEAR3         SAD3          WORRY4
+              ________      ________      ________      ________      ________
+ SAD2           1.570
+ WORRY3         0.000         1.998
+ FEAR3          0.000         0.000         1.028
+ SAD3           0.000         0.000         0.000         1.518
+ WORRY4         0.000         0.000         0.000         0.000         1.835
+ FEAR4          0.000         0.000         0.000         0.000         0.000
+ SAD4           0.000         0.000         0.000         0.000         0.000
+ WORRY5         0.000         0.000         0.000         0.000         0.000
+ FEAR5          0.000         0.000         0.000         0.000         0.000
+ SAD5           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              FEAR4         SAD4          WORRY5        FEAR5         SAD5
+              ________      ________      ________      ________      ________
+ FEAR4          0.773
+ SAD4           0.000         1.031
+ WORRY5         0.000         0.000         1.790
+ FEAR5          0.000         0.000         0.000         0.783
+ SAD5           0.000         0.000         0.000         0.000         1.292
+
+
+           ALPHA
+              OCC1          OCC2          OCC3          OCC4          OCC5
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           BETA
+              OCC1          OCC2          OCC3          OCC4          OCC5
+              ________      ________      ________      ________      ________
+ OCC1           0.000         0.000         0.000         0.000         0.000
+ OCC2           0.000         0.000         0.000         0.000         0.000
+ OCC3           0.000         0.000         0.000         0.000         0.000
+ OCC4           0.000         0.000         0.000         0.000         0.000
+ OCC5           0.000         0.000         0.000         0.000         0.000
+ THETA1         0.000         0.000         0.000         0.000         0.000
+ THETA2         0.000         0.000         0.000         0.000         0.000
+ THETA3         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ OCC1           0.000         0.000         0.000
+ OCC2           0.000         0.000         0.000
+ OCC3           0.000         0.000         0.000
+ OCC4           0.000         0.000         0.000
+ OCC5           0.000         0.000         0.000
+ THETA1         0.000         0.000         0.000
+ THETA2         0.000         0.000         0.000
+ THETA3         0.000         0.000         0.000
+
+
+           PSI
+              OCC1          OCC2          OCC3          OCC4          OCC5
+              ________      ________      ________      ________      ________
+ OCC1           0.050
+ OCC2           0.000         0.050
+ OCC3           0.000         0.000         0.050
+ OCC4           0.000         0.000         0.000         0.050
+ OCC5           0.000         0.000         0.000         0.000         0.050
+ THETA1         0.000         0.000         0.000         0.000         0.000
+ THETA2         0.000         0.000         0.000         0.000         0.000
+ THETA3         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ THETA1         0.050
+ THETA2         0.000         0.050
+ THETA3         0.000         0.000         0.050
+
+
+     Beginning Time:  11:20:27
+        Ending Time:  11:20:28
+       Elapsed Time:  00:00:01
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

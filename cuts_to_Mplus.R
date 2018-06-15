@@ -187,7 +187,7 @@ intercepts_syntax <- paste0("[", obs, "*]", " (",ins,")", " ;", collapse = "\n")
 
 cs_means_syntax <- ""
 ut_means_syntax <- ""
-ut_means_syntax <- ""
+ct_means_syntax <- ""
 
 if(fixed.means$cs){cs_means_syntax <- paste0("[", CS, "@0] ;", collapse = "\n")}
 

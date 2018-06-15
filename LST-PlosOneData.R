@@ -62,7 +62,7 @@ names(PlosOne_W) <- gsub("\\.", "", names(PlosOne_W))
 
 # data subset to allow for several analyses with diferent number of measurement occasions.
 
-m <- 30 # number of measurement occasions
+m <- 5 # number of measurement occasions
 t.m <- m*3 # total number of variables
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
@@ -70,14 +70,29 @@ PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 time0 <- proc.time()
 msst <- lsttheory(m, 1, data = PlosOne_Wr, 
                   equiv.assumption=list(tau="cong", theta="equi"), 
-                  scale.invariance = list(lait0 = T, lait1 = T, lat0 = T, lat1 = T),
+                  scale.invariance = list(lait0 = F, lait1 = F, lat0 = F, lat1 = F),
                   missing = "ml")
 time.msst.lavaan <- proc.time() - time0
 rm(time0)
 
+
+# When 60 measurements are included, the analysis gies the following warning message:
+# In lav_data_full(data = data, group = group, cluster = cluster,  :
+#                   lavaan WARNING: small number of observations (nobs < nvar)
+#                 nobs = 129 nvar = 180
+# However, the model actually converge and give estimates.
+
+# Optionally the analysis can be saved to don't run it again
+msst2save <- list(msst = msst, time = time.msst.lavaan) # new object is created to also save the time needed to run the analysis
+save(msst2save, file = paste0("lavaan_files/msst",m, ".R"))
+load( file = paste0("lavaan_files/msst",m, ".R"))
+
+
+
 # print lsttheory object returns the variance components: reliability, consistency, and 
 # occasion specifity   
-msst 
+summary(msst@lavaanres, fit.measures = TRUE)
+
 
 # returns the parameter estimates matrix with se, significance test, and lower 
 # and upper ci bounds.
@@ -99,7 +114,7 @@ count_na <- as.vector(apply(PlosOne_Wr, 1, function(x) sum(is.na(x))))
 cbind(1:129, count_na)
 
 
-i <- 12 # select person to plot
+i <- 123 # select person to plot
 # plot worry observed vs latent state variables person i
 plot(lavPredict(msst@lavaanres)[i,1:m], 
      type = "l", ylim = c(0,7.5), col = "blue")# traceplot of the latent state scores of one person
@@ -109,7 +124,7 @@ abline(h = mean(as.numeric(PlosOne_W[i, seq(1,t.m, by = 3)]), na.rm = T), col="g
 abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange") # plot combined mean of all observed variables of person i
 
 # plot fear observed vs latent state variables person i
-plot(lavPredict(msst@lavaanres)[i,1:m] * parameterEstimates(msst@lavaanres)[seq(2, 90, by = 3), 5], 
+plot(lavPredict(msst@lavaanres)[i,1:m] * parameterEstimates(msst@lavaanres)[seq(2, t.m, by = 3), 5], 
      type = "l", ylim = c(0,7.5), col = "blue")# traceplot of the latent state scores (multiplied by loadings) of one person
 points(1:m, PlosOne_W[i, seq(2,t.m, by = 3)], type = "b", col = "red")
 abline(h =lavPredict(msst@lavaanres)[i,(m+1)])
@@ -118,7 +133,7 @@ abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
 
 
 # plot sad observed vs latent state variables person i
-plot(lavPredict(msst@lavaanres)[i,1:m] * parameterEstimates(msst@lavaanres)[seq(3, 90, by = 3), 5], 
+plot(lavPredict(msst@lavaanres)[i,1:m] * parameterEstimates(msst@lavaanres)[seq(3, t.m, by = 3), 5], 
      type = "l", ylim = c(0,7.5), col = "blue")# traceplot of the latent state scores (multiplied by loadings) of one person
 points(1:m, PlosOne_W[i, seq(3,t.m, by = 3)], type = "b", col = "red")
 abline(h =lavPredict(msst@lavaanres)[i,(m+1)])
@@ -138,7 +153,7 @@ matplot(var.comp[seq(3, t.m, by= 3),], type = "l") # sad variance components
 
 #  Prepare data and syntax
 
-m <- 30 # number of measurement occasions
+m <- 5 # number of measurement occasions
 t.m <- m*3 # total number of variables
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
@@ -147,7 +162,8 @@ msst.file.name <- paste0("msst", m)
 prepareMplusData(PlosOne_Wr,paste0("Mplus_files/",msst.file.name,".dat"), inpfile = T)
 
 msst_syntax <- write.msst.to.Mplus(PlosOne_Wr, neta = m, ntheta = 1, 
-                                  equiv.assumption = list(tau = "cong", theta = "equi"))
+                                  equiv.assumption = list(tau = "cong", theta = "equi"),
+                                  scale.invariance = list(lait0 = F, lait1 = F, lat0 = F, lat1 = F))
 
 write(msst_syntax, paste0("Mplus_files/",msst.file.name,".inp"), append = T)
 
@@ -166,7 +182,7 @@ fit.msst$parameters$unstandardized # parameter estimates
 
 #  Prepare data and syntax
 
-m <- 30 # number of measurement occasions
+m <- 5 # number of measurement occasions
 t.m <- m*3 # total number of variables
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
@@ -187,6 +203,8 @@ time0 <- proc.time()
 runModels(paste0(getwd(),"/Mplus_files/",tso.file.name,".inp"))
 time.tso.mplus <- proc.time() - time0
 rm(time0)
+
+
 
 # Read Mplus output into R
 fit.tso <- readModels(paste0(getwd(),"/Mplus_files/",tso.file.name,".out"))
@@ -219,6 +237,7 @@ time0 <- proc.time()
 runModels(paste0(getwd(),"/Mplus_files/",cuts.file.name,".inp"))
 time.cuts.mplus <- proc.time() - time0
 rm(time0)
+
 
 # Read Mplus output into R
 fit.cuts <- readModels(paste0(getwd(),"/Mplus_files/",cuts.file.name,".out"))

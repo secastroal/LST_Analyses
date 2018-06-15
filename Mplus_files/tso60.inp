@@ -1,0 +1,2890 @@
+TITLE: Your title goes here
+DATA: FILE = "Mplus_files/tso60.dat";
+VARIABLE: 
+NAMES = worry1 fear1 sad1 worry2 fear2 sad2 worry3 fear3 sad3 worry4 fear4 sad4
+     worry5 fear5 sad5 worry6 fear6 sad6 worry7 fear7 sad7 worry8 fear8 sad8 worry9
+     fear9 sad9 worry10 fear10 sad10 worry11 fear11 sad11 worry12 fear12 sad12
+     worry13 fear13 sad13 worry14 fear14 sad14 worry15 fear15 sad15 worry16 fear16
+     sad16 worry17 fear17 sad17 worry18 fear18 sad18 worry19 fear19 sad19 worry20
+     fear20 sad20 worry21 fear21 sad21 worry22 fear22 sad22 worry23 fear23 sad23
+     worry24 fear24 sad24 worry25 fear25 sad25 worry26 fear26 sad26 worry27 fear27
+     sad27 worry28 fear28 sad28 worry29 fear29 sad29 worry30 fear30 sad30 worry31
+     fear31 sad31 worry32 fear32 sad32 worry33 fear33 sad33 worry34 fear34 sad34
+     worry35 fear35 sad35 worry36 fear36 sad36 worry37 fear37 sad37 worry38 fear38
+     sad38 worry39 fear39 sad39 worry40 fear40 sad40 worry41 fear41 sad41 worry42
+     fear42 sad42 worry43 fear43 sad43 worry44 fear44 sad44 worry45 fear45 sad45
+     worry46 fear46 sad46 worry47 fear47 sad47 worry48 fear48 sad48 worry49 fear49
+     sad49 worry50 fear50 sad50 worry51 fear51 sad51 worry52 fear52 sad52 worry53
+     fear53 sad53 worry54 fear54 sad54 worry55 fear55 sad55 worry56 fear56 sad56
+     worry57 fear57 sad57 worry58 fear58 sad58 worry59 fear59 sad59 worry60 fear60
+     sad60; 
+MISSING=.;
+
+MODEL:
+
+! Latent occasion variables
+occ1 BY worry1@1
+fear1 (las21)
+sad1 (las31) ;
+occ2 BY worry2@1
+fear2 (las22)
+sad2 (las32) ;
+occ3 BY worry3@1
+fear3 (las23)
+sad3 (las33) ;
+occ4 BY worry4@1
+fear4 (las24)
+sad4 (las34) ;
+occ5 BY worry5@1
+fear5 (las25)
+sad5 (las35) ;
+occ6 BY worry6@1
+fear6 (las26)
+sad6 (las36) ;
+occ7 BY worry7@1
+fear7 (las27)
+sad7 (las37) ;
+occ8 BY worry8@1
+fear8 (las28)
+sad8 (las38) ;
+occ9 BY worry9@1
+fear9 (las29)
+sad9 (las39) ;
+occ10 BY worry10@1
+fear10 (las210)
+sad10 (las310) ;
+occ11 BY worry11@1
+fear11 (las211)
+sad11 (las311) ;
+occ12 BY worry12@1
+fear12 (las212)
+sad12 (las312) ;
+occ13 BY worry13@1
+fear13 (las213)
+sad13 (las313) ;
+occ14 BY worry14@1
+fear14 (las214)
+sad14 (las314) ;
+occ15 BY worry15@1
+fear15 (las215)
+sad15 (las315) ;
+occ16 BY worry16@1
+fear16 (las216)
+sad16 (las316) ;
+occ17 BY worry17@1
+fear17 (las217)
+sad17 (las317) ;
+occ18 BY worry18@1
+fear18 (las218)
+sad18 (las318) ;
+occ19 BY worry19@1
+fear19 (las219)
+sad19 (las319) ;
+occ20 BY worry20@1
+fear20 (las220)
+sad20 (las320) ;
+occ21 BY worry21@1
+fear21 (las221)
+sad21 (las321) ;
+occ22 BY worry22@1
+fear22 (las222)
+sad22 (las322) ;
+occ23 BY worry23@1
+fear23 (las223)
+sad23 (las323) ;
+occ24 BY worry24@1
+fear24 (las224)
+sad24 (las324) ;
+occ25 BY worry25@1
+fear25 (las225)
+sad25 (las325) ;
+occ26 BY worry26@1
+fear26 (las226)
+sad26 (las326) ;
+occ27 BY worry27@1
+fear27 (las227)
+sad27 (las327) ;
+occ28 BY worry28@1
+fear28 (las228)
+sad28 (las328) ;
+occ29 BY worry29@1
+fear29 (las229)
+sad29 (las329) ;
+occ30 BY worry30@1
+fear30 (las230)
+sad30 (las330) ;
+occ31 BY worry31@1
+fear31 (las231)
+sad31 (las331) ;
+occ32 BY worry32@1
+fear32 (las232)
+sad32 (las332) ;
+occ33 BY worry33@1
+fear33 (las233)
+sad33 (las333) ;
+occ34 BY worry34@1
+fear34 (las234)
+sad34 (las334) ;
+occ35 BY worry35@1
+fear35 (las235)
+sad35 (las335) ;
+occ36 BY worry36@1
+fear36 (las236)
+sad36 (las336) ;
+occ37 BY worry37@1
+fear37 (las237)
+sad37 (las337) ;
+occ38 BY worry38@1
+fear38 (las238)
+sad38 (las338) ;
+occ39 BY worry39@1
+fear39 (las239)
+sad39 (las339) ;
+occ40 BY worry40@1
+fear40 (las240)
+sad40 (las340) ;
+occ41 BY worry41@1
+fear41 (las241)
+sad41 (las341) ;
+occ42 BY worry42@1
+fear42 (las242)
+sad42 (las342) ;
+occ43 BY worry43@1
+fear43 (las243)
+sad43 (las343) ;
+occ44 BY worry44@1
+fear44 (las244)
+sad44 (las344) ;
+occ45 BY worry45@1
+fear45 (las245)
+sad45 (las345) ;
+occ46 BY worry46@1
+fear46 (las246)
+sad46 (las346) ;
+occ47 BY worry47@1
+fear47 (las247)
+sad47 (las347) ;
+occ48 BY worry48@1
+fear48 (las248)
+sad48 (las348) ;
+occ49 BY worry49@1
+fear49 (las249)
+sad49 (las349) ;
+occ50 BY worry50@1
+fear50 (las250)
+sad50 (las350) ;
+occ51 BY worry51@1
+fear51 (las251)
+sad51 (las351) ;
+occ52 BY worry52@1
+fear52 (las252)
+sad52 (las352) ;
+occ53 BY worry53@1
+fear53 (las253)
+sad53 (las353) ;
+occ54 BY worry54@1
+fear54 (las254)
+sad54 (las354) ;
+occ55 BY worry55@1
+fear55 (las255)
+sad55 (las355) ;
+occ56 BY worry56@1
+fear56 (las256)
+sad56 (las356) ;
+occ57 BY worry57@1
+fear57 (las257)
+sad57 (las357) ;
+occ58 BY worry58@1
+fear58 (las258)
+sad58 (las358) ;
+occ59 BY worry59@1
+fear59 (las259)
+sad59 (las359) ;
+occ60 BY worry60@1
+fear60 (las260)
+sad60 (las360) ;
+
+! Latent trait variable or trait indicators
+theta1 BY worry1@1
+worry2@1
+worry3@1
+worry4@1
+worry5@1
+worry6@1
+worry7@1
+worry8@1
+worry9@1
+worry10@1
+worry11@1
+worry12@1
+worry13@1
+worry14@1
+worry15@1
+worry16@1
+worry17@1
+worry18@1
+worry19@1
+worry20@1
+worry21@1
+worry22@1
+worry23@1
+worry24@1
+worry25@1
+worry26@1
+worry27@1
+worry28@1
+worry29@1
+worry30@1
+worry31@1
+worry32@1
+worry33@1
+worry34@1
+worry35@1
+worry36@1
+worry37@1
+worry38@1
+worry39@1
+worry40@1
+worry41@1
+worry42@1
+worry43@1
+worry44@1
+worry45@1
+worry46@1
+worry47@1
+worry48@1
+worry49@1
+worry50@1
+worry51@1
+worry52@1
+worry53@1
+worry54@1
+worry55@1
+worry56@1
+worry57@1
+worry58@1
+worry59@1
+worry60@1 ;
+theta2 BY fear1@1
+fear2@1
+fear3@1
+fear4@1
+fear5@1
+fear6@1
+fear7@1
+fear8@1
+fear9@1
+fear10@1
+fear11@1
+fear12@1
+fear13@1
+fear14@1
+fear15@1
+fear16@1
+fear17@1
+fear18@1
+fear19@1
+fear20@1
+fear21@1
+fear22@1
+fear23@1
+fear24@1
+fear25@1
+fear26@1
+fear27@1
+fear28@1
+fear29@1
+fear30@1
+fear31@1
+fear32@1
+fear33@1
+fear34@1
+fear35@1
+fear36@1
+fear37@1
+fear38@1
+fear39@1
+fear40@1
+fear41@1
+fear42@1
+fear43@1
+fear44@1
+fear45@1
+fear46@1
+fear47@1
+fear48@1
+fear49@1
+fear50@1
+fear51@1
+fear52@1
+fear53@1
+fear54@1
+fear55@1
+fear56@1
+fear57@1
+fear58@1
+fear59@1
+fear60@1 ;
+theta3 BY sad1@1
+sad2@1
+sad3@1
+sad4@1
+sad5@1
+sad6@1
+sad7@1
+sad8@1
+sad9@1
+sad10@1
+sad11@1
+sad12@1
+sad13@1
+sad14@1
+sad15@1
+sad16@1
+sad17@1
+sad18@1
+sad19@1
+sad20@1
+sad21@1
+sad22@1
+sad23@1
+sad24@1
+sad25@1
+sad26@1
+sad27@1
+sad28@1
+sad29@1
+sad30@1
+sad31@1
+sad32@1
+sad33@1
+sad34@1
+sad35@1
+sad36@1
+sad37@1
+sad38@1
+sad39@1
+sad40@1
+sad41@1
+sad42@1
+sad43@1
+sad44@1
+sad45@1
+sad46@1
+sad47@1
+sad48@1
+sad49@1
+sad50@1
+sad51@1
+sad52@1
+sad53@1
+sad54@1
+sad55@1
+sad56@1
+sad57@1
+sad58@1
+sad59@1
+sad60@1 ;
+
+! Intercepts and means
+[worry1*] (ins11) ;
+[fear1*] (ins21) ;
+[sad1*] (ins31) ;
+[worry2*] (ins12) ;
+[fear2*] (ins22) ;
+[sad2*] (ins32) ;
+[worry3*] (ins13) ;
+[fear3*] (ins23) ;
+[sad3*] (ins33) ;
+[worry4*] (ins14) ;
+[fear4*] (ins24) ;
+[sad4*] (ins34) ;
+[worry5*] (ins15) ;
+[fear5*] (ins25) ;
+[sad5*] (ins35) ;
+[worry6*] (ins16) ;
+[fear6*] (ins26) ;
+[sad6*] (ins36) ;
+[worry7*] (ins17) ;
+[fear7*] (ins27) ;
+[sad7*] (ins37) ;
+[worry8*] (ins18) ;
+[fear8*] (ins28) ;
+[sad8*] (ins38) ;
+[worry9*] (ins19) ;
+[fear9*] (ins29) ;
+[sad9*] (ins39) ;
+[worry10*] (ins110) ;
+[fear10*] (ins210) ;
+[sad10*] (ins310) ;
+[worry11*] (ins111) ;
+[fear11*] (ins211) ;
+[sad11*] (ins311) ;
+[worry12*] (ins112) ;
+[fear12*] (ins212) ;
+[sad12*] (ins312) ;
+[worry13*] (ins113) ;
+[fear13*] (ins213) ;
+[sad13*] (ins313) ;
+[worry14*] (ins114) ;
+[fear14*] (ins214) ;
+[sad14*] (ins314) ;
+[worry15*] (ins115) ;
+[fear15*] (ins215) ;
+[sad15*] (ins315) ;
+[worry16*] (ins116) ;
+[fear16*] (ins216) ;
+[sad16*] (ins316) ;
+[worry17*] (ins117) ;
+[fear17*] (ins217) ;
+[sad17*] (ins317) ;
+[worry18*] (ins118) ;
+[fear18*] (ins218) ;
+[sad18*] (ins318) ;
+[worry19*] (ins119) ;
+[fear19*] (ins219) ;
+[sad19*] (ins319) ;
+[worry20*] (ins120) ;
+[fear20*] (ins220) ;
+[sad20*] (ins320) ;
+[worry21*] (ins121) ;
+[fear21*] (ins221) ;
+[sad21*] (ins321) ;
+[worry22*] (ins122) ;
+[fear22*] (ins222) ;
+[sad22*] (ins322) ;
+[worry23*] (ins123) ;
+[fear23*] (ins223) ;
+[sad23*] (ins323) ;
+[worry24*] (ins124) ;
+[fear24*] (ins224) ;
+[sad24*] (ins324) ;
+[worry25*] (ins125) ;
+[fear25*] (ins225) ;
+[sad25*] (ins325) ;
+[worry26*] (ins126) ;
+[fear26*] (ins226) ;
+[sad26*] (ins326) ;
+[worry27*] (ins127) ;
+[fear27*] (ins227) ;
+[sad27*] (ins327) ;
+[worry28*] (ins128) ;
+[fear28*] (ins228) ;
+[sad28*] (ins328) ;
+[worry29*] (ins129) ;
+[fear29*] (ins229) ;
+[sad29*] (ins329) ;
+[worry30*] (ins130) ;
+[fear30*] (ins230) ;
+[sad30*] (ins330) ;
+[worry31*] (ins131) ;
+[fear31*] (ins231) ;
+[sad31*] (ins331) ;
+[worry32*] (ins132) ;
+[fear32*] (ins232) ;
+[sad32*] (ins332) ;
+[worry33*] (ins133) ;
+[fear33*] (ins233) ;
+[sad33*] (ins333) ;
+[worry34*] (ins134) ;
+[fear34*] (ins234) ;
+[sad34*] (ins334) ;
+[worry35*] (ins135) ;
+[fear35*] (ins235) ;
+[sad35*] (ins335) ;
+[worry36*] (ins136) ;
+[fear36*] (ins236) ;
+[sad36*] (ins336) ;
+[worry37*] (ins137) ;
+[fear37*] (ins237) ;
+[sad37*] (ins337) ;
+[worry38*] (ins138) ;
+[fear38*] (ins238) ;
+[sad38*] (ins338) ;
+[worry39*] (ins139) ;
+[fear39*] (ins239) ;
+[sad39*] (ins339) ;
+[worry40*] (ins140) ;
+[fear40*] (ins240) ;
+[sad40*] (ins340) ;
+[worry41*] (ins141) ;
+[fear41*] (ins241) ;
+[sad41*] (ins341) ;
+[worry42*] (ins142) ;
+[fear42*] (ins242) ;
+[sad42*] (ins342) ;
+[worry43*] (ins143) ;
+[fear43*] (ins243) ;
+[sad43*] (ins343) ;
+[worry44*] (ins144) ;
+[fear44*] (ins244) ;
+[sad44*] (ins344) ;
+[worry45*] (ins145) ;
+[fear45*] (ins245) ;
+[sad45*] (ins345) ;
+[worry46*] (ins146) ;
+[fear46*] (ins246) ;
+[sad46*] (ins346) ;
+[worry47*] (ins147) ;
+[fear47*] (ins247) ;
+[sad47*] (ins347) ;
+[worry48*] (ins148) ;
+[fear48*] (ins248) ;
+[sad48*] (ins348) ;
+[worry49*] (ins149) ;
+[fear49*] (ins249) ;
+[sad49*] (ins349) ;
+[worry50*] (ins150) ;
+[fear50*] (ins250) ;
+[sad50*] (ins350) ;
+[worry51*] (ins151) ;
+[fear51*] (ins251) ;
+[sad51*] (ins351) ;
+[worry52*] (ins152) ;
+[fear52*] (ins252) ;
+[sad52*] (ins352) ;
+[worry53*] (ins153) ;
+[fear53*] (ins253) ;
+[sad53*] (ins353) ;
+[worry54*] (ins154) ;
+[fear54*] (ins254) ;
+[sad54*] (ins354) ;
+[worry55*] (ins155) ;
+[fear55*] (ins255) ;
+[sad55*] (ins355) ;
+[worry56*] (ins156) ;
+[fear56*] (ins256) ;
+[sad56*] (ins356) ;
+[worry57*] (ins157) ;
+[fear57*] (ins257) ;
+[sad57*] (ins357) ;
+[worry58*] (ins158) ;
+[fear58*] (ins258) ;
+[sad58*] (ins358) ;
+[worry59*] (ins159) ;
+[fear59*] (ins259) ;
+[sad59*] (ins359) ;
+[worry60*] (ins160) ;
+[fear60*] (ins260) ;
+[sad60*] (ins360) ;
+[occ1@0] ;
+[occ2@0] ;
+[occ3@0] ;
+[occ4@0] ;
+[occ5@0] ;
+[occ6@0] ;
+[occ7@0] ;
+[occ8@0] ;
+[occ9@0] ;
+[occ10@0] ;
+[occ11@0] ;
+[occ12@0] ;
+[occ13@0] ;
+[occ14@0] ;
+[occ15@0] ;
+[occ16@0] ;
+[occ17@0] ;
+[occ18@0] ;
+[occ19@0] ;
+[occ20@0] ;
+[occ21@0] ;
+[occ22@0] ;
+[occ23@0] ;
+[occ24@0] ;
+[occ25@0] ;
+[occ26@0] ;
+[occ27@0] ;
+[occ28@0] ;
+[occ29@0] ;
+[occ30@0] ;
+[occ31@0] ;
+[occ32@0] ;
+[occ33@0] ;
+[occ34@0] ;
+[occ35@0] ;
+[occ36@0] ;
+[occ37@0] ;
+[occ38@0] ;
+[occ39@0] ;
+[occ40@0] ;
+[occ41@0] ;
+[occ42@0] ;
+[occ43@0] ;
+[occ44@0] ;
+[occ45@0] ;
+[occ46@0] ;
+[occ47@0] ;
+[occ48@0] ;
+[occ49@0] ;
+[occ50@0] ;
+[occ51@0] ;
+[occ52@0] ;
+[occ53@0] ;
+[occ54@0] ;
+[occ55@0] ;
+[occ56@0] ;
+[occ57@0] ;
+[occ58@0] ;
+[occ59@0] ;
+[occ60@0] ;
+[theta1] ;
+[theta2] ;
+[theta3] ;
+
+! Set 0 correlations
+occ1 WITH occ2@0
+occ3@0
+occ4@0
+occ5@0
+occ6@0
+occ7@0
+occ8@0
+occ9@0
+occ10@0
+occ11@0
+occ12@0
+occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ2 WITH occ3@0
+occ4@0
+occ5@0
+occ6@0
+occ7@0
+occ8@0
+occ9@0
+occ10@0
+occ11@0
+occ12@0
+occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ3 WITH occ4@0
+occ5@0
+occ6@0
+occ7@0
+occ8@0
+occ9@0
+occ10@0
+occ11@0
+occ12@0
+occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ4 WITH occ5@0
+occ6@0
+occ7@0
+occ8@0
+occ9@0
+occ10@0
+occ11@0
+occ12@0
+occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ5 WITH occ6@0
+occ7@0
+occ8@0
+occ9@0
+occ10@0
+occ11@0
+occ12@0
+occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ6 WITH occ7@0
+occ8@0
+occ9@0
+occ10@0
+occ11@0
+occ12@0
+occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ7 WITH occ8@0
+occ9@0
+occ10@0
+occ11@0
+occ12@0
+occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ8 WITH occ9@0
+occ10@0
+occ11@0
+occ12@0
+occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ9 WITH occ10@0
+occ11@0
+occ12@0
+occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ10 WITH occ11@0
+occ12@0
+occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ11 WITH occ12@0
+occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ12 WITH occ13@0
+occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ13 WITH occ14@0
+occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ14 WITH occ15@0
+occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ15 WITH occ16@0
+occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ16 WITH occ17@0
+occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ17 WITH occ18@0
+occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ18 WITH occ19@0
+occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ19 WITH occ20@0
+occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ20 WITH occ21@0
+occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ21 WITH occ22@0
+occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ22 WITH occ23@0
+occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ23 WITH occ24@0
+occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ24 WITH occ25@0
+occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ25 WITH occ26@0
+occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ26 WITH occ27@0
+occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ27 WITH occ28@0
+occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ28 WITH occ29@0
+occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ29 WITH occ30@0
+occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ30 WITH occ31@0
+occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ31 WITH occ32@0
+occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ32 WITH occ33@0
+occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ33 WITH occ34@0
+occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ34 WITH occ35@0
+occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ35 WITH occ36@0
+occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ36 WITH occ37@0
+occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ37 WITH occ38@0
+occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ38 WITH occ39@0
+occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ39 WITH occ40@0
+occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ40 WITH occ41@0
+occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ41 WITH occ42@0
+occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ42 WITH occ43@0
+occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ43 WITH occ44@0
+occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ44 WITH occ45@0
+occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ45 WITH occ46@0
+occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ46 WITH occ47@0
+occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ47 WITH occ48@0
+occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ48 WITH occ49@0
+occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ49 WITH occ50@0
+occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ50 WITH occ51@0
+occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ51 WITH occ52@0
+occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ52 WITH occ53@0
+occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ53 WITH occ54@0
+occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ54 WITH occ55@0
+occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ55 WITH occ56@0
+occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ56 WITH occ57@0
+occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ57 WITH occ58@0
+occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ58 WITH occ59@0
+occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ59 WITH occ60@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ60 WITH theta1@0
+theta2@0
+theta3@0 ;
+
+! autoregressive effects
+occ2 ON occ1 (beta1) ;
+occ3 ON occ2 (beta2) ;
+occ4 ON occ3 (beta3) ;
+occ5 ON occ4 (beta4) ;
+occ6 ON occ5 (beta5) ;
+occ7 ON occ6 (beta6) ;
+occ8 ON occ7 (beta7) ;
+occ9 ON occ8 (beta8) ;
+occ10 ON occ9 (beta9) ;
+occ11 ON occ10 (beta10) ;
+occ12 ON occ11 (beta11) ;
+occ13 ON occ12 (beta12) ;
+occ14 ON occ13 (beta13) ;
+occ15 ON occ14 (beta14) ;
+occ16 ON occ15 (beta15) ;
+occ17 ON occ16 (beta16) ;
+occ18 ON occ17 (beta17) ;
+occ19 ON occ18 (beta18) ;
+occ20 ON occ19 (beta19) ;
+occ21 ON occ20 (beta20) ;
+occ22 ON occ21 (beta21) ;
+occ23 ON occ22 (beta22) ;
+occ24 ON occ23 (beta23) ;
+occ25 ON occ24 (beta24) ;
+occ26 ON occ25 (beta25) ;
+occ27 ON occ26 (beta26) ;
+occ28 ON occ27 (beta27) ;
+occ29 ON occ28 (beta28) ;
+occ30 ON occ29 (beta29) ;
+occ31 ON occ30 (beta30) ;
+occ32 ON occ31 (beta31) ;
+occ33 ON occ32 (beta32) ;
+occ34 ON occ33 (beta33) ;
+occ35 ON occ34 (beta34) ;
+occ36 ON occ35 (beta35) ;
+occ37 ON occ36 (beta36) ;
+occ38 ON occ37 (beta37) ;
+occ39 ON occ38 (beta38) ;
+occ40 ON occ39 (beta39) ;
+occ41 ON occ40 (beta40) ;
+occ42 ON occ41 (beta41) ;
+occ43 ON occ42 (beta42) ;
+occ44 ON occ43 (beta43) ;
+occ45 ON occ44 (beta44) ;
+occ46 ON occ45 (beta45) ;
+occ47 ON occ46 (beta46) ;
+occ48 ON occ47 (beta47) ;
+occ49 ON occ48 (beta48) ;
+occ50 ON occ49 (beta49) ;
+occ51 ON occ50 (beta50) ;
+occ52 ON occ51 (beta51) ;
+occ53 ON occ52 (beta52) ;
+occ54 ON occ53 (beta53) ;
+occ55 ON occ54 (beta54) ;
+occ56 ON occ55 (beta55) ;
+occ57 ON occ56 (beta56) ;
+occ58 ON occ57 (beta57) ;
+occ59 ON occ58 (beta58) ;
+occ60 ON occ59 (beta59) ;
+
+! Variance components
+worry1 (err11) ;
+fear1 (err21) ;
+sad1 (err31) ;
+worry2 (err12) ;
+fear2 (err22) ;
+sad2 (err32) ;
+worry3 (err13) ;
+fear3 (err23) ;
+sad3 (err33) ;
+worry4 (err14) ;
+fear4 (err24) ;
+sad4 (err34) ;
+worry5 (err15) ;
+fear5 (err25) ;
+sad5 (err35) ;
+worry6 (err16) ;
+fear6 (err26) ;
+sad6 (err36) ;
+worry7 (err17) ;
+fear7 (err27) ;
+sad7 (err37) ;
+worry8 (err18) ;
+fear8 (err28) ;
+sad8 (err38) ;
+worry9 (err19) ;
+fear9 (err29) ;
+sad9 (err39) ;
+worry10 (err110) ;
+fear10 (err210) ;
+sad10 (err310) ;
+worry11 (err111) ;
+fear11 (err211) ;
+sad11 (err311) ;
+worry12 (err112) ;
+fear12 (err212) ;
+sad12 (err312) ;
+worry13 (err113) ;
+fear13 (err213) ;
+sad13 (err313) ;
+worry14 (err114) ;
+fear14 (err214) ;
+sad14 (err314) ;
+worry15 (err115) ;
+fear15 (err215) ;
+sad15 (err315) ;
+worry16 (err116) ;
+fear16 (err216) ;
+sad16 (err316) ;
+worry17 (err117) ;
+fear17 (err217) ;
+sad17 (err317) ;
+worry18 (err118) ;
+fear18 (err218) ;
+sad18 (err318) ;
+worry19 (err119) ;
+fear19 (err219) ;
+sad19 (err319) ;
+worry20 (err120) ;
+fear20 (err220) ;
+sad20 (err320) ;
+worry21 (err121) ;
+fear21 (err221) ;
+sad21 (err321) ;
+worry22 (err122) ;
+fear22 (err222) ;
+sad22 (err322) ;
+worry23 (err123) ;
+fear23 (err223) ;
+sad23 (err323) ;
+worry24 (err124) ;
+fear24 (err224) ;
+sad24 (err324) ;
+worry25 (err125) ;
+fear25 (err225) ;
+sad25 (err325) ;
+worry26 (err126) ;
+fear26 (err226) ;
+sad26 (err326) ;
+worry27 (err127) ;
+fear27 (err227) ;
+sad27 (err327) ;
+worry28 (err128) ;
+fear28 (err228) ;
+sad28 (err328) ;
+worry29 (err129) ;
+fear29 (err229) ;
+sad29 (err329) ;
+worry30 (err130) ;
+fear30 (err230) ;
+sad30 (err330) ;
+worry31 (err131) ;
+fear31 (err231) ;
+sad31 (err331) ;
+worry32 (err132) ;
+fear32 (err232) ;
+sad32 (err332) ;
+worry33 (err133) ;
+fear33 (err233) ;
+sad33 (err333) ;
+worry34 (err134) ;
+fear34 (err234) ;
+sad34 (err334) ;
+worry35 (err135) ;
+fear35 (err235) ;
+sad35 (err335) ;
+worry36 (err136) ;
+fear36 (err236) ;
+sad36 (err336) ;
+worry37 (err137) ;
+fear37 (err237) ;
+sad37 (err337) ;
+worry38 (err138) ;
+fear38 (err238) ;
+sad38 (err338) ;
+worry39 (err139) ;
+fear39 (err239) ;
+sad39 (err339) ;
+worry40 (err140) ;
+fear40 (err240) ;
+sad40 (err340) ;
+worry41 (err141) ;
+fear41 (err241) ;
+sad41 (err341) ;
+worry42 (err142) ;
+fear42 (err242) ;
+sad42 (err342) ;
+worry43 (err143) ;
+fear43 (err243) ;
+sad43 (err343) ;
+worry44 (err144) ;
+fear44 (err244) ;
+sad44 (err344) ;
+worry45 (err145) ;
+fear45 (err245) ;
+sad45 (err345) ;
+worry46 (err146) ;
+fear46 (err246) ;
+sad46 (err346) ;
+worry47 (err147) ;
+fear47 (err247) ;
+sad47 (err347) ;
+worry48 (err148) ;
+fear48 (err248) ;
+sad48 (err348) ;
+worry49 (err149) ;
+fear49 (err249) ;
+sad49 (err349) ;
+worry50 (err150) ;
+fear50 (err250) ;
+sad50 (err350) ;
+worry51 (err151) ;
+fear51 (err251) ;
+sad51 (err351) ;
+worry52 (err152) ;
+fear52 (err252) ;
+sad52 (err352) ;
+worry53 (err153) ;
+fear53 (err253) ;
+sad53 (err353) ;
+worry54 (err154) ;
+fear54 (err254) ;
+sad54 (err354) ;
+worry55 (err155) ;
+fear55 (err255) ;
+sad55 (err355) ;
+worry56 (err156) ;
+fear56 (err256) ;
+sad56 (err356) ;
+worry57 (err157) ;
+fear57 (err257) ;
+sad57 (err357) ;
+worry58 (err158) ;
+fear58 (err258) ;
+sad58 (err358) ;
+worry59 (err159) ;
+fear59 (err259) ;
+sad59 (err359) ;
+worry60 (err160) ;
+fear60 (err260) ;
+sad60 (err360) ;
+occ1 (oc_var1) ;
+occ2 (oc_var2) ;
+occ3 (oc_var3) ;
+occ4 (oc_var4) ;
+occ5 (oc_var5) ;
+occ6 (oc_var6) ;
+occ7 (oc_var7) ;
+occ8 (oc_var8) ;
+occ9 (oc_var9) ;
+occ10 (oc_var10) ;
+occ11 (oc_var11) ;
+occ12 (oc_var12) ;
+occ13 (oc_var13) ;
+occ14 (oc_var14) ;
+occ15 (oc_var15) ;
+occ16 (oc_var16) ;
+occ17 (oc_var17) ;
+occ18 (oc_var18) ;
+occ19 (oc_var19) ;
+occ20 (oc_var20) ;
+occ21 (oc_var21) ;
+occ22 (oc_var22) ;
+occ23 (oc_var23) ;
+occ24 (oc_var24) ;
+occ25 (oc_var25) ;
+occ26 (oc_var26) ;
+occ27 (oc_var27) ;
+occ28 (oc_var28) ;
+occ29 (oc_var29) ;
+occ30 (oc_var30) ;
+occ31 (oc_var31) ;
+occ32 (oc_var32) ;
+occ33 (oc_var33) ;
+occ34 (oc_var34) ;
+occ35 (oc_var35) ;
+occ36 (oc_var36) ;
+occ37 (oc_var37) ;
+occ38 (oc_var38) ;
+occ39 (oc_var39) ;
+occ40 (oc_var40) ;
+occ41 (oc_var41) ;
+occ42 (oc_var42) ;
+occ43 (oc_var43) ;
+occ44 (oc_var44) ;
+occ45 (oc_var45) ;
+occ46 (oc_var46) ;
+occ47 (oc_var47) ;
+occ48 (oc_var48) ;
+occ49 (oc_var49) ;
+occ50 (oc_var50) ;
+occ51 (oc_var51) ;
+occ52 (oc_var52) ;
+occ53 (oc_var53) ;
+occ54 (oc_var54) ;
+occ55 (oc_var55) ;
+occ56 (oc_var56) ;
+occ57 (oc_var57) ;
+occ58 (oc_var58) ;
+occ59 (oc_var59) ;
+occ60 (oc_var60) ;
+theta1 (t_var1) ;
+theta2 (t_var2) ;
+theta3 (t_var3) ;
