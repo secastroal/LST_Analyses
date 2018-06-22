@@ -1,18 +1,13 @@
 TITLE: Your title goes here
-DATA: FILE = "Mplus_files/cuts30.dat";
+DATA: FILE = "Mplus_files/cuts20.dat";
 VARIABLE: 
 NAMES = worry1 fear1 sad1 worry2 fear2 sad2 worry3 fear3 sad3 worry4 fear4 sad4
      worry5 fear5 sad5 worry6 fear6 sad6 worry7 fear7 sad7 worry8 fear8 sad8 worry9
      fear9 sad9 worry10 fear10 sad10 worry11 fear11 sad11 worry12 fear12 sad12
      worry13 fear13 sad13 worry14 fear14 sad14 worry15 fear15 sad15 worry16 fear16
      sad16 worry17 fear17 sad17 worry18 fear18 sad18 worry19 fear19 sad19 worry20
-     fear20 sad20 worry21 fear21 sad21 worry22 fear22 sad22 worry23 fear23 sad23
-     worry24 fear24 sad24 worry25 fear25 sad25 worry26 fear26 sad26 worry27 fear27
-     sad27 worry28 fear28 sad28 worry29 fear29 sad29 worry30 fear30 sad30; 
+     fear20 sad20; 
 MISSING=.;
-
-ANALYSIS:
-H1iterations=30000;
 
 MODEL:
 
@@ -77,36 +72,6 @@ sad19 (lcs319) ;
 CS20 BY worry20@1
 fear20 (lcs220)
 sad20 (lcs320) ;
-CS21 BY worry21@1
-fear21 (lcs221)
-sad21 (lcs321) ;
-CS22 BY worry22@1
-fear22 (lcs222)
-sad22 (lcs322) ;
-CS23 BY worry23@1
-fear23 (lcs223)
-sad23 (lcs323) ;
-CS24 BY worry24@1
-fear24 (lcs224)
-sad24 (lcs324) ;
-CS25 BY worry25@1
-fear25 (lcs225)
-sad25 (lcs325) ;
-CS26 BY worry26@1
-fear26 (lcs226)
-sad26 (lcs326) ;
-CS27 BY worry27@1
-fear27 (lcs227)
-sad27 (lcs327) ;
-CS28 BY worry28@1
-fear28 (lcs228)
-sad28 (lcs328) ;
-CS29 BY worry29@1
-fear29 (lcs229)
-sad29 (lcs329) ;
-CS30 BY worry30@1
-fear30 (lcs230)
-sad30 (lcs330) ;
 
 ! common trait
 CT BY worry1@1
@@ -168,37 +133,7 @@ fear19 (lct219)
 sad19 (lct319)
 worry20@1
 fear20 (lct220)
-sad20 (lct320)
-worry21@1
-fear21 (lct221)
-sad21 (lct321)
-worry22@1
-fear22 (lct222)
-sad22 (lct322)
-worry23@1
-fear23 (lct223)
-sad23 (lct323)
-worry24@1
-fear24 (lct224)
-sad24 (lct324)
-worry25@1
-fear25 (lct225)
-sad25 (lct325)
-worry26@1
-fear26 (lct226)
-sad26 (lct326)
-worry27@1
-fear27 (lct227)
-sad27 (lct327)
-worry28@1
-fear28 (lct228)
-sad28 (lct328)
-worry29@1
-fear29 (lct229)
-sad29 (lct329)
-worry30@1
-fear30 (lct230)
-sad30 (lct330) ;
+sad20 (lct320) ;
 
 ! unique trait
 UT1 BY worry1@1
@@ -220,17 +155,7 @@ worry16@1
 worry17@1
 worry18@1
 worry19@1
-worry20@1
-worry21@1
-worry22@1
-worry23@1
-worry24@1
-worry25@1
-worry26@1
-worry27@1
-worry28@1
-worry29@1
-worry30@1 ;
+worry20@1 ;
 UT2 BY fear1@1
 fear2@1
 fear3@1
@@ -250,17 +175,7 @@ fear16@1
 fear17@1
 fear18@1
 fear19@1
-fear20@1
-fear21@1
-fear22@1
-fear23@1
-fear24@1
-fear25@1
-fear26@1
-fear27@1
-fear28@1
-fear29@1
-fear30@1 ;
+fear20@1 ;
 UT3 BY sad1@1
 sad2@1
 sad3@1
@@ -280,17 +195,7 @@ sad16@1
 sad17@1
 sad18@1
 sad19@1
-sad20@1
-sad21@1
-sad22@1
-sad23@1
-sad24@1
-sad25@1
-sad26@1
-sad27@1
-sad28@1
-sad29@1
-sad30@1 ;
+sad20@1 ;
 
 ! Intercepts and means
 [worry1*] (ins11) ;
@@ -353,36 +258,6 @@ sad30@1 ;
 [worry20*] (ins120) ;
 [fear20*] (ins220) ;
 [sad20*] (ins320) ;
-[worry21*] (ins121) ;
-[fear21*] (ins221) ;
-[sad21*] (ins321) ;
-[worry22*] (ins122) ;
-[fear22*] (ins222) ;
-[sad22*] (ins322) ;
-[worry23*] (ins123) ;
-[fear23*] (ins223) ;
-[sad23*] (ins323) ;
-[worry24*] (ins124) ;
-[fear24*] (ins224) ;
-[sad24*] (ins324) ;
-[worry25*] (ins125) ;
-[fear25*] (ins225) ;
-[sad25*] (ins325) ;
-[worry26*] (ins126) ;
-[fear26*] (ins226) ;
-[sad26*] (ins326) ;
-[worry27*] (ins127) ;
-[fear27*] (ins227) ;
-[sad27*] (ins327) ;
-[worry28*] (ins128) ;
-[fear28*] (ins228) ;
-[sad28*] (ins328) ;
-[worry29*] (ins129) ;
-[fear29*] (ins229) ;
-[sad29*] (ins329) ;
-[worry30*] (ins130) ;
-[fear30*] (ins230) ;
-[sad30*] (ins330) ;
 
 
 
@@ -407,16 +282,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -439,16 +304,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -470,16 +325,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -500,16 +345,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -529,16 +364,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -557,16 +382,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -584,16 +399,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -610,16 +415,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -635,16 +430,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -659,16 +444,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -682,16 +457,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -704,16 +469,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -725,16 +480,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -745,16 +490,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -764,16 +499,6 @@ CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -782,16 +507,6 @@ CS16 WITH CS17@0
 CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
@@ -799,147 +514,22 @@ CT@0 ;
 CS17 WITH CS18@0
 CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
 CT@0 ;
 CS18 WITH CS19@0
 CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
 CT@0 ;
 CS19 WITH CS20@0
-CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
 UT1@0
 UT2@0
 UT3@0
 CT@0 ;
-CS20 WITH CS21@0
-CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
-UT1@0
-UT2@0
-UT3@0
-CT@0 ;
-CS21 WITH CS22@0
-CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
-UT1@0
-UT2@0
-UT3@0
-CT@0 ;
-CS22 WITH CS23@0
-CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
-UT1@0
-UT2@0
-UT3@0
-CT@0 ;
-CS23 WITH CS24@0
-CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
-UT1@0
-UT2@0
-UT3@0
-CT@0 ;
-CS24 WITH CS25@0
-CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
-UT1@0
-UT2@0
-UT3@0
-CT@0 ;
-CS25 WITH CS26@0
-CS27@0
-CS28@0
-CS29@0
-CS30@0
-UT1@0
-UT2@0
-UT3@0
-CT@0 ;
-CS26 WITH CS27@0
-CS28@0
-CS29@0
-CS30@0
-UT1@0
-UT2@0
-UT3@0
-CT@0 ;
-CS27 WITH CS28@0
-CS29@0
-CS30@0
-UT1@0
-UT2@0
-UT3@0
-CT@0 ;
-CS28 WITH CS29@0
-CS30@0
-UT1@0
-UT2@0
-UT3@0
-CT@0 ;
-CS29 WITH CS30@0
-UT1@0
-UT2@0
-UT3@0
-CT@0 ;
-CS30 WITH UT1@0
+CS20 WITH UT1@0
 UT2@0
 UT3@0
 CT@0 ;
@@ -1011,36 +601,6 @@ sad19 (err319) ;
 worry20 (err120) ;
 fear20 (err220) ;
 sad20 (err320) ;
-worry21 (err121) ;
-fear21 (err221) ;
-sad21 (err321) ;
-worry22 (err122) ;
-fear22 (err222) ;
-sad22 (err322) ;
-worry23 (err123) ;
-fear23 (err223) ;
-sad23 (err323) ;
-worry24 (err124) ;
-fear24 (err224) ;
-sad24 (err324) ;
-worry25 (err125) ;
-fear25 (err225) ;
-sad25 (err325) ;
-worry26 (err126) ;
-fear26 (err226) ;
-sad26 (err326) ;
-worry27 (err127) ;
-fear27 (err227) ;
-sad27 (err327) ;
-worry28 (err128) ;
-fear28 (err228) ;
-sad28 (err328) ;
-worry29 (err129) ;
-fear29 (err229) ;
-sad29 (err329) ;
-worry30 (err130) ;
-fear30 (err230) ;
-sad30 (err330) ;
 CS1 (cs_var1) ;
 CS2 (cs_var2) ;
 CS3 (cs_var3) ;
@@ -1061,16 +621,6 @@ CS17 (cs_var17) ;
 CS18 (cs_var18) ;
 CS19 (cs_var19) ;
 CS20 (cs_var20) ;
-CS21 (cs_var21) ;
-CS22 (cs_var22) ;
-CS23 (cs_var23) ;
-CS24 (cs_var24) ;
-CS25 (cs_var25) ;
-CS26 (cs_var26) ;
-CS27 (cs_var27) ;
-CS28 (cs_var28) ;
-CS29 (cs_var29) ;
-CS30 (cs_var30) ;
 UT1 (ut_var1) ;
 UT2 (ut_var2) ;
 UT3 (ut_var3) ;

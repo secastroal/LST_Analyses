@@ -1,5 +1,5 @@
 TITLE: Your title goes here
-DATA: FILE = "Mplus_files/msst30.dat";
+DATA: FILE = "Mplus_files/msst25.dat";
 VARIABLE: 
 NAMES = worry1 fear1 sad1 worry2 fear2 sad2 worry3 fear3 sad3 worry4 fear4 sad4
      worry5 fear5 sad5 worry6 fear6 sad6 worry7 fear7 sad7 worry8 fear8 sad8 worry9
@@ -7,14 +7,11 @@ NAMES = worry1 fear1 sad1 worry2 fear2 sad2 worry3 fear3 sad3 worry4 fear4 sad4
      worry13 fear13 sad13 worry14 fear14 sad14 worry15 fear15 sad15 worry16 fear16
      sad16 worry17 fear17 sad17 worry18 fear18 sad18 worry19 fear19 sad19 worry20
      fear20 sad20 worry21 fear21 sad21 worry22 fear22 sad22 worry23 fear23 sad23
-     worry24 fear24 sad24 worry25 fear25 sad25 worry26 fear26 sad26 worry27 fear27
-     sad27 worry28 fear28 sad28 worry29 fear29 sad29 worry30 fear30 sad30; 
+     worry24 fear24 sad24 worry25 fear25 sad25; 
 MISSING=.;
 
 ANALYSIS:
-
 H1iterations=30000;
-!Estimator=MLR;
 
 MODEL:
 
@@ -94,21 +91,6 @@ sad24 (las324) ;
 eta25 BY worry25@1
 fear25 (las225)
 sad25 (las325) ;
-eta26 BY worry26@1
-fear26 (las226)
-sad26 (las326) ;
-eta27 BY worry27@1
-fear27 (las227)
-sad27 (las327) ;
-eta28 BY worry28@1
-fear28 (las228)
-sad28 (las328) ;
-eta29 BY worry29@1
-fear29 (las229)
-sad29 (las329) ;
-eta30 BY worry30@1
-fear30 (las230)
-sad30 (las330) ;
 
 ! Latent trait variables
 theta1 BY eta1@1
@@ -135,12 +117,7 @@ eta21@1
 eta22@1
 eta23@1
 eta24@1
-eta25@1
-eta26@1
-eta27@1
-eta28@1
-eta29@1
-eta30@1 ;
+eta25@1 ;
 
 ! Intercepts and means
 [worry1@0] ;
@@ -218,21 +195,6 @@ eta30@1 ;
 [worry25@0] ;
 [fear25*] (ins225) ;
 [sad25*] (ins325) ;
-[worry26@0] ;
-[fear26*] (ins226) ;
-[sad26*] (ins326) ;
-[worry27@0] ;
-[fear27*] (ins227) ;
-[sad27*] (ins327) ;
-[worry28@0] ;
-[fear28*] (ins228) ;
-[sad28*] (ins328) ;
-[worry29@0] ;
-[fear29*] (ins229) ;
-[sad29*] (ins329) ;
-[worry30@0] ;
-[fear30*] (ins230) ;
-[sad30*] (ins330) ;
 [eta1@0] ;
 [eta2@0] ;
 [eta3@0] ;
@@ -258,11 +220,6 @@ eta30@1 ;
 [eta23@0] ;
 [eta24@0] ;
 [eta25@0] ;
-[eta26@0] ;
-[eta27@0] ;
-[eta28@0] ;
-[eta29@0] ;
-[eta30@0] ;
 [theta1*] ;
 
 ! Variance components
@@ -341,21 +298,6 @@ sad24(o_err324) ;
 worry25(o_err125) ;
 fear25(o_err225) ;
 sad25(o_err325) ;
-worry26(o_err126) ;
-fear26(o_err226) ;
-sad26(o_err326) ;
-worry27(o_err127) ;
-fear27(o_err227) ;
-sad27(o_err327) ;
-worry28(o_err128) ;
-fear28(o_err228) ;
-sad28(o_err328) ;
-worry29(o_err129) ;
-fear29(o_err229) ;
-sad29(o_err329) ;
-worry30(o_err130) ;
-fear30(o_err230) ;
-sad30(o_err330) ;
 eta1(s_var11) ;
 eta2(s_var21) ;
 eta3(s_var31) ;
@@ -381,11 +323,6 @@ eta22(s_var221) ;
 eta23(s_var231) ;
 eta24(s_var241) ;
 eta25(s_var251) ;
-eta26(s_var261) ;
-eta27(s_var271) ;
-eta28(s_var281) ;
-eta29(s_var291) ;
-eta30(s_var301) ;
 theta1(t_var1) ;
 
 MODEL CONSTRAINT:
@@ -464,21 +401,6 @@ NEW(rel324) ;
 NEW(rel125) ;
 NEW(rel225) ;
 NEW(rel325) ;
-NEW(rel126) ;
-NEW(rel226) ;
-NEW(rel326) ;
-NEW(rel127) ;
-NEW(rel227) ;
-NEW(rel327) ;
-NEW(rel128) ;
-NEW(rel228) ;
-NEW(rel328) ;
-NEW(rel129) ;
-NEW(rel229) ;
-NEW(rel329) ;
-NEW(rel130) ;
-NEW(rel230) ;
-NEW(rel330) ;
 NEW(con11) ;
 NEW(con21) ;
 NEW(con31) ;
@@ -554,21 +476,6 @@ NEW(con324) ;
 NEW(con125) ;
 NEW(con225) ;
 NEW(con325) ;
-NEW(con126) ;
-NEW(con226) ;
-NEW(con326) ;
-NEW(con127) ;
-NEW(con227) ;
-NEW(con327) ;
-NEW(con128) ;
-NEW(con228) ;
-NEW(con328) ;
-NEW(con129) ;
-NEW(con229) ;
-NEW(con329) ;
-NEW(con130) ;
-NEW(con230) ;
-NEW(con330) ;
 NEW(spe11) ;
 NEW(spe21) ;
 NEW(spe31) ;
@@ -644,21 +551,6 @@ NEW(spe324) ;
 NEW(spe125) ;
 NEW(spe225) ;
 NEW(spe325) ;
-NEW(spe126) ;
-NEW(spe226) ;
-NEW(spe326) ;
-NEW(spe127) ;
-NEW(spe227) ;
-NEW(spe327) ;
-NEW(spe128) ;
-NEW(spe228) ;
-NEW(spe328) ;
-NEW(spe129) ;
-NEW(spe229) ;
-NEW(spe329) ;
-NEW(spe130) ;
-NEW(spe230) ;
-NEW(spe330) ;
 
 ! Reliabily
 rel11= (1^2*1^2*t_var1+1^2*s_var11)/
@@ -811,36 +703,6 @@ rel225= (1^2*las225^2*t_var1+las225^2*s_var251)/
 (1^2*las225^2*t_var1+las225^2*s_var251+o_err225) ;
 rel325= (1^2*las325^2*t_var1+las325^2*s_var251)/
 (1^2*las325^2*t_var1+las325^2*s_var251+o_err325) ;
-rel126= (1^2*1^2*t_var1+1^2*s_var261)/
-(1^2*1^2*t_var1+1^2*s_var261+o_err126) ;
-rel226= (1^2*las226^2*t_var1+las226^2*s_var261)/
-(1^2*las226^2*t_var1+las226^2*s_var261+o_err226) ;
-rel326= (1^2*las326^2*t_var1+las326^2*s_var261)/
-(1^2*las326^2*t_var1+las326^2*s_var261+o_err326) ;
-rel127= (1^2*1^2*t_var1+1^2*s_var271)/
-(1^2*1^2*t_var1+1^2*s_var271+o_err127) ;
-rel227= (1^2*las227^2*t_var1+las227^2*s_var271)/
-(1^2*las227^2*t_var1+las227^2*s_var271+o_err227) ;
-rel327= (1^2*las327^2*t_var1+las327^2*s_var271)/
-(1^2*las327^2*t_var1+las327^2*s_var271+o_err327) ;
-rel128= (1^2*1^2*t_var1+1^2*s_var281)/
-(1^2*1^2*t_var1+1^2*s_var281+o_err128) ;
-rel228= (1^2*las228^2*t_var1+las228^2*s_var281)/
-(1^2*las228^2*t_var1+las228^2*s_var281+o_err228) ;
-rel328= (1^2*las328^2*t_var1+las328^2*s_var281)/
-(1^2*las328^2*t_var1+las328^2*s_var281+o_err328) ;
-rel129= (1^2*1^2*t_var1+1^2*s_var291)/
-(1^2*1^2*t_var1+1^2*s_var291+o_err129) ;
-rel229= (1^2*las229^2*t_var1+las229^2*s_var291)/
-(1^2*las229^2*t_var1+las229^2*s_var291+o_err229) ;
-rel329= (1^2*las329^2*t_var1+las329^2*s_var291)/
-(1^2*las329^2*t_var1+las329^2*s_var291+o_err329) ;
-rel130= (1^2*1^2*t_var1+1^2*s_var301)/
-(1^2*1^2*t_var1+1^2*s_var301+o_err130) ;
-rel230= (1^2*las230^2*t_var1+las230^2*s_var301)/
-(1^2*las230^2*t_var1+las230^2*s_var301+o_err230) ;
-rel330= (1^2*las330^2*t_var1+las330^2*s_var301)/
-(1^2*las330^2*t_var1+las330^2*s_var301+o_err330) ;
 
 ! Occasion specificity
 spe11= (1^2*s_var11)/
@@ -993,36 +855,6 @@ spe225= (las225^2*s_var251)/
 (1^2*las225^2*t_var1+las225^2*s_var251+o_err225) ;
 spe325= (las325^2*s_var251)/
 (1^2*las325^2*t_var1+las325^2*s_var251+o_err325) ;
-spe126= (1^2*s_var261)/
-(1^2*1^2*t_var1+1^2*s_var261+o_err126) ;
-spe226= (las226^2*s_var261)/
-(1^2*las226^2*t_var1+las226^2*s_var261+o_err226) ;
-spe326= (las326^2*s_var261)/
-(1^2*las326^2*t_var1+las326^2*s_var261+o_err326) ;
-spe127= (1^2*s_var271)/
-(1^2*1^2*t_var1+1^2*s_var271+o_err127) ;
-spe227= (las227^2*s_var271)/
-(1^2*las227^2*t_var1+las227^2*s_var271+o_err227) ;
-spe327= (las327^2*s_var271)/
-(1^2*las327^2*t_var1+las327^2*s_var271+o_err327) ;
-spe128= (1^2*s_var281)/
-(1^2*1^2*t_var1+1^2*s_var281+o_err128) ;
-spe228= (las228^2*s_var281)/
-(1^2*las228^2*t_var1+las228^2*s_var281+o_err228) ;
-spe328= (las328^2*s_var281)/
-(1^2*las328^2*t_var1+las328^2*s_var281+o_err328) ;
-spe129= (1^2*s_var291)/
-(1^2*1^2*t_var1+1^2*s_var291+o_err129) ;
-spe229= (las229^2*s_var291)/
-(1^2*las229^2*t_var1+las229^2*s_var291+o_err229) ;
-spe329= (las329^2*s_var291)/
-(1^2*las329^2*t_var1+las329^2*s_var291+o_err329) ;
-spe130= (1^2*s_var301)/
-(1^2*1^2*t_var1+1^2*s_var301+o_err130) ;
-spe230= (las230^2*s_var301)/
-(1^2*las230^2*t_var1+las230^2*s_var301+o_err230) ;
-spe330= (las330^2*s_var301)/
-(1^2*las330^2*t_var1+las330^2*s_var301+o_err330) ;
 
 ! Consistency
 con11= (1^2*1^2*t_var1)/
@@ -1175,33 +1007,3 @@ con225= (1^2*las225^2*t_var1)/
 (1^2*las225^2*t_var1+las225^2*s_var251+o_err225) ;
 con325= (1^2*las325^2*t_var1)/
 (1^2*las325^2*t_var1+las325^2*s_var251+o_err325) ;
-con126= (1^2*1^2*t_var1)/
-(1^2*1^2*t_var1+1^2*s_var261+o_err126) ;
-con226= (1^2*las226^2*t_var1)/
-(1^2*las226^2*t_var1+las226^2*s_var261+o_err226) ;
-con326= (1^2*las326^2*t_var1)/
-(1^2*las326^2*t_var1+las326^2*s_var261+o_err326) ;
-con127= (1^2*1^2*t_var1)/
-(1^2*1^2*t_var1+1^2*s_var271+o_err127) ;
-con227= (1^2*las227^2*t_var1)/
-(1^2*las227^2*t_var1+las227^2*s_var271+o_err227) ;
-con327= (1^2*las327^2*t_var1)/
-(1^2*las327^2*t_var1+las327^2*s_var271+o_err327) ;
-con128= (1^2*1^2*t_var1)/
-(1^2*1^2*t_var1+1^2*s_var281+o_err128) ;
-con228= (1^2*las228^2*t_var1)/
-(1^2*las228^2*t_var1+las228^2*s_var281+o_err228) ;
-con328= (1^2*las328^2*t_var1)/
-(1^2*las328^2*t_var1+las328^2*s_var281+o_err328) ;
-con129= (1^2*1^2*t_var1)/
-(1^2*1^2*t_var1+1^2*s_var291+o_err129) ;
-con229= (1^2*las229^2*t_var1)/
-(1^2*las229^2*t_var1+las229^2*s_var291+o_err229) ;
-con329= (1^2*las329^2*t_var1)/
-(1^2*las329^2*t_var1+las329^2*s_var291+o_err329) ;
-con130= (1^2*1^2*t_var1)/
-(1^2*1^2*t_var1+1^2*s_var301+o_err130) ;
-con230= (1^2*las230^2*t_var1)/
-(1^2*las230^2*t_var1+las230^2*s_var301+o_err230) ;
-con330= (1^2*las330^2*t_var1)/
-(1^2*las330^2*t_var1+las330^2*s_var301+o_err330) ;

@@ -1,6 +1,6 @@
 Mplus VERSION 8
 MUTHEN & MUTHEN
-06/15/2018  11:25 AM
+06/22/2018   1:45 PM
 
 INPUT INSTRUCTIONS
 
@@ -16,6 +16,9 @@ INPUT INSTRUCTIONS
        worry24 fear24 sad24 worry25 fear25 sad25 worry26 fear26 sad26 worry27 fear27
        sad27 worry28 fear28 sad28 worry29 fear29 sad29 worry30 fear30 sad30;
   MISSING=.;
+
+  ANALYSIS:
+  H1iterations=30000;
 
   MODEL:
 
@@ -1129,7 +1132,7 @@ Information matrix                                        OBSERVED
 Maximum number of iterations                                  1000
 Convergence criterion                                    0.500D-04
 Maximum number of steepest descent iterations                   20
-Maximum number of iterations for H1                           2000
+Maximum number of iterations for H1                          30000
 Convergence criterion for H1                             0.100D-03
 
 Input data file(s)
@@ -2287,17 +2290,6 @@ UNIVARIATE SAMPLE STATISTICS
              105.000       2.531      -0.016       7.000    1.90%       2.000      4.000
 
 
-     THE MISSING DATA EM ALGORITHM FOR THE H1 MODEL
-     HAS NOT CONVERGED WITH RESPECT TO THE PARAMETER
-     ESTIMATES.  THIS MAY BE DUE TO SPARSE DATA
-     LEADING TO A SINGULAR COVARIANCE MATRIX ESTIMATE.
-     INCREASE THE NUMBER OF H1 ITERATIONS.
-
-     NOTE THAT THE NUMBER OF H1 PARAMETERS (MEANS, VARIANCES, AND
-     COVARIANCES) IS GREATER THAN THE NUMBER OF OBSERVATIONS.
-               NUMBER OF H1 PARAMETERS :       4185
-               NUMBER OF OBSERVATIONS  :        129
-
 THE MODEL ESTIMATION TERMINATED NORMALLY
 
 
@@ -2308,16 +2300,42 @@ Number of Free Parameters                      334
 
 Loglikelihood
 
-          H0 Value                      -14433.193
+          H0 Value                      -15175.379
+          H1 Value                       -6442.887
 
 Information Criteria
 
-          Akaike (AIC)                   29534.385
-          Bayesian (BIC)                 30489.563
-          Sample-Size Adjusted BIC       29433.231
+          Akaike (AIC)                   31018.757
+          Bayesian (BIC)                 31973.935
+          Sample-Size Adjusted BIC       30917.603
             (n* = (n + 2) / 24)
 
-Degrees of Freedom                            3851
+Chi-Square Test of Model Fit
+
+          Value                          17464.982
+          Degrees of Freedom                  3851
+          P-Value                           0.0000
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.166
+          90 Percent C.I.                    0.163  0.168
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.258
+          TLI                                0.228
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                          22350.694
+          Degrees of Freedom                  4005
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.122
 
 
 
@@ -3518,9 +3536,9 @@ QUALITY OF NUMERICAL RESULTS
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  11:25:40
-        Ending Time:  11:27:50
-       Elapsed Time:  00:02:10
+     Beginning Time:  13:45:25
+        Ending Time:  14:01:07
+       Elapsed Time:  00:15:42
 
 
 

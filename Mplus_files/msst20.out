@@ -1,0 +1,2014 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+06/22/2018  11:10 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "Mplus_files/msst20.dat";
+  VARIABLE:
+  NAMES = worry1 fear1 sad1 worry2 fear2 sad2 worry3 fear3 sad3 worry4 fear4 sad4
+       worry5 fear5 sad5 worry6 fear6 sad6 worry7 fear7 sad7 worry8 fear8 sad8 worry9
+       fear9 sad9 worry10 fear10 sad10 worry11 fear11 sad11 worry12 fear12 sad12
+       worry13 fear13 sad13 worry14 fear14 sad14 worry15 fear15 sad15 worry16 fear16
+       sad16 worry17 fear17 sad17 worry18 fear18 sad18 worry19 fear19 sad19 worry20
+       fear20 sad20;
+  MISSING=.;
+
+  MODEL:
+
+  ! Latent state variables
+  eta1 BY worry1@1
+  fear1 (las21)
+  sad1 (las31) ;
+  eta2 BY worry2@1
+  fear2 (las22)
+  sad2 (las32) ;
+  eta3 BY worry3@1
+  fear3 (las23)
+  sad3 (las33) ;
+  eta4 BY worry4@1
+  fear4 (las24)
+  sad4 (las34) ;
+  eta5 BY worry5@1
+  fear5 (las25)
+  sad5 (las35) ;
+  eta6 BY worry6@1
+  fear6 (las26)
+  sad6 (las36) ;
+  eta7 BY worry7@1
+  fear7 (las27)
+  sad7 (las37) ;
+  eta8 BY worry8@1
+  fear8 (las28)
+  sad8 (las38) ;
+  eta9 BY worry9@1
+  fear9 (las29)
+  sad9 (las39) ;
+  eta10 BY worry10@1
+  fear10 (las210)
+  sad10 (las310) ;
+  eta11 BY worry11@1
+  fear11 (las211)
+  sad11 (las311) ;
+  eta12 BY worry12@1
+  fear12 (las212)
+  sad12 (las312) ;
+  eta13 BY worry13@1
+  fear13 (las213)
+  sad13 (las313) ;
+  eta14 BY worry14@1
+  fear14 (las214)
+  sad14 (las314) ;
+  eta15 BY worry15@1
+  fear15 (las215)
+  sad15 (las315) ;
+  eta16 BY worry16@1
+  fear16 (las216)
+  sad16 (las316) ;
+  eta17 BY worry17@1
+  fear17 (las217)
+  sad17 (las317) ;
+  eta18 BY worry18@1
+  fear18 (las218)
+  sad18 (las318) ;
+  eta19 BY worry19@1
+  fear19 (las219)
+  sad19 (las319) ;
+  eta20 BY worry20@1
+  fear20 (las220)
+  sad20 (las320) ;
+
+  ! Latent trait variables
+  theta1 BY eta1@1
+  eta2@1
+  eta3@1
+  eta4@1
+  eta5@1
+  eta6@1
+  eta7@1
+  eta8@1
+  eta9@1
+  eta10@1
+  eta11@1
+  eta12@1
+  eta13@1
+  eta14@1
+  eta15@1
+  eta16@1
+  eta17@1
+  eta18@1
+  eta19@1
+  eta20@1 ;
+
+  ! Intercepts and means
+  [worry1@0] ;
+  [fear1*] (ins21) ;
+  [sad1*] (ins31) ;
+  [worry2@0] ;
+  [fear2*] (ins22) ;
+  [sad2*] (ins32) ;
+  [worry3@0] ;
+  [fear3*] (ins23) ;
+  [sad3*] (ins33) ;
+  [worry4@0] ;
+  [fear4*] (ins24) ;
+  [sad4*] (ins34) ;
+  [worry5@0] ;
+  [fear5*] (ins25) ;
+  [sad5*] (ins35) ;
+  [worry6@0] ;
+  [fear6*] (ins26) ;
+  [sad6*] (ins36) ;
+  [worry7@0] ;
+  [fear7*] (ins27) ;
+  [sad7*] (ins37) ;
+  [worry8@0] ;
+  [fear8*] (ins28) ;
+  [sad8*] (ins38) ;
+  [worry9@0] ;
+  [fear9*] (ins29) ;
+  [sad9*] (ins39) ;
+  [worry10@0] ;
+  [fear10*] (ins210) ;
+  [sad10*] (ins310) ;
+  [worry11@0] ;
+  [fear11*] (ins211) ;
+  [sad11*] (ins311) ;
+  [worry12@0] ;
+  [fear12*] (ins212) ;
+  [sad12*] (ins312) ;
+  [worry13@0] ;
+  [fear13*] (ins213) ;
+  [sad13*] (ins313) ;
+  [worry14@0] ;
+  [fear14*] (ins214) ;
+  [sad14*] (ins314) ;
+  [worry15@0] ;
+  [fear15*] (ins215) ;
+  [sad15*] (ins315) ;
+  [worry16@0] ;
+  [fear16*] (ins216) ;
+  [sad16*] (ins316) ;
+  [worry17@0] ;
+  [fear17*] (ins217) ;
+  [sad17*] (ins317) ;
+  [worry18@0] ;
+  [fear18*] (ins218) ;
+  [sad18*] (ins318) ;
+  [worry19@0] ;
+  [fear19*] (ins219) ;
+  [sad19*] (ins319) ;
+  [worry20@0] ;
+  [fear20*] (ins220) ;
+  [sad20*] (ins320) ;
+  [eta1@0] ;
+  [eta2@0] ;
+  [eta3@0] ;
+  [eta4@0] ;
+  [eta5@0] ;
+  [eta6@0] ;
+  [eta7@0] ;
+  [eta8@0] ;
+  [eta9@0] ;
+  [eta10@0] ;
+  [eta11@0] ;
+  [eta12@0] ;
+  [eta13@0] ;
+  [eta14@0] ;
+  [eta15@0] ;
+  [eta16@0] ;
+  [eta17@0] ;
+  [eta18@0] ;
+  [eta19@0] ;
+  [eta20@0] ;
+  [theta1*] ;
+
+  ! Variance components
+  worry1(o_err11) ;
+  fear1(o_err21) ;
+  sad1(o_err31) ;
+  worry2(o_err12) ;
+  fear2(o_err22) ;
+  sad2(o_err32) ;
+  worry3(o_err13) ;
+  fear3(o_err23) ;
+  sad3(o_err33) ;
+  worry4(o_err14) ;
+  fear4(o_err24) ;
+  sad4(o_err34) ;
+  worry5(o_err15) ;
+  fear5(o_err25) ;
+  sad5(o_err35) ;
+  worry6(o_err16) ;
+  fear6(o_err26) ;
+  sad6(o_err36) ;
+  worry7(o_err17) ;
+  fear7(o_err27) ;
+  sad7(o_err37) ;
+  worry8(o_err18) ;
+  fear8(o_err28) ;
+  sad8(o_err38) ;
+  worry9(o_err19) ;
+  fear9(o_err29) ;
+  sad9(o_err39) ;
+  worry10(o_err110) ;
+  fear10(o_err210) ;
+  sad10(o_err310) ;
+  worry11(o_err111) ;
+  fear11(o_err211) ;
+  sad11(o_err311) ;
+  worry12(o_err112) ;
+  fear12(o_err212) ;
+  sad12(o_err312) ;
+  worry13(o_err113) ;
+  fear13(o_err213) ;
+  sad13(o_err313) ;
+  worry14(o_err114) ;
+  fear14(o_err214) ;
+  sad14(o_err314) ;
+  worry15(o_err115) ;
+  fear15(o_err215) ;
+  sad15(o_err315) ;
+  worry16(o_err116) ;
+  fear16(o_err216) ;
+  sad16(o_err316) ;
+  worry17(o_err117) ;
+  fear17(o_err217) ;
+  sad17(o_err317) ;
+  worry18(o_err118) ;
+  fear18(o_err218) ;
+  sad18(o_err318) ;
+  worry19(o_err119) ;
+  fear19(o_err219) ;
+  sad19(o_err319) ;
+  worry20(o_err120) ;
+  fear20(o_err220) ;
+  sad20(o_err320) ;
+  eta1(s_var11) ;
+  eta2(s_var21) ;
+  eta3(s_var31) ;
+  eta4(s_var41) ;
+  eta5(s_var51) ;
+  eta6(s_var61) ;
+  eta7(s_var71) ;
+  eta8(s_var81) ;
+  eta9(s_var91) ;
+  eta10(s_var101) ;
+  eta11(s_var111) ;
+  eta12(s_var121) ;
+  eta13(s_var131) ;
+  eta14(s_var141) ;
+  eta15(s_var151) ;
+  eta16(s_var161) ;
+  eta17(s_var171) ;
+  eta18(s_var181) ;
+  eta19(s_var191) ;
+  eta20(s_var201) ;
+  theta1(t_var1) ;
+
+  MODEL CONSTRAINT:
+  NEW(rel11) ;
+  NEW(rel21) ;
+  NEW(rel31) ;
+  NEW(rel12) ;
+  NEW(rel22) ;
+  NEW(rel32) ;
+  NEW(rel13) ;
+  NEW(rel23) ;
+  NEW(rel33) ;
+  NEW(rel14) ;
+  NEW(rel24) ;
+  NEW(rel34) ;
+  NEW(rel15) ;
+  NEW(rel25) ;
+  NEW(rel35) ;
+  NEW(rel16) ;
+  NEW(rel26) ;
+  NEW(rel36) ;
+  NEW(rel17) ;
+  NEW(rel27) ;
+  NEW(rel37) ;
+  NEW(rel18) ;
+  NEW(rel28) ;
+  NEW(rel38) ;
+  NEW(rel19) ;
+  NEW(rel29) ;
+  NEW(rel39) ;
+  NEW(rel110) ;
+  NEW(rel210) ;
+  NEW(rel310) ;
+  NEW(rel111) ;
+  NEW(rel211) ;
+  NEW(rel311) ;
+  NEW(rel112) ;
+  NEW(rel212) ;
+  NEW(rel312) ;
+  NEW(rel113) ;
+  NEW(rel213) ;
+  NEW(rel313) ;
+  NEW(rel114) ;
+  NEW(rel214) ;
+  NEW(rel314) ;
+  NEW(rel115) ;
+  NEW(rel215) ;
+  NEW(rel315) ;
+  NEW(rel116) ;
+  NEW(rel216) ;
+  NEW(rel316) ;
+  NEW(rel117) ;
+  NEW(rel217) ;
+  NEW(rel317) ;
+  NEW(rel118) ;
+  NEW(rel218) ;
+  NEW(rel318) ;
+  NEW(rel119) ;
+  NEW(rel219) ;
+  NEW(rel319) ;
+  NEW(rel120) ;
+  NEW(rel220) ;
+  NEW(rel320) ;
+  NEW(con11) ;
+  NEW(con21) ;
+  NEW(con31) ;
+  NEW(con12) ;
+  NEW(con22) ;
+  NEW(con32) ;
+  NEW(con13) ;
+  NEW(con23) ;
+  NEW(con33) ;
+  NEW(con14) ;
+  NEW(con24) ;
+  NEW(con34) ;
+  NEW(con15) ;
+  NEW(con25) ;
+  NEW(con35) ;
+  NEW(con16) ;
+  NEW(con26) ;
+  NEW(con36) ;
+  NEW(con17) ;
+  NEW(con27) ;
+  NEW(con37) ;
+  NEW(con18) ;
+  NEW(con28) ;
+  NEW(con38) ;
+  NEW(con19) ;
+  NEW(con29) ;
+  NEW(con39) ;
+  NEW(con110) ;
+  NEW(con210) ;
+  NEW(con310) ;
+  NEW(con111) ;
+  NEW(con211) ;
+  NEW(con311) ;
+  NEW(con112) ;
+  NEW(con212) ;
+  NEW(con312) ;
+  NEW(con113) ;
+  NEW(con213) ;
+  NEW(con313) ;
+  NEW(con114) ;
+  NEW(con214) ;
+  NEW(con314) ;
+  NEW(con115) ;
+  NEW(con215) ;
+  NEW(con315) ;
+  NEW(con116) ;
+  NEW(con216) ;
+  NEW(con316) ;
+  NEW(con117) ;
+  NEW(con217) ;
+  NEW(con317) ;
+  NEW(con118) ;
+  NEW(con218) ;
+  NEW(con318) ;
+  NEW(con119) ;
+  NEW(con219) ;
+  NEW(con319) ;
+  NEW(con120) ;
+  NEW(con220) ;
+  NEW(con320) ;
+  NEW(spe11) ;
+  NEW(spe21) ;
+  NEW(spe31) ;
+  NEW(spe12) ;
+  NEW(spe22) ;
+  NEW(spe32) ;
+  NEW(spe13) ;
+  NEW(spe23) ;
+  NEW(spe33) ;
+  NEW(spe14) ;
+  NEW(spe24) ;
+  NEW(spe34) ;
+  NEW(spe15) ;
+  NEW(spe25) ;
+  NEW(spe35) ;
+  NEW(spe16) ;
+  NEW(spe26) ;
+  NEW(spe36) ;
+  NEW(spe17) ;
+  NEW(spe27) ;
+  NEW(spe37) ;
+  NEW(spe18) ;
+  NEW(spe28) ;
+  NEW(spe38) ;
+  NEW(spe19) ;
+  NEW(spe29) ;
+  NEW(spe39) ;
+  NEW(spe110) ;
+  NEW(spe210) ;
+  NEW(spe310) ;
+  NEW(spe111) ;
+  NEW(spe211) ;
+  NEW(spe311) ;
+  NEW(spe112) ;
+  NEW(spe212) ;
+  NEW(spe312) ;
+  NEW(spe113) ;
+  NEW(spe213) ;
+  NEW(spe313) ;
+  NEW(spe114) ;
+  NEW(spe214) ;
+  NEW(spe314) ;
+  NEW(spe115) ;
+  NEW(spe215) ;
+  NEW(spe315) ;
+  NEW(spe116) ;
+  NEW(spe216) ;
+  NEW(spe316) ;
+  NEW(spe117) ;
+  NEW(spe217) ;
+  NEW(spe317) ;
+  NEW(spe118) ;
+  NEW(spe218) ;
+  NEW(spe318) ;
+  NEW(spe119) ;
+  NEW(spe219) ;
+  NEW(spe319) ;
+  NEW(spe120) ;
+  NEW(spe220) ;
+  NEW(spe320) ;
+
+  ! Reliabily
+  rel11= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel21= (1^2*las21^2*t_var1+las21^2*s_var11)/
+  (1^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel31= (1^2*las31^2*t_var1+las31^2*s_var11)/
+  (1^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel12= (1^2*1^2*t_var1+1^2*s_var21)/
+  (1^2*1^2*t_var1+1^2*s_var21+o_err12) ;
+  rel22= (1^2*las22^2*t_var1+las22^2*s_var21)/
+  (1^2*las22^2*t_var1+las22^2*s_var21+o_err22) ;
+  rel32= (1^2*las32^2*t_var1+las32^2*s_var21)/
+  (1^2*las32^2*t_var1+las32^2*s_var21+o_err32) ;
+  rel13= (1^2*1^2*t_var1+1^2*s_var31)/
+  (1^2*1^2*t_var1+1^2*s_var31+o_err13) ;
+  rel23= (1^2*las23^2*t_var1+las23^2*s_var31)/
+  (1^2*las23^2*t_var1+las23^2*s_var31+o_err23) ;
+  rel33= (1^2*las33^2*t_var1+las33^2*s_var31)/
+  (1^2*las33^2*t_var1+las33^2*s_var31+o_err33) ;
+  rel14= (1^2*1^2*t_var1+1^2*s_var41)/
+  (1^2*1^2*t_var1+1^2*s_var41+o_err14) ;
+  rel24= (1^2*las24^2*t_var1+las24^2*s_var41)/
+  (1^2*las24^2*t_var1+las24^2*s_var41+o_err24) ;
+  rel34= (1^2*las34^2*t_var1+las34^2*s_var41)/
+  (1^2*las34^2*t_var1+las34^2*s_var41+o_err34) ;
+  rel15= (1^2*1^2*t_var1+1^2*s_var51)/
+  (1^2*1^2*t_var1+1^2*s_var51+o_err15) ;
+  rel25= (1^2*las25^2*t_var1+las25^2*s_var51)/
+  (1^2*las25^2*t_var1+las25^2*s_var51+o_err25) ;
+  rel35= (1^2*las35^2*t_var1+las35^2*s_var51)/
+  (1^2*las35^2*t_var1+las35^2*s_var51+o_err35) ;
+  rel16= (1^2*1^2*t_var1+1^2*s_var61)/
+  (1^2*1^2*t_var1+1^2*s_var61+o_err16) ;
+  rel26= (1^2*las26^2*t_var1+las26^2*s_var61)/
+  (1^2*las26^2*t_var1+las26^2*s_var61+o_err26) ;
+  rel36= (1^2*las36^2*t_var1+las36^2*s_var61)/
+  (1^2*las36^2*t_var1+las36^2*s_var61+o_err36) ;
+  rel17= (1^2*1^2*t_var1+1^2*s_var71)/
+  (1^2*1^2*t_var1+1^2*s_var71+o_err17) ;
+  rel27= (1^2*las27^2*t_var1+las27^2*s_var71)/
+  (1^2*las27^2*t_var1+las27^2*s_var71+o_err27) ;
+  rel37= (1^2*las37^2*t_var1+las37^2*s_var71)/
+  (1^2*las37^2*t_var1+las37^2*s_var71+o_err37) ;
+  rel18= (1^2*1^2*t_var1+1^2*s_var81)/
+  (1^2*1^2*t_var1+1^2*s_var81+o_err18) ;
+  rel28= (1^2*las28^2*t_var1+las28^2*s_var81)/
+  (1^2*las28^2*t_var1+las28^2*s_var81+o_err28) ;
+  rel38= (1^2*las38^2*t_var1+las38^2*s_var81)/
+  (1^2*las38^2*t_var1+las38^2*s_var81+o_err38) ;
+  rel19= (1^2*1^2*t_var1+1^2*s_var91)/
+  (1^2*1^2*t_var1+1^2*s_var91+o_err19) ;
+  rel29= (1^2*las29^2*t_var1+las29^2*s_var91)/
+  (1^2*las29^2*t_var1+las29^2*s_var91+o_err29) ;
+  rel39= (1^2*las39^2*t_var1+las39^2*s_var91)/
+  (1^2*las39^2*t_var1+las39^2*s_var91+o_err39) ;
+  rel110= (1^2*1^2*t_var1+1^2*s_var101)/
+  (1^2*1^2*t_var1+1^2*s_var101+o_err110) ;
+  rel210= (1^2*las210^2*t_var1+las210^2*s_var101)/
+  (1^2*las210^2*t_var1+las210^2*s_var101+o_err210) ;
+  rel310= (1^2*las310^2*t_var1+las310^2*s_var101)/
+  (1^2*las310^2*t_var1+las310^2*s_var101+o_err310) ;
+  rel111= (1^2*1^2*t_var1+1^2*s_var111)/
+  (1^2*1^2*t_var1+1^2*s_var111+o_err111) ;
+  rel211= (1^2*las211^2*t_var1+las211^2*s_var111)/
+  (1^2*las211^2*t_var1+las211^2*s_var111+o_err211) ;
+  rel311= (1^2*las311^2*t_var1+las311^2*s_var111)/
+  (1^2*las311^2*t_var1+las311^2*s_var111+o_err311) ;
+  rel112= (1^2*1^2*t_var1+1^2*s_var121)/
+  (1^2*1^2*t_var1+1^2*s_var121+o_err112) ;
+  rel212= (1^2*las212^2*t_var1+las212^2*s_var121)/
+  (1^2*las212^2*t_var1+las212^2*s_var121+o_err212) ;
+  rel312= (1^2*las312^2*t_var1+las312^2*s_var121)/
+  (1^2*las312^2*t_var1+las312^2*s_var121+o_err312) ;
+  rel113= (1^2*1^2*t_var1+1^2*s_var131)/
+  (1^2*1^2*t_var1+1^2*s_var131+o_err113) ;
+  rel213= (1^2*las213^2*t_var1+las213^2*s_var131)/
+  (1^2*las213^2*t_var1+las213^2*s_var131+o_err213) ;
+  rel313= (1^2*las313^2*t_var1+las313^2*s_var131)/
+  (1^2*las313^2*t_var1+las313^2*s_var131+o_err313) ;
+  rel114= (1^2*1^2*t_var1+1^2*s_var141)/
+  (1^2*1^2*t_var1+1^2*s_var141+o_err114) ;
+  rel214= (1^2*las214^2*t_var1+las214^2*s_var141)/
+  (1^2*las214^2*t_var1+las214^2*s_var141+o_err214) ;
+  rel314= (1^2*las314^2*t_var1+las314^2*s_var141)/
+  (1^2*las314^2*t_var1+las314^2*s_var141+o_err314) ;
+  rel115= (1^2*1^2*t_var1+1^2*s_var151)/
+  (1^2*1^2*t_var1+1^2*s_var151+o_err115) ;
+  rel215= (1^2*las215^2*t_var1+las215^2*s_var151)/
+  (1^2*las215^2*t_var1+las215^2*s_var151+o_err215) ;
+  rel315= (1^2*las315^2*t_var1+las315^2*s_var151)/
+  (1^2*las315^2*t_var1+las315^2*s_var151+o_err315) ;
+  rel116= (1^2*1^2*t_var1+1^2*s_var161)/
+  (1^2*1^2*t_var1+1^2*s_var161+o_err116) ;
+  rel216= (1^2*las216^2*t_var1+las216^2*s_var161)/
+  (1^2*las216^2*t_var1+las216^2*s_var161+o_err216) ;
+  rel316= (1^2*las316^2*t_var1+las316^2*s_var161)/
+  (1^2*las316^2*t_var1+las316^2*s_var161+o_err316) ;
+  rel117= (1^2*1^2*t_var1+1^2*s_var171)/
+  (1^2*1^2*t_var1+1^2*s_var171+o_err117) ;
+  rel217= (1^2*las217^2*t_var1+las217^2*s_var171)/
+  (1^2*las217^2*t_var1+las217^2*s_var171+o_err217) ;
+  rel317= (1^2*las317^2*t_var1+las317^2*s_var171)/
+  (1^2*las317^2*t_var1+las317^2*s_var171+o_err317) ;
+  rel118= (1^2*1^2*t_var1+1^2*s_var181)/
+  (1^2*1^2*t_var1+1^2*s_var181+o_err118) ;
+  rel218= (1^2*las218^2*t_var1+las218^2*s_var181)/
+  (1^2*las218^2*t_var1+las218^2*s_var181+o_err218) ;
+  rel318= (1^2*las318^2*t_var1+las318^2*s_var181)/
+  (1^2*las318^2*t_var1+las318^2*s_var181+o_err318) ;
+  rel119= (1^2*1^2*t_var1+1^2*s_var191)/
+  (1^2*1^2*t_var1+1^2*s_var191+o_err119) ;
+  rel219= (1^2*las219^2*t_var1+las219^2*s_var191)/
+  (1^2*las219^2*t_var1+las219^2*s_var191+o_err219) ;
+  rel319= (1^2*las319^2*t_var1+las319^2*s_var191)/
+  (1^2*las319^2*t_var1+las319^2*s_var191+o_err319) ;
+  rel120= (1^2*1^2*t_var1+1^2*s_var201)/
+  (1^2*1^2*t_var1+1^2*s_var201+o_err120) ;
+  rel220= (1^2*las220^2*t_var1+las220^2*s_var201)/
+  (1^2*las220^2*t_var1+las220^2*s_var201+o_err220) ;
+  rel320= (1^2*las320^2*t_var1+las320^2*s_var201)/
+  (1^2*las320^2*t_var1+las320^2*s_var201+o_err320) ;
+
+  ! Occasion specificity
+  spe11= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe21= (las21^2*s_var11)/
+  (1^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe31= (las31^2*s_var11)/
+  (1^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe12= (1^2*s_var21)/
+  (1^2*1^2*t_var1+1^2*s_var21+o_err12) ;
+  spe22= (las22^2*s_var21)/
+  (1^2*las22^2*t_var1+las22^2*s_var21+o_err22) ;
+  spe32= (las32^2*s_var21)/
+  (1^2*las32^2*t_var1+las32^2*s_var21+o_err32) ;
+  spe13= (1^2*s_var31)/
+  (1^2*1^2*t_var1+1^2*s_var31+o_err13) ;
+  spe23= (las23^2*s_var31)/
+  (1^2*las23^2*t_var1+las23^2*s_var31+o_err23) ;
+  spe33= (las33^2*s_var31)/
+  (1^2*las33^2*t_var1+las33^2*s_var31+o_err33) ;
+  spe14= (1^2*s_var41)/
+  (1^2*1^2*t_var1+1^2*s_var41+o_err14) ;
+  spe24= (las24^2*s_var41)/
+  (1^2*las24^2*t_var1+las24^2*s_var41+o_err24) ;
+  spe34= (las34^2*s_var41)/
+  (1^2*las34^2*t_var1+las34^2*s_var41+o_err34) ;
+  spe15= (1^2*s_var51)/
+  (1^2*1^2*t_var1+1^2*s_var51+o_err15) ;
+  spe25= (las25^2*s_var51)/
+  (1^2*las25^2*t_var1+las25^2*s_var51+o_err25) ;
+  spe35= (las35^2*s_var51)/
+  (1^2*las35^2*t_var1+las35^2*s_var51+o_err35) ;
+  spe16= (1^2*s_var61)/
+  (1^2*1^2*t_var1+1^2*s_var61+o_err16) ;
+  spe26= (las26^2*s_var61)/
+  (1^2*las26^2*t_var1+las26^2*s_var61+o_err26) ;
+  spe36= (las36^2*s_var61)/
+  (1^2*las36^2*t_var1+las36^2*s_var61+o_err36) ;
+  spe17= (1^2*s_var71)/
+  (1^2*1^2*t_var1+1^2*s_var71+o_err17) ;
+  spe27= (las27^2*s_var71)/
+  (1^2*las27^2*t_var1+las27^2*s_var71+o_err27) ;
+  spe37= (las37^2*s_var71)/
+  (1^2*las37^2*t_var1+las37^2*s_var71+o_err37) ;
+  spe18= (1^2*s_var81)/
+  (1^2*1^2*t_var1+1^2*s_var81+o_err18) ;
+  spe28= (las28^2*s_var81)/
+  (1^2*las28^2*t_var1+las28^2*s_var81+o_err28) ;
+  spe38= (las38^2*s_var81)/
+  (1^2*las38^2*t_var1+las38^2*s_var81+o_err38) ;
+  spe19= (1^2*s_var91)/
+  (1^2*1^2*t_var1+1^2*s_var91+o_err19) ;
+  spe29= (las29^2*s_var91)/
+  (1^2*las29^2*t_var1+las29^2*s_var91+o_err29) ;
+  spe39= (las39^2*s_var91)/
+  (1^2*las39^2*t_var1+las39^2*s_var91+o_err39) ;
+  spe110= (1^2*s_var101)/
+  (1^2*1^2*t_var1+1^2*s_var101+o_err110) ;
+  spe210= (las210^2*s_var101)/
+  (1^2*las210^2*t_var1+las210^2*s_var101+o_err210) ;
+  spe310= (las310^2*s_var101)/
+  (1^2*las310^2*t_var1+las310^2*s_var101+o_err310) ;
+  spe111= (1^2*s_var111)/
+  (1^2*1^2*t_var1+1^2*s_var111+o_err111) ;
+  spe211= (las211^2*s_var111)/
+  (1^2*las211^2*t_var1+las211^2*s_var111+o_err211) ;
+  spe311= (las311^2*s_var111)/
+  (1^2*las311^2*t_var1+las311^2*s_var111+o_err311) ;
+  spe112= (1^2*s_var121)/
+  (1^2*1^2*t_var1+1^2*s_var121+o_err112) ;
+  spe212= (las212^2*s_var121)/
+  (1^2*las212^2*t_var1+las212^2*s_var121+o_err212) ;
+  spe312= (las312^2*s_var121)/
+  (1^2*las312^2*t_var1+las312^2*s_var121+o_err312) ;
+  spe113= (1^2*s_var131)/
+  (1^2*1^2*t_var1+1^2*s_var131+o_err113) ;
+  spe213= (las213^2*s_var131)/
+  (1^2*las213^2*t_var1+las213^2*s_var131+o_err213) ;
+  spe313= (las313^2*s_var131)/
+  (1^2*las313^2*t_var1+las313^2*s_var131+o_err313) ;
+  spe114= (1^2*s_var141)/
+  (1^2*1^2*t_var1+1^2*s_var141+o_err114) ;
+  spe214= (las214^2*s_var141)/
+  (1^2*las214^2*t_var1+las214^2*s_var141+o_err214) ;
+  spe314= (las314^2*s_var141)/
+  (1^2*las314^2*t_var1+las314^2*s_var141+o_err314) ;
+  spe115= (1^2*s_var151)/
+  (1^2*1^2*t_var1+1^2*s_var151+o_err115) ;
+  spe215= (las215^2*s_var151)/
+  (1^2*las215^2*t_var1+las215^2*s_var151+o_err215) ;
+  spe315= (las315^2*s_var151)/
+  (1^2*las315^2*t_var1+las315^2*s_var151+o_err315) ;
+  spe116= (1^2*s_var161)/
+  (1^2*1^2*t_var1+1^2*s_var161+o_err116) ;
+  spe216= (las216^2*s_var161)/
+  (1^2*las216^2*t_var1+las216^2*s_var161+o_err216) ;
+  spe316= (las316^2*s_var161)/
+  (1^2*las316^2*t_var1+las316^2*s_var161+o_err316) ;
+  spe117= (1^2*s_var171)/
+  (1^2*1^2*t_var1+1^2*s_var171+o_err117) ;
+  spe217= (las217^2*s_var171)/
+  (1^2*las217^2*t_var1+las217^2*s_var171+o_err217) ;
+  spe317= (las317^2*s_var171)/
+  (1^2*las317^2*t_var1+las317^2*s_var171+o_err317) ;
+  spe118= (1^2*s_var181)/
+  (1^2*1^2*t_var1+1^2*s_var181+o_err118) ;
+  spe218= (las218^2*s_var181)/
+  (1^2*las218^2*t_var1+las218^2*s_var181+o_err218) ;
+  spe318= (las318^2*s_var181)/
+  (1^2*las318^2*t_var1+las318^2*s_var181+o_err318) ;
+  spe119= (1^2*s_var191)/
+  (1^2*1^2*t_var1+1^2*s_var191+o_err119) ;
+  spe219= (las219^2*s_var191)/
+  (1^2*las219^2*t_var1+las219^2*s_var191+o_err219) ;
+  spe319= (las319^2*s_var191)/
+  (1^2*las319^2*t_var1+las319^2*s_var191+o_err319) ;
+  spe120= (1^2*s_var201)/
+  (1^2*1^2*t_var1+1^2*s_var201+o_err120) ;
+  spe220= (las220^2*s_var201)/
+  (1^2*las220^2*t_var1+las220^2*s_var201+o_err220) ;
+  spe320= (las320^2*s_var201)/
+  (1^2*las320^2*t_var1+las320^2*s_var201+o_err320) ;
+
+  ! Consistency
+  con11= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con21= (1^2*las21^2*t_var1)/
+  (1^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con31= (1^2*las31^2*t_var1)/
+  (1^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con12= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var21+o_err12) ;
+  con22= (1^2*las22^2*t_var1)/
+  (1^2*las22^2*t_var1+las22^2*s_var21+o_err22) ;
+  con32= (1^2*las32^2*t_var1)/
+  (1^2*las32^2*t_var1+las32^2*s_var21+o_err32) ;
+  con13= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var31+o_err13) ;
+  con23= (1^2*las23^2*t_var1)/
+  (1^2*las23^2*t_var1+las23^2*s_var31+o_err23) ;
+  con33= (1^2*las33^2*t_var1)/
+  (1^2*las33^2*t_var1+las33^2*s_var31+o_err33) ;
+  con14= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var41+o_err14) ;
+  con24= (1^2*las24^2*t_var1)/
+  (1^2*las24^2*t_var1+las24^2*s_var41+o_err24) ;
+  con34= (1^2*las34^2*t_var1)/
+  (1^2*las34^2*t_var1+las34^2*s_var41+o_err34) ;
+  con15= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var51+o_err15) ;
+  con25= (1^2*las25^2*t_var1)/
+  (1^2*las25^2*t_var1+las25^2*s_var51+o_err25) ;
+  con35= (1^2*las35^2*t_var1)/
+  (1^2*las35^2*t_var1+las35^2*s_var51+o_err35) ;
+  con16= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var61+o_err16) ;
+  con26= (1^2*las26^2*t_var1)/
+  (1^2*las26^2*t_var1+las26^2*s_var61+o_err26) ;
+  con36= (1^2*las36^2*t_var1)/
+  (1^2*las36^2*t_var1+las36^2*s_var61+o_err36) ;
+  con17= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var71+o_err17) ;
+  con27= (1^2*las27^2*t_var1)/
+  (1^2*las27^2*t_var1+las27^2*s_var71+o_err27) ;
+  con37= (1^2*las37^2*t_var1)/
+  (1^2*las37^2*t_var1+las37^2*s_var71+o_err37) ;
+  con18= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var81+o_err18) ;
+  con28= (1^2*las28^2*t_var1)/
+  (1^2*las28^2*t_var1+las28^2*s_var81+o_err28) ;
+  con38= (1^2*las38^2*t_var1)/
+  (1^2*las38^2*t_var1+las38^2*s_var81+o_err38) ;
+  con19= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var91+o_err19) ;
+  con29= (1^2*las29^2*t_var1)/
+  (1^2*las29^2*t_var1+las29^2*s_var91+o_err29) ;
+  con39= (1^2*las39^2*t_var1)/
+  (1^2*las39^2*t_var1+las39^2*s_var91+o_err39) ;
+  con110= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var101+o_err110) ;
+  con210= (1^2*las210^2*t_var1)/
+  (1^2*las210^2*t_var1+las210^2*s_var101+o_err210) ;
+  con310= (1^2*las310^2*t_var1)/
+  (1^2*las310^2*t_var1+las310^2*s_var101+o_err310) ;
+  con111= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var111+o_err111) ;
+  con211= (1^2*las211^2*t_var1)/
+  (1^2*las211^2*t_var1+las211^2*s_var111+o_err211) ;
+  con311= (1^2*las311^2*t_var1)/
+  (1^2*las311^2*t_var1+las311^2*s_var111+o_err311) ;
+  con112= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var121+o_err112) ;
+  con212= (1^2*las212^2*t_var1)/
+  (1^2*las212^2*t_var1+las212^2*s_var121+o_err212) ;
+  con312= (1^2*las312^2*t_var1)/
+  (1^2*las312^2*t_var1+las312^2*s_var121+o_err312) ;
+  con113= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var131+o_err113) ;
+  con213= (1^2*las213^2*t_var1)/
+  (1^2*las213^2*t_var1+las213^2*s_var131+o_err213) ;
+  con313= (1^2*las313^2*t_var1)/
+  (1^2*las313^2*t_var1+las313^2*s_var131+o_err313) ;
+  con114= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var141+o_err114) ;
+  con214= (1^2*las214^2*t_var1)/
+  (1^2*las214^2*t_var1+las214^2*s_var141+o_err214) ;
+  con314= (1^2*las314^2*t_var1)/
+  (1^2*las314^2*t_var1+las314^2*s_var141+o_err314) ;
+  con115= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var151+o_err115) ;
+  con215= (1^2*las215^2*t_var1)/
+  (1^2*las215^2*t_var1+las215^2*s_var151+o_err215) ;
+  con315= (1^2*las315^2*t_var1)/
+  (1^2*las315^2*t_var1+las315^2*s_var151+o_err315) ;
+  con116= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var161+o_err116) ;
+  con216= (1^2*las216^2*t_var1)/
+  (1^2*las216^2*t_var1+las216^2*s_var161+o_err216) ;
+  con316= (1^2*las316^2*t_var1)/
+  (1^2*las316^2*t_var1+las316^2*s_var161+o_err316) ;
+  con117= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var171+o_err117) ;
+  con217= (1^2*las217^2*t_var1)/
+  (1^2*las217^2*t_var1+las217^2*s_var171+o_err217) ;
+  con317= (1^2*las317^2*t_var1)/
+  (1^2*las317^2*t_var1+las317^2*s_var171+o_err317) ;
+  con118= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var181+o_err118) ;
+  con218= (1^2*las218^2*t_var1)/
+  (1^2*las218^2*t_var1+las218^2*s_var181+o_err218) ;
+  con318= (1^2*las318^2*t_var1)/
+  (1^2*las318^2*t_var1+las318^2*s_var181+o_err318) ;
+  con119= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var191+o_err119) ;
+  con219= (1^2*las219^2*t_var1)/
+  (1^2*las219^2*t_var1+las219^2*s_var191+o_err219) ;
+  con319= (1^2*las319^2*t_var1)/
+  (1^2*las319^2*t_var1+las319^2*s_var191+o_err319) ;
+  con120= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var201+o_err120) ;
+  con220= (1^2*las220^2*t_var1)/
+  (1^2*las220^2*t_var1+las220^2*s_var201+o_err220) ;
+  con320= (1^2*las320^2*t_var1)/
+  (1^2*las320^2*t_var1+las320^2*s_var201+o_err320) ;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         129
+
+Number of dependent variables                                   60
+Number of independent variables                                  0
+Number of continuous latent variables                           21
+
+Observed dependent variables
+
+  Continuous
+   WORRY1      FEAR1       SAD1        WORRY2      FEAR2       SAD2
+   WORRY3      FEAR3       SAD3        WORRY4      FEAR4       SAD4
+   WORRY5      FEAR5       SAD5        WORRY6      FEAR6       SAD6
+   WORRY7      FEAR7       SAD7        WORRY8      FEAR8       SAD8
+   WORRY9      FEAR9       SAD9        WORRY10     FEAR10      SAD10
+   WORRY11     FEAR11      SAD11       WORRY12     FEAR12      SAD12
+   WORRY13     FEAR13      SAD13       WORRY14     FEAR14      SAD14
+   WORRY15     FEAR15      SAD15       WORRY16     FEAR16      SAD16
+   WORRY17     FEAR17      SAD17       WORRY18     FEAR18      SAD18
+   WORRY19     FEAR19      SAD19       WORRY20     FEAR20      SAD20
+
+Continuous latent variables
+   ETA1        ETA2        ETA3        ETA4        ETA5        ETA6
+   ETA7        ETA8        ETA9        ETA10       ETA11       ETA12
+   ETA13       ETA14       ETA15       ETA16       ETA17       ETA18
+   ETA19       ETA20       THETA1
+
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  Mplus_files/msst20.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns           108
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              WORRY1        FEAR1         SAD1          WORRY2        FEAR2
+              ________      ________      ________      ________      ________
+ WORRY1         0.690
+ FEAR1          0.690         0.690
+ SAD1           0.682         0.682         0.682
+ WORRY2         0.628         0.628         0.628         0.806
+ FEAR2          0.636         0.636         0.636         0.798         0.806
+ SAD2           0.636         0.636         0.636         0.806         0.806
+ WORRY3         0.597         0.597         0.597         0.705         0.705
+ FEAR3          0.597         0.597         0.597         0.705         0.705
+ SAD3           0.597         0.597         0.597         0.705         0.705
+ WORRY4         0.612         0.612         0.612         0.705         0.705
+ FEAR4          0.612         0.612         0.612         0.705         0.705
+ SAD4           0.612         0.612         0.612         0.705         0.705
+ WORRY5         0.597         0.597         0.589         0.705         0.713
+ FEAR5          0.605         0.605         0.597         0.721         0.729
+ SAD5           0.605         0.605         0.597         0.713         0.721
+ WORRY6         0.620         0.620         0.612         0.698         0.698
+ FEAR6          0.620         0.620         0.612         0.698         0.698
+ SAD6           0.620         0.620         0.612         0.698         0.698
+ WORRY7         0.612         0.612         0.605         0.713         0.721
+ FEAR7          0.612         0.612         0.605         0.713         0.721
+ SAD7           0.612         0.612         0.605         0.713         0.721
+ WORRY8         0.612         0.612         0.605         0.713         0.721
+ FEAR8          0.612         0.612         0.605         0.713         0.721
+ SAD8           0.612         0.612         0.605         0.713         0.721
+ WORRY9         0.581         0.581         0.581         0.682         0.682
+ FEAR9          0.589         0.589         0.589         0.690         0.690
+ SAD9           0.589         0.589         0.589         0.690         0.690
+ WORRY10        0.527         0.527         0.527         0.620         0.620
+ FEAR10         0.527         0.527         0.527         0.612         0.612
+ SAD10          0.527         0.527         0.527         0.620         0.620
+ WORRY11        0.535         0.535         0.527         0.535         0.543
+ FEAR11         0.535         0.535         0.527         0.535         0.543
+ SAD11          0.535         0.535         0.527         0.535         0.543
+ WORRY12        0.581         0.581         0.574         0.643         0.651
+ FEAR12         0.574         0.574         0.566         0.636         0.643
+ SAD12          0.581         0.581         0.574         0.643         0.651
+ WORRY13        0.558         0.558         0.550         0.667         0.667
+ FEAR13         0.558         0.558         0.550         0.667         0.667
+ SAD13          0.558         0.558         0.550         0.667         0.667
+ WORRY14        0.612         0.612         0.605         0.729         0.729
+ FEAR14         0.612         0.612         0.605         0.729         0.729
+ SAD14          0.612         0.612         0.605         0.729         0.729
+ WORRY15        0.612         0.612         0.605         0.705         0.705
+ FEAR15         0.597         0.597         0.589         0.690         0.690
+ SAD15          0.612         0.612         0.605         0.705         0.705
+ WORRY16        0.574         0.574         0.566         0.682         0.682
+ FEAR16         0.574         0.574         0.566         0.682         0.682
+ SAD16          0.574         0.574         0.566         0.682         0.682
+ WORRY17        0.605         0.605         0.597         0.705         0.705
+ FEAR17         0.605         0.605         0.597         0.705         0.705
+ SAD17          0.605         0.605         0.597         0.705         0.705
+ WORRY18        0.574         0.574         0.566         0.682         0.682
+ FEAR18         0.581         0.581         0.574         0.690         0.690
+ SAD18          0.581         0.581         0.574         0.690         0.690
+ WORRY19        0.589         0.589         0.581         0.682         0.682
+ FEAR19         0.597         0.597         0.589         0.682         0.682
+ SAD19          0.597         0.597         0.589         0.682         0.682
+ WORRY20        0.535         0.535         0.535         0.612         0.612
+ FEAR20         0.535         0.535         0.535         0.612         0.612
+ SAD20          0.535         0.535         0.535         0.612         0.612
+
+
+           Covariance Coverage
+              SAD2          WORRY3        FEAR3         SAD3          WORRY4
+              ________      ________      ________      ________      ________
+ SAD2           0.814
+ WORRY3         0.713         0.837
+ FEAR3          0.713         0.837         0.837
+ SAD3           0.713         0.829         0.829         0.829
+ WORRY4         0.713         0.744         0.744         0.736         0.868
+ FEAR4          0.713         0.744         0.744         0.736         0.868
+ SAD4           0.713         0.744         0.744         0.736         0.868
+ WORRY5         0.713         0.744         0.744         0.736         0.752
+ FEAR5          0.729         0.752         0.752         0.744         0.760
+ SAD5           0.721         0.752         0.752         0.744         0.760
+ WORRY6         0.705         0.736         0.736         0.729         0.752
+ FEAR6          0.705         0.736         0.736         0.729         0.752
+ SAD6           0.705         0.736         0.736         0.729         0.752
+ WORRY7         0.721         0.744         0.744         0.736         0.744
+ FEAR7          0.721         0.744         0.744         0.736         0.744
+ SAD7           0.721         0.744         0.744         0.736         0.744
+ WORRY8         0.721         0.736         0.736         0.736         0.744
+ FEAR8          0.721         0.736         0.736         0.736         0.744
+ SAD8           0.721         0.736         0.736         0.736         0.744
+ WORRY9         0.690         0.698         0.698         0.698         0.713
+ FEAR9          0.698         0.705         0.705         0.705         0.713
+ SAD9           0.698         0.705         0.705         0.705         0.713
+ WORRY10        0.628         0.667         0.667         0.659         0.690
+ FEAR10         0.620         0.659         0.659         0.651         0.682
+ SAD10          0.628         0.667         0.667         0.659         0.690
+ WORRY11        0.543         0.558         0.558         0.550         0.597
+ FEAR11         0.543         0.558         0.558         0.550         0.597
+ SAD11          0.543         0.558         0.558         0.550         0.597
+ WORRY12        0.651         0.651         0.651         0.643         0.682
+ FEAR12         0.643         0.643         0.643         0.636         0.674
+ SAD12          0.651         0.651         0.651         0.643         0.682
+ WORRY13        0.674         0.651         0.651         0.643         0.713
+ FEAR13         0.674         0.651         0.651         0.643         0.713
+ SAD13          0.674         0.651         0.651         0.643         0.713
+ WORRY14        0.736         0.729         0.729         0.721         0.760
+ FEAR14         0.736         0.729         0.729         0.721         0.760
+ SAD14          0.736         0.729         0.729         0.721         0.760
+ WORRY15        0.713         0.736         0.736         0.729         0.767
+ FEAR15         0.698         0.721         0.721         0.713         0.760
+ SAD15          0.713         0.736         0.736         0.729         0.767
+ WORRY16        0.690         0.721         0.721         0.713         0.729
+ FEAR16         0.690         0.721         0.721         0.713         0.729
+ SAD16          0.690         0.721         0.721         0.713         0.729
+ WORRY17        0.713         0.752         0.752         0.744         0.783
+ FEAR17         0.713         0.752         0.752         0.744         0.783
+ SAD17          0.713         0.752         0.752         0.744         0.783
+ WORRY18        0.690         0.705         0.705         0.698         0.729
+ FEAR18         0.698         0.713         0.713         0.705         0.736
+ SAD18          0.698         0.713         0.713         0.705         0.736
+ WORRY19        0.690         0.736         0.736         0.729         0.744
+ FEAR19         0.690         0.736         0.736         0.729         0.752
+ SAD19          0.690         0.736         0.736         0.729         0.752
+ WORRY20        0.620         0.643         0.643         0.636         0.690
+ FEAR20         0.620         0.643         0.643         0.636         0.690
+ SAD20          0.620         0.643         0.643         0.636         0.690
+
+
+           Covariance Coverage
+              FEAR4         SAD4          WORRY5        FEAR5         SAD5
+              ________      ________      ________      ________      ________
+ FEAR4          0.868
+ SAD4           0.868         0.868
+ WORRY5         0.752         0.752         0.868
+ FEAR5          0.760         0.760         0.860         0.876
+ SAD5           0.760         0.760         0.860         0.868         0.876
+ WORRY6         0.752         0.752         0.783         0.783         0.783
+ FEAR6          0.752         0.752         0.783         0.783         0.783
+ SAD6           0.752         0.752         0.783         0.783         0.783
+ WORRY7         0.744         0.744         0.767         0.767         0.767
+ FEAR7          0.744         0.744         0.767         0.767         0.767
+ SAD7           0.744         0.744         0.767         0.767         0.767
+ WORRY8         0.744         0.744         0.767         0.775         0.767
+ FEAR8          0.744         0.744         0.767         0.775         0.767
+ SAD8           0.744         0.744         0.767         0.775         0.767
+ WORRY9         0.713         0.713         0.713         0.721         0.721
+ FEAR9          0.713         0.713         0.713         0.721         0.721
+ SAD9           0.713         0.713         0.713         0.721         0.721
+ WORRY10        0.690         0.690         0.682         0.690         0.698
+ FEAR10         0.682         0.682         0.674         0.682         0.690
+ SAD10          0.690         0.690         0.682         0.690         0.698
+ WORRY11        0.597         0.597         0.581         0.581         0.581
+ FEAR11         0.597         0.597         0.581         0.581         0.581
+ SAD11          0.597         0.597         0.581         0.581         0.581
+ WORRY12        0.682         0.682         0.682         0.690         0.690
+ FEAR12         0.674         0.674         0.682         0.690         0.690
+ SAD12          0.682         0.682         0.682         0.690         0.690
+ WORRY13        0.713         0.713         0.690         0.698         0.705
+ FEAR13         0.713         0.713         0.690         0.698         0.705
+ SAD13          0.713         0.713         0.690         0.698         0.705
+ WORRY14        0.760         0.760         0.744         0.760         0.752
+ FEAR14         0.760         0.760         0.744         0.760         0.752
+ SAD14          0.760         0.760         0.744         0.760         0.752
+ WORRY15        0.767         0.767         0.744         0.752         0.752
+ FEAR15         0.760         0.760         0.729         0.736         0.736
+ SAD15          0.767         0.767         0.744         0.752         0.752
+ WORRY16        0.729         0.729         0.744         0.752         0.752
+ FEAR16         0.729         0.729         0.744         0.752         0.752
+ SAD16          0.729         0.729         0.744         0.752         0.752
+ WORRY17        0.783         0.783         0.767         0.767         0.767
+ FEAR17         0.783         0.783         0.767         0.767         0.767
+ SAD17          0.783         0.783         0.767         0.767         0.767
+ WORRY18        0.729         0.729         0.721         0.736         0.729
+ FEAR18         0.736         0.736         0.729         0.744         0.736
+ SAD18          0.736         0.736         0.729         0.744         0.736
+ WORRY19        0.744         0.744         0.760         0.767         0.767
+ FEAR19         0.752         0.752         0.760         0.767         0.767
+ SAD19          0.752         0.752         0.760         0.767         0.767
+ WORRY20        0.690         0.690         0.651         0.659         0.659
+ FEAR20         0.690         0.690         0.651         0.659         0.659
+ SAD20          0.690         0.690         0.651         0.659         0.659
+
+
+           Covariance Coverage
+              WORRY6        FEAR6         SAD6          WORRY7        FEAR7
+              ________      ________      ________      ________      ________
+ WORRY6         0.876
+ FEAR6          0.876         0.876
+ SAD6           0.876         0.876         0.876
+ WORRY7         0.767         0.767         0.767         0.860
+ FEAR7          0.767         0.767         0.767         0.860         0.860
+ SAD7           0.767         0.767         0.767         0.860         0.860
+ WORRY8         0.752         0.752         0.752         0.775         0.775
+ FEAR8          0.752         0.752         0.752         0.775         0.775
+ SAD8           0.752         0.752         0.752         0.775         0.775
+ WORRY9         0.736         0.736         0.736         0.705         0.705
+ FEAR9          0.744         0.744         0.744         0.713         0.713
+ SAD9           0.744         0.744         0.744         0.713         0.713
+ WORRY10        0.690         0.690         0.690         0.659         0.659
+ FEAR10         0.682         0.682         0.682         0.651         0.651
+ SAD10          0.690         0.690         0.690         0.659         0.659
+ WORRY11        0.597         0.597         0.597         0.589         0.589
+ FEAR11         0.597         0.597         0.597         0.589         0.589
+ SAD11          0.597         0.597         0.597         0.589         0.589
+ WORRY12        0.705         0.705         0.705         0.690         0.690
+ FEAR12         0.698         0.698         0.698         0.690         0.690
+ SAD12          0.705         0.705         0.705         0.690         0.690
+ WORRY13        0.713         0.713         0.713         0.713         0.713
+ FEAR13         0.713         0.713         0.713         0.713         0.713
+ SAD13          0.713         0.713         0.713         0.713         0.713
+ WORRY14        0.760         0.760         0.760         0.767         0.767
+ FEAR14         0.760         0.760         0.760         0.767         0.767
+ SAD14          0.760         0.760         0.760         0.767         0.767
+ WORRY15        0.752         0.752         0.752         0.744         0.744
+ FEAR15         0.736         0.736         0.736         0.729         0.729
+ SAD15          0.752         0.752         0.752         0.744         0.744
+ WORRY16        0.744         0.744         0.744         0.752         0.752
+ FEAR16         0.744         0.744         0.744         0.752         0.752
+ SAD16          0.744         0.744         0.744         0.752         0.752
+ WORRY17        0.767         0.767         0.767         0.752         0.752
+ FEAR17         0.767         0.767         0.767         0.752         0.752
+ SAD17          0.767         0.767         0.767         0.752         0.752
+ WORRY18        0.736         0.736         0.736         0.713         0.713
+ FEAR18         0.744         0.744         0.744         0.721         0.721
+ SAD18          0.744         0.744         0.744         0.721         0.721
+ WORRY19        0.767         0.767         0.767         0.736         0.736
+ FEAR19         0.767         0.767         0.767         0.736         0.736
+ SAD19          0.767         0.767         0.767         0.736         0.736
+ WORRY20        0.636         0.636         0.636         0.636         0.636
+ FEAR20         0.636         0.636         0.636         0.636         0.636
+ SAD20          0.636         0.636         0.636         0.636         0.636
+
+
+           Covariance Coverage
+              SAD7          WORRY8        FEAR8         SAD8          WORRY9
+              ________      ________      ________      ________      ________
+ SAD7           0.860
+ WORRY8         0.775         0.853
+ FEAR8          0.775         0.853         0.853
+ SAD8           0.775         0.853         0.853         0.853
+ WORRY9         0.705         0.721         0.721         0.721         0.822
+ FEAR9          0.713         0.729         0.729         0.729         0.822
+ SAD9           0.713         0.729         0.729         0.729         0.822
+ WORRY10        0.659         0.667         0.667         0.667         0.667
+ FEAR10         0.651         0.659         0.659         0.659         0.659
+ SAD10          0.659         0.667         0.667         0.667         0.667
+ WORRY11        0.589         0.589         0.589         0.589         0.543
+ FEAR11         0.589         0.589         0.589         0.589         0.543
+ SAD11          0.589         0.589         0.589         0.589         0.543
+ WORRY12        0.690         0.674         0.674         0.674         0.651
+ FEAR12         0.690         0.667         0.667         0.667         0.643
+ SAD12          0.690         0.674         0.674         0.674         0.651
+ WORRY13        0.713         0.698         0.698         0.698         0.651
+ FEAR13         0.713         0.698         0.698         0.698         0.651
+ SAD13          0.713         0.698         0.698         0.698         0.651
+ WORRY14        0.767         0.767         0.767         0.767         0.736
+ FEAR14         0.767         0.767         0.767         0.767         0.736
+ SAD14          0.767         0.767         0.767         0.767         0.736
+ WORRY15        0.744         0.736         0.736         0.736         0.713
+ FEAR15         0.729         0.721         0.721         0.721         0.698
+ SAD15          0.744         0.736         0.736         0.736         0.713
+ WORRY16        0.752         0.713         0.713         0.713         0.698
+ FEAR16         0.752         0.713         0.713         0.713         0.698
+ SAD16          0.752         0.713         0.713         0.713         0.698
+ WORRY17        0.752         0.752         0.752         0.752         0.729
+ FEAR17         0.752         0.752         0.752         0.752         0.729
+ SAD17          0.752         0.752         0.752         0.752         0.729
+ WORRY18        0.713         0.721         0.721         0.721         0.705
+ FEAR18         0.721         0.729         0.729         0.729         0.713
+ SAD18          0.721         0.729         0.729         0.729         0.713
+ WORRY19        0.736         0.736         0.736         0.736         0.736
+ FEAR19         0.736         0.744         0.744         0.744         0.736
+ SAD19          0.736         0.744         0.744         0.744         0.736
+ WORRY20        0.636         0.667         0.667         0.667         0.636
+ FEAR20         0.636         0.667         0.667         0.667         0.636
+ SAD20          0.636         0.667         0.667         0.667         0.636
+
+
+           Covariance Coverage
+              FEAR9         SAD9          WORRY10       FEAR10        SAD10
+              ________      ________      ________      ________      ________
+ FEAR9          0.829
+ SAD9           0.829         0.829
+ WORRY10        0.674         0.674         0.783
+ FEAR10         0.667         0.667         0.775         0.775
+ SAD10          0.674         0.674         0.783         0.775         0.783
+ WORRY11        0.550         0.550         0.527         0.519         0.527
+ FEAR11         0.550         0.550         0.527         0.519         0.527
+ SAD11          0.550         0.550         0.527         0.519         0.527
+ WORRY12        0.659         0.659         0.620         0.612         0.620
+ FEAR12         0.651         0.651         0.612         0.605         0.612
+ SAD12          0.659         0.659         0.620         0.612         0.620
+ WORRY13        0.659         0.659         0.651         0.643         0.651
+ FEAR13         0.659         0.659         0.651         0.643         0.651
+ SAD13          0.659         0.659         0.651         0.643         0.651
+ WORRY14        0.744         0.744         0.682         0.674         0.682
+ FEAR14         0.744         0.744         0.682         0.674         0.682
+ SAD14          0.744         0.744         0.682         0.674         0.682
+ WORRY15        0.721         0.721         0.698         0.690         0.698
+ FEAR15         0.705         0.705         0.690         0.682         0.690
+ SAD15          0.721         0.721         0.698         0.690         0.698
+ WORRY16        0.698         0.698         0.659         0.651         0.659
+ FEAR16         0.698         0.698         0.659         0.651         0.659
+ SAD16          0.698         0.698         0.659         0.651         0.659
+ WORRY17        0.736         0.736         0.713         0.705         0.713
+ FEAR17         0.736         0.736         0.713         0.705         0.713
+ SAD17          0.736         0.736         0.713         0.705         0.713
+ WORRY18        0.713         0.713         0.682         0.682         0.682
+ FEAR18         0.721         0.721         0.682         0.682         0.682
+ SAD18          0.721         0.721         0.682         0.682         0.682
+ WORRY19        0.744         0.744         0.698         0.698         0.698
+ FEAR19         0.744         0.744         0.705         0.705         0.705
+ SAD19          0.744         0.744         0.705         0.705         0.705
+ WORRY20        0.643         0.643         0.628         0.628         0.628
+ FEAR20         0.643         0.643         0.628         0.628         0.628
+ SAD20          0.643         0.643         0.628         0.628         0.628
+
+
+           Covariance Coverage
+              WORRY11       FEAR11        SAD11         WORRY12       FEAR12
+              ________      ________      ________      ________      ________
+ WORRY11        0.659
+ FEAR11         0.659         0.659
+ SAD11          0.659         0.659         0.659
+ WORRY12        0.581         0.581         0.581         0.775
+ FEAR12         0.574         0.574         0.574         0.767         0.767
+ SAD12          0.581         0.581         0.581         0.775         0.767
+ WORRY13        0.558         0.558         0.558         0.659         0.651
+ FEAR13         0.558         0.558         0.558         0.659         0.651
+ SAD13          0.558         0.558         0.558         0.659         0.651
+ WORRY14        0.581         0.581         0.581         0.674         0.667
+ FEAR14         0.581         0.581         0.581         0.674         0.667
+ SAD14          0.581         0.581         0.581         0.674         0.667
+ WORRY15        0.605         0.605         0.605         0.698         0.690
+ FEAR15         0.589         0.589         0.589         0.682         0.674
+ SAD15          0.605         0.605         0.605         0.698         0.690
+ WORRY16        0.574         0.574         0.574         0.667         0.659
+ FEAR16         0.574         0.574         0.574         0.667         0.659
+ SAD16          0.574         0.574         0.574         0.667         0.659
+ WORRY17        0.589         0.589         0.589         0.690         0.682
+ FEAR17         0.589         0.589         0.589         0.690         0.682
+ SAD17          0.589         0.589         0.589         0.690         0.682
+ WORRY18        0.566         0.566         0.566         0.674         0.667
+ FEAR18         0.566         0.566         0.566         0.674         0.667
+ SAD18          0.566         0.566         0.566         0.674         0.667
+ WORRY19        0.589         0.589         0.589         0.705         0.698
+ FEAR19         0.597         0.597         0.597         0.705         0.698
+ SAD19          0.597         0.597         0.597         0.705         0.698
+ WORRY20        0.527         0.527         0.527         0.605         0.597
+ FEAR20         0.527         0.527         0.527         0.605         0.597
+ SAD20          0.527         0.527         0.527         0.605         0.597
+
+
+           Covariance Coverage
+              SAD12         WORRY13       FEAR13        SAD13         WORRY14
+              ________      ________      ________      ________      ________
+ SAD12          0.775
+ WORRY13        0.659         0.798
+ FEAR13         0.659         0.798         0.798
+ SAD13          0.659         0.798         0.798         0.798
+ WORRY14        0.674         0.736         0.736         0.736         0.876
+ FEAR14         0.674         0.736         0.736         0.736         0.876
+ SAD14          0.674         0.736         0.736         0.736         0.876
+ WORRY15        0.698         0.705         0.705         0.705         0.760
+ FEAR15         0.682         0.690         0.690         0.690         0.744
+ SAD15          0.698         0.705         0.705         0.705         0.760
+ WORRY16        0.667         0.674         0.674         0.674         0.744
+ FEAR16         0.667         0.674         0.674         0.674         0.744
+ SAD16          0.667         0.674         0.674         0.674         0.744
+ WORRY17        0.690         0.705         0.705         0.705         0.791
+ FEAR17         0.690         0.705         0.705         0.705         0.791
+ SAD17          0.690         0.705         0.705         0.705         0.791
+ WORRY18        0.674         0.698         0.698         0.698         0.760
+ FEAR18         0.674         0.705         0.705         0.705         0.767
+ SAD18          0.674         0.705         0.705         0.705         0.767
+ WORRY19        0.705         0.690         0.690         0.690         0.760
+ FEAR19         0.705         0.698         0.698         0.698         0.767
+ SAD19          0.705         0.698         0.698         0.698         0.767
+ WORRY20        0.605         0.636         0.636         0.636         0.698
+ FEAR20         0.605         0.636         0.636         0.636         0.698
+ SAD20          0.605         0.636         0.636         0.636         0.698
+
+
+           Covariance Coverage
+              FEAR14        SAD14         WORRY15       FEAR15        SAD15
+              ________      ________      ________      ________      ________
+ FEAR14         0.876
+ SAD14          0.876         0.876
+ WORRY15        0.760         0.760         0.868
+ FEAR15         0.744         0.744         0.853         0.853
+ SAD15          0.760         0.760         0.868         0.853         0.868
+ WORRY16        0.744         0.744         0.752         0.736         0.752
+ FEAR16         0.744         0.744         0.752         0.736         0.752
+ SAD16          0.744         0.744         0.752         0.736         0.752
+ WORRY17        0.791         0.791         0.783         0.767         0.783
+ FEAR17         0.791         0.791         0.783         0.767         0.783
+ SAD17          0.791         0.791         0.783         0.767         0.783
+ WORRY18        0.760         0.760         0.744         0.729         0.744
+ FEAR18         0.767         0.767         0.752         0.736         0.752
+ SAD18          0.767         0.767         0.752         0.736         0.752
+ WORRY19        0.760         0.760         0.760         0.744         0.760
+ FEAR19         0.767         0.767         0.767         0.752         0.767
+ SAD19          0.767         0.767         0.767         0.752         0.767
+ WORRY20        0.698         0.698         0.682         0.667         0.682
+ FEAR20         0.698         0.698         0.682         0.667         0.682
+ SAD20          0.698         0.698         0.682         0.667         0.682
+
+
+           Covariance Coverage
+              WORRY16       FEAR16        SAD16         WORRY17       FEAR17
+              ________      ________      ________      ________      ________
+ WORRY16        0.837
+ FEAR16         0.837         0.837
+ SAD16          0.837         0.837         0.837
+ WORRY17        0.760         0.760         0.760         0.884
+ FEAR17         0.760         0.760         0.760         0.884         0.884
+ SAD17          0.760         0.760         0.760         0.884         0.884
+ WORRY18        0.729         0.729         0.729         0.775         0.775
+ FEAR18         0.736         0.736         0.736         0.783         0.783
+ SAD18          0.736         0.736         0.736         0.783         0.783
+ WORRY19        0.744         0.744         0.744         0.783         0.783
+ FEAR19         0.744         0.744         0.744         0.791         0.791
+ SAD19          0.744         0.744         0.744         0.791         0.791
+ WORRY20        0.651         0.651         0.651         0.690         0.690
+ FEAR20         0.651         0.651         0.651         0.690         0.690
+ SAD20          0.651         0.651         0.651         0.690         0.690
+
+
+           Covariance Coverage
+              SAD17         WORRY18       FEAR18        SAD18         WORRY19
+              ________      ________      ________      ________      ________
+ SAD17          0.884
+ WORRY18        0.775         0.845
+ FEAR18         0.783         0.845         0.853
+ SAD18          0.783         0.845         0.853         0.853
+ WORRY19        0.783         0.775         0.775         0.775         0.868
+ FEAR19         0.791         0.783         0.783         0.783         0.868
+ SAD19          0.791         0.783         0.783         0.783         0.868
+ WORRY20        0.690         0.690         0.698         0.698         0.713
+ FEAR20         0.690         0.690         0.698         0.698         0.713
+ SAD20          0.690         0.690         0.698         0.698         0.713
+
+
+           Covariance Coverage
+              FEAR19        SAD19         WORRY20       FEAR20        SAD20
+              ________      ________      ________      ________      ________
+ FEAR19         0.876
+ SAD19          0.876         0.876
+ WORRY20        0.721         0.721         0.760
+ FEAR20         0.721         0.721         0.760         0.760
+ SAD20          0.721         0.721         0.760         0.760         0.760
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     WORRY1                3.775      -0.080       1.000   17.98%       2.000      3.000      4.000
+              89.000       3.680      -1.331       7.000    4.49%       5.000      6.000
+     FEAR1                 2.281       1.074       1.000   42.70%       1.000      1.000      2.000
+              89.000       2.269       0.189       7.000    1.12%       2.000      4.000
+     SAD1                  3.023       0.501       1.000   28.41%       1.000      2.000      3.000
+              88.000       3.204      -0.841       7.000    3.41%       3.000      5.000
+     WORRY2                3.731      -0.015       1.000   22.12%       1.000      3.000      4.000
+             104.000       3.947      -1.283       7.000    7.69%       4.000      6.000
+     FEAR2                 2.221       1.136       1.000   49.04%       1.000      1.000      2.000
+             104.000       2.518       0.039       7.000    0.96%       2.000      4.000
+     SAD2                  3.057       0.468       1.000   25.71%       1.000      2.000      3.000
+             105.000       3.140      -0.870       7.000    3.81%       4.000      5.000
+     WORRY3                3.278       0.401       1.000   25.00%       1.000      2.000      3.000
+             108.000       3.997      -1.241       7.000    6.48%       4.000      5.000
+     FEAR3                 2.019       1.325       1.000   54.63%       1.000      1.000      1.000
+             108.000       2.055       0.574       6.000    2.78%       2.000      3.000
+     SAD3                  2.804       0.610       1.000   32.71%       1.000      2.000      2.000
+             107.000       3.036      -0.801       7.000    1.87%       3.000      4.000
+     WORRY4                3.009       0.559       1.000   33.04%       1.000      2.000      3.000
+             112.000       3.670      -0.900       7.000    5.36%       3.000      5.000
+     FEAR4                 1.839       1.617       1.000   56.25%       1.000      1.000      1.000
+             112.000       1.546       1.847       6.000    1.79%       2.000      2.000
+     SAD4                  2.402       0.668       1.000   38.39%       1.000      2.000      2.000
+             112.000       2.062      -0.802       6.000    0.89%       3.000      4.000
+     WORRY5                3.027       0.444       1.000   33.93%       1.000      2.000      3.000
+             112.000       3.580      -1.100       7.000    2.68%       3.000      5.000
+     FEAR5                 1.752       1.829       1.000   62.83%       1.000      1.000      1.000
+             113.000       1.567       2.508       6.000    1.77%       1.000      2.000
+     SAD5                  2.540       0.976       1.000   34.51%       1.000      2.000      2.000
+             113.000       2.585       0.136       7.000    2.65%       3.000      4.000
+     WORRY6                2.920       0.547       1.000   35.40%       1.000      2.000      2.000
+             113.000       3.613      -1.080       7.000    2.65%       3.000      5.000
+     FEAR6                 1.814       1.676       1.000   60.18%       1.000      1.000      1.000
+             113.000       1.550       2.595       7.000    0.88%       1.000      3.000
+     SAD6                  2.611       0.845       1.000   35.40%       1.000      2.000      2.000
+             113.000       2.733      -0.192       7.000    2.65%       3.000      4.000
+     WORRY7                2.757       0.702       1.000   37.84%       1.000      2.000      2.000
+             111.000       3.409      -0.780       7.000    3.60%       3.000      5.000
+     FEAR7                 1.811       1.787       1.000   60.36%       1.000      1.000      1.000
+             111.000       1.685       2.480       6.000    3.60%       1.000      2.000
+     SAD7                  2.577       0.622       1.000   36.04%       1.000      2.000      2.000
+             111.000       2.460      -0.781       7.000    0.90%       3.000      4.000
+     WORRY8                2.664       0.815       1.000   40.00%       1.000      1.000      2.000
+             110.000       3.387      -0.645       7.000    2.73%       3.000      5.000
+     FEAR8                 1.636       2.197       1.000   70.00%       1.000      1.000      1.000
+             110.000       1.540       3.987       6.000    2.73%       1.000      2.000
+     SAD8                  2.345       1.031       1.000   41.82%       1.000      1.000      2.000
+             110.000       2.299       0.332       7.000    1.82%       2.000      4.000
+     WORRY9                2.726       0.655       1.000   36.79%       1.000      2.000      2.000
+             106.000       3.180      -0.895       7.000    1.89%       3.000      5.000
+     FEAR9                 1.720       1.932       1.000   62.62%       1.000      1.000      1.000
+             107.000       1.491       2.942       6.000    1.87%       1.000      2.000
+     SAD9                  2.439       0.946       1.000   34.58%       1.000      2.000      2.000
+             107.000       2.209       0.094       7.000    0.93%       2.000      4.000
+     WORRY10               2.426       0.707       1.000   46.53%       1.000      1.000      2.000
+             101.000       2.601      -0.843       6.000    4.95%       3.000      4.000
+     FEAR10                1.600       1.765       1.000   67.00%       1.000      1.000      1.000
+             100.000       1.040       2.373       5.000    3.00%       1.000      2.000
+     SAD10                 2.337       1.114       1.000   41.58%       1.000      1.000      2.000
+             101.000       2.441       0.375       7.000    1.98%       2.000      4.000
+     WORRY11               3.424       0.167       1.000   25.88%       1.000      3.000      3.000
+              85.000       3.679      -1.176       7.000    5.88%       4.000      5.000
+     FEAR11                1.847       1.931       1.000   56.47%       1.000      1.000      1.000
+              85.000       1.706       3.558       7.000    1.18%       2.000      2.000
+     SAD11                 2.553       0.713       1.000   38.82%       1.000      2.000      2.000
+              85.000       2.600      -0.592       7.000    1.18%       3.000      4.000
+     WORRY12               3.220       0.113       1.000   27.00%       1.000      2.000      3.000
+             100.000       3.232      -1.418       6.000   13.00%       4.000      5.000
+     FEAR12                1.758       1.681       1.000   59.60%       1.000      1.000      1.000
+              99.000       1.376       2.092       6.000    1.01%       1.000      2.000
+     SAD12                 2.700       0.737       1.000   33.00%       1.000      2.000      2.000
+             100.000       2.730      -0.401       7.000    2.00%       3.000      4.000
+     WORRY13               3.117       0.392       1.000   30.10%       1.000      2.000      3.000
+             103.000       3.579      -1.101       7.000    4.85%       4.000      5.000
+     FEAR13                1.835       1.738       1.000   58.25%       1.000      1.000      1.000
+             103.000       1.691       2.215       6.000    2.91%       2.000      2.000
+     SAD13                 2.602       0.690       1.000   37.86%       1.000      2.000      2.000
+             103.000       2.706      -0.656       7.000    0.97%       3.000      4.000
+     WORRY14               3.097       0.326       1.000   28.32%       1.000      2.000      3.000
+             113.000       3.203      -1.088       7.000    2.65%       4.000      5.000
+     FEAR14                1.876       1.220       1.000   55.75%       1.000      1.000      1.000
+             113.000       1.471       0.232       5.000    4.42%       2.000      3.000
+     SAD14                 2.699       0.675       1.000   31.86%       1.000      2.000      2.000
+             113.000       2.724      -0.697       7.000    0.88%       3.000      4.000
+     WORRY15               2.866       0.599       1.000   28.57%       1.000      2.000      2.000
+             112.000       3.045      -0.891       7.000    1.79%       3.000      5.000
+     FEAR15                1.709       2.087       1.000   64.55%       1.000      1.000      1.000
+             110.000       1.552       4.101       7.000    0.91%       1.000      2.000
+     SAD15                 2.473       0.831       1.000   34.82%       1.000      2.000      2.000
+             112.000       2.231      -0.213       7.000    0.89%       2.000      4.000
+     WORRY16               2.907       0.594       1.000   36.11%       1.000      2.000      3.000
+             108.000       3.491      -0.787       7.000    4.63%       3.000      4.000
+     FEAR16                1.648       2.154       1.000   66.67%       1.000      1.000      1.000
+             108.000       1.376       4.522       7.000    0.93%       1.000      2.000
+     SAD16                 2.472       1.049       1.000   35.19%       1.000      2.000      2.000
+             108.000       2.546       0.162       7.000    1.85%       2.000      4.000
+     WORRY17               2.921       0.445       1.000   34.21%       1.000      2.000      2.500
+             114.000       3.283      -1.076       7.000    2.63%       3.000      5.000
+     FEAR17                1.675       2.015       1.000   67.54%       1.000      1.000      1.000
+             114.000       1.517       3.292       6.000    2.63%       1.000      2.000
+     SAD17                 2.526       1.015       1.000   35.09%       1.000      2.000      2.000
+             114.000       2.670       0.123       7.000    2.63%       2.000      4.000
+     WORRY18               2.908       0.633       1.000   38.53%       1.000      2.000      2.000
+             109.000       4.010      -0.990       7.000    5.50%       3.000      5.000
+     FEAR18                1.709       1.895       1.000   66.36%       1.000      1.000      1.000
+             110.000       1.588       2.594       6.000    1.82%       1.000      2.000
+     SAD18                 2.509       0.967       1.000   42.73%       1.000      1.000      2.000
+             110.000       3.104      -0.213       7.000    3.64%       2.000      4.000
+     WORRY19               2.857       0.731       1.000   33.04%       1.000      2.000      2.000
+             112.000       3.569      -0.748       7.000    4.46%       3.000      5.000
+     FEAR19                1.726       1.880       1.000   71.68%       1.000      1.000      1.000
+             113.000       1.916       2.297       6.000    3.54%       1.000      2.000
+     SAD19                 2.558       0.791       1.000   43.36%       1.000      1.000      2.000
+             113.000       3.061      -0.675       7.000    0.88%       3.000      4.000
+     WORRY20               2.622       0.874       1.000   41.84%       1.000      1.000      2.000
+              98.000       3.357      -0.433       7.000    4.08%       3.000      4.000
+     FEAR20                1.622       2.095       1.000   70.41%       1.000      1.000      1.000
+              98.000       1.398       3.725       6.000    2.04%       1.000      2.000
+     SAD20                 2.490       0.977       1.000   36.73%       1.000      2.000      2.000
+              98.000       2.597       0.010       7.000    2.04%       2.000      4.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                      162
+
+Loglikelihood
+
+          H0 Value                      -10745.180
+          H1 Value                       -7742.793
+
+Information Criteria
+
+          Akaike (AIC)                   21814.360
+          Bayesian (BIC)                 22277.649
+          Sample-Size Adjusted BIC       21765.297
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                           6004.774
+          Degrees of Freedom                  1728
+          P-Value                           0.0000
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.139
+          90 Percent C.I.                    0.135  0.142
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.342
+          TLI                                0.326
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           8266.801
+          Degrees of Freedom                  1770
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.120
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ ETA1     BY
+    WORRY1             1.000      0.000    999.000    999.000
+    FEAR1              0.591      0.111      5.333      0.000
+    SAD1               0.851      0.133      6.402      0.000
+
+ ETA2     BY
+    WORRY2             1.000      0.000    999.000    999.000
+    FEAR2              0.660      0.129      5.128      0.000
+    SAD2               0.932      0.176      5.299      0.000
+
+ ETA3     BY
+    WORRY3             1.000      0.000    999.000    999.000
+    FEAR3              0.722      0.085      8.461      0.000
+    SAD3               0.915      0.103      8.885      0.000
+
+ ETA4     BY
+    WORRY4             1.000      0.000    999.000    999.000
+    FEAR4              0.703      0.100      7.030      0.000
+    SAD4               0.747      0.107      6.949      0.000
+
+ ETA5     BY
+    WORRY5             1.000      0.000    999.000    999.000
+    FEAR5              0.628      0.093      6.747      0.000
+    SAD5               0.954      0.114      8.391      0.000
+
+ ETA6     BY
+    WORRY6             1.000      0.000    999.000    999.000
+    FEAR6              0.646      0.092      7.007      0.000
+    SAD6               1.097      0.118      9.332      0.000
+
+ ETA7     BY
+    WORRY7             1.000      0.000    999.000    999.000
+    FEAR7              0.530      0.092      5.745      0.000
+    SAD7               0.748      0.122      6.111      0.000
+
+ ETA8     BY
+    WORRY8             1.000      0.000    999.000    999.000
+    FEAR8              0.605      0.090      6.735      0.000
+    SAD8               0.750      0.124      6.028      0.000
+
+ ETA9     BY
+    WORRY9             1.000      0.000    999.000    999.000
+    FEAR9              0.523      0.108      4.863      0.000
+    SAD9               0.819      0.119      6.904      0.000
+
+ ETA10    BY
+    WORRY10            1.000      0.000    999.000    999.000
+    FEAR10             0.484      0.092      5.263      0.000
+    SAD10              0.908      0.137      6.628      0.000
+
+ ETA11    BY
+    WORRY11            1.000      0.000    999.000    999.000
+    FEAR11             0.502      0.099      5.070      0.000
+    SAD11              0.956      0.128      7.460      0.000
+
+ ETA12    BY
+    WORRY12            1.000      0.000    999.000    999.000
+    FEAR12             0.579      0.089      6.516      0.000
+    SAD12              0.987      0.118      8.362      0.000
+
+ ETA13    BY
+    WORRY13            1.000      0.000    999.000    999.000
+    FEAR13             0.610      0.099      6.133      0.000
+    SAD13              0.901      0.133      6.786      0.000
+
+ ETA14    BY
+    WORRY14            1.000      0.000    999.000    999.000
+    FEAR14             0.562      0.097      5.805      0.000
+    SAD14              1.169      0.120      9.725      0.000
+
+ ETA15    BY
+    WORRY15            1.000      0.000    999.000    999.000
+    FEAR15             0.608      0.097      6.245      0.000
+    SAD15              0.758      0.142      5.349      0.000
+
+ ETA16    BY
+    WORRY16            1.000      0.000    999.000    999.000
+    FEAR16             0.592      0.076      7.794      0.000
+    SAD16              0.954      0.105      9.080      0.000
+
+ ETA17    BY
+    WORRY17            1.000      0.000    999.000    999.000
+    FEAR17             0.607      0.080      7.546      0.000
+    SAD17              1.061      0.098     10.829      0.000
+
+ ETA18    BY
+    WORRY18            1.000      0.000    999.000    999.000
+    FEAR18             0.512      0.080      6.372      0.000
+    SAD18              0.822      0.121      6.818      0.000
+
+ ETA19    BY
+    WORRY19            1.000      0.000    999.000    999.000
+    FEAR19             0.626      0.086      7.301      0.000
+    SAD19              0.859      0.111      7.721      0.000
+
+ ETA20    BY
+    WORRY20            1.000      0.000    999.000    999.000
+    FEAR20             0.552      0.097      5.686      0.000
+    SAD20              0.793      0.131      6.036      0.000
+
+ THETA1   BY
+    ETA1               1.000      0.000    999.000    999.000
+    ETA2               1.000      0.000    999.000    999.000
+    ETA3               1.000      0.000    999.000    999.000
+    ETA4               1.000      0.000    999.000    999.000
+    ETA5               1.000      0.000    999.000    999.000
+    ETA6               1.000      0.000    999.000    999.000
+    ETA7               1.000      0.000    999.000    999.000
+    ETA8               1.000      0.000    999.000    999.000
+    ETA9               1.000      0.000    999.000    999.000
+    ETA10              1.000      0.000    999.000    999.000
+    ETA11              1.000      0.000    999.000    999.000
+    ETA12              1.000      0.000    999.000    999.000
+    ETA13              1.000      0.000    999.000    999.000
+    ETA14              1.000      0.000    999.000    999.000
+    ETA15              1.000      0.000    999.000    999.000
+    ETA16              1.000      0.000    999.000    999.000
+    ETA17              1.000      0.000    999.000    999.000
+    ETA18              1.000      0.000    999.000    999.000
+    ETA19              1.000      0.000    999.000    999.000
+    ETA20              1.000      0.000    999.000    999.000
+
+ Means
+    THETA1             2.969      0.094     31.753      0.000
+
+ Intercepts
+    WORRY1             0.000      0.000    999.000    999.000
+    FEAR1              0.289      0.373      0.774      0.439
+    SAD1               0.147      0.430      0.342      0.732
+    WORRY2             0.000      0.000    999.000    999.000
+    FEAR2              0.098      0.419      0.234      0.815
+    SAD2               0.076      0.524      0.145      0.885
+    WORRY3             0.000      0.000    999.000    999.000
+    FEAR3             -0.235      0.278     -0.845      0.398
+    SAD3              -0.057      0.332     -0.171      0.864
+    WORRY4             0.000      0.000    999.000    999.000
+    FEAR4             -0.231      0.307     -0.754      0.451
+    SAD4               0.201      0.335      0.602      0.547
+    WORRY5             0.000      0.000    999.000    999.000
+    FEAR5             -0.149      0.299     -0.500      0.617
+    SAD5              -0.344      0.363     -0.948      0.343
+    WORRY6             0.000      0.000    999.000    999.000
+    FEAR6             -0.101      0.292     -0.347      0.728
+    SAD6              -0.643      0.370     -1.740      0.082
+    WORRY7             0.000      0.000    999.000    999.000
+    FEAR7              0.282      0.292      0.965      0.334
+    SAD7               0.421      0.384      1.095      0.274
+    WORRY8             0.000      0.000    999.000    999.000
+    FEAR8             -0.079      0.279     -0.283      0.777
+    SAD8               0.217      0.385      0.563      0.573
+    WORRY9             0.000      0.000    999.000    999.000
+    FEAR9              0.214      0.333      0.641      0.521
+    SAD9               0.082      0.369      0.222      0.824
+    WORRY10            0.000      0.000    999.000    999.000
+    FEAR10             0.206      0.287      0.718      0.473
+    SAD10             -0.274      0.432     -0.634      0.526
+    WORRY11            0.000      0.000    999.000    999.000
+    FEAR11             0.240      0.337      0.714      0.475
+    SAD11             -0.507      0.410     -1.238      0.216
+    WORRY12            0.000      0.000    999.000    999.000
+    FEAR12            -0.010      0.284     -0.035      0.972
+    SAD12             -0.318      0.373     -0.853      0.394
+    WORRY13            0.000      0.000    999.000    999.000
+    FEAR13             0.001      0.316      0.002      0.998
+    SAD13             -0.108      0.413     -0.260      0.795
+    WORRY14            0.000      0.000    999.000    999.000
+    FEAR14             0.189      0.307      0.617      0.538
+    SAD14             -0.811      0.374     -2.165      0.030
+    WORRY15            0.000      0.000    999.000    999.000
+    FEAR15            -0.065      0.304     -0.214      0.831
+    SAD15              0.240      0.441      0.545      0.586
+    WORRY16            0.000      0.000    999.000    999.000
+    FEAR16            -0.122      0.247     -0.493      0.622
+    SAD16             -0.377      0.338     -1.114      0.265
+    WORRY17            0.000      0.000    999.000    999.000
+    FEAR17            -0.106      0.255     -0.417      0.677
+    SAD17             -0.589      0.306     -1.925      0.054
+    WORRY18            0.000      0.000    999.000    999.000
+    FEAR18             0.199      0.261      0.765      0.444
+    SAD18              0.085      0.386      0.221      0.825
+    WORRY19            0.000      0.000    999.000    999.000
+    FEAR19            -0.094      0.274     -0.344      0.731
+    SAD19              0.060      0.354      0.170      0.865
+    WORRY20            0.000      0.000    999.000    999.000
+    FEAR20             0.056      0.302      0.186      0.853
+    SAD20              0.239      0.409      0.584      0.559
+    ETA1               0.000      0.000    999.000    999.000
+    ETA2               0.000      0.000    999.000    999.000
+    ETA3               0.000      0.000    999.000    999.000
+    ETA4               0.000      0.000    999.000    999.000
+    ETA5               0.000      0.000    999.000    999.000
+    ETA6               0.000      0.000    999.000    999.000
+    ETA7               0.000      0.000    999.000    999.000
+    ETA8               0.000      0.000    999.000    999.000
+    ETA9               0.000      0.000    999.000    999.000
+    ETA10              0.000      0.000    999.000    999.000
+    ETA11              0.000      0.000    999.000    999.000
+    ETA12              0.000      0.000    999.000    999.000
+    ETA13              0.000      0.000    999.000    999.000
+    ETA14              0.000      0.000    999.000    999.000
+    ETA15              0.000      0.000    999.000    999.000
+    ETA16              0.000      0.000    999.000    999.000
+    ETA17              0.000      0.000    999.000    999.000
+    ETA18              0.000      0.000    999.000    999.000
+    ETA19              0.000      0.000    999.000    999.000
+    ETA20              0.000      0.000    999.000    999.000
+
+ Variances
+    THETA1             0.956      0.138      6.933      0.000
+
+ Residual Variances
+    WORRY1             1.532      0.446      3.438      0.001
+    FEAR1              1.382      0.250      5.526      0.000
+    SAD1               1.358      0.322      4.223      0.000
+    WORRY2             2.394      0.523      4.577      0.000
+    FEAR2              1.676      0.291      5.761      0.000
+    SAD2               1.445      0.344      4.206      0.000
+    WORRY3             1.539      0.297      5.184      0.000
+    FEAR3              0.784      0.151      5.180      0.000
+    SAD3               0.986      0.214      4.599      0.000
+    WORRY4             1.866      0.324      5.753      0.000
+    FEAR4              0.725      0.137      5.311      0.000
+    SAD4               1.135      0.193      5.880      0.000
+    WORRY5             1.880      0.319      5.886      0.000
+    FEAR5              0.850      0.145      5.846      0.000
+    SAD5               0.918      0.217      4.239      0.000
+    WORRY6             2.238      0.347      6.452      0.000
+    FEAR6              0.872      0.138      6.313      0.000
+    SAD6               0.780      0.218      3.583      0.000
+    WORRY7             1.403      0.331      4.236      0.000
+    FEAR7              1.109      0.175      6.350      0.000
+    SAD7               1.316      0.243      5.417      0.000
+    WORRY8             1.679      0.339      4.948      0.000
+    FEAR8              0.854      0.153      5.588      0.000
+    SAD8               1.241      0.231      5.376      0.000
+    WORRY9             1.637      0.327      5.005      0.000
+    FEAR9              1.034      0.166      6.232      0.000
+    SAD9               1.088      0.222      4.904      0.000
+    WORRY10            1.706      0.318      5.364      0.000
+    FEAR10             0.723      0.117      6.178      0.000
+    SAD10              1.328      0.249      5.341      0.000
+    WORRY11            1.772      0.379      4.674      0.000
+    FEAR11             1.159      0.198      5.843      0.000
+    SAD11              0.616      0.258      2.386      0.017
+    WORRY12            1.462      0.281      5.205      0.000
+    FEAR12             0.766      0.131      5.834      0.000
+    SAD12              0.970      0.227      4.274      0.000
+    WORRY13            1.748      0.339      5.164      0.000
+    FEAR13             1.015      0.172      5.889      0.000
+    SAD13              1.230      0.254      4.838      0.000
+    WORRY14            1.846      0.289      6.393      0.000
+    FEAR14             1.003      0.147      6.808      0.000
+    SAD14              0.698      0.218      3.205      0.001
+    WORRY15            1.580      0.331      4.781      0.000
+    FEAR15             0.963      0.170      5.668      0.000
+    SAD15              1.298      0.240      5.403      0.000
+    WORRY16            1.450      0.268      5.415      0.000
+    FEAR16             0.679      0.113      5.996      0.000
+    SAD16              0.739      0.182      4.068      0.000
+    WORRY17            1.244      0.215      5.787      0.000
+    FEAR17             0.817      0.125      6.522      0.000
+    SAD17              0.529      0.161      3.280      0.001
+    WORRY18            1.365      0.346      3.947      0.000
+    FEAR18             0.930      0.150      6.191      0.000
+    SAD18              1.407      0.274      5.138      0.000
+    WORRY19            1.147      0.274      4.182      0.000
+    FEAR19             0.998      0.164      6.089      0.000
+    SAD19              1.334      0.248      5.381      0.000
+    WORRY20            1.658      0.348      4.763      0.000
+    FEAR20             0.841      0.150      5.594      0.000
+    SAD20              1.446      0.273      5.304      0.000
+    ETA1               1.734      0.517      3.355      0.001
+    ETA2               1.110      0.454      2.446      0.014
+    ETA3               1.374      0.346      3.974      0.000
+    ETA4               0.648      0.225      2.877      0.004
+    ETA5               0.931      0.263      3.544      0.000
+    ETA6               0.737      0.206      3.584      0.000
+    ETA7               1.082      0.325      3.325      0.001
+    ETA8               1.011      0.307      3.291      0.001
+    ETA9               0.825      0.285      2.893      0.004
+    ETA10              0.435      0.209      2.080      0.037
+    ETA11              1.443      0.396      3.641      0.000
+    ETA12              0.822      0.237      3.463      0.001
+    ETA13              0.839      0.274      3.059      0.002
+    ETA14              0.612      0.181      3.383      0.001
+    ETA15              0.755      0.275      2.746      0.006
+    ETA16              0.923      0.242      3.823      0.000
+    ETA17              0.843      0.213      3.949      0.000
+    ETA18              1.393      0.393      3.540      0.000
+    ETA19              1.231      0.315      3.912      0.000
+    ETA20              0.898      0.294      3.059      0.002
+
+New/Additional Parameters
+    REL11              0.637      0.098      6.519      0.000
+    REL21              0.405      0.102      3.968      0.000
+    REL31              0.589      0.104      5.687      0.000
+    REL12              0.463      0.098      4.731      0.000
+    REL22              0.350      0.104      3.374      0.001
+    REL32              0.554      0.111      4.982      0.000
+    REL13              0.602      0.068      8.815      0.000
+    REL23              0.608      0.077      7.850      0.000
+    REL33              0.664      0.076      8.729      0.000
+    REL14              0.462      0.068      6.839      0.000
+    REL24              0.522      0.091      5.754      0.000
+    REL34              0.441      0.090      4.885      0.000
+    REL15              0.501      0.065      7.727      0.000
+    REL25              0.466      0.089      5.222      0.000
+    REL35              0.651      0.087      7.449      0.000
+    REL16              0.431      0.054      7.994      0.000
+    REL26              0.447      0.086      5.229      0.000
+    REL36              0.723      0.084      8.585      0.000
+    REL17              0.592      0.085      7.005      0.000
+    REL27              0.341      0.091      3.743      0.000
+    REL37              0.464      0.098      4.759      0.000
+    REL18              0.540      0.077      7.036      0.000
+    REL28              0.457      0.097      4.702      0.000
+    REL38              0.472      0.099      4.779      0.000
+    REL19              0.521      0.078      6.641      0.000
+    REL29              0.320      0.096      3.338      0.001
+    REL39              0.523      0.102      5.148      0.000
+    REL110             0.449      0.074      6.038      0.000
+    REL210             0.311      0.095      3.255      0.001
+    REL310             0.464      0.101      4.613      0.000
+    REL111             0.575      0.075      7.667      0.000
+    REL211             0.343      0.099      3.453      0.001
+    REL311             0.781      0.100      7.846      0.000
+    REL112             0.549      0.066      8.253      0.000
+    REL212             0.438      0.092      4.785      0.000
+    REL312             0.641      0.090      7.130      0.000
+    REL113             0.507      0.074      6.844      0.000
+    REL213             0.397      0.094      4.213      0.000
+    REL313             0.542      0.097      5.600      0.000
+    REL114             0.459      0.056      8.198      0.000
+    REL214             0.331      0.085      3.894      0.000
+    REL314             0.754      0.083      9.088      0.000
+    REL115             0.520      0.083      6.298      0.000
+    REL215             0.397      0.104      3.811      0.000
+    REL315             0.431      0.104      4.147      0.000
+    REL116             0.565      0.064      8.801      0.000
+    REL216             0.493      0.082      6.025      0.000
+    REL316             0.698      0.079      8.877      0.000
+    REL117             0.591      0.059      9.951      0.000
+    REL217             0.448      0.077      5.780      0.000
+    REL317             0.793      0.067     11.833      0.000
+    REL118             0.633      0.087      7.274      0.000
+    REL218             0.398      0.087      4.594      0.000
+    REL318             0.530      0.090      5.855      0.000
+    REL119             0.656      0.076      8.680      0.000
+    REL219             0.462      0.084      5.530      0.000
+    REL319             0.547      0.084      6.502      0.000
+    REL120             0.528      0.078      6.781      0.000
+    REL220             0.402      0.102      3.953      0.000
+    REL320             0.446      0.103      4.330      0.000
+    CON11              0.226      0.037      6.147      0.000
+    CON21              0.144      0.048      2.999      0.003
+    CON31              0.209      0.058      3.589      0.000
+    CON12              0.214      0.033      6.487      0.000
+    CON22              0.162      0.056      2.903      0.004
+    CON32              0.256      0.087      2.957      0.003
+    CON13              0.247      0.036      6.846      0.000
+    CON23              0.249      0.053      4.701      0.000
+    CON33              0.273      0.056      4.903      0.000
+    CON14              0.275      0.040      6.934      0.000
+    CON24              0.311      0.074      4.203      0.000
+    CON34              0.263      0.063      4.176      0.000
+    CON15              0.254      0.036      7.038      0.000
+    CON25              0.236      0.060      3.907      0.000
+    CON35              0.330      0.065      5.051      0.000
+    CON16              0.243      0.036      6.742      0.000
+    CON26              0.253      0.059      4.276      0.000
+    CON36              0.408      0.066      6.168      0.000
+    CON17              0.278      0.040      6.927      0.000
+    CON27              0.160      0.049      3.228      0.001
+    CON37              0.218      0.064      3.421      0.001
+    CON18              0.262      0.038      6.855      0.000
+    CON28              0.222      0.056      3.984      0.000
+    CON38              0.229      0.067      3.426      0.001
+    CON19              0.280      0.040      6.986      0.000
+    CON29              0.172      0.063      2.713      0.007
+    CON39              0.281      0.067      4.187      0.000
+    CON110             0.309      0.044      7.092      0.000
+    CON210             0.213      0.070      3.039      0.002
+    CON310             0.319      0.078      4.101      0.000
+    CON111             0.229      0.037      6.274      0.000
+    CON211             0.137      0.047      2.938      0.003
+    CON311             0.311      0.071      4.387      0.000
+    CON112             0.295      0.043      6.882      0.000
+    CON212             0.235      0.061      3.859      0.000
+    CON312             0.345      0.066      5.247      0.000
+    CON113             0.270      0.040      6.786      0.000
+    CON213             0.211      0.059      3.560      0.000
+    CON313             0.289      0.072      3.986      0.000
+    CON114             0.280      0.039      7.101      0.000
+    CON214             0.201      0.060      3.376      0.001
+    CON314             0.460      0.069      6.654      0.000
+    CON115             0.290      0.041      7.081      0.000
+    CON215             0.222      0.059      3.758      0.000
+    CON315             0.241      0.080      3.012      0.003
+    CON116             0.287      0.041      7.079      0.000
+    CON216             0.251      0.054      4.616      0.000
+    CON316             0.355      0.066      5.365      0.000
+    CON117             0.314      0.042      7.520      0.000
+    CON217             0.238      0.055      4.330      0.000
+    CON317             0.421      0.066      6.407      0.000
+    CON118             0.257      0.038      6.779      0.000
+    CON218             0.162      0.046      3.502      0.000
+    CON318             0.216      0.058      3.696      0.000
+    CON119             0.287      0.041      7.031      0.000
+    CON219             0.202      0.050      4.079      0.000
+    CON319             0.239      0.056      4.271      0.000
+    CON120             0.272      0.041      6.610      0.000
+    CON220             0.207      0.063      3.302      0.001
+    CON320             0.230      0.065      3.552      0.000
+    SPE11              0.411      0.101      4.079      0.000
+    SPE21              0.261      0.072      3.642      0.000
+    SPE31              0.380      0.079      4.803      0.000
+    SPE12              0.249      0.095      2.606      0.009
+    SPE22              0.188      0.072      2.618      0.009
+    SPE32              0.298      0.074      4.048      0.000
+    SPE13              0.355      0.071      4.979      0.000
+    SPE23              0.359      0.061      5.832      0.000
+    SPE33              0.392      0.064      6.123      0.000
+    SPE14              0.187      0.060      3.110      0.002
+    SPE24              0.211      0.057      3.717      0.000
+    SPE34              0.178      0.056      3.159      0.002
+    SPE15              0.247      0.061      4.021      0.000
+    SPE25              0.230      0.054      4.238      0.000
+    SPE35              0.321      0.068      4.719      0.000
+    SPE16              0.187      0.046      4.084      0.000
+    SPE26              0.195      0.050      3.903      0.000
+    SPE36              0.315      0.070      4.489      0.000
+    SPE17              0.314      0.084      3.755      0.000
+    SPE27              0.181      0.057      3.152      0.002
+    SPE37              0.246      0.060      4.129      0.000
+    SPE18              0.277      0.075      3.710      0.000
+    SPE28              0.235      0.067      3.494      0.000
+    SPE38              0.243      0.058      4.149      0.000
+    SPE19              0.241      0.076      3.186      0.001
+    SPE29              0.148      0.049      3.020      0.003
+    SPE39              0.242      0.072      3.358      0.001
+    SPE110             0.140      0.065      2.170      0.030
+    SPE210             0.097      0.047      2.075      0.038
+    SPE310             0.145      0.063      2.306      0.021
+    SPE111             0.346      0.076      4.543      0.000
+    SPE211             0.206      0.065      3.168      0.002
+    SPE311             0.470      0.081      5.814      0.000
+    SPE112             0.254      0.063      4.043      0.000
+    SPE212             0.202      0.054      3.770      0.000
+    SPE312             0.296      0.069      4.292      0.000
+    SPE113             0.237      0.070      3.385      0.001
+    SPE213             0.186      0.058      3.212      0.001
+    SPE313             0.254      0.064      3.990      0.000
+    SPE114             0.179      0.048      3.773      0.000
+    SPE214             0.129      0.040      3.245      0.001
+    SPE314             0.295      0.071      4.122      0.000
+    SPE115             0.229      0.078      2.950      0.003
+    SPE215             0.175      0.068      2.587      0.010
+    SPE315             0.190      0.052      3.646      0.000
+    SPE116             0.277      0.062      4.506      0.000
+    SPE216             0.242      0.055      4.423      0.000
+    SPE316             0.343      0.063      5.463      0.000
+    SPE117             0.277      0.059      4.686      0.000
+    SPE217             0.210      0.046      4.591      0.000
+    SPE317             0.371      0.066      5.621      0.000
+    SPE118             0.375      0.090      4.179      0.000
+    SPE218             0.236      0.060      3.945      0.000
+    SPE318             0.314      0.062      5.047      0.000
+    SPE119             0.369      0.078      4.719      0.000
+    SPE219             0.260      0.057      4.543      0.000
+    SPE319             0.308      0.059      5.236      0.000
+    SPE120             0.256      0.074      3.440      0.001
+    SPE220             0.195      0.061      3.186      0.001
+    SPE320             0.216      0.065      3.338      0.001
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.560E-03
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  11:10:22
+        Ending Time:  11:12:18
+       Elapsed Time:  00:01:56
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

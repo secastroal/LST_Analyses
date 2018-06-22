@@ -62,7 +62,7 @@ names(PlosOne_W) <- gsub("\\.", "", names(PlosOne_W))
 
 # data subset to allow for several analyses with diferent number of measurement occasions.
 
-m <- 5 # number of measurement occasions
+m <- 20 # number of measurement occasions
 t.m <- m*3 # total number of variables
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
@@ -112,7 +112,7 @@ lavPredict(msst@lavaanres)
 # count number of missings per person
 count_na <- as.vector(apply(PlosOne_Wr, 1, function(x) sum(is.na(x))))
 cbind(1:129, count_na)
-
+(sum(is.na(PlosOne_Wr)))/(dim(PlosOne_Wr)[1]*dim(PlosOne_Wr)[2])
 
 i <- 123 # select person to plot
 # plot worry observed vs latent state variables person i
@@ -153,7 +153,7 @@ matplot(var.comp[seq(3, t.m, by= 3),], type = "l") # sad variance components
 
 #  Prepare data and syntax
 
-m <- 5 # number of measurement occasions
+m <- 25 # number of measurement occasions
 t.m <- m*3 # total number of variables
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
@@ -161,10 +161,15 @@ msst.file.name <- paste0("msst", m)
 
 prepareMplusData(PlosOne_Wr,paste0("Mplus_files/",msst.file.name,".dat"), inpfile = T)
 
+iter <- "
+ANALYSIS:
+H1iterations=30000;" # increase H1 iterations
+
 msst_syntax <- write.msst.to.Mplus(PlosOne_Wr, neta = m, ntheta = 1, 
                                   equiv.assumption = list(tau = "cong", theta = "equi"),
                                   scale.invariance = list(lait0 = F, lait1 = F, lat0 = F, lat1 = F))
 
+write(iter, paste0("Mplus_files/",msst.file.name,".inp"), append = T) # Write Analysis specifications
 write(msst_syntax, paste0("Mplus_files/",msst.file.name,".inp"), append = T)
 
 # run model in Mplus
@@ -182,7 +187,7 @@ fit.msst$parameters$unstandardized # parameter estimates
 
 #  Prepare data and syntax
 
-m <- 5 # number of measurement occasions
+m <- 4 # number of measurement occasions
 t.m <- m*3 # total number of variables
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
@@ -201,6 +206,11 @@ write(tso_syntax, paste0("Mplus_files/",tso.file.name,".inp"), append = T)
 # run model in Mplus
 time0 <- proc.time()
 runModels(paste0(getwd(),"/Mplus_files/",tso.file.name,".inp"))
+time.tso.mplus <- proc.time() - time0
+rm(time0)
+
+time0 <- proc.time()
+runModels(paste0(getwd(),"/Mplus_files/",tso.file.name,"_3a.inp"))
 time.tso.mplus <- proc.time() - time0
 rm(time0)
 
@@ -229,7 +239,7 @@ cuts_syntax <- write.cuts.to.Mplus(PlosOne_Wr, nstate = m,
                                    state.trait.invariance = FALSE,
                                    homocedasticity.assumption = list(error = FALSE, cs.red = FALSE, ut.red = FALSE),
                                    fixed.means = list(cs = FALSE, ut = FALSE, ct = FALSE) )
-  
+write(iter, paste0("Mplus_files/",cuts.file.name,".inp"), append = T)  
 write(cuts_syntax, paste0("Mplus_files/",cuts.file.name,".inp"), append = T)
 
 # run model in Mplus
@@ -261,8 +271,8 @@ fit.tso.lavaan <- mplus2lavaan(paste0(getwd(),"/Mplus_files/",tso.file.name,".in
 fit.cuts.lavaan <- mplus2lavaan(paste0(getwd(),"/Mplus_files/",cuts.file.name,".inp"),
                                run = TRUE)
 
+cuts.lavaan.syntax <- mplus2lavaan.modelSyntax(gsub("MODEL:", "", cuts_syntax))
 
+fit.cuts.lavaan <- sem(model = cuts.lavaan.syntax, data = PlosOne_Wr, missing = "ml")
 
-
-
-
+summary(fit.cuts.lavaan, fit.measures = T)
