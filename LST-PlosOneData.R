@@ -62,7 +62,7 @@ names(PlosOne_W) <- gsub("\\.", "", names(PlosOne_W))
 
 # data subset to allow for several analyses with diferent number of measurement occasions.
 
-m <- 20 # number of measurement occasions
+m <- 60 # number of measurement occasions
 t.m <- m*3 # total number of variables
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
@@ -225,7 +225,7 @@ fit.tso$parameters$unstandardized # parameter estimates
 
 #  Prepare data and syntax
 
-m <- 30 # number of measurement occasions
+m <- 60 # number of measurement occasions
 t.m <- m*3 # total number of variables
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
@@ -273,6 +273,16 @@ fit.cuts.lavaan <- mplus2lavaan(paste0(getwd(),"/Mplus_files/",cuts.file.name,".
 
 cuts.lavaan.syntax <- mplus2lavaan.modelSyntax(gsub("MODEL:", "", cuts_syntax))
 
+time0 <- proc.time()
 fit.cuts.lavaan <- sem(model = cuts.lavaan.syntax, data = PlosOne_Wr, missing = "ml")
+time.cuts.lavaan <- proc.time() - time0
+rm(time0)
+
 
 summary(fit.cuts.lavaan, fit.measures = T)
+
+cuts2save <- list(cuts = fit.cuts.lavaan, time = time.cuts.lavaan) # new object is created to also save the time needed to run the analysis
+save(cuts2save, file = paste0("lavaan_files/cuts",m, ".R"))
+load( file = paste0("lavaan_files/cuts",m, ".R"))
+
+
