@@ -1,0 +1,1205 @@
+TITLE: Your title goes here
+DATA: FILE = "Mplus_files/msst_h8_m30.dat";
+VARIABLE: 
+NAMES = worry1 fear1 sad1 worry2 fear2 sad2 worry3 fear3 sad3 worry4 fear4 sad4
+     worry5 fear5 sad5 worry6 fear6 sad6 worry7 fear7 sad7 worry8 fear8 sad8 worry9
+     fear9 sad9 worry10 fear10 sad10 worry11 fear11 sad11 worry12 fear12 sad12
+     worry13 fear13 sad13 worry14 fear14 sad14 worry15 fear15 sad15 worry16 fear16
+     sad16 worry17 fear17 sad17 worry18 fear18 sad18 worry19 fear19 sad19 worry20
+     fear20 sad20 worry21 fear21 sad21 worry22 fear22 sad22 worry23 fear23 sad23
+     worry24 fear24 sad24 worry25 fear25 sad25 worry26 fear26 sad26 worry27 fear27
+     sad27 worry28 fear28 sad28 worry29 fear29 sad29 worry30 fear30 sad30; 
+MISSING=.;
+
+ANALYSIS:
+H1iterations=30000;
+
+MODEL:
+
+! Latent state variables
+eta1 BY worry1@1
+fear1@1
+sad1@1 ;
+eta2 BY worry2@1
+fear2@1
+sad2@1 ;
+eta3 BY worry3@1
+fear3@1
+sad3@1 ;
+eta4 BY worry4@1
+fear4@1
+sad4@1 ;
+eta5 BY worry5@1
+fear5@1
+sad5@1 ;
+eta6 BY worry6@1
+fear6@1
+sad6@1 ;
+eta7 BY worry7@1
+fear7@1
+sad7@1 ;
+eta8 BY worry8@1
+fear8@1
+sad8@1 ;
+eta9 BY worry9@1
+fear9@1
+sad9@1 ;
+eta10 BY worry10@1
+fear10@1
+sad10@1 ;
+eta11 BY worry11@1
+fear11@1
+sad11@1 ;
+eta12 BY worry12@1
+fear12@1
+sad12@1 ;
+eta13 BY worry13@1
+fear13@1
+sad13@1 ;
+eta14 BY worry14@1
+fear14@1
+sad14@1 ;
+eta15 BY worry15@1
+fear15@1
+sad15@1 ;
+eta16 BY worry16@1
+fear16@1
+sad16@1 ;
+eta17 BY worry17@1
+fear17@1
+sad17@1 ;
+eta18 BY worry18@1
+fear18@1
+sad18@1 ;
+eta19 BY worry19@1
+fear19@1
+sad19@1 ;
+eta20 BY worry20@1
+fear20@1
+sad20@1 ;
+eta21 BY worry21@1
+fear21@1
+sad21@1 ;
+eta22 BY worry22@1
+fear22@1
+sad22@1 ;
+eta23 BY worry23@1
+fear23@1
+sad23@1 ;
+eta24 BY worry24@1
+fear24@1
+sad24@1 ;
+eta25 BY worry25@1
+fear25@1
+sad25@1 ;
+eta26 BY worry26@1
+fear26@1
+sad26@1 ;
+eta27 BY worry27@1
+fear27@1
+sad27@1 ;
+eta28 BY worry28@1
+fear28@1
+sad28@1 ;
+eta29 BY worry29@1
+fear29@1
+sad29@1 ;
+eta30 BY worry30@1
+fear30@1
+sad30@1 ;
+
+! Latent trait variables
+theta1 BY eta1@1
+eta2@1
+eta3@1
+eta4@1
+eta5@1
+eta6@1
+eta7@1
+eta8@1
+eta9@1
+eta10@1
+eta11@1
+eta12@1
+eta13@1
+eta14@1
+eta15@1
+eta16@1
+eta17@1
+eta18@1
+eta19@1
+eta20@1
+eta21@1
+eta22@1
+eta23@1
+eta24@1
+eta25@1
+eta26@1
+eta27@1
+eta28@1
+eta29@1
+eta30@1 ;
+
+! Intercepts and means
+[worry1@0] ;
+[fear1@0] ;
+[sad1@0] ;
+[worry2@0] ;
+[fear2@0] ;
+[sad2@0] ;
+[worry3@0] ;
+[fear3@0] ;
+[sad3@0] ;
+[worry4@0] ;
+[fear4@0] ;
+[sad4@0] ;
+[worry5@0] ;
+[fear5@0] ;
+[sad5@0] ;
+[worry6@0] ;
+[fear6@0] ;
+[sad6@0] ;
+[worry7@0] ;
+[fear7@0] ;
+[sad7@0] ;
+[worry8@0] ;
+[fear8@0] ;
+[sad8@0] ;
+[worry9@0] ;
+[fear9@0] ;
+[sad9@0] ;
+[worry10@0] ;
+[fear10@0] ;
+[sad10@0] ;
+[worry11@0] ;
+[fear11@0] ;
+[sad11@0] ;
+[worry12@0] ;
+[fear12@0] ;
+[sad12@0] ;
+[worry13@0] ;
+[fear13@0] ;
+[sad13@0] ;
+[worry14@0] ;
+[fear14@0] ;
+[sad14@0] ;
+[worry15@0] ;
+[fear15@0] ;
+[sad15@0] ;
+[worry16@0] ;
+[fear16@0] ;
+[sad16@0] ;
+[worry17@0] ;
+[fear17@0] ;
+[sad17@0] ;
+[worry18@0] ;
+[fear18@0] ;
+[sad18@0] ;
+[worry19@0] ;
+[fear19@0] ;
+[sad19@0] ;
+[worry20@0] ;
+[fear20@0] ;
+[sad20@0] ;
+[worry21@0] ;
+[fear21@0] ;
+[sad21@0] ;
+[worry22@0] ;
+[fear22@0] ;
+[sad22@0] ;
+[worry23@0] ;
+[fear23@0] ;
+[sad23@0] ;
+[worry24@0] ;
+[fear24@0] ;
+[sad24@0] ;
+[worry25@0] ;
+[fear25@0] ;
+[sad25@0] ;
+[worry26@0] ;
+[fear26@0] ;
+[sad26@0] ;
+[worry27@0] ;
+[fear27@0] ;
+[sad27@0] ;
+[worry28@0] ;
+[fear28@0] ;
+[sad28@0] ;
+[worry29@0] ;
+[fear29@0] ;
+[sad29@0] ;
+[worry30@0] ;
+[fear30@0] ;
+[sad30@0] ;
+[eta1@0] ;
+[eta2*] (int21) ;
+[eta3*] (int31) ;
+[eta4*] (int41) ;
+[eta5*] (int51) ;
+[eta6*] (int61) ;
+[eta7*] (int71) ;
+[eta8*] (int81) ;
+[eta9*] (int91) ;
+[eta10*] (int101) ;
+[eta11*] (int111) ;
+[eta12*] (int121) ;
+[eta13*] (int131) ;
+[eta14*] (int141) ;
+[eta15*] (int151) ;
+[eta16*] (int161) ;
+[eta17*] (int171) ;
+[eta18*] (int181) ;
+[eta19*] (int191) ;
+[eta20*] (int201) ;
+[eta21*] (int211) ;
+[eta22*] (int221) ;
+[eta23*] (int231) ;
+[eta24*] (int241) ;
+[eta25*] (int251) ;
+[eta26*] (int261) ;
+[eta27*] (int271) ;
+[eta28*] (int281) ;
+[eta29*] (int291) ;
+[eta30*] (int301) ;
+[theta1*] ;
+
+! Variance components
+worry1(o_err11) ;
+fear1(o_err21) ;
+sad1(o_err31) ;
+worry2(o_err12) ;
+fear2(o_err22) ;
+sad2(o_err32) ;
+worry3(o_err13) ;
+fear3(o_err23) ;
+sad3(o_err33) ;
+worry4(o_err14) ;
+fear4(o_err24) ;
+sad4(o_err34) ;
+worry5(o_err15) ;
+fear5(o_err25) ;
+sad5(o_err35) ;
+worry6(o_err16) ;
+fear6(o_err26) ;
+sad6(o_err36) ;
+worry7(o_err17) ;
+fear7(o_err27) ;
+sad7(o_err37) ;
+worry8(o_err18) ;
+fear8(o_err28) ;
+sad8(o_err38) ;
+worry9(o_err19) ;
+fear9(o_err29) ;
+sad9(o_err39) ;
+worry10(o_err110) ;
+fear10(o_err210) ;
+sad10(o_err310) ;
+worry11(o_err111) ;
+fear11(o_err211) ;
+sad11(o_err311) ;
+worry12(o_err112) ;
+fear12(o_err212) ;
+sad12(o_err312) ;
+worry13(o_err113) ;
+fear13(o_err213) ;
+sad13(o_err313) ;
+worry14(o_err114) ;
+fear14(o_err214) ;
+sad14(o_err314) ;
+worry15(o_err115) ;
+fear15(o_err215) ;
+sad15(o_err315) ;
+worry16(o_err116) ;
+fear16(o_err216) ;
+sad16(o_err316) ;
+worry17(o_err117) ;
+fear17(o_err217) ;
+sad17(o_err317) ;
+worry18(o_err118) ;
+fear18(o_err218) ;
+sad18(o_err318) ;
+worry19(o_err119) ;
+fear19(o_err219) ;
+sad19(o_err319) ;
+worry20(o_err120) ;
+fear20(o_err220) ;
+sad20(o_err320) ;
+worry21(o_err121) ;
+fear21(o_err221) ;
+sad21(o_err321) ;
+worry22(o_err122) ;
+fear22(o_err222) ;
+sad22(o_err322) ;
+worry23(o_err123) ;
+fear23(o_err223) ;
+sad23(o_err323) ;
+worry24(o_err124) ;
+fear24(o_err224) ;
+sad24(o_err324) ;
+worry25(o_err125) ;
+fear25(o_err225) ;
+sad25(o_err325) ;
+worry26(o_err126) ;
+fear26(o_err226) ;
+sad26(o_err326) ;
+worry27(o_err127) ;
+fear27(o_err227) ;
+sad27(o_err327) ;
+worry28(o_err128) ;
+fear28(o_err228) ;
+sad28(o_err328) ;
+worry29(o_err129) ;
+fear29(o_err229) ;
+sad29(o_err329) ;
+worry30(o_err130) ;
+fear30(o_err230) ;
+sad30(o_err330) ;
+eta1(s_var11) ;
+eta2(s_var21) ;
+eta3(s_var31) ;
+eta4(s_var41) ;
+eta5(s_var51) ;
+eta6(s_var61) ;
+eta7(s_var71) ;
+eta8(s_var81) ;
+eta9(s_var91) ;
+eta10(s_var101) ;
+eta11(s_var111) ;
+eta12(s_var121) ;
+eta13(s_var131) ;
+eta14(s_var141) ;
+eta15(s_var151) ;
+eta16(s_var161) ;
+eta17(s_var171) ;
+eta18(s_var181) ;
+eta19(s_var191) ;
+eta20(s_var201) ;
+eta21(s_var211) ;
+eta22(s_var221) ;
+eta23(s_var231) ;
+eta24(s_var241) ;
+eta25(s_var251) ;
+eta26(s_var261) ;
+eta27(s_var271) ;
+eta28(s_var281) ;
+eta29(s_var291) ;
+eta30(s_var301) ;
+theta1(t_var1) ;
+
+MODEL CONSTRAINT:
+NEW(rel11) ;
+NEW(rel21) ;
+NEW(rel31) ;
+NEW(rel12) ;
+NEW(rel22) ;
+NEW(rel32) ;
+NEW(rel13) ;
+NEW(rel23) ;
+NEW(rel33) ;
+NEW(rel14) ;
+NEW(rel24) ;
+NEW(rel34) ;
+NEW(rel15) ;
+NEW(rel25) ;
+NEW(rel35) ;
+NEW(rel16) ;
+NEW(rel26) ;
+NEW(rel36) ;
+NEW(rel17) ;
+NEW(rel27) ;
+NEW(rel37) ;
+NEW(rel18) ;
+NEW(rel28) ;
+NEW(rel38) ;
+NEW(rel19) ;
+NEW(rel29) ;
+NEW(rel39) ;
+NEW(rel110) ;
+NEW(rel210) ;
+NEW(rel310) ;
+NEW(rel111) ;
+NEW(rel211) ;
+NEW(rel311) ;
+NEW(rel112) ;
+NEW(rel212) ;
+NEW(rel312) ;
+NEW(rel113) ;
+NEW(rel213) ;
+NEW(rel313) ;
+NEW(rel114) ;
+NEW(rel214) ;
+NEW(rel314) ;
+NEW(rel115) ;
+NEW(rel215) ;
+NEW(rel315) ;
+NEW(rel116) ;
+NEW(rel216) ;
+NEW(rel316) ;
+NEW(rel117) ;
+NEW(rel217) ;
+NEW(rel317) ;
+NEW(rel118) ;
+NEW(rel218) ;
+NEW(rel318) ;
+NEW(rel119) ;
+NEW(rel219) ;
+NEW(rel319) ;
+NEW(rel120) ;
+NEW(rel220) ;
+NEW(rel320) ;
+NEW(rel121) ;
+NEW(rel221) ;
+NEW(rel321) ;
+NEW(rel122) ;
+NEW(rel222) ;
+NEW(rel322) ;
+NEW(rel123) ;
+NEW(rel223) ;
+NEW(rel323) ;
+NEW(rel124) ;
+NEW(rel224) ;
+NEW(rel324) ;
+NEW(rel125) ;
+NEW(rel225) ;
+NEW(rel325) ;
+NEW(rel126) ;
+NEW(rel226) ;
+NEW(rel326) ;
+NEW(rel127) ;
+NEW(rel227) ;
+NEW(rel327) ;
+NEW(rel128) ;
+NEW(rel228) ;
+NEW(rel328) ;
+NEW(rel129) ;
+NEW(rel229) ;
+NEW(rel329) ;
+NEW(rel130) ;
+NEW(rel230) ;
+NEW(rel330) ;
+NEW(con11) ;
+NEW(con21) ;
+NEW(con31) ;
+NEW(con12) ;
+NEW(con22) ;
+NEW(con32) ;
+NEW(con13) ;
+NEW(con23) ;
+NEW(con33) ;
+NEW(con14) ;
+NEW(con24) ;
+NEW(con34) ;
+NEW(con15) ;
+NEW(con25) ;
+NEW(con35) ;
+NEW(con16) ;
+NEW(con26) ;
+NEW(con36) ;
+NEW(con17) ;
+NEW(con27) ;
+NEW(con37) ;
+NEW(con18) ;
+NEW(con28) ;
+NEW(con38) ;
+NEW(con19) ;
+NEW(con29) ;
+NEW(con39) ;
+NEW(con110) ;
+NEW(con210) ;
+NEW(con310) ;
+NEW(con111) ;
+NEW(con211) ;
+NEW(con311) ;
+NEW(con112) ;
+NEW(con212) ;
+NEW(con312) ;
+NEW(con113) ;
+NEW(con213) ;
+NEW(con313) ;
+NEW(con114) ;
+NEW(con214) ;
+NEW(con314) ;
+NEW(con115) ;
+NEW(con215) ;
+NEW(con315) ;
+NEW(con116) ;
+NEW(con216) ;
+NEW(con316) ;
+NEW(con117) ;
+NEW(con217) ;
+NEW(con317) ;
+NEW(con118) ;
+NEW(con218) ;
+NEW(con318) ;
+NEW(con119) ;
+NEW(con219) ;
+NEW(con319) ;
+NEW(con120) ;
+NEW(con220) ;
+NEW(con320) ;
+NEW(con121) ;
+NEW(con221) ;
+NEW(con321) ;
+NEW(con122) ;
+NEW(con222) ;
+NEW(con322) ;
+NEW(con123) ;
+NEW(con223) ;
+NEW(con323) ;
+NEW(con124) ;
+NEW(con224) ;
+NEW(con324) ;
+NEW(con125) ;
+NEW(con225) ;
+NEW(con325) ;
+NEW(con126) ;
+NEW(con226) ;
+NEW(con326) ;
+NEW(con127) ;
+NEW(con227) ;
+NEW(con327) ;
+NEW(con128) ;
+NEW(con228) ;
+NEW(con328) ;
+NEW(con129) ;
+NEW(con229) ;
+NEW(con329) ;
+NEW(con130) ;
+NEW(con230) ;
+NEW(con330) ;
+NEW(spe11) ;
+NEW(spe21) ;
+NEW(spe31) ;
+NEW(spe12) ;
+NEW(spe22) ;
+NEW(spe32) ;
+NEW(spe13) ;
+NEW(spe23) ;
+NEW(spe33) ;
+NEW(spe14) ;
+NEW(spe24) ;
+NEW(spe34) ;
+NEW(spe15) ;
+NEW(spe25) ;
+NEW(spe35) ;
+NEW(spe16) ;
+NEW(spe26) ;
+NEW(spe36) ;
+NEW(spe17) ;
+NEW(spe27) ;
+NEW(spe37) ;
+NEW(spe18) ;
+NEW(spe28) ;
+NEW(spe38) ;
+NEW(spe19) ;
+NEW(spe29) ;
+NEW(spe39) ;
+NEW(spe110) ;
+NEW(spe210) ;
+NEW(spe310) ;
+NEW(spe111) ;
+NEW(spe211) ;
+NEW(spe311) ;
+NEW(spe112) ;
+NEW(spe212) ;
+NEW(spe312) ;
+NEW(spe113) ;
+NEW(spe213) ;
+NEW(spe313) ;
+NEW(spe114) ;
+NEW(spe214) ;
+NEW(spe314) ;
+NEW(spe115) ;
+NEW(spe215) ;
+NEW(spe315) ;
+NEW(spe116) ;
+NEW(spe216) ;
+NEW(spe316) ;
+NEW(spe117) ;
+NEW(spe217) ;
+NEW(spe317) ;
+NEW(spe118) ;
+NEW(spe218) ;
+NEW(spe318) ;
+NEW(spe119) ;
+NEW(spe219) ;
+NEW(spe319) ;
+NEW(spe120) ;
+NEW(spe220) ;
+NEW(spe320) ;
+NEW(spe121) ;
+NEW(spe221) ;
+NEW(spe321) ;
+NEW(spe122) ;
+NEW(spe222) ;
+NEW(spe322) ;
+NEW(spe123) ;
+NEW(spe223) ;
+NEW(spe323) ;
+NEW(spe124) ;
+NEW(spe224) ;
+NEW(spe324) ;
+NEW(spe125) ;
+NEW(spe225) ;
+NEW(spe325) ;
+NEW(spe126) ;
+NEW(spe226) ;
+NEW(spe326) ;
+NEW(spe127) ;
+NEW(spe227) ;
+NEW(spe327) ;
+NEW(spe128) ;
+NEW(spe228) ;
+NEW(spe328) ;
+NEW(spe129) ;
+NEW(spe229) ;
+NEW(spe329) ;
+NEW(spe130) ;
+NEW(spe230) ;
+NEW(spe330) ;
+
+! Reliabily
+rel11= (1^2*1^2*t_var1+1^2*s_var11)/
+(1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+rel21= (1^2*1^2*t_var1+1^2*s_var11)/
+(1^2*1^2*t_var1+1^2*s_var11+o_err21) ;
+rel31= (1^2*1^2*t_var1+1^2*s_var11)/
+(1^2*1^2*t_var1+1^2*s_var11+o_err31) ;
+rel12= (1^2*1^2*t_var1+1^2*s_var21)/
+(1^2*1^2*t_var1+1^2*s_var21+o_err12) ;
+rel22= (1^2*1^2*t_var1+1^2*s_var21)/
+(1^2*1^2*t_var1+1^2*s_var21+o_err22) ;
+rel32= (1^2*1^2*t_var1+1^2*s_var21)/
+(1^2*1^2*t_var1+1^2*s_var21+o_err32) ;
+rel13= (1^2*1^2*t_var1+1^2*s_var31)/
+(1^2*1^2*t_var1+1^2*s_var31+o_err13) ;
+rel23= (1^2*1^2*t_var1+1^2*s_var31)/
+(1^2*1^2*t_var1+1^2*s_var31+o_err23) ;
+rel33= (1^2*1^2*t_var1+1^2*s_var31)/
+(1^2*1^2*t_var1+1^2*s_var31+o_err33) ;
+rel14= (1^2*1^2*t_var1+1^2*s_var41)/
+(1^2*1^2*t_var1+1^2*s_var41+o_err14) ;
+rel24= (1^2*1^2*t_var1+1^2*s_var41)/
+(1^2*1^2*t_var1+1^2*s_var41+o_err24) ;
+rel34= (1^2*1^2*t_var1+1^2*s_var41)/
+(1^2*1^2*t_var1+1^2*s_var41+o_err34) ;
+rel15= (1^2*1^2*t_var1+1^2*s_var51)/
+(1^2*1^2*t_var1+1^2*s_var51+o_err15) ;
+rel25= (1^2*1^2*t_var1+1^2*s_var51)/
+(1^2*1^2*t_var1+1^2*s_var51+o_err25) ;
+rel35= (1^2*1^2*t_var1+1^2*s_var51)/
+(1^2*1^2*t_var1+1^2*s_var51+o_err35) ;
+rel16= (1^2*1^2*t_var1+1^2*s_var61)/
+(1^2*1^2*t_var1+1^2*s_var61+o_err16) ;
+rel26= (1^2*1^2*t_var1+1^2*s_var61)/
+(1^2*1^2*t_var1+1^2*s_var61+o_err26) ;
+rel36= (1^2*1^2*t_var1+1^2*s_var61)/
+(1^2*1^2*t_var1+1^2*s_var61+o_err36) ;
+rel17= (1^2*1^2*t_var1+1^2*s_var71)/
+(1^2*1^2*t_var1+1^2*s_var71+o_err17) ;
+rel27= (1^2*1^2*t_var1+1^2*s_var71)/
+(1^2*1^2*t_var1+1^2*s_var71+o_err27) ;
+rel37= (1^2*1^2*t_var1+1^2*s_var71)/
+(1^2*1^2*t_var1+1^2*s_var71+o_err37) ;
+rel18= (1^2*1^2*t_var1+1^2*s_var81)/
+(1^2*1^2*t_var1+1^2*s_var81+o_err18) ;
+rel28= (1^2*1^2*t_var1+1^2*s_var81)/
+(1^2*1^2*t_var1+1^2*s_var81+o_err28) ;
+rel38= (1^2*1^2*t_var1+1^2*s_var81)/
+(1^2*1^2*t_var1+1^2*s_var81+o_err38) ;
+rel19= (1^2*1^2*t_var1+1^2*s_var91)/
+(1^2*1^2*t_var1+1^2*s_var91+o_err19) ;
+rel29= (1^2*1^2*t_var1+1^2*s_var91)/
+(1^2*1^2*t_var1+1^2*s_var91+o_err29) ;
+rel39= (1^2*1^2*t_var1+1^2*s_var91)/
+(1^2*1^2*t_var1+1^2*s_var91+o_err39) ;
+rel110= (1^2*1^2*t_var1+1^2*s_var101)/
+(1^2*1^2*t_var1+1^2*s_var101+o_err110) ;
+rel210= (1^2*1^2*t_var1+1^2*s_var101)/
+(1^2*1^2*t_var1+1^2*s_var101+o_err210) ;
+rel310= (1^2*1^2*t_var1+1^2*s_var101)/
+(1^2*1^2*t_var1+1^2*s_var101+o_err310) ;
+rel111= (1^2*1^2*t_var1+1^2*s_var111)/
+(1^2*1^2*t_var1+1^2*s_var111+o_err111) ;
+rel211= (1^2*1^2*t_var1+1^2*s_var111)/
+(1^2*1^2*t_var1+1^2*s_var111+o_err211) ;
+rel311= (1^2*1^2*t_var1+1^2*s_var111)/
+(1^2*1^2*t_var1+1^2*s_var111+o_err311) ;
+rel112= (1^2*1^2*t_var1+1^2*s_var121)/
+(1^2*1^2*t_var1+1^2*s_var121+o_err112) ;
+rel212= (1^2*1^2*t_var1+1^2*s_var121)/
+(1^2*1^2*t_var1+1^2*s_var121+o_err212) ;
+rel312= (1^2*1^2*t_var1+1^2*s_var121)/
+(1^2*1^2*t_var1+1^2*s_var121+o_err312) ;
+rel113= (1^2*1^2*t_var1+1^2*s_var131)/
+(1^2*1^2*t_var1+1^2*s_var131+o_err113) ;
+rel213= (1^2*1^2*t_var1+1^2*s_var131)/
+(1^2*1^2*t_var1+1^2*s_var131+o_err213) ;
+rel313= (1^2*1^2*t_var1+1^2*s_var131)/
+(1^2*1^2*t_var1+1^2*s_var131+o_err313) ;
+rel114= (1^2*1^2*t_var1+1^2*s_var141)/
+(1^2*1^2*t_var1+1^2*s_var141+o_err114) ;
+rel214= (1^2*1^2*t_var1+1^2*s_var141)/
+(1^2*1^2*t_var1+1^2*s_var141+o_err214) ;
+rel314= (1^2*1^2*t_var1+1^2*s_var141)/
+(1^2*1^2*t_var1+1^2*s_var141+o_err314) ;
+rel115= (1^2*1^2*t_var1+1^2*s_var151)/
+(1^2*1^2*t_var1+1^2*s_var151+o_err115) ;
+rel215= (1^2*1^2*t_var1+1^2*s_var151)/
+(1^2*1^2*t_var1+1^2*s_var151+o_err215) ;
+rel315= (1^2*1^2*t_var1+1^2*s_var151)/
+(1^2*1^2*t_var1+1^2*s_var151+o_err315) ;
+rel116= (1^2*1^2*t_var1+1^2*s_var161)/
+(1^2*1^2*t_var1+1^2*s_var161+o_err116) ;
+rel216= (1^2*1^2*t_var1+1^2*s_var161)/
+(1^2*1^2*t_var1+1^2*s_var161+o_err216) ;
+rel316= (1^2*1^2*t_var1+1^2*s_var161)/
+(1^2*1^2*t_var1+1^2*s_var161+o_err316) ;
+rel117= (1^2*1^2*t_var1+1^2*s_var171)/
+(1^2*1^2*t_var1+1^2*s_var171+o_err117) ;
+rel217= (1^2*1^2*t_var1+1^2*s_var171)/
+(1^2*1^2*t_var1+1^2*s_var171+o_err217) ;
+rel317= (1^2*1^2*t_var1+1^2*s_var171)/
+(1^2*1^2*t_var1+1^2*s_var171+o_err317) ;
+rel118= (1^2*1^2*t_var1+1^2*s_var181)/
+(1^2*1^2*t_var1+1^2*s_var181+o_err118) ;
+rel218= (1^2*1^2*t_var1+1^2*s_var181)/
+(1^2*1^2*t_var1+1^2*s_var181+o_err218) ;
+rel318= (1^2*1^2*t_var1+1^2*s_var181)/
+(1^2*1^2*t_var1+1^2*s_var181+o_err318) ;
+rel119= (1^2*1^2*t_var1+1^2*s_var191)/
+(1^2*1^2*t_var1+1^2*s_var191+o_err119) ;
+rel219= (1^2*1^2*t_var1+1^2*s_var191)/
+(1^2*1^2*t_var1+1^2*s_var191+o_err219) ;
+rel319= (1^2*1^2*t_var1+1^2*s_var191)/
+(1^2*1^2*t_var1+1^2*s_var191+o_err319) ;
+rel120= (1^2*1^2*t_var1+1^2*s_var201)/
+(1^2*1^2*t_var1+1^2*s_var201+o_err120) ;
+rel220= (1^2*1^2*t_var1+1^2*s_var201)/
+(1^2*1^2*t_var1+1^2*s_var201+o_err220) ;
+rel320= (1^2*1^2*t_var1+1^2*s_var201)/
+(1^2*1^2*t_var1+1^2*s_var201+o_err320) ;
+rel121= (1^2*1^2*t_var1+1^2*s_var211)/
+(1^2*1^2*t_var1+1^2*s_var211+o_err121) ;
+rel221= (1^2*1^2*t_var1+1^2*s_var211)/
+(1^2*1^2*t_var1+1^2*s_var211+o_err221) ;
+rel321= (1^2*1^2*t_var1+1^2*s_var211)/
+(1^2*1^2*t_var1+1^2*s_var211+o_err321) ;
+rel122= (1^2*1^2*t_var1+1^2*s_var221)/
+(1^2*1^2*t_var1+1^2*s_var221+o_err122) ;
+rel222= (1^2*1^2*t_var1+1^2*s_var221)/
+(1^2*1^2*t_var1+1^2*s_var221+o_err222) ;
+rel322= (1^2*1^2*t_var1+1^2*s_var221)/
+(1^2*1^2*t_var1+1^2*s_var221+o_err322) ;
+rel123= (1^2*1^2*t_var1+1^2*s_var231)/
+(1^2*1^2*t_var1+1^2*s_var231+o_err123) ;
+rel223= (1^2*1^2*t_var1+1^2*s_var231)/
+(1^2*1^2*t_var1+1^2*s_var231+o_err223) ;
+rel323= (1^2*1^2*t_var1+1^2*s_var231)/
+(1^2*1^2*t_var1+1^2*s_var231+o_err323) ;
+rel124= (1^2*1^2*t_var1+1^2*s_var241)/
+(1^2*1^2*t_var1+1^2*s_var241+o_err124) ;
+rel224= (1^2*1^2*t_var1+1^2*s_var241)/
+(1^2*1^2*t_var1+1^2*s_var241+o_err224) ;
+rel324= (1^2*1^2*t_var1+1^2*s_var241)/
+(1^2*1^2*t_var1+1^2*s_var241+o_err324) ;
+rel125= (1^2*1^2*t_var1+1^2*s_var251)/
+(1^2*1^2*t_var1+1^2*s_var251+o_err125) ;
+rel225= (1^2*1^2*t_var1+1^2*s_var251)/
+(1^2*1^2*t_var1+1^2*s_var251+o_err225) ;
+rel325= (1^2*1^2*t_var1+1^2*s_var251)/
+(1^2*1^2*t_var1+1^2*s_var251+o_err325) ;
+rel126= (1^2*1^2*t_var1+1^2*s_var261)/
+(1^2*1^2*t_var1+1^2*s_var261+o_err126) ;
+rel226= (1^2*1^2*t_var1+1^2*s_var261)/
+(1^2*1^2*t_var1+1^2*s_var261+o_err226) ;
+rel326= (1^2*1^2*t_var1+1^2*s_var261)/
+(1^2*1^2*t_var1+1^2*s_var261+o_err326) ;
+rel127= (1^2*1^2*t_var1+1^2*s_var271)/
+(1^2*1^2*t_var1+1^2*s_var271+o_err127) ;
+rel227= (1^2*1^2*t_var1+1^2*s_var271)/
+(1^2*1^2*t_var1+1^2*s_var271+o_err227) ;
+rel327= (1^2*1^2*t_var1+1^2*s_var271)/
+(1^2*1^2*t_var1+1^2*s_var271+o_err327) ;
+rel128= (1^2*1^2*t_var1+1^2*s_var281)/
+(1^2*1^2*t_var1+1^2*s_var281+o_err128) ;
+rel228= (1^2*1^2*t_var1+1^2*s_var281)/
+(1^2*1^2*t_var1+1^2*s_var281+o_err228) ;
+rel328= (1^2*1^2*t_var1+1^2*s_var281)/
+(1^2*1^2*t_var1+1^2*s_var281+o_err328) ;
+rel129= (1^2*1^2*t_var1+1^2*s_var291)/
+(1^2*1^2*t_var1+1^2*s_var291+o_err129) ;
+rel229= (1^2*1^2*t_var1+1^2*s_var291)/
+(1^2*1^2*t_var1+1^2*s_var291+o_err229) ;
+rel329= (1^2*1^2*t_var1+1^2*s_var291)/
+(1^2*1^2*t_var1+1^2*s_var291+o_err329) ;
+rel130= (1^2*1^2*t_var1+1^2*s_var301)/
+(1^2*1^2*t_var1+1^2*s_var301+o_err130) ;
+rel230= (1^2*1^2*t_var1+1^2*s_var301)/
+(1^2*1^2*t_var1+1^2*s_var301+o_err230) ;
+rel330= (1^2*1^2*t_var1+1^2*s_var301)/
+(1^2*1^2*t_var1+1^2*s_var301+o_err330) ;
+
+! Occasion specificity
+spe11= (1^2*s_var11)/
+(1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+spe21= (1^2*s_var11)/
+(1^2*1^2*t_var1+1^2*s_var11+o_err21) ;
+spe31= (1^2*s_var11)/
+(1^2*1^2*t_var1+1^2*s_var11+o_err31) ;
+spe12= (1^2*s_var21)/
+(1^2*1^2*t_var1+1^2*s_var21+o_err12) ;
+spe22= (1^2*s_var21)/
+(1^2*1^2*t_var1+1^2*s_var21+o_err22) ;
+spe32= (1^2*s_var21)/
+(1^2*1^2*t_var1+1^2*s_var21+o_err32) ;
+spe13= (1^2*s_var31)/
+(1^2*1^2*t_var1+1^2*s_var31+o_err13) ;
+spe23= (1^2*s_var31)/
+(1^2*1^2*t_var1+1^2*s_var31+o_err23) ;
+spe33= (1^2*s_var31)/
+(1^2*1^2*t_var1+1^2*s_var31+o_err33) ;
+spe14= (1^2*s_var41)/
+(1^2*1^2*t_var1+1^2*s_var41+o_err14) ;
+spe24= (1^2*s_var41)/
+(1^2*1^2*t_var1+1^2*s_var41+o_err24) ;
+spe34= (1^2*s_var41)/
+(1^2*1^2*t_var1+1^2*s_var41+o_err34) ;
+spe15= (1^2*s_var51)/
+(1^2*1^2*t_var1+1^2*s_var51+o_err15) ;
+spe25= (1^2*s_var51)/
+(1^2*1^2*t_var1+1^2*s_var51+o_err25) ;
+spe35= (1^2*s_var51)/
+(1^2*1^2*t_var1+1^2*s_var51+o_err35) ;
+spe16= (1^2*s_var61)/
+(1^2*1^2*t_var1+1^2*s_var61+o_err16) ;
+spe26= (1^2*s_var61)/
+(1^2*1^2*t_var1+1^2*s_var61+o_err26) ;
+spe36= (1^2*s_var61)/
+(1^2*1^2*t_var1+1^2*s_var61+o_err36) ;
+spe17= (1^2*s_var71)/
+(1^2*1^2*t_var1+1^2*s_var71+o_err17) ;
+spe27= (1^2*s_var71)/
+(1^2*1^2*t_var1+1^2*s_var71+o_err27) ;
+spe37= (1^2*s_var71)/
+(1^2*1^2*t_var1+1^2*s_var71+o_err37) ;
+spe18= (1^2*s_var81)/
+(1^2*1^2*t_var1+1^2*s_var81+o_err18) ;
+spe28= (1^2*s_var81)/
+(1^2*1^2*t_var1+1^2*s_var81+o_err28) ;
+spe38= (1^2*s_var81)/
+(1^2*1^2*t_var1+1^2*s_var81+o_err38) ;
+spe19= (1^2*s_var91)/
+(1^2*1^2*t_var1+1^2*s_var91+o_err19) ;
+spe29= (1^2*s_var91)/
+(1^2*1^2*t_var1+1^2*s_var91+o_err29) ;
+spe39= (1^2*s_var91)/
+(1^2*1^2*t_var1+1^2*s_var91+o_err39) ;
+spe110= (1^2*s_var101)/
+(1^2*1^2*t_var1+1^2*s_var101+o_err110) ;
+spe210= (1^2*s_var101)/
+(1^2*1^2*t_var1+1^2*s_var101+o_err210) ;
+spe310= (1^2*s_var101)/
+(1^2*1^2*t_var1+1^2*s_var101+o_err310) ;
+spe111= (1^2*s_var111)/
+(1^2*1^2*t_var1+1^2*s_var111+o_err111) ;
+spe211= (1^2*s_var111)/
+(1^2*1^2*t_var1+1^2*s_var111+o_err211) ;
+spe311= (1^2*s_var111)/
+(1^2*1^2*t_var1+1^2*s_var111+o_err311) ;
+spe112= (1^2*s_var121)/
+(1^2*1^2*t_var1+1^2*s_var121+o_err112) ;
+spe212= (1^2*s_var121)/
+(1^2*1^2*t_var1+1^2*s_var121+o_err212) ;
+spe312= (1^2*s_var121)/
+(1^2*1^2*t_var1+1^2*s_var121+o_err312) ;
+spe113= (1^2*s_var131)/
+(1^2*1^2*t_var1+1^2*s_var131+o_err113) ;
+spe213= (1^2*s_var131)/
+(1^2*1^2*t_var1+1^2*s_var131+o_err213) ;
+spe313= (1^2*s_var131)/
+(1^2*1^2*t_var1+1^2*s_var131+o_err313) ;
+spe114= (1^2*s_var141)/
+(1^2*1^2*t_var1+1^2*s_var141+o_err114) ;
+spe214= (1^2*s_var141)/
+(1^2*1^2*t_var1+1^2*s_var141+o_err214) ;
+spe314= (1^2*s_var141)/
+(1^2*1^2*t_var1+1^2*s_var141+o_err314) ;
+spe115= (1^2*s_var151)/
+(1^2*1^2*t_var1+1^2*s_var151+o_err115) ;
+spe215= (1^2*s_var151)/
+(1^2*1^2*t_var1+1^2*s_var151+o_err215) ;
+spe315= (1^2*s_var151)/
+(1^2*1^2*t_var1+1^2*s_var151+o_err315) ;
+spe116= (1^2*s_var161)/
+(1^2*1^2*t_var1+1^2*s_var161+o_err116) ;
+spe216= (1^2*s_var161)/
+(1^2*1^2*t_var1+1^2*s_var161+o_err216) ;
+spe316= (1^2*s_var161)/
+(1^2*1^2*t_var1+1^2*s_var161+o_err316) ;
+spe117= (1^2*s_var171)/
+(1^2*1^2*t_var1+1^2*s_var171+o_err117) ;
+spe217= (1^2*s_var171)/
+(1^2*1^2*t_var1+1^2*s_var171+o_err217) ;
+spe317= (1^2*s_var171)/
+(1^2*1^2*t_var1+1^2*s_var171+o_err317) ;
+spe118= (1^2*s_var181)/
+(1^2*1^2*t_var1+1^2*s_var181+o_err118) ;
+spe218= (1^2*s_var181)/
+(1^2*1^2*t_var1+1^2*s_var181+o_err218) ;
+spe318= (1^2*s_var181)/
+(1^2*1^2*t_var1+1^2*s_var181+o_err318) ;
+spe119= (1^2*s_var191)/
+(1^2*1^2*t_var1+1^2*s_var191+o_err119) ;
+spe219= (1^2*s_var191)/
+(1^2*1^2*t_var1+1^2*s_var191+o_err219) ;
+spe319= (1^2*s_var191)/
+(1^2*1^2*t_var1+1^2*s_var191+o_err319) ;
+spe120= (1^2*s_var201)/
+(1^2*1^2*t_var1+1^2*s_var201+o_err120) ;
+spe220= (1^2*s_var201)/
+(1^2*1^2*t_var1+1^2*s_var201+o_err220) ;
+spe320= (1^2*s_var201)/
+(1^2*1^2*t_var1+1^2*s_var201+o_err320) ;
+spe121= (1^2*s_var211)/
+(1^2*1^2*t_var1+1^2*s_var211+o_err121) ;
+spe221= (1^2*s_var211)/
+(1^2*1^2*t_var1+1^2*s_var211+o_err221) ;
+spe321= (1^2*s_var211)/
+(1^2*1^2*t_var1+1^2*s_var211+o_err321) ;
+spe122= (1^2*s_var221)/
+(1^2*1^2*t_var1+1^2*s_var221+o_err122) ;
+spe222= (1^2*s_var221)/
+(1^2*1^2*t_var1+1^2*s_var221+o_err222) ;
+spe322= (1^2*s_var221)/
+(1^2*1^2*t_var1+1^2*s_var221+o_err322) ;
+spe123= (1^2*s_var231)/
+(1^2*1^2*t_var1+1^2*s_var231+o_err123) ;
+spe223= (1^2*s_var231)/
+(1^2*1^2*t_var1+1^2*s_var231+o_err223) ;
+spe323= (1^2*s_var231)/
+(1^2*1^2*t_var1+1^2*s_var231+o_err323) ;
+spe124= (1^2*s_var241)/
+(1^2*1^2*t_var1+1^2*s_var241+o_err124) ;
+spe224= (1^2*s_var241)/
+(1^2*1^2*t_var1+1^2*s_var241+o_err224) ;
+spe324= (1^2*s_var241)/
+(1^2*1^2*t_var1+1^2*s_var241+o_err324) ;
+spe125= (1^2*s_var251)/
+(1^2*1^2*t_var1+1^2*s_var251+o_err125) ;
+spe225= (1^2*s_var251)/
+(1^2*1^2*t_var1+1^2*s_var251+o_err225) ;
+spe325= (1^2*s_var251)/
+(1^2*1^2*t_var1+1^2*s_var251+o_err325) ;
+spe126= (1^2*s_var261)/
+(1^2*1^2*t_var1+1^2*s_var261+o_err126) ;
+spe226= (1^2*s_var261)/
+(1^2*1^2*t_var1+1^2*s_var261+o_err226) ;
+spe326= (1^2*s_var261)/
+(1^2*1^2*t_var1+1^2*s_var261+o_err326) ;
+spe127= (1^2*s_var271)/
+(1^2*1^2*t_var1+1^2*s_var271+o_err127) ;
+spe227= (1^2*s_var271)/
+(1^2*1^2*t_var1+1^2*s_var271+o_err227) ;
+spe327= (1^2*s_var271)/
+(1^2*1^2*t_var1+1^2*s_var271+o_err327) ;
+spe128= (1^2*s_var281)/
+(1^2*1^2*t_var1+1^2*s_var281+o_err128) ;
+spe228= (1^2*s_var281)/
+(1^2*1^2*t_var1+1^2*s_var281+o_err228) ;
+spe328= (1^2*s_var281)/
+(1^2*1^2*t_var1+1^2*s_var281+o_err328) ;
+spe129= (1^2*s_var291)/
+(1^2*1^2*t_var1+1^2*s_var291+o_err129) ;
+spe229= (1^2*s_var291)/
+(1^2*1^2*t_var1+1^2*s_var291+o_err229) ;
+spe329= (1^2*s_var291)/
+(1^2*1^2*t_var1+1^2*s_var291+o_err329) ;
+spe130= (1^2*s_var301)/
+(1^2*1^2*t_var1+1^2*s_var301+o_err130) ;
+spe230= (1^2*s_var301)/
+(1^2*1^2*t_var1+1^2*s_var301+o_err230) ;
+spe330= (1^2*s_var301)/
+(1^2*1^2*t_var1+1^2*s_var301+o_err330) ;
+
+! Consistency
+con11= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+con21= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var11+o_err21) ;
+con31= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var11+o_err31) ;
+con12= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var21+o_err12) ;
+con22= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var21+o_err22) ;
+con32= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var21+o_err32) ;
+con13= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var31+o_err13) ;
+con23= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var31+o_err23) ;
+con33= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var31+o_err33) ;
+con14= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var41+o_err14) ;
+con24= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var41+o_err24) ;
+con34= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var41+o_err34) ;
+con15= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var51+o_err15) ;
+con25= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var51+o_err25) ;
+con35= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var51+o_err35) ;
+con16= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var61+o_err16) ;
+con26= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var61+o_err26) ;
+con36= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var61+o_err36) ;
+con17= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var71+o_err17) ;
+con27= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var71+o_err27) ;
+con37= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var71+o_err37) ;
+con18= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var81+o_err18) ;
+con28= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var81+o_err28) ;
+con38= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var81+o_err38) ;
+con19= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var91+o_err19) ;
+con29= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var91+o_err29) ;
+con39= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var91+o_err39) ;
+con110= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var101+o_err110) ;
+con210= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var101+o_err210) ;
+con310= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var101+o_err310) ;
+con111= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var111+o_err111) ;
+con211= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var111+o_err211) ;
+con311= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var111+o_err311) ;
+con112= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var121+o_err112) ;
+con212= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var121+o_err212) ;
+con312= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var121+o_err312) ;
+con113= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var131+o_err113) ;
+con213= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var131+o_err213) ;
+con313= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var131+o_err313) ;
+con114= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var141+o_err114) ;
+con214= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var141+o_err214) ;
+con314= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var141+o_err314) ;
+con115= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var151+o_err115) ;
+con215= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var151+o_err215) ;
+con315= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var151+o_err315) ;
+con116= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var161+o_err116) ;
+con216= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var161+o_err216) ;
+con316= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var161+o_err316) ;
+con117= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var171+o_err117) ;
+con217= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var171+o_err217) ;
+con317= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var171+o_err317) ;
+con118= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var181+o_err118) ;
+con218= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var181+o_err218) ;
+con318= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var181+o_err318) ;
+con119= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var191+o_err119) ;
+con219= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var191+o_err219) ;
+con319= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var191+o_err319) ;
+con120= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var201+o_err120) ;
+con220= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var201+o_err220) ;
+con320= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var201+o_err320) ;
+con121= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var211+o_err121) ;
+con221= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var211+o_err221) ;
+con321= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var211+o_err321) ;
+con122= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var221+o_err122) ;
+con222= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var221+o_err222) ;
+con322= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var221+o_err322) ;
+con123= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var231+o_err123) ;
+con223= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var231+o_err223) ;
+con323= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var231+o_err323) ;
+con124= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var241+o_err124) ;
+con224= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var241+o_err224) ;
+con324= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var241+o_err324) ;
+con125= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var251+o_err125) ;
+con225= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var251+o_err225) ;
+con325= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var251+o_err325) ;
+con126= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var261+o_err126) ;
+con226= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var261+o_err226) ;
+con326= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var261+o_err326) ;
+con127= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var271+o_err127) ;
+con227= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var271+o_err227) ;
+con327= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var271+o_err327) ;
+con128= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var281+o_err128) ;
+con228= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var281+o_err228) ;
+con328= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var281+o_err328) ;
+con129= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var291+o_err129) ;
+con229= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var291+o_err229) ;
+con329= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var291+o_err329) ;
+con130= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var301+o_err130) ;
+con230= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var301+o_err230) ;
+con330= (1^2*1^2*t_var1)/
+(1^2*1^2*t_var1+1^2*s_var301+o_err330) ;

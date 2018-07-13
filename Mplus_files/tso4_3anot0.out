@@ -1,6 +1,6 @@
 Mplus VERSION 8
 MUTHEN & MUTHEN
-07/13/2018   4:33 PM
+07/06/2018  10:59 AM
 
 INPUT INSTRUCTIONS
 
@@ -14,27 +14,29 @@ INPUT INSTRUCTIONS
 
   ! Latent occasion variables
   eta1 BY worry1@1
-  fear1@1
-  sad1@1 ;
+  fear1 (las21)
+  sad1 (las31) ;
   eta2 BY worry2@1
-  fear2@1
-  sad2@1 ;
+  fear2 (las22)
+  sad2 (las32) ;
   eta3 BY worry3@1
-  fear3@1
-  sad3@1 ;
+  fear3 (las23)
+  sad3 (las33) ;
   eta4 BY worry4@1
-  fear4@1
-  sad4@1 ;
-  occ1 BY eta1@1 ;
-  occ2 BY eta2@1 ;
-  occ3 BY eta3@1 ;
-  occ4 BY eta4@1 ;
+  fear4 (las24)
+  sad4 (las34) ;
 
   ! Latent trait variable or trait indicators
   theta BY eta1@1
   eta2@1
   eta3@1
   eta4@1 ;
+
+  !occasion residuals
+  occ1 by eta1@1;
+  occ2 by eta2@1;
+  occ3 by eta3@1;
+  occ4 by eta4@1;
 
   ! Intercepts and means
   [worry1*] (ins11) ;
@@ -53,18 +55,23 @@ INPUT INSTRUCTIONS
   [occ2@0] ;
   [occ3@0] ;
   [occ4@0] ;
+  ![eta1];
+  ![eta2];
+  ![eta3];
+  ![eta4];
+  ![theta];
 
   ! Set 0 correlations
   occ1 WITH occ2@0
   occ3@0
   occ4@0
-  theta@0 ;
+  theta@0;
   occ2 WITH occ3@0
   occ4@0
   theta@0 ;
   occ3 WITH occ4@0
   theta@0 ;
-  occ4 WITH theta@0 ;
+  occ4 WITH theta@0;
 
   ! autoregressive effects
   occ2 ON occ1 (beta1) ;
@@ -88,11 +95,11 @@ INPUT INSTRUCTIONS
   occ2 (oc_var2) ;
   occ3 (oc_var3) ;
   occ4 (oc_var4) ;
-  eta1@0 ;
-  eta2@0 ;
-  eta3@0 ;
-  eta4@0 ;
-  theta* (t_var) ;
+  theta* (t_var1) ;
+  eta1@0;
+  eta2@0;
+  eta3@0;
+  eta4@0;
 
 
 
@@ -122,8 +129,8 @@ Observed dependent variables
    WORRY3      FEAR3       SAD3        WORRY4      FEAR4       SAD4
 
 Continuous latent variables
-   ETA1        ETA2        ETA3        ETA4        OCC1        OCC2
-   OCC3        OCC4        THETA
+   ETA1        ETA2        ETA3        ETA4        THETA       OCC1
+   OCC2        OCC3        OCC4
 
 
 Estimator                                                       ML
@@ -226,48 +233,40 @@ UNIVARIATE SAMPLE STATISTICS
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
 
-     WARNING:  THE LATENT VARIABLE COVARIANCE MATRIX (PSI) IS NOT POSITIVE
-     DEFINITE.  THIS COULD INDICATE A NEGATIVE VARIANCE/RESIDUAL VARIANCE FOR A
-     LATENT VARIABLE, A CORRELATION GREATER OR EQUAL TO ONE BETWEEN TWO LATENT
-     VARIABLES, OR A LINEAR DEPENDENCY AMONG MORE THAN TWO LATENT VARIABLES.
-     CHECK THE TECH4 OUTPUT FOR MORE INFORMATION.
-     PROBLEM INVOLVING VARIABLE THETA.
-
-
 
 
 MODEL FIT INFORMATION
 
-Number of Free Parameters                       32
+Number of Free Parameters                       40
 
 Loglikelihood
 
-          H0 Value                       -2166.102
+          H0 Value                       -2152.660
           H1 Value                       -2076.459
 
 Information Criteria
 
-          Akaike (AIC)                    4396.204
-          Bayesian (BIC)                  4487.469
-          Sample-Size Adjusted BIC        4386.268
+          Akaike (AIC)                    4385.320
+          Bayesian (BIC)                  4499.401
+          Sample-Size Adjusted BIC        4372.899
             (n* = (n + 2) / 24)
 
 Chi-Square Test of Model Fit
 
-          Value                            179.287
-          Degrees of Freedom                    58
+          Value                            152.403
+          Degrees of Freedom                    50
           P-Value                           0.0000
 
 RMSEA (Root Mean Square Error Of Approximation)
 
-          Estimate                           0.128
-          90 Percent C.I.                    0.107  0.149
+          Estimate                           0.126
+          90 Percent C.I.                    0.104  0.150
           Probability RMSEA <= .05           0.000
 
 CFI/TLI
 
-          CFI                                0.786
-          TLI                                0.756
+          CFI                                0.819
+          TLI                                0.761
 
 Chi-Square Test of Model Fit for the Baseline Model
 
@@ -277,7 +276,7 @@ Chi-Square Test of Model Fit for the Baseline Model
 
 SRMR (Standardized Root Mean Square Residual)
 
-          Value                              0.102
+          Value                              0.074
 
 
 
@@ -288,23 +287,29 @@ MODEL RESULTS
 
  ETA1     BY
     WORRY1             1.000      0.000    999.000    999.000
-    FEAR1              1.000      0.000    999.000    999.000
-    SAD1               1.000      0.000    999.000    999.000
+    FEAR1              0.594      0.109      5.457      0.000
+    SAD1               0.857      0.128      6.683      0.000
 
  ETA2     BY
     WORRY2             1.000      0.000    999.000    999.000
-    FEAR2              1.000      0.000    999.000    999.000
-    SAD2               1.000      0.000    999.000    999.000
+    FEAR2              0.709      0.142      4.998      0.000
+    SAD2               1.079      0.175      6.174      0.000
 
  ETA3     BY
     WORRY3             1.000      0.000    999.000    999.000
-    FEAR3              1.000      0.000    999.000    999.000
-    SAD3               1.000      0.000    999.000    999.000
+    FEAR3              0.708      0.087      8.167      0.000
+    SAD3               0.910      0.105      8.668      0.000
 
  ETA4     BY
     WORRY4             1.000      0.000    999.000    999.000
-    FEAR4              1.000      0.000    999.000    999.000
-    SAD4               1.000      0.000    999.000    999.000
+    FEAR4              0.639      0.114      5.612      0.000
+    SAD4               0.760      0.131      5.799      0.000
+
+ THETA    BY
+    ETA1               1.000      0.000    999.000    999.000
+    ETA2               1.000      0.000    999.000    999.000
+    ETA3               1.000      0.000    999.000    999.000
+    ETA4               1.000      0.000    999.000    999.000
 
  OCC1     BY
     ETA1               1.000      0.000    999.000    999.000
@@ -318,20 +323,14 @@ MODEL RESULTS
  OCC4     BY
     ETA4               1.000      0.000    999.000    999.000
 
- THETA    BY
-    ETA1               1.000      0.000    999.000    999.000
-    ETA2               1.000      0.000    999.000    999.000
-    ETA3               1.000      0.000    999.000    999.000
-    ETA4               1.000      0.000    999.000    999.000
-
  OCC2     ON
-    OCC1               0.825      0.171      4.813      0.000
+    OCC1               0.653      0.192      3.404      0.001
 
  OCC3     ON
-    OCC2               0.948      0.120      7.907      0.000
+    OCC2               1.044      0.267      3.902      0.000
 
  OCC4     ON
-    OCC3               0.573      0.293      1.955      0.051
+    OCC3               0.479      0.283      1.695      0.090
 
  OCC1     WITH
     OCC2               0.000      0.000    999.000    999.000
@@ -355,56 +354,56 @@ MODEL RESULTS
     OCC1               0.000      0.000    999.000    999.000
 
  Intercepts
-    WORRY1             3.822      0.184     20.753      0.000
-    FEAR1              2.327      0.170     13.686      0.000
-    SAD1               3.061      0.180     17.026      0.000
-    WORRY2             3.753      0.189     19.906      0.000
-    FEAR2              2.218      0.164     13.565      0.000
-    SAD2               3.069      0.162     18.931      0.000
-    WORRY3             3.300      0.178     18.591      0.000
-    FEAR3              2.041      0.145     14.108      0.000
-    SAD3               2.821      0.158     17.845      0.000
-    WORRY4             3.043      0.170     17.895      0.000
-    FEAR4              1.873      0.121     15.471      0.000
-    SAD4               2.436      0.135     18.046      0.000
+    WORRY1             3.852      0.194     19.857      0.000
+    FEAR1              2.327      0.156     14.925      0.000
+    SAD1               3.081      0.183     16.815      0.000
+    WORRY2             3.752      0.192     19.513      0.000
+    FEAR2              2.217      0.154     14.420      0.000
+    SAD2               3.069      0.169     18.160      0.000
+    WORRY3             3.308      0.189     17.546      0.000
+    FEAR3              2.040      0.135     15.079      0.000
+    SAD3               2.824      0.164     17.198      0.000
+    WORRY4             3.047      0.180     16.966      0.000
+    FEAR4              1.863      0.117     15.983      0.000
+    SAD4               2.430      0.135     18.059      0.000
     OCC2               0.000      0.000    999.000    999.000
     OCC3               0.000      0.000    999.000    999.000
     OCC4               0.000      0.000    999.000    999.000
 
  Variances
-    OCC1               1.634      1.102      1.483      0.138
-    THETA             -0.047      1.090     -0.043      0.965
+    THETA              0.548      0.937      0.585      0.558
+    OCC1               1.955      1.092      1.791      0.073
 
  Residual Variances
-    WORRY1             1.674      0.313      5.351      0.000
-    FEAR1              1.230      0.247      4.987      0.000
-    SAD1               1.512      0.291      5.198      0.000
-    WORRY2             2.406      0.380      6.329      0.000
-    FEAR2              1.490      0.253      5.883      0.000
-    SAD2               1.459      0.249      5.854      0.000
-    WORRY3             1.809      0.287      6.307      0.000
-    FEAR3              0.666      0.145      4.604      0.000
-    SAD3               1.090      0.194      5.610      0.000
-    WORRY4             2.260      0.338      6.683      0.000
-    FEAR4              0.664      0.138      4.804      0.000
-    SAD4               1.063      0.184      5.787      0.000
+    WORRY1             1.246      0.311      4.004      0.000
+    FEAR1              1.418      0.243      5.846      0.000
+    SAD1               1.423      0.292      4.874      0.000
+    WORRY2             2.313      0.380      6.092      0.000
+    FEAR2              1.690      0.265      6.387      0.000
+    SAD2               1.203      0.245      4.902      0.000
+    WORRY3             1.502      0.279      5.384      0.000
+    FEAR3              0.805      0.146      5.512      0.000
+    SAD3               0.964      0.198      4.869      0.000
+    WORRY4             1.858      0.355      5.234      0.000
+    FEAR4              0.806      0.149      5.408      0.000
+    SAD4               1.015      0.196      5.167      0.000
     ETA1               0.000      0.000    999.000    999.000
     ETA2               0.000      0.000    999.000    999.000
     ETA3               0.000      0.000    999.000    999.000
     ETA4               0.000      0.000    999.000    999.000
-    OCC2               0.382      0.178      2.150      0.032
-    OCC3               0.452      0.175      2.580      0.010
-    OCC4               0.486      0.215      2.257      0.024
+    OCC2               0.339      0.210      1.613      0.107
+    OCC3               0.725      0.267      2.713      0.007
+    OCC4               0.832      0.349      2.386      0.017
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.134E-02
+     Condition Number for the Information Matrix              0.175E-02
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  16:33:52
-        Ending Time:  16:33:52
+     Beginning Time:  10:59:25
+        Ending Time:  10:59:25
        Elapsed Time:  00:00:00
 
 

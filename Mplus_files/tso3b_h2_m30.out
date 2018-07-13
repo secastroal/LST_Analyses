@@ -1,0 +1,3474 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+07/13/2018   6:38 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "Mplus_files/tso3b_h2_m30.dat";
+  VARIABLE:
+  NAMES = worry1 fear1 sad1 worry2 fear2 sad2 worry3 fear3 sad3 worry4 fear4 sad4
+       worry5 fear5 sad5 worry6 fear6 sad6 worry7 fear7 sad7 worry8 fear8 sad8 worry9
+       fear9 sad9 worry10 fear10 sad10 worry11 fear11 sad11 worry12 fear12 sad12
+       worry13 fear13 sad13 worry14 fear14 sad14 worry15 fear15 sad15 worry16 fear16
+       sad16 worry17 fear17 sad17 worry18 fear18 sad18 worry19 fear19 sad19 worry20
+       fear20 sad20 worry21 fear21 sad21 worry22 fear22 sad22 worry23 fear23 sad23
+       worry24 fear24 sad24 worry25 fear25 sad25 worry26 fear26 sad26 worry27 fear27
+       sad27 worry28 fear28 sad28 worry29 fear29 sad29 worry30 fear30 sad30;
+  MISSING=.;
+
+  ANALYSIS:
+  H1iterations=30000;
+
+  MODEL:
+
+  ! Latent occasion variables
+  occ1 BY worry1@1
+  fear1 (las21)
+  sad1 (las31) ;
+  occ2 BY worry2@1
+  fear2 (las22)
+  sad2 (las32) ;
+  occ3 BY worry3@1
+  fear3 (las23)
+  sad3 (las33) ;
+  occ4 BY worry4@1
+  fear4 (las24)
+  sad4 (las34) ;
+  occ5 BY worry5@1
+  fear5 (las25)
+  sad5 (las35) ;
+  occ6 BY worry6@1
+  fear6 (las26)
+  sad6 (las36) ;
+  occ7 BY worry7@1
+  fear7 (las27)
+  sad7 (las37) ;
+  occ8 BY worry8@1
+  fear8 (las28)
+  sad8 (las38) ;
+  occ9 BY worry9@1
+  fear9 (las29)
+  sad9 (las39) ;
+  occ10 BY worry10@1
+  fear10 (las210)
+  sad10 (las310) ;
+  occ11 BY worry11@1
+  fear11 (las211)
+  sad11 (las311) ;
+  occ12 BY worry12@1
+  fear12 (las212)
+  sad12 (las312) ;
+  occ13 BY worry13@1
+  fear13 (las213)
+  sad13 (las313) ;
+  occ14 BY worry14@1
+  fear14 (las214)
+  sad14 (las314) ;
+  occ15 BY worry15@1
+  fear15 (las215)
+  sad15 (las315) ;
+  occ16 BY worry16@1
+  fear16 (las216)
+  sad16 (las316) ;
+  occ17 BY worry17@1
+  fear17 (las217)
+  sad17 (las317) ;
+  occ18 BY worry18@1
+  fear18 (las218)
+  sad18 (las318) ;
+  occ19 BY worry19@1
+  fear19 (las219)
+  sad19 (las319) ;
+  occ20 BY worry20@1
+  fear20 (las220)
+  sad20 (las320) ;
+  occ21 BY worry21@1
+  fear21 (las221)
+  sad21 (las321) ;
+  occ22 BY worry22@1
+  fear22 (las222)
+  sad22 (las322) ;
+  occ23 BY worry23@1
+  fear23 (las223)
+  sad23 (las323) ;
+  occ24 BY worry24@1
+  fear24 (las224)
+  sad24 (las324) ;
+  occ25 BY worry25@1
+  fear25 (las225)
+  sad25 (las325) ;
+  occ26 BY worry26@1
+  fear26 (las226)
+  sad26 (las326) ;
+  occ27 BY worry27@1
+  fear27 (las227)
+  sad27 (las327) ;
+  occ28 BY worry28@1
+  fear28 (las228)
+  sad28 (las328) ;
+  occ29 BY worry29@1
+  fear29 (las229)
+  sad29 (las329) ;
+  occ30 BY worry30@1
+  fear30 (las230)
+  sad30 (las330) ;
+
+  ! Latent trait variable or trait indicators
+  theta1 BY worry1@1
+  worry2@1
+  worry3@1
+  worry4@1
+  worry5@1
+  worry6@1
+  worry7@1
+  worry8@1
+  worry9@1
+  worry10@1
+  worry11@1
+  worry12@1
+  worry13@1
+  worry14@1
+  worry15@1
+  worry16@1
+  worry17@1
+  worry18@1
+  worry19@1
+  worry20@1
+  worry21@1
+  worry22@1
+  worry23@1
+  worry24@1
+  worry25@1
+  worry26@1
+  worry27@1
+  worry28@1
+  worry29@1
+  worry30@1 ;
+  theta2 BY fear1@1
+  fear2@1
+  fear3@1
+  fear4@1
+  fear5@1
+  fear6@1
+  fear7@1
+  fear8@1
+  fear9@1
+  fear10@1
+  fear11@1
+  fear12@1
+  fear13@1
+  fear14@1
+  fear15@1
+  fear16@1
+  fear17@1
+  fear18@1
+  fear19@1
+  fear20@1
+  fear21@1
+  fear22@1
+  fear23@1
+  fear24@1
+  fear25@1
+  fear26@1
+  fear27@1
+  fear28@1
+  fear29@1
+  fear30@1 ;
+  theta3 BY sad1@1
+  sad2@1
+  sad3@1
+  sad4@1
+  sad5@1
+  sad6@1
+  sad7@1
+  sad8@1
+  sad9@1
+  sad10@1
+  sad11@1
+  sad12@1
+  sad13@1
+  sad14@1
+  sad15@1
+  sad16@1
+  sad17@1
+  sad18@1
+  sad19@1
+  sad20@1
+  sad21@1
+  sad22@1
+  sad23@1
+  sad24@1
+  sad25@1
+  sad26@1
+  sad27@1
+  sad28@1
+  sad29@1
+  sad30@1 ;
+
+  ! Intercepts and means
+  [worry1*] (ins11) ;
+  [fear1*] (ins21) ;
+  [sad1*] (ins31) ;
+  [worry2*] (ins12) ;
+  [fear2*] (ins22) ;
+  [sad2*] (ins32) ;
+  [worry3*] (ins13) ;
+  [fear3*] (ins23) ;
+  [sad3*] (ins33) ;
+  [worry4*] (ins14) ;
+  [fear4*] (ins24) ;
+  [sad4*] (ins34) ;
+  [worry5*] (ins15) ;
+  [fear5*] (ins25) ;
+  [sad5*] (ins35) ;
+  [worry6*] (ins16) ;
+  [fear6*] (ins26) ;
+  [sad6*] (ins36) ;
+  [worry7*] (ins17) ;
+  [fear7*] (ins27) ;
+  [sad7*] (ins37) ;
+  [worry8*] (ins18) ;
+  [fear8*] (ins28) ;
+  [sad8*] (ins38) ;
+  [worry9*] (ins19) ;
+  [fear9*] (ins29) ;
+  [sad9*] (ins39) ;
+  [worry10*] (ins110) ;
+  [fear10*] (ins210) ;
+  [sad10*] (ins310) ;
+  [worry11*] (ins111) ;
+  [fear11*] (ins211) ;
+  [sad11*] (ins311) ;
+  [worry12*] (ins112) ;
+  [fear12*] (ins212) ;
+  [sad12*] (ins312) ;
+  [worry13*] (ins113) ;
+  [fear13*] (ins213) ;
+  [sad13*] (ins313) ;
+  [worry14*] (ins114) ;
+  [fear14*] (ins214) ;
+  [sad14*] (ins314) ;
+  [worry15*] (ins115) ;
+  [fear15*] (ins215) ;
+  [sad15*] (ins315) ;
+  [worry16*] (ins116) ;
+  [fear16*] (ins216) ;
+  [sad16*] (ins316) ;
+  [worry17*] (ins117) ;
+  [fear17*] (ins217) ;
+  [sad17*] (ins317) ;
+  [worry18*] (ins118) ;
+  [fear18*] (ins218) ;
+  [sad18*] (ins318) ;
+  [worry19*] (ins119) ;
+  [fear19*] (ins219) ;
+  [sad19*] (ins319) ;
+  [worry20*] (ins120) ;
+  [fear20*] (ins220) ;
+  [sad20*] (ins320) ;
+  [worry21*] (ins121) ;
+  [fear21*] (ins221) ;
+  [sad21*] (ins321) ;
+  [worry22*] (ins122) ;
+  [fear22*] (ins222) ;
+  [sad22*] (ins322) ;
+  [worry23*] (ins123) ;
+  [fear23*] (ins223) ;
+  [sad23*] (ins323) ;
+  [worry24*] (ins124) ;
+  [fear24*] (ins224) ;
+  [sad24*] (ins324) ;
+  [worry25*] (ins125) ;
+  [fear25*] (ins225) ;
+  [sad25*] (ins325) ;
+  [worry26*] (ins126) ;
+  [fear26*] (ins226) ;
+  [sad26*] (ins326) ;
+  [worry27*] (ins127) ;
+  [fear27*] (ins227) ;
+  [sad27*] (ins327) ;
+  [worry28*] (ins128) ;
+  [fear28*] (ins228) ;
+  [sad28*] (ins328) ;
+  [worry29*] (ins129) ;
+  [fear29*] (ins229) ;
+  [sad29*] (ins329) ;
+  [worry30*] (ins130) ;
+  [fear30*] (ins230) ;
+  [sad30*] (ins330) ;
+  [occ1@0] ;
+  [occ2@0] ;
+  [occ3@0] ;
+  [occ4@0] ;
+  [occ5@0] ;
+  [occ6@0] ;
+  [occ7@0] ;
+  [occ8@0] ;
+  [occ9@0] ;
+  [occ10@0] ;
+  [occ11@0] ;
+  [occ12@0] ;
+  [occ13@0] ;
+  [occ14@0] ;
+  [occ15@0] ;
+  [occ16@0] ;
+  [occ17@0] ;
+  [occ18@0] ;
+  [occ19@0] ;
+  [occ20@0] ;
+  [occ21@0] ;
+  [occ22@0] ;
+  [occ23@0] ;
+  [occ24@0] ;
+  [occ25@0] ;
+  [occ26@0] ;
+  [occ27@0] ;
+  [occ28@0] ;
+  [occ29@0] ;
+  [occ30@0] ;
+
+  ! Set 0 correlations
+  occ1 WITH occ2@0
+  occ3@0
+  occ4@0
+  occ5@0
+  occ6@0
+  occ7@0
+  occ8@0
+  occ9@0
+  occ10@0
+  occ11@0
+  occ12@0
+  occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ2 WITH occ3@0
+  occ4@0
+  occ5@0
+  occ6@0
+  occ7@0
+  occ8@0
+  occ9@0
+  occ10@0
+  occ11@0
+  occ12@0
+  occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ3 WITH occ4@0
+  occ5@0
+  occ6@0
+  occ7@0
+  occ8@0
+  occ9@0
+  occ10@0
+  occ11@0
+  occ12@0
+  occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ4 WITH occ5@0
+  occ6@0
+  occ7@0
+  occ8@0
+  occ9@0
+  occ10@0
+  occ11@0
+  occ12@0
+  occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ5 WITH occ6@0
+  occ7@0
+  occ8@0
+  occ9@0
+  occ10@0
+  occ11@0
+  occ12@0
+  occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ6 WITH occ7@0
+  occ8@0
+  occ9@0
+  occ10@0
+  occ11@0
+  occ12@0
+  occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ7 WITH occ8@0
+  occ9@0
+  occ10@0
+  occ11@0
+  occ12@0
+  occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ8 WITH occ9@0
+  occ10@0
+  occ11@0
+  occ12@0
+  occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ9 WITH occ10@0
+  occ11@0
+  occ12@0
+  occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ10 WITH occ11@0
+  occ12@0
+  occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ11 WITH occ12@0
+  occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ12 WITH occ13@0
+  occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ13 WITH occ14@0
+  occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ14 WITH occ15@0
+  occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ15 WITH occ16@0
+  occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ16 WITH occ17@0
+  occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ17 WITH occ18@0
+  occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ18 WITH occ19@0
+  occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ19 WITH occ20@0
+  occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ20 WITH occ21@0
+  occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ21 WITH occ22@0
+  occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ22 WITH occ23@0
+  occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ23 WITH occ24@0
+  occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ24 WITH occ25@0
+  occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ25 WITH occ26@0
+  occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ26 WITH occ27@0
+  occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ27 WITH occ28@0
+  occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ28 WITH occ29@0
+  occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ29 WITH occ30@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ30 WITH theta1@0
+  theta2@0
+  theta3@0 ;
+
+  ! autoregressive effects
+  occ2 ON occ1 (beta1) ;
+  occ3 ON occ2 (beta2) ;
+  occ4 ON occ3 (beta3) ;
+  occ5 ON occ4 (beta4) ;
+  occ6 ON occ5 (beta5) ;
+  occ7 ON occ6 (beta6) ;
+  occ8 ON occ7 (beta7) ;
+  occ9 ON occ8 (beta8) ;
+  occ10 ON occ9 (beta9) ;
+  occ11 ON occ10 (beta10) ;
+  occ12 ON occ11 (beta11) ;
+  occ13 ON occ12 (beta12) ;
+  occ14 ON occ13 (beta13) ;
+  occ15 ON occ14 (beta14) ;
+  occ16 ON occ15 (beta15) ;
+  occ17 ON occ16 (beta16) ;
+  occ18 ON occ17 (beta17) ;
+  occ19 ON occ18 (beta18) ;
+  occ20 ON occ19 (beta19) ;
+  occ21 ON occ20 (beta20) ;
+  occ22 ON occ21 (beta21) ;
+  occ23 ON occ22 (beta22) ;
+  occ24 ON occ23 (beta23) ;
+  occ25 ON occ24 (beta24) ;
+  occ26 ON occ25 (beta25) ;
+  occ27 ON occ26 (beta26) ;
+  occ28 ON occ27 (beta27) ;
+  occ29 ON occ28 (beta28) ;
+  occ30 ON occ29 (beta29) ;
+
+  ! Variance components
+  worry1 (err11) ;
+  fear1 (err21) ;
+  sad1 (err31) ;
+  worry2 (err12) ;
+  fear2 (err22) ;
+  sad2 (err32) ;
+  worry3 (err13) ;
+  fear3 (err23) ;
+  sad3 (err33) ;
+  worry4 (err14) ;
+  fear4 (err24) ;
+  sad4 (err34) ;
+  worry5 (err15) ;
+  fear5 (err25) ;
+  sad5 (err35) ;
+  worry6 (err16) ;
+  fear6 (err26) ;
+  sad6 (err36) ;
+  worry7 (err17) ;
+  fear7 (err27) ;
+  sad7 (err37) ;
+  worry8 (err18) ;
+  fear8 (err28) ;
+  sad8 (err38) ;
+  worry9 (err19) ;
+  fear9 (err29) ;
+  sad9 (err39) ;
+  worry10 (err110) ;
+  fear10 (err210) ;
+  sad10 (err310) ;
+  worry11 (err111) ;
+  fear11 (err211) ;
+  sad11 (err311) ;
+  worry12 (err112) ;
+  fear12 (err212) ;
+  sad12 (err312) ;
+  worry13 (err113) ;
+  fear13 (err213) ;
+  sad13 (err313) ;
+  worry14 (err114) ;
+  fear14 (err214) ;
+  sad14 (err314) ;
+  worry15 (err115) ;
+  fear15 (err215) ;
+  sad15 (err315) ;
+  worry16 (err116) ;
+  fear16 (err216) ;
+  sad16 (err316) ;
+  worry17 (err117) ;
+  fear17 (err217) ;
+  sad17 (err317) ;
+  worry18 (err118) ;
+  fear18 (err218) ;
+  sad18 (err318) ;
+  worry19 (err119) ;
+  fear19 (err219) ;
+  sad19 (err319) ;
+  worry20 (err120) ;
+  fear20 (err220) ;
+  sad20 (err320) ;
+  worry21 (err121) ;
+  fear21 (err221) ;
+  sad21 (err321) ;
+  worry22 (err122) ;
+  fear22 (err222) ;
+  sad22 (err322) ;
+  worry23 (err123) ;
+  fear23 (err223) ;
+  sad23 (err323) ;
+  worry24 (err124) ;
+  fear24 (err224) ;
+  sad24 (err324) ;
+  worry25 (err125) ;
+  fear25 (err225) ;
+  sad25 (err325) ;
+  worry26 (err126) ;
+  fear26 (err226) ;
+  sad26 (err326) ;
+  worry27 (err127) ;
+  fear27 (err227) ;
+  sad27 (err327) ;
+  worry28 (err128) ;
+  fear28 (err228) ;
+  sad28 (err328) ;
+  worry29 (err129) ;
+  fear29 (err229) ;
+  sad29 (err329) ;
+  worry30 (err130) ;
+  fear30 (err230) ;
+  sad30 (err330) ;
+  occ1 (oc_var1) ;
+  occ2 (oc_var2) ;
+  occ3 (oc_var3) ;
+  occ4 (oc_var4) ;
+  occ5 (oc_var5) ;
+  occ6 (oc_var6) ;
+  occ7 (oc_var7) ;
+  occ8 (oc_var8) ;
+  occ9 (oc_var9) ;
+  occ10 (oc_var10) ;
+  occ11 (oc_var11) ;
+  occ12 (oc_var12) ;
+  occ13 (oc_var13) ;
+  occ14 (oc_var14) ;
+  occ15 (oc_var15) ;
+  occ16 (oc_var16) ;
+  occ17 (oc_var17) ;
+  occ18 (oc_var18) ;
+  occ19 (oc_var19) ;
+  occ20 (oc_var20) ;
+  occ21 (oc_var21) ;
+  occ22 (oc_var22) ;
+  occ23 (oc_var23) ;
+  occ24 (oc_var24) ;
+  occ25 (oc_var25) ;
+  occ26 (oc_var26) ;
+  occ27 (oc_var27) ;
+  occ28 (oc_var28) ;
+  occ29 (oc_var29) ;
+  occ30 (oc_var30) ;
+  theta1* (t_var1) ;
+  theta2* (t_var2) ;
+  theta3* (t_var3) ;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         129
+
+Number of dependent variables                                   90
+Number of independent variables                                  0
+Number of continuous latent variables                           33
+
+Observed dependent variables
+
+  Continuous
+   WORRY1      FEAR1       SAD1        WORRY2      FEAR2       SAD2
+   WORRY3      FEAR3       SAD3        WORRY4      FEAR4       SAD4
+   WORRY5      FEAR5       SAD5        WORRY6      FEAR6       SAD6
+   WORRY7      FEAR7       SAD7        WORRY8      FEAR8       SAD8
+   WORRY9      FEAR9       SAD9        WORRY10     FEAR10      SAD10
+   WORRY11     FEAR11      SAD11       WORRY12     FEAR12      SAD12
+   WORRY13     FEAR13      SAD13       WORRY14     FEAR14      SAD14
+   WORRY15     FEAR15      SAD15       WORRY16     FEAR16      SAD16
+   WORRY17     FEAR17      SAD17       WORRY18     FEAR18      SAD18
+   WORRY19     FEAR19      SAD19       WORRY20     FEAR20      SAD20
+   WORRY21     FEAR21      SAD21       WORRY22     FEAR22      SAD22
+   WORRY23     FEAR23      SAD23       WORRY24     FEAR24      SAD24
+   WORRY25     FEAR25      SAD25       WORRY26     FEAR26      SAD26
+   WORRY27     FEAR27      SAD27       WORRY28     FEAR28      SAD28
+   WORRY29     FEAR29      SAD29       WORRY30     FEAR30      SAD30
+
+Continuous latent variables
+   OCC1        OCC2        OCC3        OCC4        OCC5        OCC6
+   OCC7        OCC8        OCC9        OCC10       OCC11       OCC12
+   OCC13       OCC14       OCC15       OCC16       OCC17       OCC18
+   OCC19       OCC20       OCC21       OCC22       OCC23       OCC24
+   OCC25       OCC26       OCC27       OCC28       OCC29       OCC30
+   THETA1      THETA2      THETA3
+
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                          30000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  Mplus_files/tso3b_h2_m30.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns           122
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              WORRY1        FEAR1         SAD1          WORRY2        FEAR2
+              ________      ________      ________      ________      ________
+ WORRY1         0.690
+ FEAR1          0.690         0.690
+ SAD1           0.682         0.682         0.682
+ WORRY2         0.628         0.628         0.628         0.806
+ FEAR2          0.636         0.636         0.636         0.798         0.806
+ SAD2           0.636         0.636         0.636         0.806         0.806
+ WORRY3         0.597         0.597         0.597         0.705         0.705
+ FEAR3          0.597         0.597         0.597         0.705         0.705
+ SAD3           0.597         0.597         0.597         0.705         0.705
+ WORRY4         0.612         0.612         0.612         0.705         0.705
+ FEAR4          0.612         0.612         0.612         0.705         0.705
+ SAD4           0.612         0.612         0.612         0.705         0.705
+ WORRY5         0.597         0.597         0.589         0.705         0.713
+ FEAR5          0.605         0.605         0.597         0.721         0.729
+ SAD5           0.605         0.605         0.597         0.713         0.721
+ WORRY6         0.620         0.620         0.612         0.698         0.698
+ FEAR6          0.620         0.620         0.612         0.698         0.698
+ SAD6           0.620         0.620         0.612         0.698         0.698
+ WORRY7         0.612         0.612         0.605         0.713         0.721
+ FEAR7          0.612         0.612         0.605         0.713         0.721
+ SAD7           0.612         0.612         0.605         0.713         0.721
+ WORRY8         0.612         0.612         0.605         0.713         0.721
+ FEAR8          0.612         0.612         0.605         0.713         0.721
+ SAD8           0.612         0.612         0.605         0.713         0.721
+ WORRY9         0.581         0.581         0.581         0.682         0.682
+ FEAR9          0.589         0.589         0.589         0.690         0.690
+ SAD9           0.589         0.589         0.589         0.690         0.690
+ WORRY10        0.527         0.527         0.527         0.620         0.620
+ FEAR10         0.527         0.527         0.527         0.612         0.612
+ SAD10          0.527         0.527         0.527         0.620         0.620
+ WORRY11        0.535         0.535         0.527         0.535         0.543
+ FEAR11         0.535         0.535         0.527         0.535         0.543
+ SAD11          0.535         0.535         0.527         0.535         0.543
+ WORRY12        0.581         0.581         0.574         0.643         0.651
+ FEAR12         0.574         0.574         0.566         0.636         0.643
+ SAD12          0.581         0.581         0.574         0.643         0.651
+ WORRY13        0.558         0.558         0.550         0.667         0.667
+ FEAR13         0.558         0.558         0.550         0.667         0.667
+ SAD13          0.558         0.558         0.550         0.667         0.667
+ WORRY14        0.612         0.612         0.605         0.729         0.729
+ FEAR14         0.612         0.612         0.605         0.729         0.729
+ SAD14          0.612         0.612         0.605         0.729         0.729
+ WORRY15        0.612         0.612         0.605         0.705         0.705
+ FEAR15         0.597         0.597         0.589         0.690         0.690
+ SAD15          0.612         0.612         0.605         0.705         0.705
+ WORRY16        0.574         0.574         0.566         0.682         0.682
+ FEAR16         0.574         0.574         0.566         0.682         0.682
+ SAD16          0.574         0.574         0.566         0.682         0.682
+ WORRY17        0.605         0.605         0.597         0.705         0.705
+ FEAR17         0.605         0.605         0.597         0.705         0.705
+ SAD17          0.605         0.605         0.597         0.705         0.705
+ WORRY18        0.574         0.574         0.566         0.682         0.682
+ FEAR18         0.581         0.581         0.574         0.690         0.690
+ SAD18          0.581         0.581         0.574         0.690         0.690
+ WORRY19        0.589         0.589         0.581         0.682         0.682
+ FEAR19         0.597         0.597         0.589         0.682         0.682
+ SAD19          0.597         0.597         0.589         0.682         0.682
+ WORRY20        0.535         0.535         0.535         0.612         0.612
+ FEAR20         0.535         0.535         0.535         0.612         0.612
+ SAD20          0.535         0.535         0.535         0.612         0.612
+ WORRY21        0.496         0.496         0.488         0.504         0.512
+ FEAR21         0.496         0.496         0.488         0.504         0.512
+ SAD21          0.496         0.496         0.488         0.504         0.512
+ WORRY22        0.566         0.566         0.558         0.636         0.643
+ FEAR22         0.566         0.566         0.558         0.636         0.643
+ SAD22          0.558         0.558         0.550         0.628         0.636
+ WORRY23        0.574         0.574         0.566         0.643         0.643
+ FEAR23         0.574         0.574         0.566         0.643         0.643
+ SAD23          0.574         0.574         0.566         0.643         0.643
+ WORRY24        0.605         0.605         0.597         0.690         0.690
+ FEAR24         0.605         0.605         0.597         0.690         0.690
+ SAD24          0.605         0.605         0.597         0.690         0.690
+ WORRY25        0.581         0.581         0.581         0.698         0.698
+ FEAR25         0.581         0.581         0.581         0.698         0.698
+ SAD25          0.581         0.581         0.581         0.698         0.698
+ WORRY26        0.574         0.574         0.566         0.651         0.651
+ FEAR26         0.574         0.574         0.566         0.651         0.651
+ SAD26          0.574         0.574         0.566         0.651         0.651
+ WORRY27        0.566         0.566         0.558         0.667         0.667
+ FEAR27         0.574         0.574         0.566         0.674         0.674
+ SAD27          0.574         0.574         0.566         0.674         0.674
+ WORRY28        0.597         0.597         0.589         0.698         0.698
+ FEAR28         0.597         0.597         0.589         0.698         0.698
+ SAD28          0.597         0.597         0.589         0.698         0.698
+ WORRY29        0.574         0.574         0.566         0.643         0.643
+ FEAR29         0.574         0.574         0.566         0.643         0.643
+ SAD29          0.574         0.574         0.566         0.643         0.643
+ WORRY30        0.566         0.566         0.558         0.659         0.659
+ FEAR30         0.566         0.566         0.558         0.659         0.659
+ SAD30          0.566         0.566         0.558         0.659         0.659
+
+
+           Covariance Coverage
+              SAD2          WORRY3        FEAR3         SAD3          WORRY4
+              ________      ________      ________      ________      ________
+ SAD2           0.814
+ WORRY3         0.713         0.837
+ FEAR3          0.713         0.837         0.837
+ SAD3           0.713         0.829         0.829         0.829
+ WORRY4         0.713         0.744         0.744         0.736         0.868
+ FEAR4          0.713         0.744         0.744         0.736         0.868
+ SAD4           0.713         0.744         0.744         0.736         0.868
+ WORRY5         0.713         0.744         0.744         0.736         0.752
+ FEAR5          0.729         0.752         0.752         0.744         0.760
+ SAD5           0.721         0.752         0.752         0.744         0.760
+ WORRY6         0.705         0.736         0.736         0.729         0.752
+ FEAR6          0.705         0.736         0.736         0.729         0.752
+ SAD6           0.705         0.736         0.736         0.729         0.752
+ WORRY7         0.721         0.744         0.744         0.736         0.744
+ FEAR7          0.721         0.744         0.744         0.736         0.744
+ SAD7           0.721         0.744         0.744         0.736         0.744
+ WORRY8         0.721         0.736         0.736         0.736         0.744
+ FEAR8          0.721         0.736         0.736         0.736         0.744
+ SAD8           0.721         0.736         0.736         0.736         0.744
+ WORRY9         0.690         0.698         0.698         0.698         0.713
+ FEAR9          0.698         0.705         0.705         0.705         0.713
+ SAD9           0.698         0.705         0.705         0.705         0.713
+ WORRY10        0.628         0.667         0.667         0.659         0.690
+ FEAR10         0.620         0.659         0.659         0.651         0.682
+ SAD10          0.628         0.667         0.667         0.659         0.690
+ WORRY11        0.543         0.558         0.558         0.550         0.597
+ FEAR11         0.543         0.558         0.558         0.550         0.597
+ SAD11          0.543         0.558         0.558         0.550         0.597
+ WORRY12        0.651         0.651         0.651         0.643         0.682
+ FEAR12         0.643         0.643         0.643         0.636         0.674
+ SAD12          0.651         0.651         0.651         0.643         0.682
+ WORRY13        0.674         0.651         0.651         0.643         0.713
+ FEAR13         0.674         0.651         0.651         0.643         0.713
+ SAD13          0.674         0.651         0.651         0.643         0.713
+ WORRY14        0.736         0.729         0.729         0.721         0.760
+ FEAR14         0.736         0.729         0.729         0.721         0.760
+ SAD14          0.736         0.729         0.729         0.721         0.760
+ WORRY15        0.713         0.736         0.736         0.729         0.767
+ FEAR15         0.698         0.721         0.721         0.713         0.760
+ SAD15          0.713         0.736         0.736         0.729         0.767
+ WORRY16        0.690         0.721         0.721         0.713         0.729
+ FEAR16         0.690         0.721         0.721         0.713         0.729
+ SAD16          0.690         0.721         0.721         0.713         0.729
+ WORRY17        0.713         0.752         0.752         0.744         0.783
+ FEAR17         0.713         0.752         0.752         0.744         0.783
+ SAD17          0.713         0.752         0.752         0.744         0.783
+ WORRY18        0.690         0.705         0.705         0.698         0.729
+ FEAR18         0.698         0.713         0.713         0.705         0.736
+ SAD18          0.698         0.713         0.713         0.705         0.736
+ WORRY19        0.690         0.736         0.736         0.729         0.744
+ FEAR19         0.690         0.736         0.736         0.729         0.752
+ SAD19          0.690         0.736         0.736         0.729         0.752
+ WORRY20        0.620         0.643         0.643         0.636         0.690
+ FEAR20         0.620         0.643         0.643         0.636         0.690
+ SAD20          0.620         0.643         0.643         0.636         0.690
+ WORRY21        0.512         0.535         0.535         0.535         0.535
+ FEAR21         0.512         0.535         0.535         0.535         0.535
+ SAD21          0.512         0.535         0.535         0.535         0.535
+ WORRY22        0.643         0.659         0.659         0.651         0.682
+ FEAR22         0.643         0.659         0.659         0.651         0.682
+ SAD22          0.636         0.651         0.651         0.643         0.674
+ WORRY23        0.651         0.682         0.682         0.682         0.690
+ FEAR23         0.651         0.682         0.682         0.682         0.690
+ SAD23          0.651         0.682         0.682         0.682         0.690
+ WORRY24        0.698         0.721         0.721         0.713         0.760
+ FEAR24         0.698         0.721         0.721         0.713         0.760
+ SAD24          0.698         0.721         0.721         0.713         0.760
+ WORRY25        0.705         0.721         0.721         0.713         0.760
+ FEAR25         0.705         0.721         0.721         0.713         0.760
+ SAD25          0.705         0.721         0.721         0.713         0.760
+ WORRY26        0.659         0.674         0.674         0.674         0.698
+ FEAR26         0.659         0.674         0.674         0.674         0.698
+ SAD26          0.659         0.674         0.674         0.674         0.698
+ WORRY27        0.674         0.698         0.698         0.690         0.744
+ FEAR27         0.682         0.705         0.705         0.698         0.752
+ SAD27          0.682         0.705         0.705         0.698         0.752
+ WORRY28        0.705         0.736         0.736         0.729         0.767
+ FEAR28         0.705         0.736         0.736         0.729         0.767
+ SAD28          0.705         0.736         0.736         0.729         0.767
+ WORRY29        0.651         0.674         0.674         0.667         0.713
+ FEAR29         0.651         0.674         0.674         0.667         0.713
+ SAD29          0.651         0.674         0.674         0.667         0.713
+ WORRY30        0.667         0.682         0.682         0.674         0.721
+ FEAR30         0.667         0.682         0.682         0.674         0.721
+ SAD30          0.667         0.682         0.682         0.674         0.721
+
+
+           Covariance Coverage
+              FEAR4         SAD4          WORRY5        FEAR5         SAD5
+              ________      ________      ________      ________      ________
+ FEAR4          0.868
+ SAD4           0.868         0.868
+ WORRY5         0.752         0.752         0.868
+ FEAR5          0.760         0.760         0.860         0.876
+ SAD5           0.760         0.760         0.860         0.868         0.876
+ WORRY6         0.752         0.752         0.783         0.783         0.783
+ FEAR6          0.752         0.752         0.783         0.783         0.783
+ SAD6           0.752         0.752         0.783         0.783         0.783
+ WORRY7         0.744         0.744         0.767         0.767         0.767
+ FEAR7          0.744         0.744         0.767         0.767         0.767
+ SAD7           0.744         0.744         0.767         0.767         0.767
+ WORRY8         0.744         0.744         0.767         0.775         0.767
+ FEAR8          0.744         0.744         0.767         0.775         0.767
+ SAD8           0.744         0.744         0.767         0.775         0.767
+ WORRY9         0.713         0.713         0.713         0.721         0.721
+ FEAR9          0.713         0.713         0.713         0.721         0.721
+ SAD9           0.713         0.713         0.713         0.721         0.721
+ WORRY10        0.690         0.690         0.682         0.690         0.698
+ FEAR10         0.682         0.682         0.674         0.682         0.690
+ SAD10          0.690         0.690         0.682         0.690         0.698
+ WORRY11        0.597         0.597         0.581         0.581         0.581
+ FEAR11         0.597         0.597         0.581         0.581         0.581
+ SAD11          0.597         0.597         0.581         0.581         0.581
+ WORRY12        0.682         0.682         0.682         0.690         0.690
+ FEAR12         0.674         0.674         0.682         0.690         0.690
+ SAD12          0.682         0.682         0.682         0.690         0.690
+ WORRY13        0.713         0.713         0.690         0.698         0.705
+ FEAR13         0.713         0.713         0.690         0.698         0.705
+ SAD13          0.713         0.713         0.690         0.698         0.705
+ WORRY14        0.760         0.760         0.744         0.760         0.752
+ FEAR14         0.760         0.760         0.744         0.760         0.752
+ SAD14          0.760         0.760         0.744         0.760         0.752
+ WORRY15        0.767         0.767         0.744         0.752         0.752
+ FEAR15         0.760         0.760         0.729         0.736         0.736
+ SAD15          0.767         0.767         0.744         0.752         0.752
+ WORRY16        0.729         0.729         0.744         0.752         0.752
+ FEAR16         0.729         0.729         0.744         0.752         0.752
+ SAD16          0.729         0.729         0.744         0.752         0.752
+ WORRY17        0.783         0.783         0.767         0.767         0.767
+ FEAR17         0.783         0.783         0.767         0.767         0.767
+ SAD17          0.783         0.783         0.767         0.767         0.767
+ WORRY18        0.729         0.729         0.721         0.736         0.729
+ FEAR18         0.736         0.736         0.729         0.744         0.736
+ SAD18          0.736         0.736         0.729         0.744         0.736
+ WORRY19        0.744         0.744         0.760         0.767         0.767
+ FEAR19         0.752         0.752         0.760         0.767         0.767
+ SAD19          0.752         0.752         0.760         0.767         0.767
+ WORRY20        0.690         0.690         0.651         0.659         0.659
+ FEAR20         0.690         0.690         0.651         0.659         0.659
+ SAD20          0.690         0.690         0.651         0.659         0.659
+ WORRY21        0.535         0.535         0.535         0.527         0.527
+ FEAR21         0.535         0.535         0.535         0.527         0.527
+ SAD21          0.535         0.535         0.535         0.527         0.527
+ WORRY22        0.682         0.682         0.682         0.682         0.682
+ FEAR22         0.682         0.682         0.682         0.682         0.682
+ SAD22          0.674         0.674         0.674         0.674         0.674
+ WORRY23        0.690         0.690         0.682         0.690         0.690
+ FEAR23         0.690         0.690         0.682         0.690         0.690
+ SAD23          0.690         0.690         0.682         0.690         0.690
+ WORRY24        0.760         0.760         0.752         0.760         0.760
+ FEAR24         0.760         0.760         0.752         0.760         0.760
+ SAD24          0.760         0.760         0.752         0.760         0.760
+ WORRY25        0.760         0.760         0.744         0.760         0.752
+ FEAR25         0.760         0.760         0.744         0.760         0.752
+ SAD25          0.760         0.760         0.744         0.760         0.752
+ WORRY26        0.698         0.698         0.690         0.705         0.698
+ FEAR26         0.698         0.698         0.690         0.705         0.698
+ SAD26          0.698         0.698         0.690         0.705         0.698
+ WORRY27        0.744         0.744         0.721         0.729         0.736
+ FEAR27         0.752         0.752         0.729         0.736         0.744
+ SAD27          0.752         0.752         0.729         0.736         0.744
+ WORRY28        0.767         0.767         0.760         0.760         0.760
+ FEAR28         0.767         0.767         0.760         0.760         0.760
+ SAD28          0.767         0.767         0.760         0.760         0.760
+ WORRY29        0.713         0.713         0.698         0.705         0.705
+ FEAR29         0.713         0.713         0.698         0.705         0.705
+ SAD29          0.713         0.713         0.698         0.705         0.705
+ WORRY30        0.721         0.721         0.705         0.713         0.713
+ FEAR30         0.721         0.721         0.713         0.721         0.721
+ SAD30          0.721         0.721         0.713         0.721         0.721
+
+
+           Covariance Coverage
+              WORRY6        FEAR6         SAD6          WORRY7        FEAR7
+              ________      ________      ________      ________      ________
+ WORRY6         0.876
+ FEAR6          0.876         0.876
+ SAD6           0.876         0.876         0.876
+ WORRY7         0.767         0.767         0.767         0.860
+ FEAR7          0.767         0.767         0.767         0.860         0.860
+ SAD7           0.767         0.767         0.767         0.860         0.860
+ WORRY8         0.752         0.752         0.752         0.775         0.775
+ FEAR8          0.752         0.752         0.752         0.775         0.775
+ SAD8           0.752         0.752         0.752         0.775         0.775
+ WORRY9         0.736         0.736         0.736         0.705         0.705
+ FEAR9          0.744         0.744         0.744         0.713         0.713
+ SAD9           0.744         0.744         0.744         0.713         0.713
+ WORRY10        0.690         0.690         0.690         0.659         0.659
+ FEAR10         0.682         0.682         0.682         0.651         0.651
+ SAD10          0.690         0.690         0.690         0.659         0.659
+ WORRY11        0.597         0.597         0.597         0.589         0.589
+ FEAR11         0.597         0.597         0.597         0.589         0.589
+ SAD11          0.597         0.597         0.597         0.589         0.589
+ WORRY12        0.705         0.705         0.705         0.690         0.690
+ FEAR12         0.698         0.698         0.698         0.690         0.690
+ SAD12          0.705         0.705         0.705         0.690         0.690
+ WORRY13        0.713         0.713         0.713         0.713         0.713
+ FEAR13         0.713         0.713         0.713         0.713         0.713
+ SAD13          0.713         0.713         0.713         0.713         0.713
+ WORRY14        0.760         0.760         0.760         0.767         0.767
+ FEAR14         0.760         0.760         0.760         0.767         0.767
+ SAD14          0.760         0.760         0.760         0.767         0.767
+ WORRY15        0.752         0.752         0.752         0.744         0.744
+ FEAR15         0.736         0.736         0.736         0.729         0.729
+ SAD15          0.752         0.752         0.752         0.744         0.744
+ WORRY16        0.744         0.744         0.744         0.752         0.752
+ FEAR16         0.744         0.744         0.744         0.752         0.752
+ SAD16          0.744         0.744         0.744         0.752         0.752
+ WORRY17        0.767         0.767         0.767         0.752         0.752
+ FEAR17         0.767         0.767         0.767         0.752         0.752
+ SAD17          0.767         0.767         0.767         0.752         0.752
+ WORRY18        0.736         0.736         0.736         0.713         0.713
+ FEAR18         0.744         0.744         0.744         0.721         0.721
+ SAD18          0.744         0.744         0.744         0.721         0.721
+ WORRY19        0.767         0.767         0.767         0.736         0.736
+ FEAR19         0.767         0.767         0.767         0.736         0.736
+ SAD19          0.767         0.767         0.767         0.736         0.736
+ WORRY20        0.636         0.636         0.636         0.636         0.636
+ FEAR20         0.636         0.636         0.636         0.636         0.636
+ SAD20          0.636         0.636         0.636         0.636         0.636
+ WORRY21        0.527         0.527         0.527         0.535         0.535
+ FEAR21         0.527         0.527         0.527         0.535         0.535
+ SAD21          0.527         0.527         0.527         0.535         0.535
+ WORRY22        0.690         0.690         0.690         0.667         0.667
+ FEAR22         0.690         0.690         0.690         0.667         0.667
+ SAD22          0.682         0.682         0.682         0.659         0.659
+ WORRY23        0.682         0.682         0.682         0.690         0.690
+ FEAR23         0.682         0.682         0.682         0.690         0.690
+ SAD23          0.682         0.682         0.682         0.690         0.690
+ WORRY24        0.760         0.760         0.760         0.736         0.736
+ FEAR24         0.760         0.760         0.760         0.736         0.736
+ SAD24          0.760         0.760         0.760         0.736         0.736
+ WORRY25        0.736         0.736         0.736         0.721         0.721
+ FEAR25         0.736         0.736         0.736         0.721         0.721
+ SAD25          0.736         0.736         0.736         0.721         0.721
+ WORRY26        0.690         0.690         0.690         0.705         0.705
+ FEAR26         0.690         0.690         0.690         0.705         0.705
+ SAD26          0.690         0.690         0.690         0.705         0.705
+ WORRY27        0.744         0.744         0.744         0.721         0.721
+ FEAR27         0.752         0.752         0.752         0.729         0.729
+ SAD27          0.752         0.752         0.752         0.729         0.729
+ WORRY28        0.767         0.767         0.767         0.744         0.744
+ FEAR28         0.767         0.767         0.767         0.744         0.744
+ SAD28          0.767         0.767         0.767         0.744         0.744
+ WORRY29        0.705         0.705         0.705         0.682         0.682
+ FEAR29         0.705         0.705         0.705         0.682         0.682
+ SAD29          0.705         0.705         0.705         0.682         0.682
+ WORRY30        0.705         0.705         0.705         0.713         0.713
+ FEAR30         0.713         0.713         0.713         0.713         0.713
+ SAD30          0.713         0.713         0.713         0.713         0.713
+
+
+           Covariance Coverage
+              SAD7          WORRY8        FEAR8         SAD8          WORRY9
+              ________      ________      ________      ________      ________
+ SAD7           0.860
+ WORRY8         0.775         0.853
+ FEAR8          0.775         0.853         0.853
+ SAD8           0.775         0.853         0.853         0.853
+ WORRY9         0.705         0.721         0.721         0.721         0.822
+ FEAR9          0.713         0.729         0.729         0.729         0.822
+ SAD9           0.713         0.729         0.729         0.729         0.822
+ WORRY10        0.659         0.667         0.667         0.667         0.667
+ FEAR10         0.651         0.659         0.659         0.659         0.659
+ SAD10          0.659         0.667         0.667         0.667         0.667
+ WORRY11        0.589         0.589         0.589         0.589         0.543
+ FEAR11         0.589         0.589         0.589         0.589         0.543
+ SAD11          0.589         0.589         0.589         0.589         0.543
+ WORRY12        0.690         0.674         0.674         0.674         0.651
+ FEAR12         0.690         0.667         0.667         0.667         0.643
+ SAD12          0.690         0.674         0.674         0.674         0.651
+ WORRY13        0.713         0.698         0.698         0.698         0.651
+ FEAR13         0.713         0.698         0.698         0.698         0.651
+ SAD13          0.713         0.698         0.698         0.698         0.651
+ WORRY14        0.767         0.767         0.767         0.767         0.736
+ FEAR14         0.767         0.767         0.767         0.767         0.736
+ SAD14          0.767         0.767         0.767         0.767         0.736
+ WORRY15        0.744         0.736         0.736         0.736         0.713
+ FEAR15         0.729         0.721         0.721         0.721         0.698
+ SAD15          0.744         0.736         0.736         0.736         0.713
+ WORRY16        0.752         0.713         0.713         0.713         0.698
+ FEAR16         0.752         0.713         0.713         0.713         0.698
+ SAD16          0.752         0.713         0.713         0.713         0.698
+ WORRY17        0.752         0.752         0.752         0.752         0.729
+ FEAR17         0.752         0.752         0.752         0.752         0.729
+ SAD17          0.752         0.752         0.752         0.752         0.729
+ WORRY18        0.713         0.721         0.721         0.721         0.705
+ FEAR18         0.721         0.729         0.729         0.729         0.713
+ SAD18          0.721         0.729         0.729         0.729         0.713
+ WORRY19        0.736         0.736         0.736         0.736         0.736
+ FEAR19         0.736         0.744         0.744         0.744         0.736
+ SAD19          0.736         0.744         0.744         0.744         0.736
+ WORRY20        0.636         0.667         0.667         0.667         0.636
+ FEAR20         0.636         0.667         0.667         0.667         0.636
+ SAD20          0.636         0.667         0.667         0.667         0.636
+ WORRY21        0.535         0.543         0.543         0.543         0.512
+ FEAR21         0.535         0.543         0.543         0.543         0.512
+ SAD21          0.535         0.543         0.543         0.543         0.512
+ WORRY22        0.667         0.682         0.682         0.682         0.643
+ FEAR22         0.667         0.682         0.682         0.682         0.643
+ SAD22          0.659         0.674         0.674         0.674         0.636
+ WORRY23        0.690         0.705         0.705         0.705         0.651
+ FEAR23         0.690         0.705         0.705         0.705         0.651
+ SAD23          0.690         0.705         0.705         0.705         0.651
+ WORRY24        0.736         0.729         0.729         0.729         0.713
+ FEAR24         0.736         0.729         0.729         0.729         0.713
+ SAD24          0.736         0.729         0.729         0.729         0.713
+ WORRY25        0.721         0.729         0.729         0.729         0.690
+ FEAR25         0.721         0.729         0.729         0.729         0.690
+ SAD25          0.721         0.729         0.729         0.729         0.690
+ WORRY26        0.705         0.705         0.705         0.705         0.643
+ FEAR26         0.705         0.705         0.705         0.705         0.643
+ SAD26          0.705         0.705         0.705         0.705         0.643
+ WORRY27        0.721         0.721         0.721         0.721         0.713
+ FEAR27         0.729         0.729         0.729         0.729         0.721
+ SAD27          0.729         0.729         0.729         0.729         0.721
+ WORRY28        0.744         0.752         0.752         0.752         0.729
+ FEAR28         0.744         0.752         0.752         0.752         0.729
+ SAD28          0.744         0.752         0.752         0.752         0.729
+ WORRY29        0.682         0.705         0.705         0.705         0.705
+ FEAR29         0.682         0.705         0.705         0.705         0.705
+ SAD29          0.682         0.705         0.705         0.705         0.705
+ WORRY30        0.713         0.682         0.682         0.682         0.674
+ FEAR30         0.713         0.682         0.682         0.682         0.682
+ SAD30          0.713         0.682         0.682         0.682         0.682
+
+
+           Covariance Coverage
+              FEAR9         SAD9          WORRY10       FEAR10        SAD10
+              ________      ________      ________      ________      ________
+ FEAR9          0.829
+ SAD9           0.829         0.829
+ WORRY10        0.674         0.674         0.783
+ FEAR10         0.667         0.667         0.775         0.775
+ SAD10          0.674         0.674         0.783         0.775         0.783
+ WORRY11        0.550         0.550         0.527         0.519         0.527
+ FEAR11         0.550         0.550         0.527         0.519         0.527
+ SAD11          0.550         0.550         0.527         0.519         0.527
+ WORRY12        0.659         0.659         0.620         0.612         0.620
+ FEAR12         0.651         0.651         0.612         0.605         0.612
+ SAD12          0.659         0.659         0.620         0.612         0.620
+ WORRY13        0.659         0.659         0.651         0.643         0.651
+ FEAR13         0.659         0.659         0.651         0.643         0.651
+ SAD13          0.659         0.659         0.651         0.643         0.651
+ WORRY14        0.744         0.744         0.682         0.674         0.682
+ FEAR14         0.744         0.744         0.682         0.674         0.682
+ SAD14          0.744         0.744         0.682         0.674         0.682
+ WORRY15        0.721         0.721         0.698         0.690         0.698
+ FEAR15         0.705         0.705         0.690         0.682         0.690
+ SAD15          0.721         0.721         0.698         0.690         0.698
+ WORRY16        0.698         0.698         0.659         0.651         0.659
+ FEAR16         0.698         0.698         0.659         0.651         0.659
+ SAD16          0.698         0.698         0.659         0.651         0.659
+ WORRY17        0.736         0.736         0.713         0.705         0.713
+ FEAR17         0.736         0.736         0.713         0.705         0.713
+ SAD17          0.736         0.736         0.713         0.705         0.713
+ WORRY18        0.713         0.713         0.682         0.682         0.682
+ FEAR18         0.721         0.721         0.682         0.682         0.682
+ SAD18          0.721         0.721         0.682         0.682         0.682
+ WORRY19        0.744         0.744         0.698         0.698         0.698
+ FEAR19         0.744         0.744         0.705         0.705         0.705
+ SAD19          0.744         0.744         0.705         0.705         0.705
+ WORRY20        0.643         0.643         0.628         0.628         0.628
+ FEAR20         0.643         0.643         0.628         0.628         0.628
+ SAD20          0.643         0.643         0.628         0.628         0.628
+ WORRY21        0.519         0.519         0.473         0.473         0.473
+ FEAR21         0.519         0.519         0.473         0.473         0.473
+ SAD21          0.519         0.519         0.473         0.473         0.473
+ WORRY22        0.643         0.643         0.581         0.574         0.581
+ FEAR22         0.643         0.643         0.581         0.574         0.581
+ SAD22          0.636         0.636         0.581         0.574         0.581
+ WORRY23        0.659         0.659         0.636         0.628         0.636
+ FEAR23         0.659         0.659         0.636         0.628         0.636
+ SAD23          0.659         0.659         0.636         0.628         0.636
+ WORRY24        0.721         0.721         0.705         0.698         0.705
+ FEAR24         0.721         0.721         0.705         0.698         0.705
+ SAD24          0.721         0.721         0.705         0.698         0.705
+ WORRY25        0.690         0.690         0.690         0.682         0.690
+ FEAR25         0.690         0.690         0.690         0.682         0.690
+ SAD25          0.690         0.690         0.690         0.682         0.690
+ WORRY26        0.651         0.651         0.636         0.636         0.636
+ FEAR26         0.651         0.651         0.636         0.636         0.636
+ SAD26          0.651         0.651         0.636         0.636         0.636
+ WORRY27        0.721         0.721         0.659         0.651         0.659
+ FEAR27         0.729         0.729         0.667         0.659         0.667
+ SAD27          0.729         0.729         0.667         0.659         0.667
+ WORRY28        0.729         0.729         0.698         0.690         0.698
+ FEAR28         0.729         0.729         0.698         0.690         0.698
+ SAD28          0.729         0.729         0.698         0.690         0.698
+ WORRY29        0.705         0.705         0.659         0.651         0.659
+ FEAR29         0.705         0.705         0.659         0.651         0.659
+ SAD29          0.705         0.705         0.659         0.651         0.659
+ WORRY30        0.674         0.674         0.667         0.659         0.667
+ FEAR30         0.682         0.682         0.674         0.667         0.674
+ SAD30          0.682         0.682         0.674         0.667         0.674
+
+
+           Covariance Coverage
+              WORRY11       FEAR11        SAD11         WORRY12       FEAR12
+              ________      ________      ________      ________      ________
+ WORRY11        0.659
+ FEAR11         0.659         0.659
+ SAD11          0.659         0.659         0.659
+ WORRY12        0.581         0.581         0.581         0.775
+ FEAR12         0.574         0.574         0.574         0.767         0.767
+ SAD12          0.581         0.581         0.581         0.775         0.767
+ WORRY13        0.558         0.558         0.558         0.659         0.651
+ FEAR13         0.558         0.558         0.558         0.659         0.651
+ SAD13          0.558         0.558         0.558         0.659         0.651
+ WORRY14        0.581         0.581         0.581         0.674         0.667
+ FEAR14         0.581         0.581         0.581         0.674         0.667
+ SAD14          0.581         0.581         0.581         0.674         0.667
+ WORRY15        0.605         0.605         0.605         0.698         0.690
+ FEAR15         0.589         0.589         0.589         0.682         0.674
+ SAD15          0.605         0.605         0.605         0.698         0.690
+ WORRY16        0.574         0.574         0.574         0.667         0.659
+ FEAR16         0.574         0.574         0.574         0.667         0.659
+ SAD16          0.574         0.574         0.574         0.667         0.659
+ WORRY17        0.589         0.589         0.589         0.690         0.682
+ FEAR17         0.589         0.589         0.589         0.690         0.682
+ SAD17          0.589         0.589         0.589         0.690         0.682
+ WORRY18        0.566         0.566         0.566         0.674         0.667
+ FEAR18         0.566         0.566         0.566         0.674         0.667
+ SAD18          0.566         0.566         0.566         0.674         0.667
+ WORRY19        0.589         0.589         0.589         0.705         0.698
+ FEAR19         0.597         0.597         0.597         0.705         0.698
+ SAD19          0.597         0.597         0.597         0.705         0.698
+ WORRY20        0.527         0.527         0.527         0.605         0.597
+ FEAR20         0.527         0.527         0.527         0.605         0.597
+ SAD20          0.527         0.527         0.527         0.605         0.597
+ WORRY21        0.457         0.457         0.457         0.512         0.512
+ FEAR21         0.457         0.457         0.457         0.512         0.512
+ SAD21          0.457         0.457         0.457         0.512         0.512
+ WORRY22        0.543         0.543         0.543         0.651         0.643
+ FEAR22         0.543         0.543         0.543         0.651         0.643
+ SAD22          0.535         0.535         0.535         0.643         0.636
+ WORRY23        0.535         0.535         0.535         0.612         0.612
+ FEAR23         0.535         0.535         0.535         0.612         0.612
+ SAD23          0.535         0.535         0.535         0.612         0.612
+ WORRY24        0.589         0.589         0.589         0.682         0.674
+ FEAR24         0.589         0.589         0.589         0.682         0.674
+ SAD24          0.589         0.589         0.589         0.682         0.674
+ WORRY25        0.566         0.566         0.566         0.659         0.651
+ FEAR25         0.566         0.566         0.566         0.659         0.651
+ SAD25          0.566         0.566         0.566         0.659         0.651
+ WORRY26        0.527         0.527         0.527         0.605         0.605
+ FEAR26         0.527         0.527         0.527         0.605         0.605
+ SAD26          0.527         0.527         0.527         0.605         0.605
+ WORRY27        0.550         0.550         0.550         0.643         0.643
+ FEAR27         0.558         0.558         0.558         0.651         0.651
+ SAD27          0.558         0.558         0.558         0.651         0.651
+ WORRY28        0.574         0.574         0.574         0.659         0.651
+ FEAR28         0.574         0.574         0.574         0.659         0.651
+ SAD28          0.574         0.574         0.574         0.659         0.651
+ WORRY29        0.558         0.558         0.558         0.628         0.620
+ FEAR29         0.558         0.558         0.558         0.628         0.620
+ SAD29          0.558         0.558         0.558         0.628         0.620
+ WORRY30        0.527         0.527         0.527         0.636         0.636
+ FEAR30         0.527         0.527         0.527         0.636         0.636
+ SAD30          0.527         0.527         0.527         0.636         0.636
+
+
+           Covariance Coverage
+              SAD12         WORRY13       FEAR13        SAD13         WORRY14
+              ________      ________      ________      ________      ________
+ SAD12          0.775
+ WORRY13        0.659         0.798
+ FEAR13         0.659         0.798         0.798
+ SAD13          0.659         0.798         0.798         0.798
+ WORRY14        0.674         0.736         0.736         0.736         0.876
+ FEAR14         0.674         0.736         0.736         0.736         0.876
+ SAD14          0.674         0.736         0.736         0.736         0.876
+ WORRY15        0.698         0.705         0.705         0.705         0.760
+ FEAR15         0.682         0.690         0.690         0.690         0.744
+ SAD15          0.698         0.705         0.705         0.705         0.760
+ WORRY16        0.667         0.674         0.674         0.674         0.744
+ FEAR16         0.667         0.674         0.674         0.674         0.744
+ SAD16          0.667         0.674         0.674         0.674         0.744
+ WORRY17        0.690         0.705         0.705         0.705         0.791
+ FEAR17         0.690         0.705         0.705         0.705         0.791
+ SAD17          0.690         0.705         0.705         0.705         0.791
+ WORRY18        0.674         0.698         0.698         0.698         0.760
+ FEAR18         0.674         0.705         0.705         0.705         0.767
+ SAD18          0.674         0.705         0.705         0.705         0.767
+ WORRY19        0.705         0.690         0.690         0.690         0.760
+ FEAR19         0.705         0.698         0.698         0.698         0.767
+ SAD19          0.705         0.698         0.698         0.698         0.767
+ WORRY20        0.605         0.636         0.636         0.636         0.698
+ FEAR20         0.605         0.636         0.636         0.636         0.698
+ SAD20          0.605         0.636         0.636         0.636         0.698
+ WORRY21        0.512         0.488         0.488         0.488         0.543
+ FEAR21         0.512         0.488         0.488         0.488         0.543
+ SAD21          0.512         0.488         0.488         0.488         0.543
+ WORRY22        0.651         0.628         0.628         0.628         0.674
+ FEAR22         0.651         0.628         0.628         0.628         0.674
+ SAD22          0.643         0.620         0.620         0.620         0.667
+ WORRY23        0.612         0.636         0.636         0.636         0.705
+ FEAR23         0.612         0.636         0.636         0.636         0.705
+ SAD23          0.612         0.636         0.636         0.636         0.705
+ WORRY24        0.682         0.698         0.698         0.698         0.767
+ FEAR24         0.682         0.698         0.698         0.698         0.767
+ SAD24          0.682         0.698         0.698         0.698         0.767
+ WORRY25        0.659         0.682         0.682         0.682         0.744
+ FEAR25         0.659         0.682         0.682         0.682         0.744
+ SAD25          0.659         0.682         0.682         0.682         0.744
+ WORRY26        0.605         0.643         0.643         0.643         0.713
+ FEAR26         0.605         0.643         0.643         0.643         0.713
+ SAD26          0.605         0.643         0.643         0.643         0.713
+ WORRY27        0.643         0.682         0.682         0.682         0.736
+ FEAR27         0.651         0.690         0.690         0.690         0.744
+ SAD27          0.651         0.690         0.690         0.690         0.744
+ WORRY28        0.659         0.690         0.690         0.690         0.760
+ FEAR28         0.659         0.690         0.690         0.690         0.760
+ SAD28          0.659         0.690         0.690         0.690         0.760
+ WORRY29        0.628         0.636         0.636         0.636         0.705
+ FEAR29         0.628         0.636         0.636         0.636         0.705
+ SAD29          0.628         0.636         0.636         0.636         0.705
+ WORRY30        0.636         0.682         0.682         0.682         0.721
+ FEAR30         0.636         0.682         0.682         0.682         0.721
+ SAD30          0.636         0.682         0.682         0.682         0.721
+
+
+           Covariance Coverage
+              FEAR14        SAD14         WORRY15       FEAR15        SAD15
+              ________      ________      ________      ________      ________
+ FEAR14         0.876
+ SAD14          0.876         0.876
+ WORRY15        0.760         0.760         0.868
+ FEAR15         0.744         0.744         0.853         0.853
+ SAD15          0.760         0.760         0.868         0.853         0.868
+ WORRY16        0.744         0.744         0.752         0.736         0.752
+ FEAR16         0.744         0.744         0.752         0.736         0.752
+ SAD16          0.744         0.744         0.752         0.736         0.752
+ WORRY17        0.791         0.791         0.783         0.767         0.783
+ FEAR17         0.791         0.791         0.783         0.767         0.783
+ SAD17          0.791         0.791         0.783         0.767         0.783
+ WORRY18        0.760         0.760         0.744         0.729         0.744
+ FEAR18         0.767         0.767         0.752         0.736         0.752
+ SAD18          0.767         0.767         0.752         0.736         0.752
+ WORRY19        0.760         0.760         0.760         0.744         0.760
+ FEAR19         0.767         0.767         0.767         0.752         0.767
+ SAD19          0.767         0.767         0.767         0.752         0.767
+ WORRY20        0.698         0.698         0.682         0.667         0.682
+ FEAR20         0.698         0.698         0.682         0.667         0.682
+ SAD20          0.698         0.698         0.682         0.667         0.682
+ WORRY21        0.543         0.543         0.550         0.535         0.550
+ FEAR21         0.543         0.543         0.550         0.535         0.550
+ SAD21          0.543         0.543         0.550         0.535         0.550
+ WORRY22        0.674         0.674         0.659         0.643         0.659
+ FEAR22         0.674         0.674         0.659         0.643         0.659
+ SAD22          0.667         0.667         0.651         0.643         0.651
+ WORRY23        0.705         0.705         0.667         0.651         0.667
+ FEAR23         0.705         0.705         0.667         0.651         0.667
+ SAD23          0.705         0.705         0.667         0.651         0.667
+ WORRY24        0.767         0.767         0.752         0.744         0.752
+ FEAR24         0.767         0.767         0.752         0.744         0.752
+ SAD24          0.767         0.767         0.752         0.744         0.752
+ WORRY25        0.744         0.744         0.729         0.713         0.729
+ FEAR25         0.744         0.744         0.729         0.713         0.729
+ SAD25          0.744         0.744         0.729         0.713         0.729
+ WORRY26        0.713         0.713         0.690         0.682         0.690
+ FEAR26         0.713         0.713         0.690         0.682         0.690
+ SAD26          0.713         0.713         0.690         0.682         0.690
+ WORRY27        0.736         0.736         0.721         0.713         0.721
+ FEAR27         0.744         0.744         0.729         0.721         0.729
+ SAD27          0.744         0.744         0.729         0.721         0.729
+ WORRY28        0.760         0.760         0.752         0.736         0.752
+ FEAR28         0.760         0.760         0.752         0.736         0.752
+ SAD28          0.760         0.760         0.752         0.736         0.752
+ WORRY29        0.705         0.705         0.698         0.682         0.698
+ FEAR29         0.705         0.705         0.698         0.682         0.698
+ SAD29          0.705         0.705         0.698         0.682         0.698
+ WORRY30        0.721         0.721         0.713         0.705         0.713
+ FEAR30         0.721         0.721         0.721         0.713         0.721
+ SAD30          0.721         0.721         0.721         0.713         0.721
+
+
+           Covariance Coverage
+              WORRY16       FEAR16        SAD16         WORRY17       FEAR17
+              ________      ________      ________      ________      ________
+ WORRY16        0.837
+ FEAR16         0.837         0.837
+ SAD16          0.837         0.837         0.837
+ WORRY17        0.760         0.760         0.760         0.884
+ FEAR17         0.760         0.760         0.760         0.884         0.884
+ SAD17          0.760         0.760         0.760         0.884         0.884
+ WORRY18        0.729         0.729         0.729         0.775         0.775
+ FEAR18         0.736         0.736         0.736         0.783         0.783
+ SAD18          0.736         0.736         0.736         0.783         0.783
+ WORRY19        0.744         0.744         0.744         0.783         0.783
+ FEAR19         0.744         0.744         0.744         0.791         0.791
+ SAD19          0.744         0.744         0.744         0.791         0.791
+ WORRY20        0.651         0.651         0.651         0.690         0.690
+ FEAR20         0.651         0.651         0.651         0.690         0.690
+ SAD20          0.651         0.651         0.651         0.690         0.690
+ WORRY21        0.504         0.504         0.504         0.543         0.543
+ FEAR21         0.504         0.504         0.504         0.543         0.543
+ SAD21          0.504         0.504         0.504         0.543         0.543
+ WORRY22        0.651         0.651         0.651         0.682         0.682
+ FEAR22         0.651         0.651         0.651         0.682         0.682
+ SAD22          0.643         0.643         0.643         0.674         0.674
+ WORRY23        0.674         0.674         0.674         0.705         0.705
+ FEAR23         0.674         0.674         0.674         0.705         0.705
+ SAD23          0.674         0.674         0.674         0.705         0.705
+ WORRY24        0.729         0.729         0.729         0.760         0.760
+ FEAR24         0.729         0.729         0.729         0.760         0.760
+ SAD24          0.729         0.729         0.729         0.760         0.760
+ WORRY25        0.713         0.713         0.713         0.767         0.767
+ FEAR25         0.713         0.713         0.713         0.767         0.767
+ SAD25          0.713         0.713         0.713         0.767         0.767
+ WORRY26        0.682         0.682         0.682         0.705         0.705
+ FEAR26         0.682         0.682         0.682         0.705         0.705
+ SAD26          0.682         0.682         0.682         0.705         0.705
+ WORRY27        0.713         0.713         0.713         0.744         0.744
+ FEAR27         0.721         0.721         0.721         0.752         0.752
+ SAD27          0.721         0.721         0.721         0.752         0.752
+ WORRY28        0.736         0.736         0.736         0.783         0.783
+ FEAR28         0.736         0.736         0.736         0.783         0.783
+ SAD28          0.736         0.736         0.736         0.783         0.783
+ WORRY29        0.674         0.674         0.674         0.705         0.705
+ FEAR29         0.674         0.674         0.674         0.705         0.705
+ SAD29          0.674         0.674         0.674         0.705         0.705
+ WORRY30        0.690         0.690         0.690         0.729         0.729
+ FEAR30         0.698         0.698         0.698         0.736         0.736
+ SAD30          0.698         0.698         0.698         0.736         0.736
+
+
+           Covariance Coverage
+              SAD17         WORRY18       FEAR18        SAD18         WORRY19
+              ________      ________      ________      ________      ________
+ SAD17          0.884
+ WORRY18        0.775         0.845
+ FEAR18         0.783         0.845         0.853
+ SAD18          0.783         0.845         0.853         0.853
+ WORRY19        0.783         0.775         0.775         0.775         0.868
+ FEAR19         0.791         0.783         0.783         0.783         0.868
+ SAD19          0.791         0.783         0.783         0.783         0.868
+ WORRY20        0.690         0.690         0.698         0.698         0.713
+ FEAR20         0.690         0.690         0.698         0.698         0.713
+ SAD20          0.690         0.690         0.698         0.698         0.713
+ WORRY21        0.543         0.527         0.535         0.535         0.543
+ FEAR21         0.543         0.527         0.535         0.535         0.543
+ SAD21          0.543         0.527         0.535         0.535         0.543
+ WORRY22        0.682         0.651         0.659         0.659         0.690
+ FEAR22         0.682         0.651         0.659         0.659         0.690
+ SAD22          0.674         0.643         0.651         0.651         0.682
+ WORRY23        0.705         0.682         0.690         0.690         0.698
+ FEAR23         0.705         0.682         0.690         0.690         0.698
+ SAD23          0.705         0.682         0.690         0.690         0.698
+ WORRY24        0.760         0.752         0.760         0.760         0.767
+ FEAR24         0.760         0.752         0.760         0.760         0.767
+ SAD24          0.760         0.752         0.760         0.760         0.767
+ WORRY25        0.767         0.736         0.744         0.744         0.744
+ FEAR25         0.767         0.736         0.744         0.744         0.744
+ SAD25          0.767         0.736         0.744         0.744         0.744
+ WORRY26        0.705         0.705         0.713         0.713         0.713
+ FEAR26         0.705         0.705         0.713         0.713         0.713
+ SAD26          0.705         0.705         0.713         0.713         0.713
+ WORRY27        0.744         0.744         0.752         0.752         0.729
+ FEAR27         0.752         0.752         0.760         0.760         0.736
+ SAD27          0.752         0.752         0.760         0.760         0.736
+ WORRY28        0.783         0.736         0.744         0.744         0.744
+ FEAR28         0.783         0.736         0.744         0.744         0.744
+ SAD28          0.783         0.736         0.744         0.744         0.744
+ WORRY29        0.705         0.682         0.690         0.690         0.690
+ FEAR29         0.705         0.682         0.690         0.690         0.690
+ SAD29          0.705         0.682         0.690         0.690         0.690
+ WORRY30        0.729         0.682         0.690         0.690         0.705
+ FEAR30         0.736         0.690         0.698         0.698         0.713
+ SAD30          0.736         0.690         0.698         0.698         0.713
+
+
+           Covariance Coverage
+              FEAR19        SAD19         WORRY20       FEAR20        SAD20
+              ________      ________      ________      ________      ________
+ FEAR19         0.876
+ SAD19          0.876         0.876
+ WORRY20        0.721         0.721         0.760
+ FEAR20         0.721         0.721         0.760         0.760
+ SAD20          0.721         0.721         0.760         0.760         0.760
+ WORRY21        0.543         0.543         0.512         0.512         0.512
+ FEAR21         0.543         0.543         0.512         0.512         0.512
+ SAD21          0.543         0.543         0.512         0.512         0.512
+ WORRY22        0.698         0.698         0.597         0.597         0.597
+ FEAR22         0.698         0.698         0.597         0.597         0.597
+ SAD22          0.690         0.690         0.589         0.589         0.589
+ WORRY23        0.705         0.705         0.636         0.636         0.636
+ FEAR23         0.705         0.705         0.636         0.636         0.636
+ SAD23          0.705         0.705         0.636         0.636         0.636
+ WORRY24        0.775         0.775         0.682         0.682         0.682
+ FEAR24         0.775         0.775         0.682         0.682         0.682
+ SAD24          0.775         0.775         0.682         0.682         0.682
+ WORRY25        0.752         0.752         0.667         0.667         0.667
+ FEAR25         0.752         0.752         0.667         0.667         0.667
+ SAD25          0.752         0.752         0.667         0.667         0.667
+ WORRY26        0.721         0.721         0.636         0.636         0.636
+ FEAR26         0.721         0.721         0.636         0.636         0.636
+ SAD26          0.721         0.721         0.636         0.636         0.636
+ WORRY27        0.736         0.736         0.643         0.643         0.643
+ FEAR27         0.744         0.744         0.651         0.651         0.651
+ SAD27          0.744         0.744         0.651         0.651         0.651
+ WORRY28        0.752         0.752         0.651         0.651         0.651
+ FEAR28         0.752         0.752         0.651         0.651         0.651
+ SAD28          0.752         0.752         0.651         0.651         0.651
+ WORRY29        0.698         0.698         0.628         0.628         0.628
+ FEAR29         0.698         0.698         0.628         0.628         0.628
+ SAD29          0.698         0.698         0.628         0.628         0.628
+ WORRY30        0.713         0.713         0.628         0.628         0.628
+ FEAR30         0.721         0.721         0.628         0.628         0.628
+ SAD30          0.721         0.721         0.628         0.628         0.628
+
+
+           Covariance Coverage
+              WORRY21       FEAR21        SAD21         WORRY22       FEAR22
+              ________      ________      ________      ________      ________
+ WORRY21        0.605
+ FEAR21         0.605         0.605
+ SAD21          0.605         0.605         0.605
+ WORRY22        0.519         0.519         0.519         0.767
+ FEAR22         0.519         0.519         0.519         0.767         0.767
+ SAD22          0.512         0.512         0.512         0.760         0.760
+ WORRY23        0.519         0.519         0.519         0.659         0.659
+ FEAR23         0.519         0.519         0.519         0.659         0.659
+ SAD23          0.519         0.519         0.519         0.659         0.659
+ WORRY24        0.543         0.543         0.543         0.682         0.682
+ FEAR24         0.543         0.543         0.543         0.682         0.682
+ SAD24          0.543         0.543         0.543         0.682         0.682
+ WORRY25        0.504         0.504         0.504         0.674         0.674
+ FEAR25         0.504         0.504         0.504         0.674         0.674
+ SAD25          0.504         0.504         0.504         0.674         0.674
+ WORRY26        0.519         0.519         0.519         0.636         0.636
+ FEAR26         0.519         0.519         0.519         0.636         0.636
+ SAD26          0.519         0.519         0.519         0.636         0.636
+ WORRY27        0.527         0.527         0.527         0.659         0.659
+ FEAR27         0.535         0.535         0.535         0.667         0.667
+ SAD27          0.535         0.535         0.535         0.667         0.667
+ WORRY28        0.527         0.527         0.527         0.674         0.674
+ FEAR28         0.527         0.527         0.527         0.674         0.674
+ SAD28          0.527         0.527         0.527         0.674         0.674
+ WORRY29        0.504         0.504         0.504         0.636         0.636
+ FEAR29         0.504         0.504         0.504         0.636         0.636
+ SAD29          0.504         0.504         0.504         0.636         0.636
+ WORRY30        0.504         0.504         0.504         0.643         0.643
+ FEAR30         0.504         0.504         0.504         0.643         0.643
+ SAD30          0.504         0.504         0.504         0.643         0.643
+
+
+           Covariance Coverage
+              SAD22         WORRY23       FEAR23        SAD23         WORRY24
+              ________      ________      ________      ________      ________
+ SAD22          0.760
+ WORRY23        0.651         0.783
+ FEAR23         0.651         0.783         0.783
+ SAD23          0.651         0.783         0.783         0.783
+ WORRY24        0.682         0.705         0.705         0.705         0.860
+ FEAR24         0.682         0.705         0.705         0.705         0.860
+ SAD24          0.682         0.705         0.705         0.705         0.860
+ WORRY25        0.667         0.690         0.690         0.690         0.760
+ FEAR25         0.667         0.690         0.690         0.690         0.760
+ SAD25          0.667         0.690         0.690         0.690         0.760
+ WORRY26        0.636         0.682         0.682         0.682         0.736
+ FEAR26         0.636         0.682         0.682         0.682         0.736
+ SAD26          0.636         0.682         0.682         0.682         0.736
+ WORRY27        0.651         0.682         0.682         0.682         0.760
+ FEAR27         0.659         0.690         0.690         0.690         0.767
+ SAD27          0.659         0.690         0.690         0.690         0.767
+ WORRY28        0.667         0.705         0.705         0.705         0.775
+ FEAR28         0.667         0.705         0.705         0.705         0.775
+ SAD28          0.667         0.705         0.705         0.705         0.775
+ WORRY29        0.628         0.659         0.659         0.659         0.721
+ FEAR29         0.628         0.659         0.659         0.659         0.721
+ SAD29          0.628         0.659         0.659         0.659         0.721
+ WORRY30        0.643         0.667         0.667         0.667         0.729
+ FEAR30         0.643         0.667         0.667         0.667         0.736
+ SAD30          0.643         0.667         0.667         0.667         0.736
+
+
+           Covariance Coverage
+              FEAR24        SAD24         WORRY25       FEAR25        SAD25
+              ________      ________      ________      ________      ________
+ FEAR24         0.860
+ SAD24          0.860         0.860
+ WORRY25        0.760         0.760         0.845
+ FEAR25         0.760         0.760         0.845         0.845
+ SAD25          0.760         0.760         0.845         0.845         0.845
+ WORRY26        0.736         0.736         0.721         0.721         0.721
+ FEAR26         0.736         0.736         0.721         0.721         0.721
+ SAD26          0.736         0.736         0.721         0.721         0.721
+ WORRY27        0.760         0.760         0.736         0.736         0.736
+ FEAR27         0.767         0.767         0.744         0.744         0.744
+ SAD27          0.767         0.767         0.744         0.744         0.744
+ WORRY28        0.775         0.775         0.775         0.775         0.775
+ FEAR28         0.775         0.775         0.775         0.775         0.775
+ SAD28          0.775         0.775         0.775         0.775         0.775
+ WORRY29        0.721         0.721         0.705         0.705         0.705
+ FEAR29         0.721         0.721         0.705         0.705         0.705
+ SAD29          0.721         0.721         0.705         0.705         0.705
+ WORRY30        0.729         0.729         0.721         0.721         0.721
+ FEAR30         0.736         0.736         0.721         0.721         0.721
+ SAD30          0.736         0.736         0.721         0.721         0.721
+
+
+           Covariance Coverage
+              WORRY26       FEAR26        SAD26         WORRY27       FEAR27
+              ________      ________      ________      ________      ________
+ WORRY26        0.798
+ FEAR26         0.798         0.798
+ SAD26          0.798         0.798         0.798
+ WORRY27        0.705         0.705         0.705         0.837
+ FEAR27         0.713         0.713         0.713         0.837         0.845
+ SAD27          0.713         0.713         0.713         0.837         0.845
+ WORRY28        0.713         0.713         0.713         0.760         0.767
+ FEAR28         0.713         0.713         0.713         0.760         0.767
+ SAD28          0.713         0.713         0.713         0.760         0.767
+ WORRY29        0.659         0.659         0.659         0.713         0.721
+ FEAR29         0.659         0.659         0.659         0.713         0.721
+ SAD29          0.659         0.659         0.659         0.713         0.721
+ WORRY30        0.674         0.674         0.674         0.705         0.713
+ FEAR30         0.674         0.674         0.674         0.713         0.721
+ SAD30          0.674         0.674         0.674         0.713         0.721
+
+
+           Covariance Coverage
+              SAD27         WORRY28       FEAR28        SAD28         WORRY29
+              ________      ________      ________      ________      ________
+ SAD27          0.845
+ WORRY28        0.767         0.860
+ FEAR28         0.767         0.860         0.860
+ SAD28          0.767         0.860         0.860         0.860
+ WORRY29        0.721         0.744         0.744         0.744         0.798
+ FEAR29         0.721         0.744         0.744         0.744         0.798
+ SAD29          0.721         0.744         0.744         0.744         0.798
+ WORRY30        0.713         0.729         0.729         0.729         0.713
+ FEAR30         0.721         0.736         0.736         0.736         0.721
+ SAD30          0.721         0.736         0.736         0.736         0.721
+
+
+           Covariance Coverage
+              FEAR29        SAD29         WORRY30       FEAR30        SAD30
+              ________      ________      ________      ________      ________
+ FEAR29         0.798
+ SAD29          0.798         0.798
+ WORRY30        0.713         0.713         0.806
+ FEAR30         0.721         0.721         0.806         0.814
+ SAD30          0.721         0.721         0.806         0.814         0.814
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     WORRY1                3.775      -0.080       1.000   17.98%       2.000      3.000      4.000
+              89.000       3.680      -1.331       7.000    4.49%       5.000      6.000
+     FEAR1                 2.281       1.074       1.000   42.70%       1.000      1.000      2.000
+              89.000       2.269       0.189       7.000    1.12%       2.000      4.000
+     SAD1                  3.023       0.501       1.000   28.41%       1.000      2.000      3.000
+              88.000       3.204      -0.841       7.000    3.41%       3.000      5.000
+     WORRY2                3.731      -0.015       1.000   22.12%       1.000      3.000      4.000
+             104.000       3.947      -1.283       7.000    7.69%       4.000      6.000
+     FEAR2                 2.221       1.136       1.000   49.04%       1.000      1.000      2.000
+             104.000       2.518       0.039       7.000    0.96%       2.000      4.000
+     SAD2                  3.057       0.468       1.000   25.71%       1.000      2.000      3.000
+             105.000       3.140      -0.870       7.000    3.81%       4.000      5.000
+     WORRY3                3.278       0.401       1.000   25.00%       1.000      2.000      3.000
+             108.000       3.997      -1.241       7.000    6.48%       4.000      5.000
+     FEAR3                 2.019       1.325       1.000   54.63%       1.000      1.000      1.000
+             108.000       2.055       0.574       6.000    2.78%       2.000      3.000
+     SAD3                  2.804       0.610       1.000   32.71%       1.000      2.000      2.000
+             107.000       3.036      -0.801       7.000    1.87%       3.000      4.000
+     WORRY4                3.009       0.559       1.000   33.04%       1.000      2.000      3.000
+             112.000       3.670      -0.900       7.000    5.36%       3.000      5.000
+     FEAR4                 1.839       1.617       1.000   56.25%       1.000      1.000      1.000
+             112.000       1.546       1.847       6.000    1.79%       2.000      2.000
+     SAD4                  2.402       0.668       1.000   38.39%       1.000      2.000      2.000
+             112.000       2.062      -0.802       6.000    0.89%       3.000      4.000
+     WORRY5                3.027       0.444       1.000   33.93%       1.000      2.000      3.000
+             112.000       3.580      -1.100       7.000    2.68%       3.000      5.000
+     FEAR5                 1.752       1.829       1.000   62.83%       1.000      1.000      1.000
+             113.000       1.567       2.508       6.000    1.77%       1.000      2.000
+     SAD5                  2.540       0.976       1.000   34.51%       1.000      2.000      2.000
+             113.000       2.585       0.136       7.000    2.65%       3.000      4.000
+     WORRY6                2.920       0.547       1.000   35.40%       1.000      2.000      2.000
+             113.000       3.613      -1.080       7.000    2.65%       3.000      5.000
+     FEAR6                 1.814       1.676       1.000   60.18%       1.000      1.000      1.000
+             113.000       1.550       2.595       7.000    0.88%       1.000      3.000
+     SAD6                  2.611       0.845       1.000   35.40%       1.000      2.000      2.000
+             113.000       2.733      -0.192       7.000    2.65%       3.000      4.000
+     WORRY7                2.757       0.702       1.000   37.84%       1.000      2.000      2.000
+             111.000       3.409      -0.780       7.000    3.60%       3.000      5.000
+     FEAR7                 1.811       1.787       1.000   60.36%       1.000      1.000      1.000
+             111.000       1.685       2.480       6.000    3.60%       1.000      2.000
+     SAD7                  2.577       0.622       1.000   36.04%       1.000      2.000      2.000
+             111.000       2.460      -0.781       7.000    0.90%       3.000      4.000
+     WORRY8                2.664       0.815       1.000   40.00%       1.000      1.000      2.000
+             110.000       3.387      -0.645       7.000    2.73%       3.000      5.000
+     FEAR8                 1.636       2.197       1.000   70.00%       1.000      1.000      1.000
+             110.000       1.540       3.987       6.000    2.73%       1.000      2.000
+     SAD8                  2.345       1.031       1.000   41.82%       1.000      1.000      2.000
+             110.000       2.299       0.332       7.000    1.82%       2.000      4.000
+     WORRY9                2.726       0.655       1.000   36.79%       1.000      2.000      2.000
+             106.000       3.180      -0.895       7.000    1.89%       3.000      5.000
+     FEAR9                 1.720       1.932       1.000   62.62%       1.000      1.000      1.000
+             107.000       1.491       2.942       6.000    1.87%       1.000      2.000
+     SAD9                  2.439       0.946       1.000   34.58%       1.000      2.000      2.000
+             107.000       2.209       0.094       7.000    0.93%       2.000      4.000
+     WORRY10               2.426       0.707       1.000   46.53%       1.000      1.000      2.000
+             101.000       2.601      -0.843       6.000    4.95%       3.000      4.000
+     FEAR10                1.600       1.765       1.000   67.00%       1.000      1.000      1.000
+             100.000       1.040       2.373       5.000    3.00%       1.000      2.000
+     SAD10                 2.337       1.114       1.000   41.58%       1.000      1.000      2.000
+             101.000       2.441       0.375       7.000    1.98%       2.000      4.000
+     WORRY11               3.424       0.167       1.000   25.88%       1.000      3.000      3.000
+              85.000       3.679      -1.176       7.000    5.88%       4.000      5.000
+     FEAR11                1.847       1.931       1.000   56.47%       1.000      1.000      1.000
+              85.000       1.706       3.558       7.000    1.18%       2.000      2.000
+     SAD11                 2.553       0.713       1.000   38.82%       1.000      2.000      2.000
+              85.000       2.600      -0.592       7.000    1.18%       3.000      4.000
+     WORRY12               3.220       0.113       1.000   27.00%       1.000      2.000      3.000
+             100.000       3.232      -1.418       6.000   13.00%       4.000      5.000
+     FEAR12                1.758       1.681       1.000   59.60%       1.000      1.000      1.000
+              99.000       1.376       2.092       6.000    1.01%       1.000      2.000
+     SAD12                 2.700       0.737       1.000   33.00%       1.000      2.000      2.000
+             100.000       2.730      -0.401       7.000    2.00%       3.000      4.000
+     WORRY13               3.117       0.392       1.000   30.10%       1.000      2.000      3.000
+             103.000       3.579      -1.101       7.000    4.85%       4.000      5.000
+     FEAR13                1.835       1.738       1.000   58.25%       1.000      1.000      1.000
+             103.000       1.691       2.215       6.000    2.91%       2.000      2.000
+     SAD13                 2.602       0.690       1.000   37.86%       1.000      2.000      2.000
+             103.000       2.706      -0.656       7.000    0.97%       3.000      4.000
+     WORRY14               3.097       0.326       1.000   28.32%       1.000      2.000      3.000
+             113.000       3.203      -1.088       7.000    2.65%       4.000      5.000
+     FEAR14                1.876       1.220       1.000   55.75%       1.000      1.000      1.000
+             113.000       1.471       0.232       5.000    4.42%       2.000      3.000
+     SAD14                 2.699       0.675       1.000   31.86%       1.000      2.000      2.000
+             113.000       2.724      -0.697       7.000    0.88%       3.000      4.000
+     WORRY15               2.866       0.599       1.000   28.57%       1.000      2.000      2.000
+             112.000       3.045      -0.891       7.000    1.79%       3.000      5.000
+     FEAR15                1.709       2.087       1.000   64.55%       1.000      1.000      1.000
+             110.000       1.552       4.101       7.000    0.91%       1.000      2.000
+     SAD15                 2.473       0.831       1.000   34.82%       1.000      2.000      2.000
+             112.000       2.231      -0.213       7.000    0.89%       2.000      4.000
+     WORRY16               2.907       0.594       1.000   36.11%       1.000      2.000      3.000
+             108.000       3.491      -0.787       7.000    4.63%       3.000      4.000
+     FEAR16                1.648       2.154       1.000   66.67%       1.000      1.000      1.000
+             108.000       1.376       4.522       7.000    0.93%       1.000      2.000
+     SAD16                 2.472       1.049       1.000   35.19%       1.000      2.000      2.000
+             108.000       2.546       0.162       7.000    1.85%       2.000      4.000
+     WORRY17               2.921       0.445       1.000   34.21%       1.000      2.000      2.500
+             114.000       3.283      -1.076       7.000    2.63%       3.000      5.000
+     FEAR17                1.675       2.015       1.000   67.54%       1.000      1.000      1.000
+             114.000       1.517       3.292       6.000    2.63%       1.000      2.000
+     SAD17                 2.526       1.015       1.000   35.09%       1.000      2.000      2.000
+             114.000       2.670       0.123       7.000    2.63%       2.000      4.000
+     WORRY18               2.908       0.633       1.000   38.53%       1.000      2.000      2.000
+             109.000       4.010      -0.990       7.000    5.50%       3.000      5.000
+     FEAR18                1.709       1.895       1.000   66.36%       1.000      1.000      1.000
+             110.000       1.588       2.594       6.000    1.82%       1.000      2.000
+     SAD18                 2.509       0.967       1.000   42.73%       1.000      1.000      2.000
+             110.000       3.104      -0.213       7.000    3.64%       2.000      4.000
+     WORRY19               2.857       0.731       1.000   33.04%       1.000      2.000      2.000
+             112.000       3.569      -0.748       7.000    4.46%       3.000      5.000
+     FEAR19                1.726       1.880       1.000   71.68%       1.000      1.000      1.000
+             113.000       1.916       2.297       6.000    3.54%       1.000      2.000
+     SAD19                 2.558       0.791       1.000   43.36%       1.000      1.000      2.000
+             113.000       3.061      -0.675       7.000    0.88%       3.000      4.000
+     WORRY20               2.622       0.874       1.000   41.84%       1.000      1.000      2.000
+              98.000       3.357      -0.433       7.000    4.08%       3.000      4.000
+     FEAR20                1.622       2.095       1.000   70.41%       1.000      1.000      1.000
+              98.000       1.398       3.725       6.000    2.04%       1.000      2.000
+     SAD20                 2.490       0.977       1.000   36.73%       1.000      2.000      2.000
+              98.000       2.597       0.010       7.000    2.04%       2.000      4.000
+     WORRY21               3.103       0.477       1.000   29.49%       1.000      2.000      3.000
+              78.000       3.579      -0.979       7.000    5.13%       3.000      5.000
+     FEAR21                2.205       1.106       1.000   51.28%       1.000      1.000      1.000
+              78.000       2.445       0.129       7.000    1.28%       2.000      4.000
+     SAD21                 2.692       0.809       1.000   35.90%       1.000      2.000      2.000
+              78.000       3.110      -0.411       7.000    3.85%       3.000      4.000
+     WORRY22               3.253       0.361       1.000   27.27%       1.000      2.000      3.000
+              99.000       3.744      -1.100       7.000    6.06%       4.000      5.000
+     FEAR22                1.798       1.631       1.000   61.62%       1.000      1.000      1.000
+              99.000       1.656       1.500       6.000    1.01%       1.000      2.000
+     SAD22                 2.582       0.704       1.000   32.65%       1.000      2.000      2.000
+              98.000       2.366      -0.501       7.000    1.02%       3.000      4.000
+     WORRY23               3.079       0.404       1.000   34.65%       1.000      2.000      3.000
+             101.000       3.875      -1.234       7.000    3.96%       4.000      5.000
+     FEAR23                1.772       1.523       1.000   64.36%       1.000      1.000      1.000
+             101.000       1.542       1.232       6.000    0.99%       1.000      3.000
+     SAD23                 2.475       0.785       1.000   44.55%       1.000      1.000      2.000
+             101.000       2.784      -0.566       7.000    1.98%       2.000      4.000
+     WORRY24               2.964       0.516       1.000   27.93%       1.000      2.000      3.000
+             111.000       2.990      -0.738       7.000    3.60%       3.000      5.000
+     FEAR24                1.685       2.021       1.000   70.27%       1.000      1.000      1.000
+             111.000       1.693       3.300       7.000    0.90%       1.000      2.000
+     SAD24                 2.180       1.162       1.000   42.34%       1.000      1.000      2.000
+             111.000       1.787       1.030       7.000    0.90%       2.000      3.000
+     WORRY25               3.110       0.484       1.000   28.44%       1.000      2.000      3.000
+             109.000       3.548      -0.944       7.000    5.50%       3.000      5.000
+     FEAR25                1.853       1.773       1.000   65.14%       1.000      1.000      1.000
+             109.000       2.070       2.465       7.000    1.83%       1.000      3.000
+     SAD25                 2.633       0.623       1.000   39.45%       1.000      2.000      2.000
+             109.000       2.819      -0.835       7.000    0.92%       3.000      4.000
+     WORRY26               2.845       0.779       1.000   34.95%       1.000      2.000      2.000
+             103.000       3.529      -0.487       7.000    6.80%       3.000      4.000
+     FEAR26                1.621       1.981       1.000   68.93%       1.000      1.000      1.000
+             103.000       1.284       3.224       6.000    0.97%       1.000      2.000
+     SAD26                 2.350       0.964       1.000   43.69%       1.000      1.000      2.000
+             103.000       2.480      -0.169       7.000    0.97%       2.000      4.000
+     WORRY27               2.611       0.845       1.000   41.67%       1.000      1.000      2.000
+             108.000       3.052      -0.188       7.000    4.63%       3.000      4.000
+     FEAR27                1.661       2.179       1.000   69.72%       1.000      1.000      1.000
+             109.000       1.600       4.300       7.000    0.92%       1.000      2.000
+     SAD27                 2.284       1.046       1.000   44.95%       1.000      1.000      2.000
+             109.000       2.314       0.156       7.000    0.92%       2.000      4.000
+     WORRY28               2.604       0.938       1.000   42.34%       1.000      1.000      2.000
+             111.000       3.356      -0.231       7.000    5.41%       3.000      4.000
+     FEAR28                1.676       2.401       1.000   68.47%       1.000      1.000      1.000
+             111.000       1.769       5.317       7.000    1.80%       1.000      2.000
+     SAD28                 2.432       1.073       1.000   42.34%       1.000      1.000      2.000
+             111.000       2.858       0.087       7.000    2.70%       2.000      4.000
+     WORRY29               2.786       0.679       1.000   35.92%       1.000      2.000      2.000
+             103.000       3.197      -0.677       7.000    2.91%       3.000      4.000
+     FEAR29                1.631       2.141       1.000   68.93%       1.000      1.000      1.000
+             103.000       1.340       4.671       7.000    0.97%       1.000      2.000
+     SAD29                 2.320       1.255       1.000   41.75%       1.000      1.000      2.000
+             103.000       2.373       1.078       7.000    2.91%       2.000      3.000
+     WORRY30               2.817       0.577       1.000   36.54%       1.000      2.000      2.000
+             104.000       3.207      -0.829       7.000    2.88%       3.000      4.000
+     FEAR30                1.752       1.891       1.000   69.52%       1.000      1.000      1.000
+             105.000       1.882       2.753       7.000    0.95%       1.000      3.000
+     SAD30                 2.429       0.925       1.000   41.90%       1.000      1.000      2.000
+             105.000       2.531      -0.016       7.000    1.90%       2.000      4.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                      305
+
+Loglikelihood
+
+          H0 Value                      -14939.897
+          H1 Value                       -6442.887
+
+Information Criteria
+
+          Akaike (AIC)                   30489.794
+          Bayesian (BIC)                 31362.037
+          Sample-Size Adjusted BIC       30397.423
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                          16994.019
+          Degrees of Freedom                  3880
+          P-Value                           0.0000
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.162
+          90 Percent C.I.                    0.159  0.164
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.285
+          TLI                                0.262
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                          22350.694
+          Degrees of Freedom                  4005
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.117
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ OCC1     BY
+    WORRY1             1.000      0.000    999.000    999.000
+    FEAR1              0.650      0.155      4.193      0.000
+    SAD1               0.833      0.175      4.756      0.000
+
+ OCC2     BY
+    WORRY2             1.000      0.000    999.000    999.000
+    FEAR2              0.731      0.158      4.625      0.000
+    SAD2               0.778      0.220      3.537      0.000
+
+ OCC3     BY
+    WORRY3             1.000      0.000    999.000    999.000
+    FEAR3              0.616      0.087      7.093      0.000
+    SAD3               0.734      0.099      7.386      0.000
+
+ OCC4     BY
+    WORRY4             1.000      0.000    999.000    999.000
+    FEAR4              0.483      0.103      4.671      0.000
+    SAD4               0.574      0.125      4.600      0.000
+
+ OCC5     BY
+    WORRY5             1.000      0.000    999.000    999.000
+    FEAR5              0.677      0.150      4.531      0.000
+    SAD5               0.729      0.142      5.133      0.000
+
+ OCC6     BY
+    WORRY6             1.000      0.000    999.000    999.000
+    FEAR6              0.685      0.143      4.786      0.000
+    SAD6               1.021      0.190      5.376      0.000
+
+ OCC7     BY
+    WORRY7             1.000      0.000    999.000    999.000
+    FEAR7              0.676      0.180      3.756      0.000
+    SAD7               0.953      0.252      3.783      0.000
+
+ OCC8     BY
+    WORRY8             1.000      0.000    999.000    999.000
+    FEAR8              1.398      0.467      2.997      0.003
+    SAD8               0.917      0.246      3.727      0.000
+
+ OCC9     BY
+    WORRY9             1.000      0.000    999.000    999.000
+    FEAR9              0.646      0.196      3.292      0.001
+    SAD9               0.840      0.195      4.304      0.000
+
+ OCC10    BY
+    WORRY10            1.000      0.000    999.000    999.000
+    FEAR10             1.151      0.568      2.028      0.043
+    SAD10              0.743      0.344      2.158      0.031
+
+ OCC11    BY
+    WORRY11            1.000      0.000    999.000    999.000
+    FEAR11             0.476      0.120      3.973      0.000
+    SAD11              0.950      0.208      4.573      0.000
+
+ OCC12    BY
+    WORRY12            1.000      0.000    999.000    999.000
+    FEAR12             0.601      0.156      3.848      0.000
+    SAD12              1.074      0.240      4.478      0.000
+
+ OCC13    BY
+    WORRY13            1.000      0.000    999.000    999.000
+    FEAR13             0.614      0.190      3.237      0.001
+    SAD13              1.770      0.598      2.961      0.003
+
+ OCC14    BY
+    WORRY14            1.000      0.000    999.000    999.000
+    FEAR14             0.315      0.148      2.131      0.033
+    SAD14              0.750      0.295      2.540      0.011
+
+ OCC15    BY
+    WORRY15            1.000      0.000    999.000    999.000
+    FEAR15             0.688      0.246      2.800      0.005
+    SAD15              0.421      0.196      2.153      0.031
+
+ OCC16    BY
+    WORRY16            1.000      0.000    999.000    999.000
+    FEAR16             0.558      0.101      5.535      0.000
+    SAD16              0.920      0.173      5.306      0.000
+
+ OCC17    BY
+    WORRY17            1.000      0.000    999.000    999.000
+    FEAR17             0.561      0.113      4.974      0.000
+    SAD17              0.876      0.136      6.444      0.000
+
+ OCC18    BY
+    WORRY18            1.000      0.000    999.000    999.000
+    FEAR18             0.637      0.131      4.883      0.000
+    SAD18              0.792      0.143      5.539      0.000
+
+ OCC19    BY
+    WORRY19            1.000      0.000    999.000    999.000
+    FEAR19             0.771      0.119      6.474      0.000
+    SAD19              1.120      0.188      5.972      0.000
+
+ OCC20    BY
+    WORRY20            1.000      0.000    999.000    999.000
+    FEAR20             0.813      0.207      3.934      0.000
+    SAD20              1.039      0.297      3.503      0.000
+
+ OCC21    BY
+    WORRY21            1.000      0.000    999.000    999.000
+    FEAR21             1.105      0.206      5.351      0.000
+    SAD21              1.141      0.202      5.657      0.000
+
+ OCC22    BY
+    WORRY22            1.000      0.000    999.000    999.000
+    FEAR22             0.879      0.174      5.060      0.000
+    SAD22              0.914      0.164      5.569      0.000
+
+ OCC23    BY
+    WORRY23            1.000      0.000    999.000    999.000
+    FEAR23             0.578      0.121      4.763      0.000
+    SAD23              0.960      0.149      6.435      0.000
+
+ OCC24    BY
+    WORRY24            1.000      0.000    999.000    999.000
+    FEAR24             0.856      0.145      5.899      0.000
+    SAD24              0.902      0.142      6.355      0.000
+
+ OCC25    BY
+    WORRY25            1.000      0.000    999.000    999.000
+    FEAR25             0.778      0.134      5.804      0.000
+    SAD25              0.916      0.152      6.023      0.000
+
+ OCC26    BY
+    WORRY26            1.000      0.000    999.000    999.000
+    FEAR26             0.631      0.089      7.060      0.000
+    SAD26              0.730      0.115      6.361      0.000
+
+ OCC27    BY
+    WORRY27            1.000      0.000    999.000    999.000
+    FEAR27             0.525      0.101      5.182      0.000
+    SAD27              0.678      0.119      5.682      0.000
+
+ OCC28    BY
+    WORRY28            1.000      0.000    999.000    999.000
+    FEAR28             0.896      0.156      5.749      0.000
+    SAD28              1.386      0.221      6.269      0.000
+
+ OCC29    BY
+    WORRY29            1.000      0.000    999.000    999.000
+    FEAR29             0.665      0.113      5.881      0.000
+    SAD29              1.027      0.160      6.403      0.000
+
+ OCC30    BY
+    WORRY30            1.000      0.000    999.000    999.000
+    FEAR30             0.558      0.159      3.518      0.000
+    SAD30              0.753      0.192      3.931      0.000
+
+ THETA1   BY
+    WORRY1             1.000      0.000    999.000    999.000
+    WORRY2             1.000      0.000    999.000    999.000
+    WORRY3             1.000      0.000    999.000    999.000
+    WORRY4             1.000      0.000    999.000    999.000
+    WORRY5             1.000      0.000    999.000    999.000
+    WORRY6             1.000      0.000    999.000    999.000
+    WORRY7             1.000      0.000    999.000    999.000
+    WORRY8             1.000      0.000    999.000    999.000
+    WORRY9             1.000      0.000    999.000    999.000
+    WORRY10            1.000      0.000    999.000    999.000
+    WORRY11            1.000      0.000    999.000    999.000
+    WORRY12            1.000      0.000    999.000    999.000
+    WORRY13            1.000      0.000    999.000    999.000
+    WORRY14            1.000      0.000    999.000    999.000
+    WORRY15            1.000      0.000    999.000    999.000
+    WORRY16            1.000      0.000    999.000    999.000
+    WORRY17            1.000      0.000    999.000    999.000
+    WORRY18            1.000      0.000    999.000    999.000
+    WORRY19            1.000      0.000    999.000    999.000
+    WORRY20            1.000      0.000    999.000    999.000
+    WORRY21            1.000      0.000    999.000    999.000
+    WORRY22            1.000      0.000    999.000    999.000
+    WORRY23            1.000      0.000    999.000    999.000
+    WORRY24            1.000      0.000    999.000    999.000
+    WORRY25            1.000      0.000    999.000    999.000
+    WORRY26            1.000      0.000    999.000    999.000
+    WORRY27            1.000      0.000    999.000    999.000
+    WORRY28            1.000      0.000    999.000    999.000
+    WORRY29            1.000      0.000    999.000    999.000
+    WORRY30            1.000      0.000    999.000    999.000
+
+ THETA2   BY
+    FEAR1              1.000      0.000    999.000    999.000
+    FEAR2              1.000      0.000    999.000    999.000
+    FEAR3              1.000      0.000    999.000    999.000
+    FEAR4              1.000      0.000    999.000    999.000
+    FEAR5              1.000      0.000    999.000    999.000
+    FEAR6              1.000      0.000    999.000    999.000
+    FEAR7              1.000      0.000    999.000    999.000
+    FEAR8              1.000      0.000    999.000    999.000
+    FEAR9              1.000      0.000    999.000    999.000
+    FEAR10             1.000      0.000    999.000    999.000
+    FEAR11             1.000      0.000    999.000    999.000
+    FEAR12             1.000      0.000    999.000    999.000
+    FEAR13             1.000      0.000    999.000    999.000
+    FEAR14             1.000      0.000    999.000    999.000
+    FEAR15             1.000      0.000    999.000    999.000
+    FEAR16             1.000      0.000    999.000    999.000
+    FEAR17             1.000      0.000    999.000    999.000
+    FEAR18             1.000      0.000    999.000    999.000
+    FEAR19             1.000      0.000    999.000    999.000
+    FEAR20             1.000      0.000    999.000    999.000
+    FEAR21             1.000      0.000    999.000    999.000
+    FEAR22             1.000      0.000    999.000    999.000
+    FEAR23             1.000      0.000    999.000    999.000
+    FEAR24             1.000      0.000    999.000    999.000
+    FEAR25             1.000      0.000    999.000    999.000
+    FEAR26             1.000      0.000    999.000    999.000
+    FEAR27             1.000      0.000    999.000    999.000
+    FEAR28             1.000      0.000    999.000    999.000
+    FEAR29             1.000      0.000    999.000    999.000
+    FEAR30             1.000      0.000    999.000    999.000
+
+ THETA3   BY
+    SAD1               1.000      0.000    999.000    999.000
+    SAD2               1.000      0.000    999.000    999.000
+    SAD3               1.000      0.000    999.000    999.000
+    SAD4               1.000      0.000    999.000    999.000
+    SAD5               1.000      0.000    999.000    999.000
+    SAD6               1.000      0.000    999.000    999.000
+    SAD7               1.000      0.000    999.000    999.000
+    SAD8               1.000      0.000    999.000    999.000
+    SAD9               1.000      0.000    999.000    999.000
+    SAD10              1.000      0.000    999.000    999.000
+    SAD11              1.000      0.000    999.000    999.000
+    SAD12              1.000      0.000    999.000    999.000
+    SAD13              1.000      0.000    999.000    999.000
+    SAD14              1.000      0.000    999.000    999.000
+    SAD15              1.000      0.000    999.000    999.000
+    SAD16              1.000      0.000    999.000    999.000
+    SAD17              1.000      0.000    999.000    999.000
+    SAD18              1.000      0.000    999.000    999.000
+    SAD19              1.000      0.000    999.000    999.000
+    SAD20              1.000      0.000    999.000    999.000
+    SAD21              1.000      0.000    999.000    999.000
+    SAD22              1.000      0.000    999.000    999.000
+    SAD23              1.000      0.000    999.000    999.000
+    SAD24              1.000      0.000    999.000    999.000
+    SAD25              1.000      0.000    999.000    999.000
+    SAD26              1.000      0.000    999.000    999.000
+    SAD27              1.000      0.000    999.000    999.000
+    SAD28              1.000      0.000    999.000    999.000
+    SAD29              1.000      0.000    999.000    999.000
+    SAD30              1.000      0.000    999.000    999.000
+
+ OCC2     ON
+    OCC1               0.651      0.154      4.212      0.000
+
+ OCC3     ON
+    OCC2               0.909      0.251      3.621      0.000
+
+ OCC4     ON
+    OCC3               0.382      0.111      3.442      0.001
+
+ OCC5     ON
+    OCC4               0.591      0.148      4.005      0.000
+
+ OCC6     ON
+    OCC5               0.683      0.182      3.752      0.000
+
+ OCC7     ON
+    OCC6               0.561      0.168      3.348      0.001
+
+ OCC8     ON
+    OCC7               0.089      0.118      0.753      0.451
+
+ OCC9     ON
+    OCC8               0.866      0.250      3.463      0.001
+
+ OCC10    ON
+    OCC9               0.563      0.236      2.386      0.017
+
+ OCC11    ON
+    OCC10             -0.386      0.492     -0.785      0.433
+
+ OCC12    ON
+    OCC11              0.245      0.123      1.993      0.046
+
+ OCC13    ON
+    OCC12              0.545      0.174      3.136      0.002
+
+ OCC14    ON
+    OCC13              0.553      0.247      2.242      0.025
+
+ OCC15    ON
+    OCC14              0.064      0.178      0.361      0.718
+
+ OCC16    ON
+    OCC15              0.290      0.171      1.700      0.089
+
+ OCC17    ON
+    OCC16              0.413      0.136      3.038      0.002
+
+ OCC18    ON
+    OCC17              0.376      0.152      2.471      0.013
+
+ OCC19    ON
+    OCC18              0.642      0.143      4.478      0.000
+
+ OCC20    ON
+    OCC19              0.621      0.159      3.914      0.000
+
+ OCC21    ON
+    OCC20              0.458      0.254      1.805      0.071
+
+ OCC22    ON
+    OCC21              0.732      0.176      4.153      0.000
+
+ OCC23    ON
+    OCC22              0.908      0.192      4.720      0.000
+
+ OCC24    ON
+    OCC23              0.576      0.143      4.021      0.000
+
+ OCC25    ON
+    OCC24              0.864      0.157      5.494      0.000
+
+ OCC26    ON
+    OCC25              0.996      0.165      6.047      0.000
+
+ OCC27    ON
+    OCC26              0.936      0.153      6.114      0.000
+
+ OCC28    ON
+    OCC27              0.596      0.122      4.879      0.000
+
+ OCC29    ON
+    OCC28              0.941      0.188      5.004      0.000
+
+ OCC30    ON
+    OCC29              0.624      0.148      4.211      0.000
+
+ OCC1     WITH
+    OCC2               0.000      0.000    999.000    999.000
+    OCC3               0.000      0.000    999.000    999.000
+    OCC4               0.000      0.000    999.000    999.000
+    OCC5               0.000      0.000    999.000    999.000
+    OCC6               0.000      0.000    999.000    999.000
+    OCC7               0.000      0.000    999.000    999.000
+    OCC8               0.000      0.000    999.000    999.000
+    OCC9               0.000      0.000    999.000    999.000
+    OCC10              0.000      0.000    999.000    999.000
+    OCC11              0.000      0.000    999.000    999.000
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC2     WITH
+    OCC3               0.000      0.000    999.000    999.000
+    OCC4               0.000      0.000    999.000    999.000
+    OCC5               0.000      0.000    999.000    999.000
+    OCC6               0.000      0.000    999.000    999.000
+    OCC7               0.000      0.000    999.000    999.000
+    OCC8               0.000      0.000    999.000    999.000
+    OCC9               0.000      0.000    999.000    999.000
+    OCC10              0.000      0.000    999.000    999.000
+    OCC11              0.000      0.000    999.000    999.000
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC3     WITH
+    OCC4               0.000      0.000    999.000    999.000
+    OCC5               0.000      0.000    999.000    999.000
+    OCC6               0.000      0.000    999.000    999.000
+    OCC7               0.000      0.000    999.000    999.000
+    OCC8               0.000      0.000    999.000    999.000
+    OCC9               0.000      0.000    999.000    999.000
+    OCC10              0.000      0.000    999.000    999.000
+    OCC11              0.000      0.000    999.000    999.000
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC4     WITH
+    OCC5               0.000      0.000    999.000    999.000
+    OCC6               0.000      0.000    999.000    999.000
+    OCC7               0.000      0.000    999.000    999.000
+    OCC8               0.000      0.000    999.000    999.000
+    OCC9               0.000      0.000    999.000    999.000
+    OCC10              0.000      0.000    999.000    999.000
+    OCC11              0.000      0.000    999.000    999.000
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC5     WITH
+    OCC6               0.000      0.000    999.000    999.000
+    OCC7               0.000      0.000    999.000    999.000
+    OCC8               0.000      0.000    999.000    999.000
+    OCC9               0.000      0.000    999.000    999.000
+    OCC10              0.000      0.000    999.000    999.000
+    OCC11              0.000      0.000    999.000    999.000
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC6     WITH
+    OCC7               0.000      0.000    999.000    999.000
+    OCC8               0.000      0.000    999.000    999.000
+    OCC9               0.000      0.000    999.000    999.000
+    OCC10              0.000      0.000    999.000    999.000
+    OCC11              0.000      0.000    999.000    999.000
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC7     WITH
+    OCC8               0.000      0.000    999.000    999.000
+    OCC9               0.000      0.000    999.000    999.000
+    OCC10              0.000      0.000    999.000    999.000
+    OCC11              0.000      0.000    999.000    999.000
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC8     WITH
+    OCC9               0.000      0.000    999.000    999.000
+    OCC10              0.000      0.000    999.000    999.000
+    OCC11              0.000      0.000    999.000    999.000
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC9     WITH
+    OCC10              0.000      0.000    999.000    999.000
+    OCC11              0.000      0.000    999.000    999.000
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC10    WITH
+    OCC11              0.000      0.000    999.000    999.000
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC11    WITH
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC12    WITH
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC13    WITH
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC14    WITH
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC15    WITH
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC16    WITH
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC17    WITH
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC18    WITH
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC19    WITH
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC20    WITH
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC21    WITH
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC22    WITH
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC23    WITH
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC24    WITH
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC25    WITH
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC26    WITH
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC27    WITH
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC28    WITH
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC29    WITH
+    OCC30              0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ OCC30    WITH
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+
+ THETA2   WITH
+    THETA1             0.427      0.089      4.785      0.000
+
+ THETA3   WITH
+    THETA1             0.666      0.120      5.549      0.000
+    THETA2             0.453      0.081      5.574      0.000
+
+ Means
+    OCC1               0.000      0.000    999.000    999.000
+
+ Intercepts
+    WORRY1             3.872      0.191     20.313      0.000
+    FEAR1              2.315      0.155     14.949      0.000
+    SAD1               3.060      0.175     17.497      0.000
+    WORRY2             3.757      0.192     19.605      0.000
+    FEAR2              2.218      0.150     14.804      0.000
+    SAD2               3.080      0.165     18.611      0.000
+    WORRY3             3.306      0.190     17.414      0.000
+    FEAR3              2.029      0.133     15.299      0.000
+    SAD3               2.792      0.160     17.450      0.000
+    WORRY4             3.039      0.171     17.726      0.000
+    FEAR4              1.889      0.113     16.761      0.000
+    SAD4               2.452      0.141     17.370      0.000
+    WORRY5             2.971      0.187     15.917      0.000
+    FEAR5              1.725      0.117     14.767      0.000
+    SAD5               2.512      0.153     16.433      0.000
+    WORRY6             2.916      0.180     16.243      0.000
+    FEAR6              1.824      0.122     14.972      0.000
+    SAD6               2.613      0.147     17.764      0.000
+    WORRY7             2.760      0.174     15.891      0.000
+    FEAR7              1.812      0.132     13.743      0.000
+    SAD7               2.614      0.154     16.970      0.000
+    WORRY8             2.706      0.169     15.995      0.000
+    FEAR8              1.673      0.122     13.741      0.000
+    SAD8               2.387      0.148     16.094      0.000
+    WORRY9             2.752      0.171     16.131      0.000
+    FEAR9              1.717      0.121     14.238      0.000
+    SAD9               2.437      0.146     16.698      0.000
+    WORRY10            2.437      0.157     15.486      0.000
+    FEAR10             1.610      0.104     15.497      0.000
+    SAD10              2.297      0.143     16.076      0.000
+    WORRY11            3.348      0.201     16.686      0.000
+    FEAR11             1.808      0.146     12.415      0.000
+    SAD11              2.530      0.168     15.036      0.000
+    WORRY12            3.226      0.178     18.172      0.000
+    FEAR12             1.756      0.122     14.449      0.000
+    SAD12              2.738      0.158     17.360      0.000
+    WORRY13            3.119      0.176     17.755      0.000
+    FEAR13             1.842      0.123     14.971      0.000
+    SAD13              2.603      0.157     16.616      0.000
+    WORRY14            3.097      0.164     18.909      0.000
+    FEAR14             1.891      0.111     16.996      0.000
+    SAD14              2.707      0.142     19.017      0.000
+    WORRY15            2.843      0.161     17.656      0.000
+    FEAR15             1.710      0.119     14.319      0.000
+    SAD15              2.450      0.137     17.902      0.000
+    WORRY16            2.869      0.170     16.874      0.000
+    FEAR16             1.604      0.110     14.631      0.000
+    SAD16              2.421      0.142     17.041      0.000
+    WORRY17            2.926      0.158     18.507      0.000
+    FEAR17             1.702      0.109     15.602      0.000
+    SAD17              2.539      0.141     18.012      0.000
+    WORRY18            2.887      0.178     16.173      0.000
+    FEAR18             1.683      0.122     13.746      0.000
+    SAD18              2.462      0.160     15.427      0.000
+    WORRY19            2.823      0.162     17.396      0.000
+    FEAR19             1.726      0.122     14.130      0.000
+    SAD19              2.551      0.157     16.203      0.000
+    WORRY20            2.630      0.176     14.922      0.000
+    FEAR20             1.620      0.115     14.040      0.000
+    SAD20              2.456      0.163     15.097      0.000
+    WORRY21            3.024      0.200     15.112      0.000
+    FEAR21             2.099      0.150     14.035      0.000
+    SAD21              2.605      0.187     13.954      0.000
+    WORRY22            3.291      0.186     17.647      0.000
+    FEAR22             1.849      0.126     14.623      0.000
+    SAD22              2.638      0.151     17.449      0.000
+    WORRY23            3.111      0.187     16.664      0.000
+    FEAR23             1.774      0.119     14.967      0.000
+    SAD23              2.458      0.164     15.016      0.000
+    WORRY24            3.038      0.169     18.009      0.000
+    FEAR24             1.775      0.124     14.363      0.000
+    SAD24              2.231      0.136     16.466      0.000
+    WORRY25            3.116      0.175     17.843      0.000
+    FEAR25             1.857      0.124     14.926      0.000
+    SAD25              2.617      0.156     16.776      0.000
+    WORRY26            2.852      0.177     16.118      0.000
+    FEAR26             1.659      0.112     14.786      0.000
+    SAD26              2.343      0.151     15.495      0.000
+    WORRY27            2.720      0.184     14.805      0.000
+    FEAR27             1.697      0.122     13.939      0.000
+    SAD27              2.314      0.147     15.702      0.000
+    WORRY28            2.550      0.168     15.207      0.000
+    FEAR28             1.628      0.125     12.987      0.000
+    SAD28              2.375      0.158     14.997      0.000
+    WORRY29            2.775      0.174     15.940      0.000
+    FEAR29             1.635      0.119     13.748      0.000
+    SAD29              2.266      0.153     14.790      0.000
+    WORRY30            2.809      0.169     16.658      0.000
+    FEAR30             1.761      0.127     13.853      0.000
+    SAD30              2.396      0.147     16.294      0.000
+    OCC2               0.000      0.000    999.000    999.000
+    OCC3               0.000      0.000    999.000    999.000
+    OCC4               0.000      0.000    999.000    999.000
+    OCC5               0.000      0.000    999.000    999.000
+    OCC6               0.000      0.000    999.000    999.000
+    OCC7               0.000      0.000    999.000    999.000
+    OCC8               0.000      0.000    999.000    999.000
+    OCC9               0.000      0.000    999.000    999.000
+    OCC10              0.000      0.000    999.000    999.000
+    OCC11              0.000      0.000    999.000    999.000
+    OCC12              0.000      0.000    999.000    999.000
+    OCC13              0.000      0.000    999.000    999.000
+    OCC14              0.000      0.000    999.000    999.000
+    OCC15              0.000      0.000    999.000    999.000
+    OCC16              0.000      0.000    999.000    999.000
+    OCC17              0.000      0.000    999.000    999.000
+    OCC18              0.000      0.000    999.000    999.000
+    OCC19              0.000      0.000    999.000    999.000
+    OCC20              0.000      0.000    999.000    999.000
+    OCC21              0.000      0.000    999.000    999.000
+    OCC22              0.000      0.000    999.000    999.000
+    OCC23              0.000      0.000    999.000    999.000
+    OCC24              0.000      0.000    999.000    999.000
+    OCC25              0.000      0.000    999.000    999.000
+    OCC26              0.000      0.000    999.000    999.000
+    OCC27              0.000      0.000    999.000    999.000
+    OCC28              0.000      0.000    999.000    999.000
+    OCC29              0.000      0.000    999.000    999.000
+    OCC30              0.000      0.000    999.000    999.000
+
+ Variances
+    OCC1               1.546      0.452      3.419      0.001
+    THETA1             1.134      0.162      6.996      0.000
+    THETA2             0.501      0.073      6.835      0.000
+    THETA3             0.833      0.121      6.905      0.000
+
+ Residual Variances
+    WORRY1             1.011      0.300      3.367      0.001
+    FEAR1              1.176      0.221      5.314      0.000
+    SAD1               1.127      0.255      4.416      0.000
+    WORRY2             1.681      0.378      4.448      0.000
+    FEAR2              1.275      0.248      5.138      0.000
+    SAD2               1.446      0.274      5.282      0.000
+    WORRY3             0.794      0.229      3.472      0.001
+    FEAR3              0.661      0.125      5.282      0.000
+    SAD3               0.893      0.167      5.337      0.000
+    WORRY4             0.809      0.266      3.036      0.002
+    FEAR4              0.636      0.107      5.914      0.000
+    SAD4               1.010      0.165      6.109      0.000
+    WORRY5             1.630      0.328      4.966      0.000
+    FEAR5              0.507      0.115      4.404      0.000
+    SAD5               1.220      0.213      5.717      0.000
+    WORRY6             1.599      0.267      5.984      0.000
+    FEAR6              0.746      0.125      5.971      0.000
+    SAD6               0.621      0.164      3.794      0.000
+    WORRY7             1.411      0.294      4.799      0.000
+    FEAR7              1.059      0.181      5.865      0.000
+    SAD7               1.047      0.244      4.294      0.000
+    WORRY8             1.659      0.262      6.334      0.000
+    FEAR8              0.206      0.271      0.760      0.448
+    SAD8               1.270      0.216      5.886      0.000
+    WORRY9             1.368      0.273      5.004      0.000
+    FEAR9              0.814      0.133      6.111      0.000
+    SAD9               1.030      0.201      5.111      0.000
+    WORRY10            1.312      0.220      5.970      0.000
+    FEAR10             0.324      0.132      2.459      0.014
+    SAD10              1.235      0.196      6.296      0.000
+    WORRY11            1.111      0.345      3.218      0.001
+    FEAR11             1.105      0.192      5.750      0.000
+    SAD11              0.458      0.277      1.656      0.098
+    WORRY12            1.316      0.265      4.970      0.000
+    FEAR12             0.730      0.126      5.797      0.000
+    SAD12              0.753      0.209      3.602      0.000
+    WORRY13            1.754      0.292      6.013      0.000
+    FEAR13             0.960      0.148      6.472      0.000
+    SAD13              0.285      0.347      0.821      0.412
+    WORRY14            0.882      0.432      2.041      0.041
+    FEAR14             0.838      0.127      6.605      0.000
+    SAD14              0.908      0.265      3.427      0.001
+    WORRY15            0.830      0.381      2.177      0.029
+    FEAR15             0.627      0.185      3.392      0.001
+    SAD15              1.170      0.183      6.397      0.000
+    WORRY16            0.966      0.230      4.198      0.000
+    FEAR16             0.499      0.089      5.589      0.000
+    SAD16              0.463      0.165      2.799      0.005
+    WORRY17            0.694      0.181      3.840      0.000
+    FEAR17             0.548      0.097      5.618      0.000
+    SAD17              0.645      0.144      4.475      0.000
+    WORRY18            1.133      0.268      4.223      0.000
+    FEAR18             0.657      0.134      4.916      0.000
+    SAD18              1.217      0.232      5.257      0.000
+    WORRY19            0.940      0.185      5.089      0.000
+    FEAR19             0.635      0.123      5.155      0.000
+    SAD19              0.783      0.191      4.095      0.000
+    WORRY20            1.558      0.279      5.589      0.000
+    FEAR20             0.515      0.119      4.314      0.000
+    SAD20              1.294      0.242      5.356      0.000
+    WORRY21            1.425      0.275      5.184      0.000
+    FEAR21             0.244      0.146      1.670      0.095
+    SAD21              0.919      0.214      4.298      0.000
+    WORRY22            1.554      0.273      5.684      0.000
+    FEAR22             0.419      0.117      3.580      0.000
+    SAD22              0.764      0.155      4.923      0.000
+    WORRY23            1.334      0.272      4.896      0.000
+    FEAR23             0.590      0.109      5.411      0.000
+    SAD23              0.864      0.213      4.062      0.000
+    WORRY24            1.162      0.195      5.944      0.000
+    FEAR24             0.519      0.103      5.050      0.000
+    SAD24              0.492      0.101      4.865      0.000
+    WORRY25            1.312      0.221      5.937      0.000
+    FEAR25             0.627      0.116      5.427      0.000
+    SAD25              1.065      0.182      5.858      0.000
+    WORRY26            1.004      0.191      5.265      0.000
+    FEAR26             0.373      0.073      5.081      0.000
+    SAD26              0.986      0.162      6.098      0.000
+    WORRY27            1.173      0.231      5.084      0.000
+    FEAR27             0.765      0.121      6.302      0.000
+    SAD27              0.955      0.157      6.094      0.000
+    WORRY28            1.329      0.205      6.497      0.000
+    FEAR28             0.662      0.111      5.951      0.000
+    SAD28              0.514      0.145      3.539      0.000
+    WORRY29            1.138      0.208      5.471      0.000
+    FEAR29             0.579      0.104      5.564      0.000
+    SAD29              0.625      0.152      4.122      0.000
+    WORRY30            1.011      0.266      3.801      0.000
+    FEAR30             0.962      0.160      6.017      0.000
+    SAD30              1.001      0.193      5.175      0.000
+    OCC2               0.652      0.326      2.003      0.045
+    OCC3               1.161      0.354      3.279      0.001
+    OCC4               1.238      0.357      3.470      0.001
+    OCC5               0.824      0.315      2.616      0.009
+    OCC6               0.462      0.187      2.463      0.014
+    OCC7               0.633      0.260      2.433      0.015
+    OCC8               0.523      0.261      2.008      0.045
+    OCC9               0.434      0.228      1.909      0.056
+    OCC10              0.039      0.070      0.556      0.578
+    OCC11              1.506      0.490      3.075      0.002
+    OCC12              0.919      0.358      2.569      0.010
+    OCC13              0.231      0.120      1.918      0.055
+    OCC14              0.990      0.429      2.308      0.021
+    OCC15              1.072      0.452      2.375      0.018
+    OCC16              1.124      0.324      3.472      0.001
+    OCC17              0.953      0.261      3.658      0.000
+    OCC18              1.286      0.367      3.504      0.000
+    OCC19              0.461      0.171      2.699      0.007
+    OCC20              0.262      0.167      1.564      0.118
+    OCC21              0.971      0.334      2.904      0.004
+    OCC22              0.525      0.217      2.415      0.016
+    OCC23              0.501      0.216      2.325      0.020
+    OCC24              0.605      0.192      3.149      0.002
+    OCC25              0.344      0.140      2.459      0.014
+    OCC26              0.356      0.148      2.402      0.016
+    OCC27              0.362      0.177      2.048      0.041
+    OCC28              0.269      0.103      2.614      0.009
+    OCC29              0.409      0.149      2.752      0.006
+    OCC30              0.610      0.247      2.472      0.013
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.579E-03
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  18:38:45
+        Ending Time:  19:01:43
+       Elapsed Time:  00:22:58
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

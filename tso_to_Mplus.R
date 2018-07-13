@@ -12,10 +12,8 @@
 #     ID or sex variables should not be included.
 # nocc is the number of latent occasion variables or the number of measurement 
 #     occasions.
-# trait.indicators is a logical value to define whether the model will have
-#     a trait indicator for each variable (TRUE) or there will be a trait variable
-#     associated to all the observed variables (FALSE). The lastest option is not 
-#     presented by Eid et al. (2017), hence, it is uncertain whether it would be right.
+# figure define if the TSO model to fit is the one of figure 3a or the one of
+#     figure 3b in Eid et al. (2017) 
 # equiv.assumption define if the model assumes tau-equivalence, equivalence or 
 #     tau-congenericity in relation to the latent occasions (occ) and the latent traits (theta).
 #     Use "equi" or "cong". The essential tau-equivalence assumption (as in LST)
@@ -32,7 +30,7 @@
 # autoregressive.homogeneity is a logical value that defines whether the auto-
 #     regressive effects are constant over time or not.
 
-write.tso.to.Mplus <- function(dt, nocc, trait.indicators = TRUE,
+write.tso.to.Mplus <- function(dt, nocc, figure = c("3a", "3b"),
                                 equiv.assumption = list(occ = "cong", theta = "equi"),
                                 scale.invariance = list(int = FALSE, lambda = FALSE),
                                 homocedasticity.assumption = list(error = FALSE, occ.red = FALSE),
@@ -47,6 +45,9 @@ ind <- paste0(rep(1:(nobs/nocc) ,nocc),
 #lambdas for occasions and traits
 las <- paste0("las", ind)
 lat <- paste0("lat", ind)
+if(figure == "3a"){
+  lat <- paste0("lat", 1:nocc)
+}
 
 # intercepts for observed variables
 ins <- paste0("ins", ind)
@@ -54,9 +55,12 @@ ins <- paste0("ins", ind)
 
 #latent occasion variables' names
 occ <- paste0("occ", 1:nocc)
+if(figure == "3a"){
+  eta <- paste0("eta", 1:nocc)
+}
 
 # trait and trait indicators names
-if(trait.indicators){
+if(figure == "3b"){
   theta <- paste0("theta", 1:(nobs/nocc))}else{
     theta <- "theta"
 }
@@ -70,7 +74,7 @@ obs <- names(dt)
 o_red <- paste0("err", ind)
 occ_var <- paste0("oc_var", 1:nocc)
 
-if(trait.indicators){
+if(figure == "3b"){
   t_var <- paste0("t_var", 1:(nobs/nocc))}else{
     t_var <- "t_var"
   }
@@ -108,21 +112,20 @@ if(equiv.assumption$occ == "cong"){
 
 
 if(equiv.assumption$theta == "equi"){
-  lat <- rep(1, nobs)
+  lat <- rep(1, length(lat))
 }
 
 
 if(equiv.assumption$theta == "cong"){
-  lat[1] <- "1"
-  if(trait.indicators){
+  if(figure == "3b"){
     lat[1:(nobs/nocc)] <- "1"
-  }
+  }else{lat[1] <- "1"}
 }
 
 # define invariance of intercepts
 
 if(scale.invariance$int){
-  if(trait.indicators){
+  if(figure == "3b"){
     ins <- rep(ins[1:(nobs/nocc)], nocc)
   }else{
     ins <- rep(ins[1], nobs)
@@ -147,7 +150,8 @@ if(homocedasticity.assumption$occ.red){
 }
 
 
-# write equations for the latent occasions
+# write equations for the latent occasions and latent states
+if(figure == "3b"){
 occ_syntax <- rep(NA, nocc)
 for(i in 1:nocc){
   ms <- ((i-1)*(nobs/nocc) + 1):(i*(nobs/nocc))
@@ -161,21 +165,44 @@ for(i in 1:nocc){
   occ_syntax[i] <- paste(occ[i], "BY", paths, ";", sep = " ")
 }
 rm(i, ms, paths, ix)
+}
+
+if(figure == "3a"){
+  occ_syntax_a <- rep(NA, nocc)
+  for(i in 1:nocc){
+    ms <- ((i-1)*(nobs/nocc) + 1):(i*(nobs/nocc))
+    paths <- rep(NA, length(ms) )
+    ix <- which(las[1:length(ms)]=="1")
+    
+    paths[ix] <- paste0(obs[ms[ix]],"@",las[ms[ix]])
+    paths[-ix] <- paste0(obs[ms[-ix]]," (",las[ms[-ix]],")")
+    
+    paths <- paste(paths, collapse = "\n")
+    occ_syntax_a[i] <- paste(eta[i], "BY", paths, ";", sep = " ")
+  }
+  rm(i, ms, paths, ix)
+  
+  occ_syntax_b <- paste(occ,"BY", paste0(eta, "@1"), ";", sep = " ")
+  
+  occ_syntax <- c(occ_syntax_a, occ_syntax_b)
+}
+
 
 
 # write equations for the latent trait or trait indicators
-
+if(figure == "3a"){
 trait_syntax <- NA
-paths <- rep(NA, nobs )
+paths <- rep(NA, nocc )
 ix <- which(lat=="1")
 
-paths[ix] <- paste0(obs[ix],"@",lat[ix])
-paths[-ix] <- paste0(obs[-ix]," (",lat[-ix],")")
+paths[ix] <- paste0(eta[ix],"@",lat[ix])
+paths[-ix] <- paste0(eta[-ix]," (",lat[-ix],")")
 
 paths <- paste(paths, collapse = "\n")
 trait_syntax <- paste(theta, "BY", paths, ";", sep = " ")
 rm(paths, ix)
-if(trait.indicators){
+}
+if(figure == "3b"){
   trait_syntax <- rep(NA, nobs/nocc)
   
   for(i in 1:(nobs/nocc)){
@@ -203,7 +230,8 @@ intercepts_syntax <- paste0("[", obs, "*]", " (",ins,")", " ;", collapse = "\n")
 
 occ_mean_syntax <- paste0("[", occ, "@0] ;", collapse = "\n" )
 
-trait_mean_syntax <- paste0("[", theta, "* ] ;", collapse = "\n")
+# When the means of the traits are included,the model is not identified.
+#trait_mean_syntax <- paste0("[", theta, "* ] ;", collapse = "\n")
 
 # write 0 correlations among occasions  and traits
 latent.v <- c(occ, theta)
@@ -224,11 +252,21 @@ beta_syntax <- paste0(occ[2:nocc], " ON ", occ[1:(nocc-1)], " (", beta, ") ;",
 
 
 # write variance components
+if(figure == "3a"){
+  var_syntax <- paste(paste0(obs, " (", o_red, ") ;", collapse = "\n"),
+                      paste0(occ, " (", occ_var, ") ;", collapse = "\n"),
+                      paste0(eta, "@0 ;", collapse = "\n"),
+                      paste0(theta, "* (", t_var, ") ;", collapse =  "\n"),
+                      sep = "\n")
+}
 
-var_syntax <- paste(paste0(obs, " (", o_red, ") ;", collapse = "\n"),
-                     paste0(occ, " (", occ_var, ") ;", collapse = "\n"),
-                     paste0(theta, "* (", t_var, ") ;", collapse =  "\n"),
-                     sep = "\n")
+
+if(figure == "3b"){
+  var_syntax <- paste(paste0(obs, " (", o_red, ") ;", collapse = "\n"),
+                      paste0(occ, " (", occ_var, ") ;", collapse = "\n"),
+                      paste0(theta, "* (", t_var, ") ;", collapse =  "\n"),
+                      sep = "\n")
+}
 
 # define computed parameters
 #def_syntax <- paste(paste0("NEW(", rel, ") ;", collapse = "\n" ),
@@ -267,7 +305,7 @@ complete_syntax <- paste("\nMODEL:",
                         "\n! Intercepts and means",
                         paste0(intercepts_syntax, collapse = "\n"),
                         paste0(occ_mean_syntax, collapse = "\n"),
-                        paste0(trait_mean_syntax, collapse = "\n"),
+                        #paste0(trait_mean_syntax, collapse = "\n"),
                         "\n! Set 0 correlations",
                         paste0(cor_syntax, collapse = "\n"),
                         "\n! autoregressive effects",

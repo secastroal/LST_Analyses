@@ -1,0 +1,12 @@
+TITLE: Your title goes here
+DATA: FILE = "Mplus_files/cuts_h3_m30.dat";
+VARIABLE: 
+NAMES = worry1 fear1 sad1 worry2 fear2 sad2 worry3 fear3 sad3 worry4 fear4 sad4
+     worry5 fear5 sad5 worry6 fear6 sad6 worry7 fear7 sad7 worry8 fear8 sad8 worry9
+     fear9 sad9 worry10 fear10 sad10 worry11 fear11 sad11 worry12 fear12 sad12
+     worry13 fear13 sad13 worry14 fear14 sad14 worry15 fear15 sad15 worry16 fear16
+     sad16 worry17 fear17 sad17 worry18 fear18 sad18 worry19 fear19 sad19 worry20
+     fear20 sad20 worry21 fear21 sad21 worry22 fear22 sad22 worry23 fear23 sad23
+     worry24 fear24 sad24 worry25 fear25 sad25 worry26 fear26 sad26 worry27 fear27
+     sad27 worry28 fear28 sad28 worry29 fear29 sad29 worry30 fear30 sad30; 
+MISSING=.;

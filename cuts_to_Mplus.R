@@ -34,6 +34,7 @@ write.cuts.to.Mplus <- function(dt, nstate,
                                 method.trait = "om",
                                 scale.invariance = list(int = FALSE, lambda = FALSE),
                                 state.trait.invariance = FALSE,
+                                fixed.method.loadings = FALSE,
                                 homocedasticity.assumption = list(error = FALSE, cs.red = FALSE, ut.red = FALSE),
                                 fixed.means = list(cs = FALSE, ut = FALSE, ct = FALSE) ){
 
@@ -47,7 +48,7 @@ ind <- paste0(rep(1:(nobs/nstate) ,nstate),
 #lambdas for states and traits
 lcs <- paste0("lcs", ind) #lambda common states
 lct <- paste0("lct", ind) #lambda common trait
-
+lut <- paste0("lut", ind) #lambda unique traits
 # intercepts for observed variables
 ins <- paste0("ins", ind)
 
@@ -88,12 +89,14 @@ fixed_s <- seq(1, nobs, by = nobs/nstate)
 
 lcs[fixed_s] <- 1
 lct[fixed_s] <- 1
+lut[1:(nobs/nstate)]<-1
 
 m.obs <- obs
 
 if(method.trait == "m-1"){
   UT <- UT[-1]
   m.obs <- obs[-(seq(1, nobs, by = nobs/nstate))]
+  lut <- lut[-(seq(1, nobs, by = nobs/nstate))]
 }
 
 # define invariance of intercepts
@@ -115,6 +118,11 @@ if(state.trait.invariance){
   lcs <- lct
 }
 
+# fixed mehtod loadings
+
+if(fixed.method.loadings){
+  lut <- rep(1, length(m.obs))
+}
 
 # homogeneity of CS, US and UT variances
 
@@ -164,9 +172,12 @@ ut_syntax <- rep(NA, length(UT))
   
   for(i in 1:length(UT)){
     paths <- rep(NA, nstate )
+    ms <- seq(i, length(m.obs), by = length(m.obs)/nstate)
     
-    paths <- paste0(m.obs[seq(i, length(m.obs), by = length(m.obs)/nstate)],
-                       "@1")
+    ix <- which(lut[ms]=="1")
+    
+    paths[ix] <- paste0(m.obs[ms[ix]],"@",lut[ms[ix]])
+    paths[-ix] <- paste0(m.obs[ms[-ix]]," (",lut[ms[-ix]],")")
     
     paths <- paste(paths, collapse = "\n")
     ut_syntax[i] <- paste(UT[i], "BY", paths, ";", sep = " ")

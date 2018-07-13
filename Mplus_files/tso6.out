@@ -1,0 +1,617 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+07/13/2018   2:03 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "Mplus_files/tso6.dat";
+  VARIABLE:
+  NAMES = worry1 fear1 sad1 worry2 fear2 sad2 worry3 fear3 sad3 worry4 fear4 sad4
+       worry5 fear5 sad5 worry6 fear6 sad6;
+  MISSING=.;
+
+  MODEL:
+
+  ! Latent occasion variables
+  eta1 BY worry1@1
+  fear1 (las21)
+  sad1 (las31) ;
+  eta2 BY worry2@1
+  fear2 (las22)
+  sad2 (las32) ;
+  eta3 BY worry3@1
+  fear3 (las23)
+  sad3 (las33) ;
+  eta4 BY worry4@1
+  fear4 (las24)
+  sad4 (las34) ;
+  eta5 BY worry5@1
+  fear5 (las25)
+  sad5 (las35) ;
+  eta6 BY worry6@1
+  fear6 (las26)
+  sad6 (las36) ;
+  occ1 BY eta1@1 ;
+  occ2 BY eta2@1 ;
+  occ3 BY eta3@1 ;
+  occ4 BY eta4@1 ;
+  occ5 BY eta5@1 ;
+  occ6 BY eta6@1 ;
+
+  ! Latent trait variable or trait indicators
+  theta BY eta1@1
+  eta2 (lat2)
+  eta3 (lat3)
+  eta4 (lat4)
+  eta5 (lat5)
+  eta6 (lat6) ;
+
+  ! Intercepts and means
+  [worry1*] (ins11) ;
+  [fear1*] (ins21) ;
+  [sad1*] (ins31) ;
+  [worry2*] (ins12) ;
+  [fear2*] (ins22) ;
+  [sad2*] (ins32) ;
+  [worry3*] (ins13) ;
+  [fear3*] (ins23) ;
+  [sad3*] (ins33) ;
+  [worry4*] (ins14) ;
+  [fear4*] (ins24) ;
+  [sad4*] (ins34) ;
+  [worry5*] (ins15) ;
+  [fear5*] (ins25) ;
+  [sad5*] (ins35) ;
+  [worry6*] (ins16) ;
+  [fear6*] (ins26) ;
+  [sad6*] (ins36) ;
+  [occ1@0] ;
+  [occ2@0] ;
+  [occ3@0] ;
+  [occ4@0] ;
+  [occ5@0] ;
+  [occ6@0] ;
+
+  ! Set 0 correlations
+  occ1 WITH occ2@0
+  occ3@0
+  occ4@0
+  occ5@0
+  occ6@0
+  theta@0 ;
+  occ2 WITH occ3@0
+  occ4@0
+  occ5@0
+  occ6@0
+  theta@0 ;
+  occ3 WITH occ4@0
+  occ5@0
+  occ6@0
+  theta@0 ;
+  occ4 WITH occ5@0
+  occ6@0
+  theta@0 ;
+  occ5 WITH occ6@0
+  theta@0 ;
+  occ6 WITH theta@0 ;
+
+  ! autoregressive effects
+  occ2 ON occ1 (beta1) ;
+  occ3 ON occ2 (beta2) ;
+  occ4 ON occ3 (beta3) ;
+  occ5 ON occ4 (beta4) ;
+  occ6 ON occ5 (beta5) ;
+
+  ! Variance components
+  worry1 (err11) ;
+  fear1 (err21) ;
+  sad1 (err31) ;
+  worry2 (err12) ;
+  fear2 (err22) ;
+  sad2 (err32) ;
+  worry3 (err13) ;
+  fear3 (err23) ;
+  sad3 (err33) ;
+  worry4 (err14) ;
+  fear4 (err24) ;
+  sad4 (err34) ;
+  worry5 (err15) ;
+  fear5 (err25) ;
+  sad5 (err35) ;
+  worry6 (err16) ;
+  fear6 (err26) ;
+  sad6 (err36) ;
+  occ1 (oc_var1) ;
+  occ2 (oc_var2) ;
+  occ3 (oc_var3) ;
+  occ4 (oc_var4) ;
+  occ5 (oc_var5) ;
+  occ6 (oc_var6) ;
+  eta1@0 ;
+  eta2@0 ;
+  eta3@0 ;
+  eta4@0 ;
+  eta5@0 ;
+  eta6@0 ;
+  theta* (t_var) ;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         129
+
+Number of dependent variables                                   18
+Number of independent variables                                  0
+Number of continuous latent variables                           13
+
+Observed dependent variables
+
+  Continuous
+   WORRY1      FEAR1       SAD1        WORRY2      FEAR2       SAD2
+   WORRY3      FEAR3       SAD3        WORRY4      FEAR4       SAD4
+   WORRY5      FEAR5       SAD5        WORRY6      FEAR6       SAD6
+
+Continuous latent variables
+   ETA1        ETA2        ETA3        ETA4        ETA5        ETA6
+   OCC1        OCC2        OCC3        OCC4        OCC5        OCC6
+   THETA
+
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  Mplus_files/tso6.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            33
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              WORRY1        FEAR1         SAD1          WORRY2        FEAR2
+              ________      ________      ________      ________      ________
+ WORRY1         0.690
+ FEAR1          0.690         0.690
+ SAD1           0.682         0.682         0.682
+ WORRY2         0.628         0.628         0.628         0.806
+ FEAR2          0.636         0.636         0.636         0.798         0.806
+ SAD2           0.636         0.636         0.636         0.806         0.806
+ WORRY3         0.597         0.597         0.597         0.705         0.705
+ FEAR3          0.597         0.597         0.597         0.705         0.705
+ SAD3           0.597         0.597         0.597         0.705         0.705
+ WORRY4         0.612         0.612         0.612         0.705         0.705
+ FEAR4          0.612         0.612         0.612         0.705         0.705
+ SAD4           0.612         0.612         0.612         0.705         0.705
+ WORRY5         0.597         0.597         0.589         0.705         0.713
+ FEAR5          0.605         0.605         0.597         0.721         0.729
+ SAD5           0.605         0.605         0.597         0.713         0.721
+ WORRY6         0.620         0.620         0.612         0.698         0.698
+ FEAR6          0.620         0.620         0.612         0.698         0.698
+ SAD6           0.620         0.620         0.612         0.698         0.698
+
+
+           Covariance Coverage
+              SAD2          WORRY3        FEAR3         SAD3          WORRY4
+              ________      ________      ________      ________      ________
+ SAD2           0.814
+ WORRY3         0.713         0.837
+ FEAR3          0.713         0.837         0.837
+ SAD3           0.713         0.829         0.829         0.829
+ WORRY4         0.713         0.744         0.744         0.736         0.868
+ FEAR4          0.713         0.744         0.744         0.736         0.868
+ SAD4           0.713         0.744         0.744         0.736         0.868
+ WORRY5         0.713         0.744         0.744         0.736         0.752
+ FEAR5          0.729         0.752         0.752         0.744         0.760
+ SAD5           0.721         0.752         0.752         0.744         0.760
+ WORRY6         0.705         0.736         0.736         0.729         0.752
+ FEAR6          0.705         0.736         0.736         0.729         0.752
+ SAD6           0.705         0.736         0.736         0.729         0.752
+
+
+           Covariance Coverage
+              FEAR4         SAD4          WORRY5        FEAR5         SAD5
+              ________      ________      ________      ________      ________
+ FEAR4          0.868
+ SAD4           0.868         0.868
+ WORRY5         0.752         0.752         0.868
+ FEAR5          0.760         0.760         0.860         0.876
+ SAD5           0.760         0.760         0.860         0.868         0.876
+ WORRY6         0.752         0.752         0.783         0.783         0.783
+ FEAR6          0.752         0.752         0.783         0.783         0.783
+ SAD6           0.752         0.752         0.783         0.783         0.783
+
+
+           Covariance Coverage
+              WORRY6        FEAR6         SAD6
+              ________      ________      ________
+ WORRY6         0.876
+ FEAR6          0.876         0.876
+ SAD6           0.876         0.876         0.876
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     WORRY1                3.775      -0.080       1.000   17.98%       2.000      3.000      4.000
+              89.000       3.680      -1.331       7.000    4.49%       5.000      6.000
+     FEAR1                 2.281       1.074       1.000   42.70%       1.000      1.000      2.000
+              89.000       2.269       0.189       7.000    1.12%       2.000      4.000
+     SAD1                  3.023       0.501       1.000   28.41%       1.000      2.000      3.000
+              88.000       3.204      -0.841       7.000    3.41%       3.000      5.000
+     WORRY2                3.731      -0.015       1.000   22.12%       1.000      3.000      4.000
+             104.000       3.947      -1.283       7.000    7.69%       4.000      6.000
+     FEAR2                 2.221       1.136       1.000   49.04%       1.000      1.000      2.000
+             104.000       2.518       0.039       7.000    0.96%       2.000      4.000
+     SAD2                  3.057       0.468       1.000   25.71%       1.000      2.000      3.000
+             105.000       3.140      -0.870       7.000    3.81%       4.000      5.000
+     WORRY3                3.278       0.401       1.000   25.00%       1.000      2.000      3.000
+             108.000       3.997      -1.241       7.000    6.48%       4.000      5.000
+     FEAR3                 2.019       1.325       1.000   54.63%       1.000      1.000      1.000
+             108.000       2.055       0.574       6.000    2.78%       2.000      3.000
+     SAD3                  2.804       0.610       1.000   32.71%       1.000      2.000      2.000
+             107.000       3.036      -0.801       7.000    1.87%       3.000      4.000
+     WORRY4                3.009       0.559       1.000   33.04%       1.000      2.000      3.000
+             112.000       3.670      -0.900       7.000    5.36%       3.000      5.000
+     FEAR4                 1.839       1.617       1.000   56.25%       1.000      1.000      1.000
+             112.000       1.546       1.847       6.000    1.79%       2.000      2.000
+     SAD4                  2.402       0.668       1.000   38.39%       1.000      2.000      2.000
+             112.000       2.062      -0.802       6.000    0.89%       3.000      4.000
+     WORRY5                3.027       0.444       1.000   33.93%       1.000      2.000      3.000
+             112.000       3.580      -1.100       7.000    2.68%       3.000      5.000
+     FEAR5                 1.752       1.829       1.000   62.83%       1.000      1.000      1.000
+             113.000       1.567       2.508       6.000    1.77%       1.000      2.000
+     SAD5                  2.540       0.976       1.000   34.51%       1.000      2.000      2.000
+             113.000       2.585       0.136       7.000    2.65%       3.000      4.000
+     WORRY6                2.920       0.547       1.000   35.40%       1.000      2.000      2.000
+             113.000       3.613      -1.080       7.000    2.65%       3.000      5.000
+     FEAR6                 1.814       1.676       1.000   60.18%       1.000      1.000      1.000
+             113.000       1.550       2.595       7.000    0.88%       1.000      3.000
+     SAD6                  2.611       0.845       1.000   35.40%       1.000      2.000      2.000
+             113.000       2.733      -0.192       7.000    2.65%       3.000      4.000
+
+
+     NO CONVERGENCE.  NUMBER OF ITERATIONS EXCEEDED.
+
+
+
+MODEL RESULTS
+
+                    Estimate
+
+ ETA1     BY
+    WORRY1             1.000
+    FEAR1              0.588
+    SAD1               0.849
+
+ ETA2     BY
+    WORRY2             1.000
+    FEAR2              0.709
+    SAD2               1.091
+
+ ETA3     BY
+    WORRY3             1.000
+    FEAR3              0.707
+    SAD3               0.906
+
+ ETA4     BY
+    WORRY4             1.000
+    FEAR4              0.622
+    SAD4               0.713
+
+ ETA5     BY
+    WORRY5             1.000
+    FEAR5              0.758
+    SAD5               0.937
+
+ ETA6     BY
+    WORRY6             1.000
+    FEAR6              0.727
+    SAD6               1.190
+
+ OCC1     BY
+    ETA1               1.000
+
+ OCC2     BY
+    ETA2               1.000
+
+ OCC3     BY
+    ETA3               1.000
+
+ OCC4     BY
+    ETA4               1.000
+
+ OCC5     BY
+    ETA5               1.000
+
+ OCC6     BY
+    ETA6               1.000
+
+ THETA    BY
+    ETA1               1.000
+    ETA2               0.803
+    ETA3               1.107
+    ETA4               1.347
+    ETA5               0.961
+    ETA6               1.027
+
+ OCC2     ON
+    OCC1               0.658
+
+ OCC3     ON
+    OCC2               0.829
+
+ OCC4     ON
+    OCC3               0.151
+
+ OCC5     ON
+    OCC4               0.410
+
+ OCC6     ON
+    OCC5               0.336
+
+ OCC1     WITH
+    OCC2               0.000
+    OCC3               0.000
+    OCC4               0.000
+    OCC5               0.000
+    OCC6               0.000
+    THETA              0.000
+
+ OCC2     WITH
+    OCC3               0.000
+    OCC4               0.000
+    OCC5               0.000
+    OCC6               0.000
+    THETA              0.000
+
+ OCC3     WITH
+    OCC4               0.000
+    OCC5               0.000
+    OCC6               0.000
+    THETA              0.000
+
+ OCC4     WITH
+    OCC5               0.000
+    OCC6               0.000
+    THETA              0.000
+
+ OCC5     WITH
+    OCC6               0.000
+    THETA              0.000
+
+ OCC6     WITH
+    THETA              0.000
+
+ Means
+    OCC1               0.000
+
+ Intercepts
+    WORRY1             3.856
+    FEAR1              2.328
+    SAD1               3.082
+    WORRY2             3.751
+    FEAR2              2.217
+    SAD2               3.068
+    WORRY3             3.310
+    FEAR3              2.042
+    SAD3               2.824
+    WORRY4             3.076
+    FEAR4              1.881
+    SAD4               2.450
+    WORRY5             3.007
+    FEAR5              1.731
+    SAD5               2.518
+    WORRY6             2.928
+    FEAR6              1.820
+    SAD6               2.620
+    OCC2               0.000
+    OCC3               0.000
+    OCC4               0.000
+    OCC5               0.000
+    OCC6               0.000
+
+ Variances
+    OCC1               1.616
+    THETA              0.971
+
+ Residual Variances
+    WORRY1             1.231
+    FEAR1              1.423
+    SAD1               1.434
+    WORRY2             2.303
+    FEAR2              1.699
+    SAD2               1.179
+    WORRY3             1.492
+    FEAR3              0.796
+    SAD3               0.977
+    WORRY4             1.755
+    FEAR4              0.808
+    SAD4               1.090
+    WORRY5             1.997
+    FEAR5              0.670
+    SAD5               1.201
+    WORRY6             2.259
+    FEAR6              0.835
+    SAD6               0.816
+    ETA1               0.000
+    ETA2               0.000
+    ETA3               0.000
+    ETA4               0.000
+    ETA5               0.000
+    ETA6               0.000
+    OCC2               0.379
+    OCC3               0.638
+    OCC4               0.208
+    OCC5               0.660
+    OCC6               0.259
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     eta1 BY worry1@1;
+     eta1 BY fear1*0.58838 (las21);
+     eta1 BY sad1*0.84880 (las31);
+     eta2 BY worry2@1;
+     eta2 BY fear2*0.70869 (las22);
+     eta2 BY sad2*1.09144 (las32);
+     eta3 BY worry3@1;
+     eta3 BY fear3*0.70654 (las23);
+     eta3 BY sad3*0.90639 (las33);
+     eta4 BY worry4@1;
+     eta4 BY fear4*0.62192 (las24);
+     eta4 BY sad4*0.71311 (las34);
+     eta5 BY worry5@1;
+     eta5 BY fear5*0.75769 (las25);
+     eta5 BY sad5*0.93733 (las35);
+     eta6 BY worry6@1;
+     eta6 BY fear6*0.72661 (las26);
+     eta6 BY sad6*1.19010 (las36);
+
+     occ1 BY eta1@1;
+     occ2 BY eta2@1;
+     occ3 BY eta3@1;
+     occ4 BY eta4@1;
+     occ5 BY eta5@1;
+     occ6 BY eta6@1;
+     theta BY eta1@1;
+     theta BY eta2*0.80344 (lat2);
+     theta BY eta3*1.10704 (lat3);
+     theta BY eta4*1.34657 (lat4);
+     theta BY eta5*0.96057 (lat5);
+     theta BY eta6*1.02677 (lat6);
+
+     occ2 ON occ1*0.65797 (beta1);
+     occ3 ON occ2*0.82853 (beta2);
+     occ4 ON occ3*0.15052 (beta3);
+     occ5 ON occ4*0.41014 (beta4);
+     occ6 ON occ5*0.33615 (beta5);
+
+     occ1 WITH occ2@0;
+     occ1 WITH occ3@0;
+     occ1 WITH occ4@0;
+     occ1 WITH occ5@0;
+     occ1 WITH occ6@0;
+     occ1 WITH theta@0;
+     occ2 WITH occ3@0;
+     occ2 WITH occ4@0;
+     occ2 WITH occ5@0;
+     occ2 WITH occ6@0;
+     occ2 WITH theta@0;
+     occ3 WITH occ4@0;
+     occ3 WITH occ5@0;
+     occ3 WITH occ6@0;
+     occ3 WITH theta@0;
+     occ4 WITH occ5@0;
+     occ4 WITH occ6@0;
+     occ4 WITH theta@0;
+     occ5 WITH occ6@0;
+     occ5 WITH theta@0;
+     occ6 WITH theta@0;
+
+     [ worry1*3.85559 ] (ins11);
+     [ fear1*2.32814 ] (ins21);
+     [ sad1*3.08241 ] (ins31);
+     [ worry2*3.75098 ] (ins12);
+     [ fear2*2.21668 ] (ins22);
+     [ sad2*3.06767 ] (ins32);
+     [ worry3*3.31002 ] (ins13);
+     [ fear3*2.04211 ] (ins23);
+     [ sad3*2.82356 ] (ins33);
+     [ worry4*3.07623 ] (ins14);
+     [ fear4*1.88075 ] (ins24);
+     [ sad4*2.44969 ] (ins34);
+     [ worry5*3.00715 ] (ins15);
+     [ fear5*1.73086 ] (ins25);
+     [ sad5*2.51774 ] (ins35);
+     [ worry6*2.92819 ] (ins16);
+     [ fear6*1.81984 ] (ins26);
+     [ sad6*2.62014 ] (ins36);
+     [ occ1@0 ];
+     [ occ2@0 ];
+     [ occ3@0 ];
+     [ occ4@0 ];
+     [ occ5@0 ];
+     [ occ6@0 ];
+
+     worry1*1.23064 (err11);
+     fear1*1.42272 (err21);
+     sad1*1.43378 (err31);
+     worry2*2.30340 (err12);
+     fear2*1.69903 (err22);
+     sad2*1.17944 (err32);
+     worry3*1.49212 (err13);
+     fear3*0.79573 (err23);
+     sad3*0.97679 (err33);
+     worry4*1.75500 (err14);
+     fear4*0.80829 (err24);
+     sad4*1.09045 (err34);
+     worry5*1.99718 (err15);
+     fear5*0.66991 (err25);
+     sad5*1.20125 (err35);
+     worry6*2.25899 (err16);
+     fear6*0.83507 (err26);
+     sad6*0.81603 (err36);
+     eta1@0;
+     eta2@0;
+     eta3@0;
+     eta4@0;
+     eta5@0;
+     eta6@0;
+     occ1*1.61631 (oc_var1);
+     occ2*0.37937 (oc_var2);
+     occ3*0.63847 (oc_var3);
+     occ4*0.20846 (oc_var4);
+     occ5*0.65990 (oc_var5);
+     occ6*0.25922 (oc_var6);
+     theta*0.97128 (t_var);
+
+
+
+     Beginning Time:  14:03:26
+        Ending Time:  14:03:30
+       Elapsed Time:  00:00:04
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

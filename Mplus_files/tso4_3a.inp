@@ -49,6 +49,11 @@ occ4 by eta4@1;
 [occ2@0] ;
 [occ3@0] ;
 [occ4@0] ;
+[eta1@0];
+[eta2@0];
+[eta3@0];
+[eta4@0];
+[theta@0];
 
 ! Set 0 correlations
 occ1 WITH occ2@0
