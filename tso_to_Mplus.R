@@ -256,7 +256,7 @@ if(figure == "3a"){
   var_syntax <- paste(paste0(obs, " (", o_red, ") ;", collapse = "\n"),
                       paste0(occ, " (", occ_var, ") ;", collapse = "\n"),
                       paste0(eta, "@0 ;", collapse = "\n"),
-                      paste0(theta, "* (", t_var, ") ;", collapse =  "\n"),
+                      paste0(theta, "(", t_var, ") ;", collapse =  "\n"),
                       sep = "\n")
 }
 
@@ -264,7 +264,7 @@ if(figure == "3a"){
 if(figure == "3b"){
   var_syntax <- paste(paste0(obs, " (", o_red, ") ;", collapse = "\n"),
                       paste0(occ, " (", occ_var, ") ;", collapse = "\n"),
-                      paste0(theta, "* (", t_var, ") ;", collapse =  "\n"),
+                      paste0(theta, "(", t_var, ") ;", collapse =  "\n"),
                       sep = "\n")
 }
 

@@ -166,25 +166,27 @@ rm(time0)
 ### Optionally the analysis can be saved to don't run it again
 
 save(msst.h9, file = paste0("lavaan_files/msst_h9_m",m, ".R"))
-#load( file = paste0("lavaan_files/msst_h9_m",m, ".R"))
 
-
+### load all 9 msst analyses
+for(i in 1:9){
+  load( file = paste0("lavaan_files/msst_h", i, "_m",m, ".R"))
+}
+rm(i)
 
 # print lsttheory object returns the variance components: reliability, consistency, and 
 # occasion specifity   
-summary(msst.h3@lavaanres, fit.measures = TRUE)
+summary(msst.h9@lavaanres, fit.measures = TRUE, estimates = FALSE)
 
-anova(msst.h1@lavaanres,msst.h2@lavaanres)
-anova(msst.h1@lavaanres,msst.h3@lavaanres)
-anova(msst.h2@lavaanres,msst.h3@lavaanres)
+anova(msst.h1@lavaanres,msst.h9@lavaanres)
 
+# The best msst model is the msst h2: congenericity in states and 
+# essential equivalence in traits. Therefore, the factor scores and
+# variance coeffcients are computed based on this model.
+msst <- msst.h2
 
 # returns the parameter estimates matrix with se, significance test, and lower 
 # and upper ci bounds.
 parameterEstimates(msst@lavaanres) 
-
-# write lavaan syntax (optional)
-writeLines(msst@lavaansyntax, "lavaan_files/PlosOne_msst1.txt")
 
 # Predict factor scores, it returns a matrix of dimensions nxm. With n equal to 
 # the sample size and m equal to the number of states (measurement occasions) plus 1.
@@ -197,40 +199,60 @@ lavPredict(msst@lavaanres)
 # count number of missings per person
 count_na <- as.vector(apply(PlosOne_Wr, 1, function(x) sum(is.na(x))))
 cbind(1:129, count_na)
-(sum(is.na(PlosOne_Wr)))/(dim(PlosOne_Wr)[1]*dim(PlosOne_Wr)[2])
+(sum(is.na(PlosOne_Wr)))/(dim(PlosOne_Wr)[1]*dim(PlosOne_Wr)[2]) # % of missingess
 
-i <- 123 # select person to plot
+sample(1:129, 1)
+i <- 53 # select person to plot
 # plot worry observed vs latent state variables person i
+par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,8), xpd = NA)
+
 plot(lavPredict(msst@lavaanres)[i,1:m], 
-     type = "l", ylim = c(0,7.5), col = "blue")# traceplot of the latent state scores of one person
-points(1:m, PlosOne_W[i, seq(1,t.m, by = 3)], type = "b", col = "red")
-abline(h =lavPredict(msst@lavaanres)[i,(m+1)]) #plot latent trait factor score
-abline(h = mean(as.numeric(PlosOne_W[i, seq(1,t.m, by = 3)]), na.rm = T), col="green") # plot mean of worry of person i
-abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange") # plot combined mean of all observed variables of person i
+     type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
+     xaxt="n",xlab="", cex.lab = 1.5, ylab = "Worry", las = 1)# traceplot of the latent state scores of one person
+points(1:m, PlosOne_W[i, seq(1,t.m, by = 3)], type = "b", col = "red", pch = 16)
+abline(h =lavPredict(msst@lavaanres)[i,(m+1)], xpd = FALSE) #plot latent trait factor score
+#abline(h = mean(as.numeric(PlosOne_W[i, seq(1,t.m, by = 3)]), na.rm = T), 
+ #      col="green", xpd = TRUE) # plot mean of worry of person i
+#abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange", 
+ #      xpd = TRUE) # plot combined mean of all observed variables of person i
 
 # plot fear observed vs latent state variables person i
 plot(lavPredict(msst@lavaanres)[i,1:m] * parameterEstimates(msst@lavaanres)[seq(2, t.m, by = 3), 5], 
-     type = "l", ylim = c(0,7.5), col = "blue")# traceplot of the latent state scores (multiplied by loadings) of one person
-points(1:m, PlosOne_W[i, seq(2,t.m, by = 3)], type = "b", col = "red")
-abline(h =lavPredict(msst@lavaanres)[i,(m+1)])
-abline(h = mean(as.numeric(PlosOne_W[i, seq(2,t.m, by = 3)]), na.rm = T), col="green")
-abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
+     type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
+     xaxt="n",xlab="", cex.lab = 1.5,ylab = "Fear", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
+points(1:m, PlosOne_W[i, seq(2,t.m, by = 3)], type = "b", col = "red", pch = 16)
+abline(h =lavPredict(msst@lavaanres)[i,(m+1)], xpd = FALSE)
+#abline(h = mean(as.numeric(PlosOne_W[i, seq(2,t.m, by = 3)]), na.rm = T), col="green")
+#abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
+legend(31.5, 5, legend = c("Observed", "Predicted"), col = c( "red", "blue"),
+       lty = 1, pch = 16, lwd = 2, cex = 1)
 
 
 # plot sad observed vs latent state variables person i
 plot(lavPredict(msst@lavaanres)[i,1:m] * parameterEstimates(msst@lavaanres)[seq(3, t.m, by = 3), 5], 
-     type = "l", ylim = c(0,7.5), col = "blue")# traceplot of the latent state scores (multiplied by loadings) of one person
-points(1:m, PlosOne_W[i, seq(3,t.m, by = 3)], type = "b", col = "red")
-abline(h =lavPredict(msst@lavaanres)[i,(m+1)])
-abline(h = mean(as.numeric(PlosOne_W[i, seq(3,t.m, by = 3)]), na.rm = T), col="green")
-abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
+     type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
+     xlab="Measurement occasion", cex.lab = 1.5, ylab = "Sad", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
+points(1:m, PlosOne_W[i, seq(3,t.m, by = 3)], type = "b", pch= 16, col = "red")
+abline(h =lavPredict(msst@lavaanres)[i,(m+1)], xpd = FALSE)
+#abline(h = mean(as.numeric(PlosOne_W[i, seq(3,t.m, by = 3)]), na.rm = T), col="green")
+#abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
 
 
 # plot variance components by variable.
 var.comp <- as.data.frame(msst@lsttheory)
-matplot(var.comp[seq(1, t.m, by= 3),], type = "l") # worry variance components
-matplot(var.comp[seq(2, t.m, by= 3),], type = "l") # fear variance components
-matplot(var.comp[seq(3, t.m, by= 3),], type = "l") # sad variance components
+
+par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,6), xpd = NA)
+matplot(var.comp[seq(1, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "blue"),
+        ylab = "Worry", xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # worry variance components
+
+matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "blue"),
+        ylab = "Fear",xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # fear variance components
+legend(32, 0.75, legend = c("Rel", "Con", "Spe"), col = c("black", "red", "blue"),
+       lty = 1, lwd = 2, pch = 16, cex = 1)
+
+matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "red", "blue"),
+        ylab = "Sad", xlab = "Measurement occasion", cex.lab = 1.5, 
+        lty = 1, pch =16, las = 1) # sad variance components
 
 
 # 3.0 Fit multistate-singletrait with Mplus ----
@@ -577,12 +599,12 @@ PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
 # h1: Least retricted CUTS #! Does not really work, some loadings are extremely large.
 
-cuts.file.name <- paste0("cuts_h1_m", m)
+cuts.file.name <- paste0("cuts_m-1_h1_m", m)
 
 prepareMplusData(PlosOne_Wr,paste0("Mplus_files/",cuts.file.name,".dat"), inpfile = T)
 
 cuts_syntax <- write.cuts.to.Mplus(PlosOne_Wr, nstate = m, 
-                                   method.trait = "om",
+                                   method.trait = "m-1",
                                    scale.invariance = list(int = FALSE, lambda = FALSE),
                                    state.trait.invariance = FALSE,
                                    fixed.method.loadings = FALSE,
@@ -603,12 +625,12 @@ rm(time0)
 
 # h2: Cuts with all method loadings fixed to 1
 
-cuts.file.name <- paste0("cuts_h2_m", m)
+cuts.file.name <- paste0("cuts_m-1_h2_m", m)
 
 prepareMplusData(PlosOne_Wr,paste0("Mplus_files/",cuts.file.name,".dat"), inpfile = T)
 
 cuts_syntax <- write.cuts.to.Mplus(PlosOne_Wr, nstate = m, 
-                                   method.trait = "om",
+                                   method.trait = "m-1",
                                    scale.invariance = list(int = FALSE, lambda = FALSE),
                                    state.trait.invariance = FALSE,
                                    fixed.method.loadings = TRUE,
@@ -629,12 +651,12 @@ rm(time0)
 
 # h3: Cuts + weak factorial invariance across time for the CT and the CS 
 
-cuts.file.name <- paste0("cuts_h3_m", m)
+cuts.file.name <- paste0("cuts_m-1_h3_m", m)
 
 prepareMplusData(PlosOne_Wr,paste0("Mplus_files/",cuts.file.name,".dat"), inpfile = T)
 
 cuts_syntax <- write.cuts.to.Mplus(PlosOne_Wr, nstate = m, 
-                                   method.trait = "om",
+                                   method.trait = "m-1",
                                    scale.invariance = list(int = TRUE, lambda = TRUE),
                                    state.trait.invariance = FALSE,
                                    fixed.method.loadings = TRUE,
@@ -655,12 +677,12 @@ rm(time0)
 
 # h4: Cuts + weak factorial invariance across traits and states
 
-cuts.file.name <- paste0("cuts_h4_m", m)
+cuts.file.name <- paste0("cuts_m-1_h4_m", m)
 
 prepareMplusData(PlosOne_Wr,paste0("Mplus_files/",cuts.file.name,".dat"), inpfile = T)
 
 cuts_syntax <- write.cuts.to.Mplus(PlosOne_Wr, nstate = m, 
-                                   method.trait = "om",
+                                   method.trait = "m-1",
                                    scale.invariance = list(int = FALSE, lambda = FALSE),
                                    state.trait.invariance = TRUE,
                                    fixed.method.loadings = TRUE,
@@ -701,7 +723,7 @@ PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
 # h1: congenericity in the occasions and congenericity in the trait
 
-tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3b",
+tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3a",
                                  equiv.assumption = list(occ = "cong", theta = "cong"),
                                  scale.invariance = list(int = FALSE, lambda = FALSE),
                                  homocedasticity.assumption = list(error = FALSE, occ.red = FALSE),
@@ -714,12 +736,12 @@ fit.tso.lavaan.h1 <- sem(model = tso.lavaan.syntax, data = PlosOne_Wr, missing =
 time.tso.lavaan.h1 <- proc.time() - time0
 rm(time0)
 
-save(fit.tso.lavaan.h1, file = paste0("lavaan_files/tso3b_h1_m",m, ".R"))
+save(fit.tso.lavaan.h1, file = paste0("lavaan_files/tso3a_h1_m",m, ".R"))
 
 
 # h2: congenericity in the occasions and equivalence in the trait
 
-tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3b",
+tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3a",
                                  equiv.assumption = list(occ = "cong", theta = "equi"),
                                  scale.invariance = list(int = FALSE, lambda = FALSE),
                                  homocedasticity.assumption = list(error = FALSE, occ.red = FALSE),
@@ -732,11 +754,11 @@ fit.tso.lavaan.h2 <- sem(model = tso.lavaan.syntax, data = PlosOne_Wr, missing =
 time.tso.lavaan.h2 <- proc.time() - time0
 rm(time0)
 
-save(fit.tso.lavaan.h2, file = paste0("lavaan_files/tso3b_h2_m",m, ".R"))
+save(fit.tso.lavaan.h2, file = paste0("lavaan_files/tso3a_h2_m",m, ".R"))
 
 # h3: equivalence in the occasions and congenericity in the trait
 
-tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3b",
+tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3a",
                                  equiv.assumption = list(occ = "equi", theta = "cong"),
                                  scale.invariance = list(int = FALSE, lambda = FALSE),
                                  homocedasticity.assumption = list(error = FALSE, occ.red = FALSE),
@@ -749,11 +771,11 @@ fit.tso.lavaan.h3 <- sem(model = tso.lavaan.syntax, data = PlosOne_Wr, missing =
 time.tso.lavaan.h3 <- proc.time() - time0
 rm(time0)
 
-save(fit.tso.lavaan.h3, file = paste0("lavaan_files/tso3b_h3_m",m, ".R"))
+save(fit.tso.lavaan.h3, file = paste0("lavaan_files/tso3a_h3_m",m, ".R"))
 
 # h4: equivalence in the occasions and equivalence in the trait
 
-tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3b",
+tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3a",
                                  equiv.assumption = list(occ = "equi", theta = "equi"),
                                  scale.invariance = list(int = FALSE, lambda = FALSE),
                                  homocedasticity.assumption = list(error = FALSE, occ.red = FALSE),
@@ -766,7 +788,7 @@ fit.tso.lavaan.h4 <- sem(model = tso.lavaan.syntax, data = PlosOne_Wr, missing =
 time.tso.lavaan.h4 <- proc.time() - time0
 rm(time0)
 
-save(fit.tso.lavaan.h4, file = paste0("lavaan_files/tso3b_h4_m",m, ".R"))
+save(fit.tso.lavaan.h4, file = paste0("lavaan_files/tso3a_h4_m",m, ".R"))
 
 
 # 6.2 fitting the CUTS with lavaan -----
@@ -786,7 +808,7 @@ PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 # h1: Least retricted CUTS
 
 cuts_syntax <- write.cuts.to.Mplus(PlosOne_Wr, nstate = m, 
-                                   method.trait = "om",
+                                   method.trait = "m-1",
                                    scale.invariance = list(int = FALSE, lambda = FALSE),
                                    state.trait.invariance = FALSE,
                                    fixed.method.loadings = FALSE,
@@ -801,12 +823,12 @@ fit.cuts.lavaan.h1 <- sem(model = cuts.lavaan.syntax, data = PlosOne_Wr, missing
 time.cuts.lavaan.h1 <- proc.time() - time0
 rm(time0)
 
-save(fit.cuts.lavaan.h1, file = paste0("lavaan_files/cuts_h1_m",m, ".R"))
+save(fit.cuts.lavaan.h1, file = paste0("lavaan_files/cuts_m-1_h1_m",m, ".R"))
 
 # h2: Cuts with all method loadings fixed to 1
 
 cuts_syntax <- write.cuts.to.Mplus(PlosOne_Wr, nstate = m, 
-                                   method.trait = "om",
+                                   method.trait = "m-1",
                                    scale.invariance = list(int = FALSE, lambda = FALSE),
                                    state.trait.invariance = FALSE,
                                    fixed.method.loadings = TRUE,
@@ -821,12 +843,12 @@ fit.cuts.lavaan.h2 <- sem(model = cuts.lavaan.syntax, data = PlosOne_Wr, missing
 time.cuts.lavaan.h2 <- proc.time() - time0
 rm(time0)
 
-save(fit.cuts.lavaan.h2, file = paste0("lavaan_files/cuts_h2_m",m, ".R"))
+save(fit.cuts.lavaan.h2, file = paste0("lavaan_files/cuts_m-1_h2_m",m, ".R"))
 
 # h3: Cuts + weak factorial invariance across time for the CT and the CS
 
 cuts_syntax <- write.cuts.to.Mplus(PlosOne_Wr, nstate = m, 
-                                   method.trait = "om",
+                                   method.trait = "m-1",
                                    scale.invariance = list(int = TRUE, lambda = TRUE),
                                    state.trait.invariance = FALSE,
                                    fixed.method.loadings = TRUE,
@@ -841,12 +863,12 @@ fit.cuts.lavaan.h3 <- sem(model = cuts.lavaan.syntax, data = PlosOne_Wr, missing
 time.cuts.lavaan.h3 <- proc.time() - time0
 rm(time0)
 
-save(fit.cuts.lavaan.h3, file = paste0("lavaan_files/cuts_h3_m",m, ".R"))
+save(fit.cuts.lavaan.h3, file = paste0("lavaan_files/cuts_m-1_h3_m",m, ".R"))
 
 # h4: Cuts + weak factorial invariance across traits and states
 
 cuts_syntax <- write.cuts.to.Mplus(PlosOne_Wr, nstate = m, 
-                                   method.trait = "om",
+                                   method.trait = "m-1",
                                    scale.invariance = list(int = FALSE, lambda = FALSE),
                                    state.trait.invariance = TRUE,
                                    fixed.method.loadings = TRUE,
@@ -861,10 +883,10 @@ fit.cuts.lavaan.h4 <- sem(model = cuts.lavaan.syntax, data = PlosOne_Wr, missing
 time.cuts.lavaan.h4 <- proc.time() - time0
 rm(time0)
 
-save(fit.cuts.lavaan.h4, file = paste0("lavaan_files/cuts_h4_m",m, ".R"))
+save(fit.cuts.lavaan.h4, file = paste0("lavaan_files/cuts_m-1_h4_m",m, ".R"))
 
 
-load( file = paste0("lavaan_files/cuts_h2_m",m, ".R"))
+load( file = paste0("lavaan_files/cuts_m-1_h2_m",m, ".R"))
 
 
 

@@ -95,6 +95,7 @@ m.obs <- obs
 
 if(method.trait == "m-1"){
   UT <- UT[-1]
+  ut_var <- ut_var[-1]
   m.obs <- obs[-(seq(1, nobs, by = nobs/nstate))]
   lut <- lut[-(seq(1, nobs, by = nobs/nstate))]
 }
