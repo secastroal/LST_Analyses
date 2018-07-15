@@ -790,6 +790,21 @@ rm(time0)
 
 save(fit.tso.lavaan.h4, file = paste0("lavaan_files/tso3a_h4_m",m, ".R"))
 
+# load analyses
+#figure 3a
+for(i in 1:4){
+  load(file = paste0("lavaan_files/tso3a_h", i, "_m",m, ".R"))
+}
+
+#figure 3b
+for(i in 1:4){
+  load(file = paste0("lavaan_files/tso3b_h", i, "_m",m, ".R"))
+}
+
+summary(fit.tso.lavaan.h4, estimates = FALSE, fit.measures = TRUE)
+
+anova(fit.tso.lavaan.h1,fit.tso.lavaan.h4)
+
 
 # 6.2 fitting the CUTS with lavaan -----
 
@@ -886,11 +901,20 @@ rm(time0)
 save(fit.cuts.lavaan.h4, file = paste0("lavaan_files/cuts_m-1_h4_m",m, ".R"))
 
 
-load( file = paste0("lavaan_files/cuts_m-1_h2_m",m, ".R"))
+# load analyses
+# Orthogonal methods
+for(i in 1:4){
+  load(file = paste0("lavaan_files/cuts_h", i, "_m",m, ".R"))
+}
 
+# m-1
+for(i in 1:4){
+  load(file = paste0("lavaan_files/cuts_m-1_h", i, "_m",m, ".R"))
+}
 
+summary(fit.cuts.lavaan.h4, estimates = FALSE, fit.measures = TRUE)
 
-anova(fit.cuts.lavaan.h1, fit.cuts.lavaan.h2)
+anova(fit.cuts.lavaan.h2, fit.cuts.lavaan.h4)
 
 
 
@@ -899,9 +923,9 @@ fit.cuts.lavaan.h1@test
 
 
 
-summary(fit.cuts.lavaan.h4, fit.measures = T, estimates = F)
+
 
 anova(fit.cuts.lavaan.h1, fit.cuts.lavaan.h2)
 
-parameterEstimates(fit.cuts.lavaan.h4)[1:100,]
+parameterEstimates(fit.cuts.lavaan.h1)[201:300,]
 
