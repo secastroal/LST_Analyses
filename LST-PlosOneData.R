@@ -246,15 +246,15 @@ abline(h =lavPredict(msst@lavaanres)[i,(m+1)], xpd = FALSE)
 var.comp <- as.data.frame(msst@lsttheory)
 
 par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,6), xpd = NA)
-matplot(var.comp[seq(1, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "blue"),
+matplot(var.comp[seq(1, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "blue", "red"),
         ylab = "Worry", xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # worry variance components
 
-matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "blue"),
+matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "blue", "red"),
         ylab = "Fear",xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # fear variance components
-legend(32, 0.75, legend = c("Rel", "Con", "Spe"), col = c("black", "red", "blue"),
+legend(32, 0.75, legend = c("Rel", "Spe", "Con"), col = c("black", "blue", "red"),
        lty = 1, lwd = 2, pch = 16, cex = 1)
 
-matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "red", "blue"),
+matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "blue", "red"),
         ylab = "Sad", xlab = "Measurement occasion", cex.lab = 1.5, 
         lty = 1, pch =16, las = 1) # sad variance components
 
