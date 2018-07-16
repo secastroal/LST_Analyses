@@ -10,6 +10,10 @@
 # 6.0 mplus to lavaan
 # 6.1 fitting the TSO with lavaan
 # 6.2 fitting the CUTS with lavaan
+# 7.0 Computing and plotting variance components of TSO and CUTS
+# 7.1 Selected TSO model 
+# 7.2 Selected CUTS model with om 
+
 
 
 
@@ -581,6 +585,55 @@ runModels(paste0(getwd(),"/Mplus_files/",tso.file.name,".inp"))
 time.tso.mplus.h4 <- proc.time() - time0
 rm(time0)
 
+# h5: congenericity in the occasions and equivalence in the trait + homogeneity 
+#     of autoregressive effects 
+
+tso.file.name <- paste0("tso3b_h5_m", m)
+
+prepareMplusData(PlosOne_Wr,paste0("Mplus_files/",tso.file.name,".dat"), inpfile = T)
+
+tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3b",
+                                 equiv.assumption = list(occ = "cong", theta = "equi"),
+                                 scale.invariance = list(int = FALSE, lambda = FALSE),
+                                 homocedasticity.assumption = list(error = FALSE, occ.red = FALSE),
+                                 autoregressive.homogeneity = TRUE)
+iter <- "
+ANALYSIS:
+H1iterations=30000;" # increase H1 iterations
+
+write(iter, paste0("Mplus_files/",tso.file.name,".inp"), append = T) 
+write(tso_syntax, paste0("Mplus_files/",tso.file.name,".inp"), append = T)
+
+# run model in Mplus
+time0 <- proc.time()
+runModels(paste0(getwd(),"/Mplus_files/",tso.file.name,".inp"))
+time.tso.mplus.h5 <- proc.time() - time0
+rm(time0)
+
+# h6: congenericity in the occasions and equivalence in the trait + scale 
+#     invariance 
+
+tso.file.name <- paste0("tso3b_h6_m", m)
+
+prepareMplusData(PlosOne_Wr,paste0("Mplus_files/",tso.file.name,".dat"), inpfile = T)
+
+tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3b",
+                                 equiv.assumption = list(occ = "cong", theta = "equi"),
+                                 scale.invariance = list(int = TRUE, lambda = TRUE),
+                                 homocedasticity.assumption = list(error = FALSE, occ.red = FALSE),
+                                 autoregressive.homogeneity = FALSE)
+iter <- "
+ANALYSIS:
+H1iterations=30000;" # increase H1 iterations
+
+write(iter, paste0("Mplus_files/",tso.file.name,".inp"), append = T) 
+write(tso_syntax, paste0("Mplus_files/",tso.file.name,".inp"), append = T)
+
+# run model in Mplus
+time0 <- proc.time()
+runModels(paste0(getwd(),"/Mplus_files/",tso.file.name,".inp"))
+time.tso.mplus.h6 <- proc.time() - time0
+rm(time0)
 
 
 # Read Mplus output into R
@@ -805,6 +858,46 @@ summary(fit.tso.lavaan.h4, estimates = FALSE, fit.measures = TRUE)
 
 anova(fit.tso.lavaan.h1,fit.tso.lavaan.h4)
 
+# h5: congenericity in the occasions and equivalence in the trait + homogeneity 
+#     of autoregressive effects 
+
+tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3b",
+                                 equiv.assumption = list(occ = "cong", theta = "equi"),
+                                 scale.invariance = list(int = FALSE, lambda = FALSE),
+                                 homocedasticity.assumption = list(error = FALSE, occ.red = FALSE),
+                                 autoregressive.homogeneity = TRUE)
+tso.lavaan.syntax <- mplus2lavaan.modelSyntax(gsub("MODEL:", "", tso_syntax))
+
+# Fitting Cuts with lavaan
+time0 <- proc.time()
+fit.tso.lavaan.h5 <- sem(model = tso.lavaan.syntax, data = PlosOne_Wr, missing = "ml")
+time.tso.lavaan.h5 <- proc.time() - time0
+rm(time0)
+
+save(fit.tso.lavaan.h5, file = paste0("lavaan_files/tso3b_h5_m",m, ".R"))
+
+# h6: congenericity in the occasions and equivalence in the trait + scale 
+#     invariance 
+
+tso_syntax <- write.tso.to.Mplus(PlosOne_Wr, nocc = m, figure = "3b",
+                                 equiv.assumption = list(occ = "cong", theta = "equi"),
+                                 scale.invariance = list(int = TRUE, lambda = TRUE),
+                                 homocedasticity.assumption = list(error = FALSE, occ.red = FALSE),
+                                 autoregressive.homogeneity = FALSE)
+tso.lavaan.syntax <- mplus2lavaan.modelSyntax(gsub("MODEL:", "", tso_syntax))
+
+# Fitting Cuts with lavaan
+time0 <- proc.time()
+fit.tso.lavaan.h6 <- sem(model = tso.lavaan.syntax, data = PlosOne_Wr, missing = "ml")
+time.tso.lavaan.h6 <- proc.time() - time0
+rm(time0)
+
+save(fit.tso.lavaan.h6, file = paste0("lavaan_files/tso3b_h6_m",m, ".R"))
+
+
+summary(fit.tso.lavaan.h6, estimates= FALSE, fit.measures = TRUE)
+
+anova(fit.tso.lavaan.h2, fit.tso.lavaan.h6)
 
 # 6.2 fitting the CUTS with lavaan -----
 
@@ -906,26 +999,155 @@ save(fit.cuts.lavaan.h4, file = paste0("lavaan_files/cuts_m-1_h4_m",m, ".R"))
 for(i in 1:4){
   load(file = paste0("lavaan_files/cuts_h", i, "_m",m, ".R"))
 }
-
+rm(i)
 # m-1
 for(i in 1:4){
   load(file = paste0("lavaan_files/cuts_m-1_h", i, "_m",m, ".R"))
 }
+rm(i)
 
 summary(fit.cuts.lavaan.h4, estimates = FALSE, fit.measures = TRUE)
 
 anova(fit.cuts.lavaan.h2, fit.cuts.lavaan.h4)
+ 
+# 7.0 Computing and plotting variance components of TSO and CUTS ----
+# 7.1 Selected TSO model ----
+tso  <- fit.tso.lavaan.h2
+
+trait.scores <- lavPredict(tso)[,(m+1):(m+3)] #scores trait
+occ.scores <- lavPredict(tso)[,1:m] #scores occasion variables
+
+ltrait <- parameterEstimates(tso)[ (t.m+1):(2*t.m),"est"] #loadings traits
+locc <- parameterEstimates(tso)[ 1:t.m,"est"] #loadings occasion
+
+ins <- parameterEstimates(tso)[(2*t.m+1):(3*t.m), "est"] #intercepts
+
+beta <- parameterEstimates(tso)[(3*t.m+((m+3)*(m+2)/2)+m-2):(3*t.m+((m+3)*(m+2)/2)+2*m-4),"est"]
+
+
+err_var <- parameterEstimates(tso)[(3*t.m+((m+3)*(m+2)/2)+2*m-3):(4*t.m+((m+3)*(m+2)/2)+2*m-4), "est"]
+occ_var <- parameterEstimates(tso)[(4*t.m+((m+3)*(m+2)/2)+2*m-3):(4*t.m+((m+3)*(m+2)/2)+3*m-4), "est"]
+trait_var <- parameterEstimates(tso)[(4*t.m+((m+3)*(m+2)/2)+3*m-3):(4*t.m+((m+3)*(m+2)/2)+3*m-1), "est"]
+
+beta2 <- beta*beta
+beta2_prod <- rep(NA, m-1)
+
+for(i in 1:(m-1)){
+  beta2_prod[i] <- prod(beta2[i:(m-1)])
+}
+rm(i)
+
+betaXocc <- beta2_prod*occ_var[-m]
+betaXocc <- c(0, betaXocc)
+
+upred_var <- rep(NA, m)
+
+for(i in (1:m)){
+  upred_var[i] <- sum(betaXocc[1:i]) 
+}
+rm(i)
 
 
 
 
-fit.cuts.lavaan.h1@test
+tso_tot_var <- (ltrait^2)*trait_var + (locc^2)*rep(upred_var, each = 3) + 
+  (locc^2)*rep(occ_var, each = 3) + err_var
 
 
+# 7.2 Selected CUTS model with om ----
+
+cuts <- fit.cuts.lavaan.h2
+
+CT.scores <- lavPredict(cuts)[,m+1] #scores common trait
+CS.scores <- lavPredict(cuts)[,1:m] #scores common states
+UT.scores <- lavPredict(cuts)[,(m+2):(m+4)] #scores unique traits
+
+lct <- parameterEstimates(cuts)[ (t.m+1):(2*t.m),"est"] #loadings common traits
+lut <- parameterEstimates(cuts)[(2*t.m+1):(3*t.m), "est"] #loadings unique traits
+lcs <- parameterEstimates(cuts)[ 1:t.m,"est"] #loadings common states
+
+ins <- parameterEstimates(cuts)[(3*t.m+1):(4*t.m), "est"] #intercepts 
+ 
+us_var <- parameterEstimates(cuts)[ (4*t.m+((m+4)*(m+3)/2)+1):(5*t.m+((m+4)*(m+3)/2)),"est"] # variance unique states
+cs_var <- parameterEstimates(cuts)[ (5*t.m+((m+4)*(m+3)/2)+1):(5*t.m+((m+4)*(m+3)/2)+m),"est"] # variance common states
+ut_var <- parameterEstimates(cuts)[ (5*t.m+((m+4)*(m+3)/2)+m+1):(5*t.m+((m+4)*(m+3)/2)+m+3),"est"] # variance unique traits
+ct_var <- parameterEstimates(cuts)[ (5*t.m+((m+4)*(m+3)/2)+m+4),"est"]# variance common trait
+
+cuts_tot_var <- (lct^2)*ct_var + (lut^2)*ut_var + (lcs^2)*rep(cs_var, each = 3) + us_var
+cuts_rel <-  ((lct^2)*ct_var + (lut^2)*ut_var + (lcs^2)*rep(cs_var, each = 3)) / cuts_tot_var
+cuts_tcon <- ((lct^2)*ct_var + (lut^2)*ut_var) / cuts_tot_var
+cuts_spe <- ((lcs^2)*rep(cs_var, each = 3)) / cuts_tot_var
+cuts_ccon <- ((lct^2)*ct_var) / cuts_tot_var
+cuts_ucon <- ((lut^2)*ut_var) / cuts_tot_var
+
+cuts_pred_worry <- matrix(lct[seq(1, 90, by = 3)],129,m, byrow = TRUE)*CT.scores +
+  matrix(lut[seq(1, 90, by = 3)],129,m, byrow = TRUE)*UT.scores[,1]+
+  matrix(lcs[seq(1, 90, by = 3)],129,m, byrow = TRUE)*CS.scores +
+  ins[seq(1, 90, by = 3)]
+
+cuts_pred_fear <- matrix(lct[seq(2, 90, by = 3)],129,m, byrow = TRUE)*CT.scores +
+  matrix(lut[seq(2, 90, by = 3)],129,m, byrow = TRUE)*UT.scores[,2]+
+  matrix(lcs[seq(2, 90, by = 3)],129,m, byrow = TRUE)*CS.scores +
+  ins[seq(2, 90, by = 3)]
+
+cuts_pred_sad <- matrix(lct[seq(3, 90, by = 3)],129,m, byrow = TRUE)*CT.scores +
+  matrix(lut[seq(3, 90, by = 3)],129,m, byrow = TRUE)*UT.scores[,3]+
+  matrix(lcs[seq(3, 90, by = 3)],129,m, byrow = TRUE)*CS.scores +
+  ins[seq(3, 90, by = 3)]
 
 
+i <- 53 # select person to plot
+# plot worry observed vs latent state variables person i
+par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,8), xpd = NA)
 
-anova(fit.cuts.lavaan.h1, fit.cuts.lavaan.h2)
+plot(cuts_pred_worry[i,], 
+     type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
+     xaxt="n",xlab="", cex.lab = 1.5, ylab = "Worry", las = 1)# traceplot of the latent state scores of one person
+points(1:m, PlosOne_W[i, seq(1,t.m, by = 3)], type = "b", col = "red", pch = 16)
+abline(h =CT.scores[i], xpd = FALSE) #plot latent trait factor score
+#abline(h = mean(as.numeric(PlosOne_W[i, seq(1,t.m, by = 3)]), na.rm = T), 
+#      col="green", xpd = TRUE) # plot mean of worry of person i
+#abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange", 
+#      xpd = TRUE) # plot combined mean of all observed variables of person i
 
-parameterEstimates(fit.cuts.lavaan.h1)[201:300,]
+# plot fear observed vs latent state variables person i
+plot(cuts_pred_fear[i,], 
+     type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
+     xaxt="n",xlab="", cex.lab = 1.5,ylab = "Fear", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
+points(1:m, PlosOne_W[i, seq(2,t.m, by = 3)], type = "b", col = "red", pch = 16)
+abline(h =CT.scores[i], xpd = FALSE)
+#abline(h = mean(as.numeric(PlosOne_W[i, seq(2,t.m, by = 3)]), na.rm = T), col="green")
+#abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
+legend(31.5, 5, legend = c("Observed", "Predicted"), col = c( "red", "blue"),
+       lty = 1, pch = 16, lwd = 2, cex = 1)
+
+
+# plot sad observed vs latent state variables person i
+plot(cuts_pred_sad[i,], 
+     type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
+     xlab="Measurement occasion", cex.lab = 1.5, ylab = "Sad", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
+points(1:m, PlosOne_W[i, seq(3,t.m, by = 3)], type = "b", pch= 16, col = "red")
+abline(h =CT.scores[i], xpd = FALSE)
+#abline(h = mean(as.numeric(PlosOne_W[i, seq(3,t.m, by = 3)]), na.rm = T), col="green")
+#abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
+
+
+# plot variance components by variable.
+var.comp <- cbind(cuts_rel, cuts_ccon, cuts_ucon, cuts_spe)
+
+par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,6), xpd = NA)
+matplot(var.comp[seq(1, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "green", "blue"),
+        ylab = "Worry", xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # worry variance components
+
+matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "green", "blue"),
+        ylab = "Fear",xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # fear variance components
+legend(32, 0.75, legend = c("Rel", "CCon", "UCon", "Spe"), col = c("black", "red", "green", "blue"),
+       lty = 1, lwd = 2, pch = 16, cex = 1)
+
+matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "red", "green", "blue"),
+        ylab = "Sad", xlab = "Measurement occasion", cex.lab = 1.5, 
+        lty = 1, pch =16, las = 1) # sad variance components
+
+  
+
 
