@@ -1020,7 +1020,7 @@ occ.scores <- lavPredict(tso)[,1:m] #scores occasion variables
 ltrait <- parameterEstimates(tso)[ (t.m+1):(2*t.m),"est"] #loadings traits
 locc <- parameterEstimates(tso)[ 1:t.m,"est"] #loadings occasion
 
-ins <- parameterEstimates(tso)[(2*t.m+1):(3*t.m), "est"] #intercepts
+tso.ins <- parameterEstimates(tso)[(2*t.m+1):(3*t.m), "est"] #intercepts
 
 beta <- parameterEstimates(tso)[(3*t.m+((m+3)*(m+2)/2)+m-2):(3*t.m+((m+3)*(m+2)/2)+2*m-4),"est"]
 
@@ -1030,28 +1030,91 @@ occ_var <- parameterEstimates(tso)[(4*t.m+((m+3)*(m+2)/2)+2*m-3):(4*t.m+((m+3)*(
 trait_var <- parameterEstimates(tso)[(4*t.m+((m+3)*(m+2)/2)+3*m-3):(4*t.m+((m+3)*(m+2)/2)+3*m-1), "est"]
 
 beta2 <- beta*beta
-beta2_prod <- rep(NA, m-1)
+betaXocc <- rep(NA, (m-1))
 
 for(i in 1:(m-1)){
-  beta2_prod[i] <- prod(beta2[i:(m-1)])
+  beta2_prod <- rep(NA, i)
+  for(j in 1:i){
+    beta2_prod[j] <- prod(beta2[j:i])
+  }
+  betaXocc[i] <- sum(beta2_prod*occ_var[1:i])
 }
-rm(i)
+rm(i, j, beta2_prod)
 
-betaXocc <- beta2_prod*occ_var[-m]
 betaXocc <- c(0, betaXocc)
 
-upred_var <- rep(NA, m)
-
-for(i in (1:m)){
-  upred_var[i] <- sum(betaXocc[1:i]) 
-}
-rm(i)
-
-
-
-
-tso_tot_var <- (ltrait^2)*trait_var + (locc^2)*rep(upred_var, each = 3) + 
+tso_tot_var <- (ltrait^2)*trait_var + (locc^2)*rep(betaXocc, each = 3) + 
   (locc^2)*rep(occ_var, each = 3) + err_var
+tso_rel <- ((ltrait^2)*trait_var + (locc^2)*rep(betaXocc, each = 3) + 
+              (locc^2)*rep(occ_var, each = 3))/tso_tot_var
+tso_con <- ((ltrait^2)*trait_var + (locc^2)*rep(betaXocc, each = 3))/tso_tot_var
+tso_pred <- ((ltrait^2)*trait_var)/tso_tot_var
+tso_upred <- ((locc^2)*rep(betaXocc, each = 3))/tso_tot_var
+tso_spe <- ((locc^2)*rep(occ_var, each = 3))/tso_tot_var
+
+tso_pred_worry <- matrix(ltrait[seq(1, 90, by = 3)],129,m, byrow = TRUE)*trait.scores[,1] +
+  matrix(locc[seq(1, 90, by = 3)],129,m, byrow = TRUE)*occ.scores +
+  tso.ins[seq(1, 90, by = 3)]
+
+tso_pred_fear <- matrix(ltrait[seq(2, 90, by = 3)],129,m, byrow = TRUE)*trait.scores[,2] +
+  matrix(locc[seq(2, 90, by = 3)],129,m, byrow = TRUE)*occ.scores +
+  tso.ins[seq(2, 90, by = 3)]
+
+tso_pred_sad <- matrix(ltrait[seq(3, 90, by = 3)],129,m, byrow = TRUE)*trait.scores[,3] +
+  matrix(locc[seq(3, 90, by = 3)],129,m, byrow = TRUE)*occ.scores +
+  tso.ins[seq(3, 90, by = 3)]
+
+i <- 53 # select person to plot
+# plot worry observed vs latent state variables person i
+par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,8), xpd = NA)
+
+plot(tso_pred_worry[i,], 
+     type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
+     xaxt="n",xlab="", cex.lab = 1.5, ylab = "Worry", las = 1)# traceplot of the latent state scores of one person
+points(1:m, PlosOne_W[i, seq(1,t.m, by = 3)], type = "b", col = "red", pch = 16)
+abline(h =trait.scores[i,1], xpd = FALSE) #plot latent trait factor score
+#abline(h = mean(as.numeric(PlosOne_W[i, seq(1,t.m, by = 3)]), na.rm = T), 
+#      col="green", xpd = TRUE) # plot mean of worry of person i
+#abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange", 
+#      xpd = TRUE) # plot combined mean of all observed variables of person i
+
+# plot fear observed vs latent state variables person i
+plot(tso_pred_fear[i,], 
+     type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
+     xaxt="n",xlab="", cex.lab = 1.5,ylab = "Fear", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
+points(1:m, PlosOne_W[i, seq(2,t.m, by = 3)], type = "b", col = "red", pch = 16)
+abline(h =trait.scores[i,2], xpd = FALSE)
+#abline(h = mean(as.numeric(PlosOne_W[i, seq(2,t.m, by = 3)]), na.rm = T), col="green")
+#abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
+legend(31.5, 5, legend = c("Observed", "Predicted"), col = c( "red", "blue"),
+       lty = 1, pch = 16, lwd = 2, cex = 1)
+
+
+# plot sad observed vs latent state variables person i
+plot(tso_pred_sad[i,], 
+     type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
+     xlab="Measurement occasion", cex.lab = 1.5, ylab = "Sad", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
+points(1:m, PlosOne_W[i, seq(3,t.m, by = 3)], type = "b", pch= 16, col = "red")
+abline(h =trait.scores[i,3], xpd = FALSE)
+#abline(h = mean(as.numeric(PlosOne_W[i, seq(3,t.m, by = 3)]), na.rm = T), col="green")
+#abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
+
+
+# plot variance components by variable.
+var.comp <- cbind(tso_rel, tso_pred, tso_upred, tso_spe)
+
+par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,6), xpd = NA)
+matplot(var.comp[seq(1, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "green", "blue"),
+        ylab = "Worry", xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # worry variance components
+
+matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "green", "blue"),
+        ylab = "Fear",xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # fear variance components
+legend(32, 0.75, legend = c("Rel", "Pred", "UPred", "Spe"), col = c("black", "red", "green", "blue"),
+       lty = 1, lwd = 2, pch = 16, cex = 1)
+
+matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "red", "green", "blue"),
+        ylab = "Sad", xlab = "Measurement occasion", cex.lab = 1.5, 
+        lty = 1, pch =16, las = 1) # sad variance components
 
 
 # 7.2 Selected CUTS model with om ----
@@ -1066,7 +1129,7 @@ lct <- parameterEstimates(cuts)[ (t.m+1):(2*t.m),"est"] #loadings common traits
 lut <- parameterEstimates(cuts)[(2*t.m+1):(3*t.m), "est"] #loadings unique traits
 lcs <- parameterEstimates(cuts)[ 1:t.m,"est"] #loadings common states
 
-ins <- parameterEstimates(cuts)[(3*t.m+1):(4*t.m), "est"] #intercepts 
+cuts.ins <- parameterEstimates(cuts)[(3*t.m+1):(4*t.m), "est"] #intercepts 
  
 us_var <- parameterEstimates(cuts)[ (4*t.m+((m+4)*(m+3)/2)+1):(5*t.m+((m+4)*(m+3)/2)),"est"] # variance unique states
 cs_var <- parameterEstimates(cuts)[ (5*t.m+((m+4)*(m+3)/2)+1):(5*t.m+((m+4)*(m+3)/2)+m),"est"] # variance common states
@@ -1083,17 +1146,17 @@ cuts_ucon <- ((lut^2)*ut_var) / cuts_tot_var
 cuts_pred_worry <- matrix(lct[seq(1, 90, by = 3)],129,m, byrow = TRUE)*CT.scores +
   matrix(lut[seq(1, 90, by = 3)],129,m, byrow = TRUE)*UT.scores[,1]+
   matrix(lcs[seq(1, 90, by = 3)],129,m, byrow = TRUE)*CS.scores +
-  ins[seq(1, 90, by = 3)]
+  cuts.ins[seq(1, 90, by = 3)]
 
 cuts_pred_fear <- matrix(lct[seq(2, 90, by = 3)],129,m, byrow = TRUE)*CT.scores +
   matrix(lut[seq(2, 90, by = 3)],129,m, byrow = TRUE)*UT.scores[,2]+
   matrix(lcs[seq(2, 90, by = 3)],129,m, byrow = TRUE)*CS.scores +
-  ins[seq(2, 90, by = 3)]
+  cuts.ins[seq(2, 90, by = 3)]
 
 cuts_pred_sad <- matrix(lct[seq(3, 90, by = 3)],129,m, byrow = TRUE)*CT.scores +
   matrix(lut[seq(3, 90, by = 3)],129,m, byrow = TRUE)*UT.scores[,3]+
   matrix(lcs[seq(3, 90, by = 3)],129,m, byrow = TRUE)*CS.scores +
-  ins[seq(3, 90, by = 3)]
+  cuts.ins[seq(3, 90, by = 3)]
 
 
 i <- 53 # select person to plot
