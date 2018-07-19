@@ -1012,11 +1012,15 @@ anova(fit.cuts.lavaan.h2, fit.cuts.lavaan.h4)
  
 # 7.0 Computing and plotting variance components of TSO and CUTS ----
 # 7.1 Selected TSO model ----
+m <- 30
+t.m <- 3*m
 tso  <- fit.tso.lavaan.h2
 
+# 7.1.1 compute factor scores
 trait.scores <- lavPredict(tso)[,(m+1):(m+3)] #scores trait
 occ.scores <- lavPredict(tso)[,1:m] #scores occasion variables
 
+# 7.1.2 Extract parameters from the lavaan object
 ltrait <- parameterEstimates(tso)[ (t.m+1):(2*t.m),"est"] #loadings traits
 locc <- parameterEstimates(tso)[ 1:t.m,"est"] #loadings occasion
 
@@ -1029,9 +1033,12 @@ err_var <- parameterEstimates(tso)[(3*t.m+((m+3)*(m+2)/2)+2*m-3):(4*t.m+((m+3)*(
 occ_var <- parameterEstimates(tso)[(4*t.m+((m+3)*(m+2)/2)+2*m-3):(4*t.m+((m+3)*(m+2)/2)+3*m-4), "est"]
 trait_var <- parameterEstimates(tso)[(4*t.m+((m+3)*(m+2)/2)+3*m-3):(4*t.m+((m+3)*(m+2)/2)+3*m-1), "est"]
 
+# 7.1.3 Compute variance coeffcients
+
 beta2 <- beta*beta
 betaXocc <- rep(NA, (m-1))
-
+# This loop compute the variance of each occasion variable as a linear 
+#   combination of the previous state residuals
 for(i in 1:(m-1)){
   beta2_prod <- rep(NA, i)
   for(j in 1:i){
@@ -1042,16 +1049,22 @@ for(i in 1:(m-1)){
 rm(i, j, beta2_prod)
 
 betaXocc <- c(0, betaXocc)
-
+#total variance
 tso_tot_var <- (ltrait^2)*trait_var + (locc^2)*rep(betaXocc, each = 3) + 
   (locc^2)*rep(occ_var, each = 3) + err_var
+#reliability
 tso_rel <- ((ltrait^2)*trait_var + (locc^2)*rep(betaXocc, each = 3) + 
               (locc^2)*rep(occ_var, each = 3))/tso_tot_var
+#Consistency
 tso_con <- ((ltrait^2)*trait_var + (locc^2)*rep(betaXocc, each = 3))/tso_tot_var
+#Trait predictability
 tso_pred <- ((ltrait^2)*trait_var)/tso_tot_var
+#Trait unpredictability
 tso_upred <- ((locc^2)*rep(betaXocc, each = 3))/tso_tot_var
+#Occasion specificity
 tso_spe <- ((locc^2)*rep(occ_var, each = 3))/tso_tot_var
 
+# 7.1.4 Compute predicted values based on the factor scores
 tso_pred_worry <- matrix(ltrait[seq(1, 90, by = 3)],129,m, byrow = TRUE)*trait.scores[,1] +
   matrix(locc[seq(1, 90, by = 3)],129,m, byrow = TRUE)*occ.scores +
   tso.ins[seq(1, 90, by = 3)]
@@ -1064,6 +1077,7 @@ tso_pred_sad <- matrix(ltrait[seq(3, 90, by = 3)],129,m, byrow = TRUE)*trait.sco
   matrix(locc[seq(3, 90, by = 3)],129,m, byrow = TRUE)*occ.scores +
   tso.ins[seq(3, 90, by = 3)]
 
+# 7.2.5 Plots
 i <- 53 # select person to plot
 # plot worry observed vs latent state variables person i
 par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,8), xpd = NA)
@@ -1119,12 +1133,16 @@ matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black
 
 # 7.2 Selected CUTS model with om ----
 
+m <- 30
+t.m <- 3*m
 cuts <- fit.cuts.lavaan.h2
 
+# 7.2.1 Compute factor scores
 CT.scores <- lavPredict(cuts)[,m+1] #scores common trait
 CS.scores <- lavPredict(cuts)[,1:m] #scores common states
 UT.scores <- lavPredict(cuts)[,(m+2):(m+4)] #scores unique traits
 
+# 7.2.2 Extract parameters from the lavaan object
 lct <- parameterEstimates(cuts)[ (t.m+1):(2*t.m),"est"] #loadings common traits
 lut <- parameterEstimates(cuts)[(2*t.m+1):(3*t.m), "est"] #loadings unique traits
 lcs <- parameterEstimates(cuts)[ 1:t.m,"est"] #loadings common states
@@ -1136,13 +1154,21 @@ cs_var <- parameterEstimates(cuts)[ (5*t.m+((m+4)*(m+3)/2)+1):(5*t.m+((m+4)*(m+3
 ut_var <- parameterEstimates(cuts)[ (5*t.m+((m+4)*(m+3)/2)+m+1):(5*t.m+((m+4)*(m+3)/2)+m+3),"est"] # variance unique traits
 ct_var <- parameterEstimates(cuts)[ (5*t.m+((m+4)*(m+3)/2)+m+4),"est"]# variance common trait
 
+#7.2.3 Compute variance coefficients
+#Total variance
 cuts_tot_var <- (lct^2)*ct_var + (lut^2)*ut_var + (lcs^2)*rep(cs_var, each = 3) + us_var
+#Reliability
 cuts_rel <-  ((lct^2)*ct_var + (lut^2)*ut_var + (lcs^2)*rep(cs_var, each = 3)) / cuts_tot_var
+#Total Consistency
 cuts_tcon <- ((lct^2)*ct_var + (lut^2)*ut_var) / cuts_tot_var
+#Occasion specificity
 cuts_spe <- ((lcs^2)*rep(cs_var, each = 3)) / cuts_tot_var
+#Common consistency
 cuts_ccon <- ((lct^2)*ct_var) / cuts_tot_var
+#Unique consistency
 cuts_ucon <- ((lut^2)*ut_var) / cuts_tot_var
 
+# 7.2.4 Compute predictes scores based on the factor scores
 cuts_pred_worry <- matrix(lct[seq(1, 90, by = 3)],129,m, byrow = TRUE)*CT.scores +
   matrix(lut[seq(1, 90, by = 3)],129,m, byrow = TRUE)*UT.scores[,1]+
   matrix(lcs[seq(1, 90, by = 3)],129,m, byrow = TRUE)*CS.scores +
@@ -1158,7 +1184,7 @@ cuts_pred_sad <- matrix(lct[seq(3, 90, by = 3)],129,m, byrow = TRUE)*CT.scores +
   matrix(lcs[seq(3, 90, by = 3)],129,m, byrow = TRUE)*CS.scores +
   cuts.ins[seq(3, 90, by = 3)]
 
-
+# 7.2.5 Plots
 i <- 53 # select person to plot
 # plot worry observed vs latent state variables person i
 par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,8), xpd = NA)
