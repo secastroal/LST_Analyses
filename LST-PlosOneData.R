@@ -13,7 +13,7 @@
 # 7.0 Computing and plotting variance components of TSO and CUTS
 # 7.1 Selected TSO model 
 # 7.2 Selected CUTS model with om 
-
+# 7.3 Selected CUTS m-1 model Appendix D
 
 
 
@@ -208,13 +208,13 @@ cbind(1:129, count_na)
 sample(1:129, 1)
 i <- 53 # select person to plot
 # plot worry observed vs latent state variables person i
-par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,8), xpd = NA)
+par(mfrow= c(3,1),mar= c(0.2,5,0.2,2), oma= c(4,0,1,8), xpd = NA)
 
 plot(lavPredict(msst@lavaanres)[i,1:m], 
      type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
      xaxt="n",xlab="", cex.lab = 1.5, ylab = "Worry", las = 1)# traceplot of the latent state scores of one person
 points(1:m, PlosOne_W[i, seq(1,t.m, by = 3)], type = "b", col = "red", pch = 16)
-abline(h =lavPredict(msst@lavaanres)[i,(m+1)], xpd = FALSE) #plot latent trait factor score
+abline(h =lavPredict(msst@lavaanres)[i,(m+1)], xpd = FALSE, lty = 2) #plot latent trait factor score
 #abline(h = mean(as.numeric(PlosOne_W[i, seq(1,t.m, by = 3)]), na.rm = T), 
  #      col="green", xpd = TRUE) # plot mean of worry of person i
 #abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange", 
@@ -225,11 +225,11 @@ plot(lavPredict(msst@lavaanres)[i,1:m] * parameterEstimates(msst@lavaanres)[seq(
      type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
      xaxt="n",xlab="", cex.lab = 1.5,ylab = "Fear", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
 points(1:m, PlosOne_W[i, seq(2,t.m, by = 3)], type = "b", col = "red", pch = 16)
-abline(h =lavPredict(msst@lavaanres)[i,(m+1)], xpd = FALSE)
+abline(h =lavPredict(msst@lavaanres)[i,(m+1)], xpd = FALSE, lty = 2)
 #abline(h = mean(as.numeric(PlosOne_W[i, seq(2,t.m, by = 3)]), na.rm = T), col="green")
 #abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
-legend(31.5, 5, legend = c("Observed", "Predicted"), col = c( "red", "blue"),
-       lty = 1, pch = 16, lwd = 2, cex = 1)
+legend(31.5, 5, legend = c("Observed", "Predicted", "Trait"), col = c( "red", "blue", "black"),
+       lty = c(1,1,2), pch = c(16,16,NA), lwd = 2, cex = 1)
 
 
 # plot sad observed vs latent state variables person i
@@ -237,26 +237,71 @@ plot(lavPredict(msst@lavaanres)[i,1:m] * parameterEstimates(msst@lavaanres)[seq(
      type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
      xlab="Measurement occasion", cex.lab = 1.5, ylab = "Sad", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
 points(1:m, PlosOne_W[i, seq(3,t.m, by = 3)], type = "b", pch= 16, col = "red")
-abline(h =lavPredict(msst@lavaanres)[i,(m+1)], xpd = FALSE)
+abline(h =lavPredict(msst@lavaanres)[i,(m+1)], xpd = FALSE, lty = 2)
 #abline(h = mean(as.numeric(PlosOne_W[i, seq(3,t.m, by = 3)]), na.rm = T), col="green")
 #abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
 
 
 # plot variance components by variable.
-var.comp <- as.data.frame(msst@lsttheory)
+var.comp <- as.data.frame(msst@lsttheory)[,c(1,3,2)]
+se.var.comp <- cbind(parameterEstimates(msst@lavaanres)[(4*t.m+4*m+3):(5*t.m+4*m+2),"se" ],
+                     parameterEstimates(msst@lavaanres)[(6*t.m+4*m+3):(7*t.m+4*m+2),"se" ],
+                     parameterEstimates(msst@lavaanres)[(5*t.m+4*m+3):(6*t.m+4*m+2),"se" ])
+upper.comp <- var.comp + 1.96 * se.var.comp
+lower.comp <- var.comp - 1.96 * se.var.comp
 
-par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,6), xpd = NA)
-matplot(var.comp[seq(1, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "blue", "red"),
+par(mfrow= c(3,1),mar= c(0.2,5,0.2,2), oma= c(4,0,1,6), xpd = NA)
+matplot(var.comp[seq(1, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "blue"),
         ylab = "Worry", xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # worry variance components
+polygon(c(1:m,rev(1:m)),
+        c(lower.comp[seq(1, t.m, by= 3),2],rev(upper.comp[seq(1, t.m, by= 3),2])),
+        col = rgb(1,0,0,0.25), border = FALSE)
+polygon(c(1:m,rev(1:m)),
+        c(lower.comp[seq(1, t.m, by= 3),3],rev(upper.comp[seq(1, t.m, by= 3),3])),
+        col = rgb(0,0,1,0.25), border = FALSE)
 
-matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "blue", "red"),
+  
+matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "blue"),
         ylab = "Fear",xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # fear variance components
-legend(32, 0.75, legend = c("Rel", "Spe", "Con"), col = c("black", "blue", "red"),
+polygon(c(1:m,rev(1:m)),
+        c(lower.comp[seq(2, t.m, by= 3),2],rev(upper.comp[seq(2, t.m, by= 3),2])),
+        col = rgb(1,0,0,0.25), border = FALSE)
+polygon(c(1:m,rev(1:m)),
+        c(lower.comp[seq(2, t.m, by= 3),3],rev(upper.comp[seq(2, t.m, by= 3),3])),
+        col = rgb(0,0,1,0.25), border = FALSE)
+legend(32, 0.75, legend = c("Rel", "Con", "Spe"), col = c("black", "red", "blue"),
        lty = 1, lwd = 2, pch = 16, cex = 1)
 
-matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "blue", "red"),
+matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "red", "blue"),
         ylab = "Sad", xlab = "Measurement occasion", cex.lab = 1.5, 
         lty = 1, pch =16, las = 1) # sad variance components
+polygon(c(1:m,rev(1:m)),
+        c(lower.comp[seq(3, t.m, by= 3),2],rev(upper.comp[seq(3, t.m, by= 3),2])),
+        col = rgb(1,0,0,0.25), border = FALSE)
+polygon(c(1:m,rev(1:m)),
+        c(lower.comp[seq(3, t.m, by= 3),3],rev(upper.comp[seq(3, t.m, by= 3),3])),
+        col = rgb(0,0,1,0.25), border = FALSE)
+
+mean(var.comp[seq(1,t.m, by =3),1])
+sd(var.comp[seq(1,t.m, by =3),1])
+mean(var.comp[seq(1,t.m, by =3),2])
+sd(var.comp[seq(1,t.m, by =3),2])
+mean(var.comp[seq(1,t.m, by =3),3])
+sd(var.comp[seq(1,t.m, by =3),3])
+
+mean(var.comp[seq(2,t.m, by =3),1])
+sd(var.comp[seq(2,t.m, by =3),1])
+mean(var.comp[seq(2,t.m, by =3),2])
+sd(var.comp[seq(2,t.m, by =3),2])
+mean(var.comp[seq(2,t.m, by =3),3])
+sd(var.comp[seq(2,t.m, by =3),3])
+
+mean(var.comp[seq(3,t.m, by =3),1])
+sd(var.comp[seq(3,t.m, by =3),1])
+mean(var.comp[seq(3,t.m, by =3),2])
+sd(var.comp[seq(3,t.m, by =3),2])
+mean(var.comp[seq(3,t.m, by =3),3])
+sd(var.comp[seq(3,t.m, by =3),3])
 
 
 # 3.0 Fit multistate-singletrait with Mplus ----
@@ -848,12 +893,12 @@ save(fit.tso.lavaan.h4, file = paste0("lavaan_files/tso3a_h4_m",m, ".R"))
 for(i in 1:4){
   load(file = paste0("lavaan_files/tso3a_h", i, "_m",m, ".R"))
 }
-
+rm(i)
 #figure 3b
 for(i in 1:4){
   load(file = paste0("lavaan_files/tso3b_h", i, "_m",m, ".R"))
 }
-
+rm(i)
 summary(fit.tso.lavaan.h4, estimates = FALSE, fit.measures = TRUE)
 
 anova(fit.tso.lavaan.h1,fit.tso.lavaan.h4)
@@ -1080,13 +1125,13 @@ tso_pred_sad <- matrix(ltrait[seq(3, 90, by = 3)],129,m, byrow = TRUE)*trait.sco
 # 7.2.5 Plots
 i <- 53 # select person to plot
 # plot worry observed vs latent state variables person i
-par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,8), xpd = NA)
+par(mfrow= c(3,1),mar= c(0.2,5,0.2,2), oma= c(4,0,1,8), xpd = NA)
 
 plot(tso_pred_worry[i,], 
      type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
      xaxt="n",xlab="", cex.lab = 1.5, ylab = "Worry", las = 1)# traceplot of the latent state scores of one person
 points(1:m, PlosOne_W[i, seq(1,t.m, by = 3)], type = "b", col = "red", pch = 16)
-abline(h =trait.scores[i,1], xpd = FALSE) #plot latent trait factor score
+abline(h =trait.scores[i,1], xpd = FALSE, lty=2) #plot latent trait factor score
 #abline(h = mean(as.numeric(PlosOne_W[i, seq(1,t.m, by = 3)]), na.rm = T), 
 #      col="green", xpd = TRUE) # plot mean of worry of person i
 #abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange", 
@@ -1097,11 +1142,11 @@ plot(tso_pred_fear[i,],
      type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
      xaxt="n",xlab="", cex.lab = 1.5,ylab = "Fear", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
 points(1:m, PlosOne_W[i, seq(2,t.m, by = 3)], type = "b", col = "red", pch = 16)
-abline(h =trait.scores[i,2], xpd = FALSE)
+abline(h =trait.scores[i,2], xpd = FALSE, lty=2)
 #abline(h = mean(as.numeric(PlosOne_W[i, seq(2,t.m, by = 3)]), na.rm = T), col="green")
 #abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
-legend(31.5, 5, legend = c("Observed", "Predicted"), col = c( "red", "blue"),
-       lty = 1, pch = 16, lwd = 2, cex = 1)
+legend(31.5, 5, legend = c("Observed", "Predicted", "Trait"), col = c( "red", "blue", "black"),
+       lty = c(1,1,2), pch = c(16,16,NA), lwd = 2, cex = 1)
 
 
 # plot sad observed vs latent state variables person i
@@ -1109,26 +1154,47 @@ plot(tso_pred_sad[i,],
      type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
      xlab="Measurement occasion", cex.lab = 1.5, ylab = "Sad", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
 points(1:m, PlosOne_W[i, seq(3,t.m, by = 3)], type = "b", pch= 16, col = "red")
-abline(h =trait.scores[i,3], xpd = FALSE)
+abline(h =trait.scores[i,3], xpd = FALSE, lty=2)
 #abline(h = mean(as.numeric(PlosOne_W[i, seq(3,t.m, by = 3)]), na.rm = T), col="green")
 #abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
 
 
 # plot variance components by variable.
-var.comp <- cbind(tso_rel, tso_pred, tso_upred, tso_spe)
+var.comp <- cbind(tso_rel, tso_con, tso_spe, tso_pred, tso_upred)
 
-par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,6), xpd = NA)
-matplot(var.comp[seq(1, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "green", "blue"),
-        ylab = "Worry", xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # worry variance components
+par(mfrow= c(3,1),mar= c(0.2,5,0.2,2), oma= c(4,0,1,6), xpd = NA)
+matplot(var.comp[seq(1, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "blue", "green", "orange"),
+        ylab = "Worry", xaxt="n",xlab="", cex.lab = 1.5, lty = c(1,1,1,2,2), pch =c(16,16,16,NA,NA), las = 1) # worry variance components
 
-matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "green", "blue"),
-        ylab = "Fear",xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # fear variance components
-legend(32, 0.75, legend = c("Rel", "Pred", "UPred", "Spe"), col = c("black", "red", "green", "blue"),
-       lty = 1, lwd = 2, pch = 16, cex = 1)
+matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "blue", "green", "orange"),
+        ylab = "Fear",xaxt="n",xlab="", cex.lab = 1.5, lty = c(1,1,1,2,2), pch =c(16,16,16,NA,NA), las = 1) # fear variance components
+legend(32, 0.75, legend = c("Rel", "Con", "Spe", "Pred", "UPred"), col = c("black", "red", "blue", "green", "orange"),
+       lty = c(1,1,1,2,2), lwd = 2, pch = c(16,16,16,NA,NA), cex = 1)
 
-matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "red", "green", "blue"),
+matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "red", "blue", "green", "orange"),
         ylab = "Sad", xlab = "Measurement occasion", cex.lab = 1.5, 
-        lty = 1, pch =16, las = 1) # sad variance components
+        lty = c(1,1,1,2,2), pch = c(16,16,16,NA,NA), las = 1) # sad variance components
+
+mean(var.comp[seq(1,t.m, by =3),1])
+sd(var.comp[seq(1,t.m, by =3),1])
+mean(var.comp[seq(1,t.m, by =3),2])
+sd(var.comp[seq(1,t.m, by =3),2])
+mean(var.comp[seq(1,t.m, by =3),3])
+sd(var.comp[seq(1,t.m, by =3),3])
+
+mean(var.comp[seq(2,t.m, by =3),1])
+sd(var.comp[seq(2,t.m, by =3),1])
+mean(var.comp[seq(2,t.m, by =3),2])
+sd(var.comp[seq(2,t.m, by =3),2])
+mean(var.comp[seq(2,t.m, by =3),3])
+sd(var.comp[seq(2,t.m, by =3),3])
+
+mean(var.comp[seq(3,t.m, by =3),1])
+sd(var.comp[seq(3,t.m, by =3),1])
+mean(var.comp[seq(3,t.m, by =3),2])
+sd(var.comp[seq(3,t.m, by =3),2])
+mean(var.comp[seq(3,t.m, by =3),3])
+sd(var.comp[seq(3,t.m, by =3),3])
 
 
 # 7.2 Selected CUTS model with om ----
@@ -1153,6 +1219,9 @@ us_var <- parameterEstimates(cuts)[ (4*t.m+((m+4)*(m+3)/2)+1):(5*t.m+((m+4)*(m+3
 cs_var <- parameterEstimates(cuts)[ (5*t.m+((m+4)*(m+3)/2)+1):(5*t.m+((m+4)*(m+3)/2)+m),"est"] # variance common states
 ut_var <- parameterEstimates(cuts)[ (5*t.m+((m+4)*(m+3)/2)+m+1):(5*t.m+((m+4)*(m+3)/2)+m+3),"est"] # variance unique traits
 ct_var <- parameterEstimates(cuts)[ (5*t.m+((m+4)*(m+3)/2)+m+4),"est"]# variance common trait
+
+#organize unique trait loadings if they are not equal to 1.
+lut <- c(rbind(lut[1:m], lut[(m+1):(2*m)], lut[(2*m+1):(3*m)]))
 
 #7.2.3 Compute variance coefficients
 #Total variance
@@ -1187,13 +1256,13 @@ cuts_pred_sad <- matrix(lct[seq(3, 90, by = 3)],129,m, byrow = TRUE)*CT.scores +
 # 7.2.5 Plots
 i <- 53 # select person to plot
 # plot worry observed vs latent state variables person i
-par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,8), xpd = NA)
+par(mfrow= c(3,1),mar= c(0.2,5,0.2,2), oma= c(4,0,1,8), xpd = NA)
 
 plot(cuts_pred_worry[i,], 
      type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
      xaxt="n",xlab="", cex.lab = 1.5, ylab = "Worry", las = 1)# traceplot of the latent state scores of one person
 points(1:m, PlosOne_W[i, seq(1,t.m, by = 3)], type = "b", col = "red", pch = 16)
-abline(h =CT.scores[i], xpd = FALSE) #plot latent trait factor score
+abline(h =CT.scores[i], xpd = FALSE, lty =2) #plot latent trait factor score
 #abline(h = mean(as.numeric(PlosOne_W[i, seq(1,t.m, by = 3)]), na.rm = T), 
 #      col="green", xpd = TRUE) # plot mean of worry of person i
 #abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange", 
@@ -1204,11 +1273,11 @@ plot(cuts_pred_fear[i,],
      type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
      xaxt="n",xlab="", cex.lab = 1.5,ylab = "Fear", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
 points(1:m, PlosOne_W[i, seq(2,t.m, by = 3)], type = "b", col = "red", pch = 16)
-abline(h =CT.scores[i], xpd = FALSE)
+abline(h =CT.scores[i], xpd = FALSE, lty =2)
 #abline(h = mean(as.numeric(PlosOne_W[i, seq(2,t.m, by = 3)]), na.rm = T), col="green")
 #abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
-legend(31.5, 5, legend = c("Observed", "Predicted"), col = c( "red", "blue"),
-       lty = 1, pch = 16, lwd = 2, cex = 1)
+legend(31.5, 5, legend = c("Observed", "Predicted", "Trait"), col = c( "red", "blue", "black"),
+       lty = c(1,1,2), pch = c(16,16,NA), lwd = 2, cex = 1)
 
 
 # plot sad observed vs latent state variables person i
@@ -1216,27 +1285,101 @@ plot(cuts_pred_sad[i,],
      type = "b", pch = 16, ylim = c(0,7.5), col = "blue",
      xlab="Measurement occasion", cex.lab = 1.5, ylab = "Sad", las = 1)# traceplot of the latent state scores (multiplied by loadings) of one person
 points(1:m, PlosOne_W[i, seq(3,t.m, by = 3)], type = "b", pch= 16, col = "red")
-abline(h =CT.scores[i], xpd = FALSE)
+abline(h =CT.scores[i], xpd = FALSE, lty =2)
 #abline(h = mean(as.numeric(PlosOne_W[i, seq(3,t.m, by = 3)]), na.rm = T), col="green")
 #abline(h = mean(as.numeric(PlosOne_W[i, 1:t.m]), na.rm = T), col="orange")
 
 
 # plot variance components by variable.
-var.comp <- cbind(cuts_rel, cuts_ccon, cuts_ucon, cuts_spe)
+var.comp <- cbind(cuts_rel, cuts_tcon, cuts_spe, cuts_ccon, cuts_ucon)
 
-par(mfrow= c(3,1),mar= c(0,5,0,2), oma= c(4,0,1,6), xpd = NA)
-matplot(var.comp[seq(1, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "green", "blue"),
-        ylab = "Worry", xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # worry variance components
+par(mfrow= c(3,1),mar= c(0.2,5,0.2,2), oma= c(4,0,1,6), xpd = NA)
+matplot(var.comp[seq(1, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "blue", "green", "orange"),
+        ylab = "Worry", xaxt="n",xlab="", cex.lab = 1.5, lty = c(1,1,1,2,2), pch =c(16,16,16,NA,NA), las = 1) # worry variance components
 
-matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "green", "blue"),
-        ylab = "Fear",xaxt="n",xlab="", cex.lab = 1.5, lty = 1, pch =16, las = 1) # fear variance components
-legend(32, 0.75, legend = c("Rel", "CCon", "UCon", "Spe"), col = c("black", "red", "green", "blue"),
-       lty = 1, lwd = 2, pch = 16, cex = 1)
+matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "blue", "green", "orange"),
+        ylab = "Fear",xaxt="n",xlab="", cex.lab = 1.5, lty = c(1,1,1,2,2), pch =c(16,16,16,NA,NA), las = 1) # fear variance components
+legend(32, 0.75, legend = c("Rel", "TCon", "Spe", "CCon", "UCon"), col = c("black", "red", "blue", "green", "orange"),
+       lty = c(1,1,1,2,2), lwd = 2, pch = c(16,16,16,NA,NA), cex = 1)
 
-matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "red", "green", "blue"),
+matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "red", "blue", "green", "orange"),
         ylab = "Sad", xlab = "Measurement occasion", cex.lab = 1.5, 
-        lty = 1, pch =16, las = 1) # sad variance components
+        lty = c(1,1,1,2,2), pch = c(16,16,16,NA,NA), las = 1) # sad variance components
 
-  
+mean(var.comp[seq(1,t.m, by =3),1])
+sd(var.comp[seq(1,t.m, by =3),1])
+mean(var.comp[seq(1,t.m, by =3),2])
+sd(var.comp[seq(1,t.m, by =3),2])
+mean(var.comp[seq(1,t.m, by =3),3])
+sd(var.comp[seq(1,t.m, by =3),3])
+
+mean(var.comp[seq(2,t.m, by =3),1])
+sd(var.comp[seq(2,t.m, by =3),1])
+mean(var.comp[seq(2,t.m, by =3),2])
+sd(var.comp[seq(2,t.m, by =3),2])
+mean(var.comp[seq(2,t.m, by =3),3])
+sd(var.comp[seq(2,t.m, by =3),3])
+
+mean(var.comp[seq(3,t.m, by =3),1])
+sd(var.comp[seq(3,t.m, by =3),1])
+mean(var.comp[seq(3,t.m, by =3),2])
+sd(var.comp[seq(3,t.m, by =3),2])
+mean(var.comp[seq(3,t.m, by =3),3])
+sd(var.comp[seq(3,t.m, by =3),3])
+
+# 7.3 Selected CUTS m-1 model Appendix D ----
+
+m <- 30
+t.m <- 3*m
+cuts <- fit.cuts.lavaan.h1
+
+# 7.3.1 Extract parameters from the lavaan object
+lct <- parameterEstimates(cuts)[ (t.m+1):(2*t.m),"est"] #loadings common traits
+lut <- parameterEstimates(cuts)[(2*t.m+1):(2*t.m+2*m), "est"] #loadings unique traits
+lcs <- parameterEstimates(cuts)[ 1:t.m,"est"] #loadings common states
+
+cuts.ins <- parameterEstimates(cuts)[(2*t.m+2*m+1):(3*t.m+2*m), "est"] #intercepts 
+
+us_var <- parameterEstimates(cuts)[ (3*t.m+2*m+((m+3)*(m+2)/2)+1):(4*t.m+2*m+((m+3)*(m+2)/2)),"est"] # variance unique states
+cs_var <- parameterEstimates(cuts)[ (4*t.m+2*m+((m+3)*(m+2)/2)+1):(4*t.m+3*m+((m+3)*(m+2)/2)),"est"] # variance common states
+ut_var <- parameterEstimates(cuts)[ (4*t.m+3*m+((m+3)*(m+2)/2)+1):(4*t.m+3*m+((m+3)*(m+2)/2)+2),"est"] # variance unique traits
+ct_var <- parameterEstimates(cuts)[ (4*t.m+3*m+((m+3)*(m+2)/2)+3),"est"]# variance common trait
+
+lut <- c(rep(0, m), lut)
+lut <- c(rbind(lut[1:m], lut[(m+1):(2*m)], lut[(2*m+1):(3*m)]))
+ut_var <- c(0, ut_var)
+
+#7.3.2 Compute variance coefficients
+#Total variance
+cuts_tot_var <- (lct^2)*ct_var + (lut^2)*ut_var + (lcs^2)*rep(cs_var, each = 3) + us_var
+#Reliability
+cuts_rel <-  ((lct^2)*ct_var + (lut^2)*ut_var + (lcs^2)*rep(cs_var, each = 3)) / cuts_tot_var
+#Total Consistency
+cuts_tcon <- ((lct^2)*ct_var + (lut^2)*ut_var) / cuts_tot_var
+#Occasion specificity
+cuts_spe <- ((lcs^2)*rep(cs_var, each = 3)) / cuts_tot_var
+#Common consistency
+cuts_ccon <- ((lct^2)*ct_var) / cuts_tot_var
+#Unique consistency
+cuts_ucon <- ((lut^2)*ut_var) / cuts_tot_var
+
+# 7.2.5 Plots
+
+# plot variance components by variable.
+var.comp <- cbind(cuts_rel, cuts_tcon, cuts_spe, cuts_ccon, cuts_ucon)
+
+par(mfrow= c(3,1),mar= c(0.2,5,0.2,2), oma= c(4,0,1,6), xpd = NA)
+matplot(var.comp[seq(1, t.m, by= 3),1:3], type = "b", ylim = c(0, 1), col = c("black", "red", "blue", "green", "orange"),
+        ylab = "Worry", xaxt="n",xlab="", cex.lab = 1.5, lty = c(1,1,1,2,2), pch =c(16,16,16,NA,NA), las = 1) # worry variance components
+
+matplot(var.comp[seq(2, t.m, by= 3),], type = "b", ylim = c(0, 1), col = c("black", "red", "blue", "green", "orange"),
+        ylab = "Fear",xaxt="n",xlab="", cex.lab = 1.5, lty = c(1,1,1,2,2), pch =c(16,16,16,NA,NA), las = 1) # fear variance components
+legend(32, 0.75, legend = c("Rel", "TCon", "Spe", "CCon", "UCon"), col = c("black", "red", "blue", "green", "orange"),
+       lty = c(1,1,1,2,2), lwd = 2, pch = c(16,16,16,NA,NA), cex = 1)
+
+matplot(var.comp[seq(3, t.m, by= 3),], type = "b",ylim = c(0, 1), col = c("black", "red", "blue", "green", "orange"),
+        ylab = "Sad", xlab = "Measurement occasion", cex.lab = 1.5, 
+        lty = c(1,1,1,2,2), pch = c(16,16,16,NA,NA), las = 1) # sad variance components
+
 
 

@@ -34,7 +34,7 @@ write.cuts.to.Mplus <- function(dt, nstate,
                                 method.trait = "om",
                                 scale.invariance = list(int = FALSE, lambda = FALSE),
                                 state.trait.invariance = FALSE,
-                                fixed.method.loadings = FALSE,
+                                fixed.method.loadings = TRUE,
                                 homocedasticity.assumption = list(error = FALSE, cs.red = FALSE, ut.red = FALSE),
                                 fixed.means = list(cs = FALSE, ut = FALSE, ct = FALSE) ){
 

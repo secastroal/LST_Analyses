@@ -14,7 +14,7 @@
 #     It can be define for both intercepts and loadings of the latent states and of the
 #     latent traits.
 
-write.msst.to.Mplus <- function (dt, neta, ntheta, 
+write.msst.to.Mplus <- function (dt, neta, ntheta = 1, 
                                  equiv.assumption = list(tau = "cong", theta = "equi"), 
                                  scale.invariance = list(lait0 = FALSE, lait1 = FALSE, lat0 = FALSE, lat1 = FALSE))
 {
