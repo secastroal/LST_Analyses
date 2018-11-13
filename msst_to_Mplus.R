@@ -16,7 +16,8 @@
 
 write.msst.to.Mplus <- function (dt, neta, ntheta = 1, 
                                  equiv.assumption = list(tau = "cong", theta = "equi"), 
-                                 scale.invariance = list(lait0 = FALSE, lait1 = FALSE, lat0 = FALSE, lat1 = FALSE))
+                                 scale.invariance = list(lait0 = FALSE, lait1 = FALSE, lat0 = FALSE, lat1 = FALSE),
+                                 homocedasticity.assumption = list(error = FALSE, state.red = FALSE))
 {
 nobs <- dim(dt)[2]  
 #labels
@@ -103,8 +104,17 @@ if(equiv.assumption$theta == "cong"){
     int <- rep(int[1:(neta/ntheta)], ntheta)
   }
   if(scale.invariance$lat1){
-    lat <- rep(lat[1:(nobs/neta)], neta)
+    lat <- rep(lat[1:(neta/ntheta)], ntheta)
   }
+}
+
+if(homocedasticity.assumption$error){
+  o_red <- rep(o_red[1:(nobs/neta)], neta)
+}
+
+
+if(homocedasticity.assumption$state.red){
+  s_red <- rep(s_red[1:(neta/ntheta)], ntheta)
 }
 
 # write equations for the latent states

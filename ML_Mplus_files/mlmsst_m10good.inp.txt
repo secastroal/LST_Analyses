@@ -1,0 +1,50 @@
+TITLE: Your title goes here
+DATA: FILE = "ML_Mplus_files/mlmsst_m10.dat";
+VARIABLE: 
+NAMES = subjn worry fear sad; 
+MISSING=.;
+USEVAR = worry fear sad;
+CLUSTER = subjn;
+
+ANALYSIS:
+TYPE = TWOLEVEL;
+ESTIMATOR = ML;
+ITERATIONS = 500000;
+
+MODEL:
+
+%WITHIN%
+
+! common states
+eta BY worry@1
+fear (las2)
+sad (las3) ;
+worry(o_err1) ;
+fear(o_err2) ;
+sad(o_err3) ;
+
+
+%BETWEEN%
+
+! common trait
+theta1 BY worry@1;
+theta2 BY fear@1;
+theta3 BY sad@1;
+
+theta BY theta1@1
+theta2 (lat2)
+theta3 (lat3) ;
+[worry@0] ;
+[fear@0] ;
+[sad@0] ;
+[theta1@0] ;
+[theta2*] (int2) ;
+[theta3*] (int3) ;
+[theta*] ;
+worry@0;
+fear@0;
+sad@0;
+theta1@0;
+theta2@0;
+theta3@0;
+

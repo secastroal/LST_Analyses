@@ -72,7 +72,7 @@ names(PlosOne_W) <- gsub("\\.", "", names(PlosOne_W))
 
 # data subset to allow for several analyses with diferent number of measurement occasions.
 
-m <- 30 # number of measurement occasions
+m <- 10 # number of measurement occasions
 t.m <- m*3 # total number of variables
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
