@@ -160,7 +160,52 @@ rm(file.name, analysis_syntax, model_syntax)
 
 # TSO vs MLTSO ----
 
-mltso <- write.mltso.to.Mplus(PlosOne_C[, c("worry", "fear", "sad")])
+m <- 10 # number of measurement occasions
+t.m <- m*3 # total number of variables
+PlosOne_Cr <- PlosOne_C[PlosOne_C$time <= m, c("subjn","worry", "fear", "sad") ]
+PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
+
+file.name <- paste0("mltso_m", m)
+
+prepareMplusData(PlosOne_Cr,paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
+
+analysis_syntax <- "USEVAR = worry fear sad;
+CLUSTER = subjn;
+
+ANALYSIS:
+TYPE = TWOLEVEL;
+ESTIMATOR = ML;
+ITERATIONS = 500000;" # increase H1 iterations
+
+ml_syntax <- write.mltso.to.Mplus(PlosOne_Cr[, -1])
+
+write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
+
+runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
+
+rm(file.name, analysis_syntax, ml_syntax)
+
+file.name <- paste0("msst_m", m)
+
+prepareMplusData(PlosOne_Wr,paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
+
+analysis_syntax <- "ANALYSIS:
+H1ITERATIONS = 5000;" # increase H1 iterations
+
+
+model_syntax <- write.msst.to.Mplus(PlosOne_Wr, neta = m, ntheta = 1, 
+                                    equiv.assumption = list(tau = "cong", theta = "equi"),
+                                    scale.invariance = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
+                                    homocedasticity.assumption = list(error = TRUE, state.red = TRUE))
+
+
+write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
+write(model_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
+
+runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
+
+rm(file.name, analysis_syntax, model_syntax)
 
 # End ----
 ##
