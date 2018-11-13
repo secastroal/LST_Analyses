@@ -13,7 +13,6 @@ ITERATIONS = 500000;
 
 MODEL:
 
-
 %WITHIN%
 
 ! common states
@@ -23,7 +22,6 @@ sad (las3) ;
 worry(o_err1) ;
 fear(o_err2) ;
 sad(o_err3) ;
-eta;
 
 
 %BETWEEN%
@@ -49,4 +47,3 @@ sad@0;
 theta1@0;
 theta2@0;
 theta3@0;
-theta;

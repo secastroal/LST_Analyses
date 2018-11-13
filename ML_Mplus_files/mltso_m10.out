@@ -1,0 +1,81 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+11/13/2018   4:02 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "ML_Mplus_files/mltso_m10.dat";
+  VARIABLE:
+  NAMES = subjn worry fear sad;
+  MISSING=.;
+  USEVAR = worry fear sad;
+  CLUSTER = subjn;
+
+  ANALYSIS:
+  TYPE = TWOLEVEL;
+  ESTIMATOR = BAYES;
+
+  MODEL:
+
+  %WITHIN%
+
+  ! common states
+  eta BY worry@1
+  fear
+  sad  (&1) ;
+  eta ON eta&1 ;
+  worry(o_err1) ;
+  fear(o_err2) ;
+  sad(o_err3) ;
+  eta(s_var) ;
+
+  %BETWEEN%
+
+  ! common trait
+  theta1 BY worry@1 ;
+  theta2 BY fear@1 ;
+  theta3 BY sad@1 ;
+  [worry@0] ;
+  [fear] ;
+  [sad] ;
+  [theta1*] ;
+  [theta2*] ;
+  [theta3*] ;
+  worry@0;
+  fear@0;
+  sad@0;
+  theta1(t_var) ;
+  theta2(t_var) ;
+  theta3(t_var) ;
+
+
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      WORRY       10766 10754 10758 10742 10727 10755 10856
+      FEAR        10826 10786 10796 10800 10812 10766 10747 10754 10771 10830 10844 10758 10799
+                  10768 10746 10843 10852 10854 10802 10740 10741 10742 10814 10835 10842 10753
+                  10851 10755 10757 10861 10792 10863
+      SAD         10796 10812 10747 10843 10855 10740 10742 10769 10834 10851 10755
+
+*** WARNING
+  Data set contains cases with missing on all variables.  Cases that appeared before the first
+  case with observed data and that appeared after the last case with observed data were not
+  included in the analysis.  Number of deleted cases:  112
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Your title goes here
+
+*** FATAL ERROR
+     VARIANCE COVARIANCE MATRIX IS NOT SUPPORTED WITH ESTIMATOR=BAYES.
+     WITHIN A VARIANCE COVARIANCE BLOCK TWO OR MORE PARAMETERS ARE EQUAL.
+     ONLY FULL VARIANCE COVARIANCE BLOCKS WITH UNEQUAL PARAMETERS ARE ALLOWED.
+     USE ALGORITHM=MH TO RESOLVE THIS PROBLEM.
+

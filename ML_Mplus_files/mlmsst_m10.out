@@ -1,6 +1,6 @@
 Mplus VERSION 8
 MUTHEN & MUTHEN
-11/13/2018   3:26 PM
+11/13/2018   5:02 PM
 
 INPUT INSTRUCTIONS
 
@@ -19,7 +19,6 @@ INPUT INSTRUCTIONS
 
   MODEL:
 
-
   %WITHIN%
 
   ! common states
@@ -29,7 +28,6 @@ INPUT INSTRUCTIONS
   worry(o_err1) ;
   fear(o_err2) ;
   sad(o_err3) ;
-  eta;
 
 
   %BETWEEN%
@@ -55,7 +53,6 @@ INPUT INSTRUCTIONS
   theta1@0;
   theta2@0;
   theta3@0;
-  theta;
 
 
 
@@ -284,8 +281,8 @@ QUALITY OF NUMERICAL RESULTS
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  15:26:47
-        Ending Time:  15:26:48
+     Beginning Time:  17:02:35
+        Ending Time:  17:02:36
        Elapsed Time:  00:00:01
 
 
