@@ -9,6 +9,8 @@ CLUSTER = subjn;
 ANALYSIS:
 TYPE = TWOLEVEL;
 ESTIMATOR = BAYES;
+BITERATIONS = 30000 (10000);
+PROCESSORS = 2;
 
 MODEL:
 
@@ -19,10 +21,12 @@ eta BY worry@1
 fear
 sad  (&1) ;
 eta ON eta&1 ;
-worry(o_err1) ;
-fear(o_err2) ;
-sad(o_err3) ;
-eta(s_var) ;
+
+worry;
+fear;
+sad;
+
+eta;
 
 %BETWEEN%
 
@@ -30,15 +34,18 @@ eta(s_var) ;
 theta1 BY worry@1 ;
 theta2 BY fear@1 ;
 theta3 BY sad@1 ;
-[worry@0] ;
-[fear] ;
-[sad] ;
-[theta1*] ;
-[theta2*] ;
-[theta3*] ;
+[worry@0];
+[fear@0];
+[sad@0];
+
+[theta1*]
+[theta2*];
+[theta3*];
+
 worry@0;
 fear@0;
 sad@0;
-theta1(t_var) ;
-theta2(t_var) ;
-theta3(t_var) ;
+theta1 ;
+theta2 ;
+theta3 ;
+

@@ -1,6 +1,6 @@
 Mplus VERSION 8
 MUTHEN & MUTHEN
-11/13/2018   4:02 PM
+11/14/2018   4:20 PM
 
 INPUT INSTRUCTIONS
 
@@ -15,6 +15,8 @@ INPUT INSTRUCTIONS
   ANALYSIS:
   TYPE = TWOLEVEL;
   ESTIMATOR = BAYES;
+  BITERATIONS = 30000 (10000);
+  PROCESSORS = 2;
 
   MODEL:
 
@@ -25,10 +27,12 @@ INPUT INSTRUCTIONS
   fear
   sad  (&1) ;
   eta ON eta&1 ;
-  worry(o_err1) ;
-  fear(o_err2) ;
-  sad(o_err3) ;
-  eta(s_var) ;
+
+  worry;
+  fear;
+  sad;
+
+  eta;
 
   %BETWEEN%
 
@@ -36,18 +40,21 @@ INPUT INSTRUCTIONS
   theta1 BY worry@1 ;
   theta2 BY fear@1 ;
   theta3 BY sad@1 ;
-  [worry@0] ;
-  [fear] ;
-  [sad] ;
-  [theta1*] ;
-  [theta2*] ;
-  [theta3*] ;
+  [worry@0];
+  [fear@0];
+  [sad@0];
+
+  [theta1*]
+  [theta2*];
+  [theta3*];
+
   worry@0;
   fear@0;
   sad@0;
-  theta1(t_var) ;
-  theta2(t_var) ;
-  theta3(t_var) ;
+  theta1 ;
+  theta2 ;
+  theta3 ;
+
 
 
 
@@ -73,9 +80,202 @@ INPUT INSTRUCTIONS
 
 Your title goes here
 
-*** FATAL ERROR
-     VARIANCE COVARIANCE MATRIX IS NOT SUPPORTED WITH ESTIMATOR=BAYES.
-     WITHIN A VARIANCE COVARIANCE BLOCK TWO OR MORE PARAMETERS ARE EQUAL.
-     ONLY FULL VARIANCE COVARIANCE BLOCKS WITH UNEQUAL PARAMETERS ARE ALLOWED.
-     USE ALGORITHM=MH TO RESOLVE THIS PROBLEM.
+SUMMARY OF ANALYSIS
 
+Number of groups                                                 1
+Number of observations                                        1188
+
+Number of dependent variables                                    3
+Number of independent variables                                  0
+Number of continuous latent variables                            5
+
+Observed dependent variables
+
+  Continuous
+   WORRY       FEAR        SAD
+
+Continuous latent variables
+   ETA         ETA&1       THETA1      THETA2      THETA3
+
+Variables with special functions
+
+  Cluster variable      SUBJN
+
+Estimator                                                    BAYES
+Specifications for Bayesian Estimation
+  Point estimate                                            MEDIAN
+  Number of Markov chain Monte Carlo (MCMC) chains               2
+  Random seed for the first chain                                0
+  Starting value information                           UNPERTURBED
+  Treatment of categorical mediator                         LATENT
+  Algorithm used for Markov chain Monte Carlo           GIBBS(PX1)
+  Convergence criterion                                  0.500D-01
+  Maximum number of iterations                               30000
+  K-th iteration used for thinning                               1
+
+Input data file(s)
+  ML_Mplus_files/mltso_m10.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of clusters                        129
+
+       Size (s)    Cluster ID with Size s
+
+          5        10720
+          6        10728 10826 10858
+          7        10786 10796 10800 10812 10750 10766
+          8        10781 10747 10795 10722 10754 10735 10817 10819 10771
+                   10827 10830 10836 10837 10844 10845 10780
+          9        10787 10790 10791 10793 10738 10758 10799 10760 10801
+                   10807 10808 10810 10764 10765 10739 10821 10823 10768
+                   10744 10746 10831 10729 10782 10838 10840 10841 10843
+                   10784 10785 10847 10852 10854 10855 10725 10862
+         10        10724 10794 10759 10726 10797 10761 10762 10763 10802
+                   10803 10804 10805 10740 10741 10809 10742 10811 10732
+                   10813 10814 10815 10816 10769 10818 10770 10820 10734
+                   10822 10772 10824 10773 10774 10828 10829 10775 10776
+                   10832 10833 10834 10835 10777 10778 10779 10839 10727
+                   10748 10842 10736 10783 10751 10846 10753 10848 10849
+                   10850 10851 10737 10853 10755 10756 10856 10857 10757
+                   10859 10860 10861 10792 10863
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+     Number of missing data patterns             5
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              WORRY         FEAR          SAD
+              ________      ________      ________
+ WORRY          0.897
+ FEAR           0.895         0.898
+ SAD            0.895         0.896         0.898
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     WORRY                 3.018       0.487       1.000   33.11%       1.000      2.000      3.000
+            1066.000       3.676      -1.094       7.000    3.75%       3.000      5.000
+     FEAR                  1.861       1.629       1.000   58.86%       1.000      1.000      1.000
+            1067.000       1.761       1.796       7.000    0.28%       2.000      3.000
+     SAD                   2.604       0.795       1.000   35.05%       1.000      2.000      2.000
+            1067.000       2.663      -0.347       7.000    1.97%       3.000      4.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     USE THE FBITERATIONS OPTION TO INCREASE THE NUMBER OF ITERATIONS BY A FACTOR
+     OF AT LEAST TWO TO CHECK CONVERGENCE AND THAT THE PSR VALUE DOES NOT INCREASE.
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                              16
+
+Information Criteria
+
+          Deviance (DIC)                         9837.167
+          Estimated Number of Parameters (pD)     894.605
+
+
+
+MODEL RESULTS
+
+                                Posterior  One-Tailed         95% C.I.
+                    Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%  Significance
+
+Within Level
+
+ ETA      BY
+    WORRY              1.000       0.000      0.000       1.000       1.000
+    FEAR               0.595       0.050      0.000       0.507       0.703      *
+    SAD                0.753       0.063      0.000       0.643       0.894      *
+
+ ETA        ON
+    ETA&1              0.567       0.057      0.000       0.455       0.681      *
+
+ Residual Variances
+    WORRY              1.161       0.099      0.000       0.979       1.361      *
+    FEAR               0.767       0.047      0.000       0.680       0.864      *
+    SAD                0.994       0.066      0.000       0.872       1.130      *
+    ETA                1.020       0.130      0.000       0.772       1.279      *
+
+Between Level
+
+ THETA1   BY
+    WORRY              1.000       0.000      0.000       1.000       1.000
+
+ THETA2   BY
+    FEAR               1.000       0.000      0.000       1.000       1.000
+
+ THETA3   BY
+    SAD                1.000       0.000      0.000       1.000       1.000
+
+ THETA2   WITH
+    THETA1             0.371       0.145      0.004       0.094       0.669      *
+
+ THETA3   WITH
+    THETA1             0.592       0.187      0.000       0.258       1.001      *
+    THETA2             0.446       0.124      0.000       0.226       0.722      *
+
+ Means
+    THETA1             3.043       0.118      0.000       2.807       3.273      *
+    THETA2             1.881       0.080      0.000       1.723       2.040      *
+    THETA3             2.629       0.103      0.000       2.425       2.829      *
+
+ Intercepts
+    WORRY              0.000       0.000      1.000       0.000       0.000
+    FEAR               0.000       0.000      1.000       0.000       0.000
+    SAD                0.000       0.000      1.000       0.000       0.000
+
+ Variances
+    THETA1             1.078       0.262      0.000       0.605       1.638      *
+    THETA2             0.525       0.113      0.000       0.328       0.781      *
+    THETA3             0.910       0.184      0.000       0.605       1.328      *
+
+ Residual Variances
+    WORRY              0.001       0.000      0.000       0.001       0.001
+    FEAR               0.001       0.000      0.000       0.001       0.001
+    SAD                0.001       0.000      0.000       0.001       0.001
+
+
+DIAGRAM INFORMATION
+
+  Mplus diagrams are currently not available for multilevel analysis.
+  No diagram output was produced.
+
+
+     Beginning Time:  16:20:54
+        Ending Time:  16:21:09
+       Elapsed Time:  00:00:15
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen
