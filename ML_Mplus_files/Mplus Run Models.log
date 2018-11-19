@@ -1,10 +1,10 @@
-------Begin Mplus Model Run: 13nov.2018 17:02:35------
-Target directory: C:/Users/Sebastian/Dropbox/Research_Master/2017-2018/Master Thesis/LST_Analyses/ML_Mplus_files
+------Begin Mplus Model Run: 19nov2018 18:06:57------
+Target directory: X:/My Documents/Git/LST_Analyses/ML_Mplus_files
 Run options:
 	Recursive (run models in subdirectories): FALSE
 	Show output on console: FALSE
 	Replace existing outfile: always
 ------
-Currently running model: mlmsst_m10.inp
+Currently running model: tso_m10.inp
 
-------End Mplus Model Run: 13nov.2018 17:02:36------
+------End Mplus Model Run: 19nov2018 18:06:59------

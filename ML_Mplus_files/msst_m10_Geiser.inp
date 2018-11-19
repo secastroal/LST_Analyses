@@ -1,0 +1,211 @@
+TITLE: Your title goes here
+DATA: FILE = "ML_Mplus_files/msst_m10.dat";
+VARIABLE: 
+NAMES = worry1 fear1 sad1 worry2 fear2 sad2 worry3 fear3 sad3 worry4 fear4 sad4
+     worry5 fear5 sad5 worry6 fear6 sad6 worry7 fear7 sad7 worry8 fear8 sad8 worry9
+     fear9 sad9 worry10 fear10 sad10; 
+MISSING=.;
+ANALYSIS:
+H1ITERATIONS = 5000;
+
+MODEL:
+
+! common states
+CS1 BY worry1@1
+fear1 (lcs21)
+sad1 (lcs31) ;
+CS2 BY worry2@1
+fear2 (lcs21)
+sad2 (lcs31) ;
+CS3 BY worry3@1
+fear3 (lcs21)
+sad3 (lcs31) ;
+CS4 BY worry4@1
+fear4 (lcs21)
+sad4 (lcs31) ;
+CS5 BY worry5@1
+fear5 (lcs21)
+sad5 (lcs31) ;
+CS6 BY worry6@1
+fear6 (lcs21)
+sad6 (lcs31) ;
+CS7 BY worry7@1
+fear7 (lcs21)
+sad7 (lcs31) ;
+CS8 BY worry8@1
+fear8 (lcs21)
+sad8 (lcs31) ;
+CS9 BY worry9@1
+fear9 (lcs21)
+sad9 (lcs31) ;
+CS10 BY worry10@1
+fear10 (lcs21)
+sad10 (lcs31) ;
+
+! common trait
+CT BY worry1@1
+fear1 (lct21)
+sad1 (lct31)
+worry2@1
+fear2 (lct21)
+sad2 (lct31)
+worry3@1
+fear3 (lct21)
+sad3 (lct31)
+worry4@1
+fear4 (lct21)
+sad4 (lct31)
+worry5@1
+fear5 (lct21)
+sad5 (lct31)
+worry6@1
+fear6 (lct21)
+sad6 (lct31)
+worry7@1
+fear7 (lct21)
+sad7 (lct31)
+worry8@1
+fear8 (lct21)
+sad8 (lct31)
+worry9@1
+fear9 (lct21)
+sad9 (lct31)
+worry10@1
+fear10 (lct21)
+sad10 (lct31) ;
+
+! Intercepts and means
+[worry1@0] ;
+[fear1*] (ins21) ;
+[sad1*] (ins31) ;
+[worry2@0] ;
+[fear2*] (ins21) ;
+[sad2*] (ins31) ;
+[worry3@0] ;
+[fear3*] (ins21) ;
+[sad3*] (ins31) ;
+[worry4@0] ;
+[fear4*] (ins21) ;
+[sad4*] (ins31) ;
+[worry5@0] ;
+[fear5*] (ins21) ;
+[sad5*] (ins31) ;
+[worry6@0] ;
+[fear6*] (ins21) ;
+[sad6*] (ins31) ;
+[worry7@0] ;
+[fear7*] (ins21) ;
+[sad7*] (ins31) ;
+[worry8@0] ;
+[fear8*] (ins21) ;
+[sad8*] (ins31) ;
+[worry9@0] ;
+[fear9*] (ins21) ;
+[sad9*] (ins31) ;
+[worry10@0];
+[fear10*] (ins21) ;
+[sad10*] (ins31) ;
+[CT*];
+
+
+
+
+! Set 0 covariances
+CS1 WITH CS2@0
+CS3@0
+CS4@0
+CS5@0
+CS6@0
+CS7@0
+CS8@0
+CS9@0
+CS10@0
+CT@0 ;
+CS2 WITH CS3@0
+CS4@0
+CS5@0
+CS6@0
+CS7@0
+CS8@0
+CS9@0
+CS10@0
+CT@0 ;
+CS3 WITH CS4@0
+CS5@0
+CS6@0
+CS7@0
+CS8@0
+CS9@0
+CS10@0
+CT@0 ;
+CS4 WITH CS5@0
+CS6@0
+CS7@0
+CS8@0
+CS9@0
+CS10@0
+CT@0 ;
+CS5 WITH CS6@0
+CS7@0
+CS8@0
+CS9@0
+CS10@0
+CT@0 ;
+CS6 WITH CS7@0
+CS8@0
+CS9@0
+CS10@0
+CT@0 ;
+CS7 WITH CS8@0
+CS9@0
+CS10@0
+CT@0 ;
+CS8 WITH CS9@0
+CS10@0
+CT@0 ;
+CS9 WITH CS10@0
+CT@0 ;
+CS10 WITH CT@0 ;
+
+! Variance components
+worry1 (err11) ;
+fear1 (err21) ;
+sad1 (err31) ;
+worry2 (err11) ;
+fear2 (err21) ;
+sad2 (err31) ;
+worry3 (err11) ;
+fear3 (err21) ;
+sad3 (err31) ;
+worry4 (err11) ;
+fear4 (err21) ;
+sad4 (err31) ;
+worry5 (err11) ;
+fear5 (err21) ;
+sad5 (err31) ;
+worry6 (err11) ;
+fear6 (err21) ;
+sad6 (err31) ;
+worry7 (err11) ;
+fear7 (err21) ;
+sad7 (err31) ;
+worry8 (err11) ;
+fear8 (err21) ;
+sad8 (err31) ;
+worry9 (err11) ;
+fear9 (err21) ;
+sad9 (err31) ;
+worry10 (err11) ;
+fear10 (err21) ;
+sad10 (err31) ;
+CS1 (cs_var1) ;
+CS2 (cs_var1) ;
+CS3 (cs_var1) ;
+CS4 (cs_var1) ;
+CS5 (cs_var1) ;
+CS6 (cs_var1) ;
+CS7 (cs_var1) ;
+CS8 (cs_var1) ;
+CS9 (cs_var1) ;
+CS10 (cs_var1) ;
+CT (ct_var) ;
