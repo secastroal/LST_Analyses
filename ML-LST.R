@@ -186,7 +186,7 @@ runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
 
 rm(file.name, analysis_syntax, ml_syntax)
 
-file.name <- paste0("msst_m", m)
+file.name <- paste0("tso_m", m)
 
 prepareMplusData(PlosOne_Wr,paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
 
@@ -194,10 +194,11 @@ analysis_syntax <- "ANALYSIS:
 H1ITERATIONS = 5000;" # increase H1 iterations
 
 
-model_syntax <- write.msst.to.Mplus(PlosOne_Wr, neta = m, ntheta = 1, 
-                                    equiv.assumption = list(tau = "cong", theta = "equi"),
-                                    scale.invariance = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
-                                    homocedasticity.assumption = list(error = TRUE, state.red = TRUE))
+model_syntax <- write.tso.to.Mplus(PlosOne_Wr, m, figure = "3b",
+                                   equiv.assumption = list(occ = "cong", theta = "equi"),
+                                   scale.invariance = list(int = TRUE, lambda = TRUE),
+                                   homocedasticity.assumption = list(error = TRUE, occ.red = TRUE),
+                                   autoregressive.homogeneity = TRUE)
 
 
 write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
