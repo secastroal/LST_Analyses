@@ -1,0 +1,5 @@
+TITLE: Your title goes here
+DATA: FILE = "ML_Mplus_files/msst_m10_time.dat";
+VARIABLE: 
+NAMES = subjn worry fear sad time; 
+MISSING=.;
