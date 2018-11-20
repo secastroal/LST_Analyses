@@ -113,10 +113,10 @@ rm(file.name, analysis_syntax, model_syntax)
 
 m <- 10 # number of measurement occasions
 t.m <- m*3 # total number of variables
-PlosOne_Cr <- PlosOne_C[PlosOne_C$time <= m, c("subjn","worry", "fear", "sad") ]
+PlosOne_Cr <- PlosOne_C[PlosOne_C$time <= m, c("subjn","worry", "fear", "sad", "time") ]
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
-file.name <- paste0("mlmsst_m", m)
+file.name <- paste0("mlmsst_m", m,"_time")
 
 prepareMplusData(PlosOne_Cr,paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
 
@@ -137,7 +137,7 @@ runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
 
 rm(file.name, analysis_syntax, ml_syntax)
 
-file.name <- paste0("msst_m", m)
+file.name <- paste0("msst_m", m, "_time")
 
 prepareMplusData(PlosOne_Wr,paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
 
@@ -209,22 +209,3 @@ runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
 rm(file.name, analysis_syntax, model_syntax)
 
 # End ----
-##
-msst.file.name <- paste0("msst_h1_m", m)
-
-prepareMplusData(PlosOne_Wr,paste0("Mplus_files/",msst.file.name,".dat"), inpfile = T)
-
-iter <- "
-ANALYSIS:
-H1iterations=30000;" # increase H1 iterations
-
-msst_syntax <- write.msst.to.Mplus(PlosOne_Wr, neta = m, ntheta = 1, 
-                                   equiv.assumption = list(tau = "cong", theta = "cong"),
-                                   scale.invariance = list(lait0 = F, lait1 = F, lat0 = F, lat1 = F))
-
-write(iter, paste0("Mplus_files/",msst.file.name,".inp"), append = T) # Write Analysis specifications
-write(msst_syntax, paste0("Mplus_files/",msst.file.name,".inp"), append = T)
-
-runModels(paste0(getwd(),"/Mplus_files/",msst.file.name,".inp"))
-
-
