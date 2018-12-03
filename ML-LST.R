@@ -60,7 +60,7 @@ names(PlosOne_W) <- gsub("\\.", "", names(PlosOne_W))
 
 # CUTS vs MLCUTS ----
 
-m <- 10 # number of measurement occasions
+m <- 60 # number of measurement occasions
 t.m <- m*3 # total number of variables
 PlosOne_Cr <- PlosOne_C[PlosOne_C$time <= m, c("subjn","worry", "fear", "sad") ]
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
@@ -68,6 +68,11 @@ PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 file.name <- paste0("mlcuts_m", m)
 
 prepareMplusData(PlosOne_Cr,paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
+
+
+prepareMplusData(PlosOne_C[, c("subjn", "time", "worry", "fear", "sad", "cheer", "relax", "neur")],
+                 paste0("ML_Mplus_files/","PlosOneAllVar",".dat"), inpfile = T)
+
 
 analysis_syntax <- "USEVAR = worry fear sad;
 CLUSTER = subjn;
