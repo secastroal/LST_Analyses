@@ -1,0 +1,769 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+12/03/2018  11:47 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "ML_Mplus_files/mltso_m10.dat";
+  VARIABLE:
+  NAMES = subjn worry fear sad;
+  MISSING=.;
+  USEVAR = worry fear sad;
+  CLUSTER = subjn;
+
+  ANALYSIS:
+  TYPE = TWOLEVEL;
+  ESTIMATOR = BAYES;
+  BITERATIONS = (20000);
+  PROCESSORS = 2;
+  THIN = 20
+  BSEED = 123
+
+  MODEL:
+
+  %WITHIN%
+
+  ! common states
+  eta BY worry@1
+  fear
+  sad  (&1) ;
+  eta ON eta&1 ;
+
+  worry;
+  fear;
+  sad;
+
+  eta;
+
+  %BETWEEN%
+
+  ! common trait
+  theta1 BY worry@1 ;
+  theta2 BY fear@1 ;
+  theta3 BY sad@1 ;
+  [worry@0.001];
+  [fear@0.001];
+  [sad@0.001];
+
+  [theta1*]
+  [theta2*];
+  [theta3*];
+
+  worry@0.001;
+  fear@0.001;
+  sad@0.001;
+  theta1 ;
+  theta2 ;
+  theta3 ;
+
+  OUTPUT: TECH8;
+  PLOT: TYPE = PLOT3;
+
+
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      WORRY       10766 10754 10758 10742 10727 10755 10856
+      FEAR        10826 10786 10796 10800 10812 10766 10747 10754 10771 10830 10844 10758 10799
+                  10768 10746 10843 10852 10854 10802 10740 10741 10742 10814 10835 10842 10753
+                  10851 10755 10757 10861 10792 10863
+      SAD         10796 10812 10747 10843 10855 10740 10742 10769 10834 10851 10755
+
+*** WARNING
+  Data set contains cases with missing on all variables.  Cases that appeared before the first
+  case with observed data and that appeared after the last case with observed data were not
+  included in the analysis.  Number of deleted cases:  112
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        1188
+
+Number of dependent variables                                    3
+Number of independent variables                                  0
+Number of continuous latent variables                            5
+
+Observed dependent variables
+
+  Continuous
+   WORRY       FEAR        SAD
+
+Continuous latent variables
+   ETA         ETA&1       THETA1      THETA2      THETA3
+
+Variables with special functions
+
+  Cluster variable      SUBJN
+
+Estimator                                                    BAYES
+Specifications for Bayesian Estimation
+  Point estimate                                            MEDIAN
+  Number of Markov chain Monte Carlo (MCMC) chains               2
+  Random seed for the first chain                                0
+  Starting value information                           UNPERTURBED
+  Treatment of categorical mediator                         LATENT
+  Algorithm used for Markov chain Monte Carlo           GIBBS(PX1)
+  Convergence criterion                                  0.500D-01
+  Maximum number of iterations                               50000
+  K-th iteration used for thinning                              20
+
+Input data file(s)
+  ML_Mplus_files/mltso_m10.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of clusters                        129
+
+       Size (s)    Cluster ID with Size s
+
+          5        10720
+          6        10728 10826 10858
+          7        10786 10796 10800 10812 10750 10766
+          8        10781 10747 10795 10722 10754 10735 10817 10819 10771
+                   10827 10830 10836 10837 10844 10845 10780
+          9        10787 10790 10791 10793 10738 10758 10799 10760 10801
+                   10807 10808 10810 10764 10765 10739 10821 10823 10768
+                   10744 10746 10831 10729 10782 10838 10840 10841 10843
+                   10784 10785 10847 10852 10854 10855 10725 10862
+         10        10724 10794 10759 10726 10797 10761 10762 10763 10802
+                   10803 10804 10805 10740 10741 10809 10742 10811 10732
+                   10813 10814 10815 10816 10769 10818 10770 10820 10734
+                   10822 10772 10824 10773 10774 10828 10829 10775 10776
+                   10832 10833 10834 10835 10777 10778 10779 10839 10727
+                   10748 10842 10736 10783 10751 10846 10753 10848 10849
+                   10850 10851 10737 10853 10755 10756 10856 10857 10757
+                   10859 10860 10861 10792 10863
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+     Number of missing data patterns             5
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              WORRY         FEAR          SAD
+              ________      ________      ________
+ WORRY          0.897
+ FEAR           0.895         0.898
+ SAD            0.895         0.896         0.898
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     WORRY                 3.018       0.487       1.000   33.11%       1.000      2.000      3.000
+            1066.000       3.676      -1.094       7.000    3.75%       3.000      5.000
+     FEAR                  1.861       1.629       1.000   58.86%       1.000      1.000      1.000
+            1067.000       1.761       1.796       7.000    0.28%       2.000      3.000
+     SAD                   2.604       0.795       1.000   35.05%       1.000      2.000      2.000
+            1067.000       2.663      -0.347       7.000    1.97%       3.000      4.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     USE THE FBITERATIONS OPTION TO INCREASE THE NUMBER OF ITERATIONS BY A FACTOR
+     OF AT LEAST TWO TO CHECK CONVERGENCE AND THAT THE PSR VALUE DOES NOT INCREASE.
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                              16
+
+Information Criteria
+
+          Deviance (DIC)                         9842.882
+          Estimated Number of Parameters (pD)     897.659
+
+
+
+MODEL RESULTS
+
+                                Posterior  One-Tailed         95% C.I.
+                    Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%  Significance
+
+Within Level
+
+ ETA      BY
+    WORRY              1.000       0.000      0.000       1.000       1.000
+    FEAR               0.597       0.049      0.000       0.507       0.702      *
+    SAD                0.759       0.061      0.000       0.648       0.885      *
+
+ ETA        ON
+    ETA&1              0.561       0.053      0.000       0.455       0.661      *
+
+ Residual Variances
+    WORRY              1.167       0.098      0.000       0.976       1.364      *
+    FEAR               0.766       0.047      0.000       0.678       0.862      *
+    SAD                0.993       0.066      0.000       0.868       1.128      *
+    ETA                1.008       0.127      0.000       0.777       1.274      *
+
+Between Level
+
+ THETA1   BY
+    WORRY              1.000       0.000      0.000       1.000       1.000
+
+ THETA2   BY
+    FEAR               1.000       0.000      0.000       1.000       1.000
+
+ THETA3   BY
+    SAD                1.000       0.000      0.000       1.000       1.000
+
+ THETA2   WITH
+    THETA1             0.397       0.137      0.001       0.153       0.691      *
+
+ THETA3   WITH
+    THETA1             0.626       0.178      0.000       0.310       1.009      *
+    THETA2             0.467       0.122      0.000       0.254       0.732      *
+
+ Means
+    THETA1             3.042       0.118      0.000       2.813       3.271      *
+    THETA2             1.879       0.080      0.000       1.721       2.036      *
+    THETA3             2.628       0.103      0.000       2.425       2.829      *
+
+ Intercepts
+    WORRY              0.001       0.000      0.000       0.001       0.001
+    FEAR               0.001       0.000      0.000       0.001       0.001
+    SAD                0.001       0.000      0.000       0.001       0.001
+
+ Variances
+    THETA1             1.123       0.242      0.000       0.707       1.648      *
+    THETA2             0.541       0.113      0.000       0.350       0.795      *
+    THETA3             0.931       0.181      0.000       0.623       1.334      *
+
+ Residual Variances
+    WORRY              0.001       0.000      0.000       0.001       0.001
+    FEAR               0.001       0.000      0.000       0.001       0.001
+    SAD                0.001       0.000      0.000       0.001       0.001
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR WITHIN
+
+
+           NU
+              WORRY         FEAR          SAD
+              ________      ________      ________
+                    0             0             0
+
+
+           LAMBDA
+              ETA           ETA&1
+              ________      ________
+ WORRY              0             0
+ FEAR               1             0
+ SAD                2             0
+
+
+           THETA
+              WORRY         FEAR          SAD
+              ________      ________      ________
+ WORRY              3
+ FEAR               0             4
+ SAD                0             0             5
+
+
+           ALPHA
+              ETA           ETA&1
+              ________      ________
+                    0             0
+
+
+           BETA
+              ETA           ETA&1
+              ________      ________
+ ETA                0             6
+ ETA&1              0             0
+
+
+           PSI
+              ETA           ETA&1
+              ________      ________
+ ETA                7
+ ETA&1              0             0
+
+
+     PARAMETER SPECIFICATION FOR BETWEEN
+
+
+           NU
+              WORRY         FEAR          SAD
+              ________      ________      ________
+                    0             0             0
+
+
+           LAMBDA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ WORRY              0             0             0
+ FEAR               0             0             0
+ SAD                0             0             0
+
+
+           THETA
+              WORRY         FEAR          SAD
+              ________      ________      ________
+ WORRY              0
+ FEAR               0             0
+ SAD                0             0             0
+
+
+           ALPHA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+                    8             9            10
+
+
+           BETA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ THETA1             0             0             0
+ THETA2             0             0             0
+ THETA3             0             0             0
+
+
+           PSI
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ THETA1            11
+ THETA2            12            13
+ THETA3            14            15            16
+
+
+     STARTING VALUES FOR WITHIN
+
+
+           NU
+              WORRY         FEAR          SAD
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              ETA           ETA&1
+              ________      ________
+ WORRY          1.000         0.000
+ FEAR           1.000         0.000
+ SAD            1.000         0.000
+
+
+           THETA
+              WORRY         FEAR          SAD
+              ________      ________      ________
+ WORRY          1.838
+ FEAR           0.000         0.881
+ SAD            0.000         0.000         1.331
+
+
+           ALPHA
+              ETA           ETA&1
+              ________      ________
+                0.000         0.000
+
+
+           BETA
+              ETA           ETA&1
+              ________      ________
+ ETA            0.000         0.000
+ ETA&1          0.000         0.000
+
+
+           PSI
+              ETA           ETA&1
+              ________      ________
+ ETA            1.000
+ ETA&1          0.000         1.000
+
+
+     STARTING VALUES FOR BETWEEN
+
+
+           NU
+              WORRY         FEAR          SAD
+              ________      ________      ________
+                0.001         0.001         0.001
+
+
+           LAMBDA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ WORRY          1.000         0.000         0.000
+ FEAR           0.000         1.000         0.000
+ SAD            0.000         0.000         1.000
+
+
+           THETA
+              WORRY         FEAR          SAD
+              ________      ________      ________
+ WORRY          0.001
+ FEAR           0.000         0.001
+ SAD            0.000         0.000         0.001
+
+
+           ALPHA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           BETA
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ THETA1         0.000         0.000         0.000
+ THETA2         0.000         0.000         0.000
+ THETA3         0.000         0.000         0.000
+
+
+           PSI
+              THETA1        THETA2        THETA3
+              ________      ________      ________
+ THETA1         1.000
+ THETA2         0.000         1.000
+ THETA3         0.000         0.000         1.000
+
+
+
+     PRIORS FOR ALL PARAMETERS            PRIOR MEAN      PRIOR VARIANCE     PRIOR STD. DEV.
+
+     Parameter 1~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 2~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 3~IG(-1.000,0.000)          infinity            infinity            infinity
+     Parameter 4~IG(-1.000,0.000)          infinity            infinity            infinity
+     Parameter 5~IG(-1.000,0.000)          infinity            infinity            infinity
+     Parameter 6~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 7~IG(-1.000,0.000)          infinity            infinity            infinity
+     Parameter 8~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 9~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 10~N(0.000,infinity)          0.0000            infinity            infinity
+     Parameter 11~IW(0.000,-4)             infinity            infinity            infinity
+     Parameter 12~IW(0.000,-4)             infinity            infinity            infinity
+     Parameter 13~IW(0.000,-4)             infinity            infinity            infinity
+     Parameter 14~IW(0.000,-4)             infinity            infinity            infinity
+     Parameter 15~IW(0.000,-4)             infinity            infinity            infinity
+     Parameter 16~IW(0.000,-4)             infinity            infinity            infinity
+
+
+TECHNICAL 8 OUTPUT
+
+
+
+     Kolmogorov-Smirnov comparing posterior distributions across chains 1 and 2 using 100 draws.
+
+
+
+
+
+     Parameter   KS Statistic P-value
+     Parameter 7    0.2500    0.0030
+     Parameter 1    0.1700    0.0994
+     Parameter 8    0.1400    0.2606
+     Parameter 2    0.1300    0.3439
+     Parameter 3    0.1200    0.4431
+     Parameter 10    0.1000    0.6766
+     Parameter 9    0.0900    0.7942
+     Parameter 14    0.0800    0.8938
+     Parameter 15    0.0700    0.9610
+     Parameter 5    0.0700    0.9610
+     Parameter 6    0.0700    0.9610
+     Parameter 4    0.0600    0.9921
+     Parameter 16    0.0600    0.9921
+     Parameter 11    0.0600    0.9921
+     Parameter 13    0.0300    1.0000
+     Parameter 12    0.0200    1.0000
+
+
+
+     Simulated prior distributions
+
+     Parameter       Prior Mean  Prior Variance  Prior Std. Dev.
+
+
+     Parameter 1 Improper Prior
+     Parameter 2 Improper Prior
+     Parameter 3 Improper Prior
+     Parameter 4 Improper Prior
+     Parameter 5 Improper Prior
+     Parameter 6 Improper Prior
+     Parameter 7 Improper Prior
+     Parameter 8 Improper Prior
+     Parameter 9 Improper Prior
+     Parameter 10 Improper Prior
+     Parameter 11 Improper Prior
+     Parameter 12 Improper Prior
+     Parameter 13 Improper Prior
+     Parameter 14 Improper Prior
+     Parameter 15 Improper Prior
+     Parameter 16 Improper Prior
+
+
+   TECHNICAL 8 OUTPUT FOR BAYES ESTIMATION
+
+     CHAIN    BSEED
+     1        0
+     2        285380
+
+                     POTENTIAL       PARAMETER WITH
+     ITERATION    SCALE REDUCTION      HIGHEST PSR
+     100              1.280               6
+     200              1.058               7
+     300              1.027               7
+     400              1.031               10
+     500              1.039               7
+     600              1.037               9
+     700              1.040               9
+     800              1.029               9
+     900              1.024               9
+     1000             1.019               9
+     1100             1.023               6
+     1200             1.022               6
+     1300             1.021               6
+     1400             1.024               6
+     1500             1.032               6
+     1600             1.028               7
+     1700             1.028               7
+     1800             1.034               7
+     1900             1.031               7
+     2000             1.029               7
+     2100             1.028               7
+     2200             1.034               7
+     2300             1.031               7
+     2400             1.034               7
+     2500             1.036               7
+     2600             1.034               7
+     2700             1.033               7
+     2800             1.032               7
+     2900             1.031               7
+     3000             1.031               8
+     3100             1.027               8
+     3200             1.025               8
+     3300             1.025               8
+     3400             1.024               8
+     3500             1.023               8
+     3600             1.024               7
+     3700             1.025               7
+     3800             1.028               7
+     3900             1.026               7
+     4000             1.030               7
+     4100             1.032               7
+     4200             1.033               7
+     4300             1.031               7
+     4400             1.027               7
+     4500             1.029               7
+     4600             1.029               7
+     4700             1.029               7
+     4800             1.028               7
+     4900             1.024               7
+     5000             1.025               7
+     5100             1.028               7
+     5200             1.028               7
+     5300             1.026               7
+     5400             1.025               7
+     5500             1.024               7
+     5600             1.026               7
+     5700             1.027               7
+     5800             1.025               7
+     5900             1.029               7
+     6000             1.029               7
+     6100             1.031               7
+     6200             1.030               7
+     6300             1.030               7
+     6400             1.031               7
+     6500             1.030               7
+     6600             1.028               7
+     6700             1.030               7
+     6800             1.031               7
+     6900             1.031               7
+     7000             1.030               7
+     7100             1.027               7
+     7200             1.028               7
+     7300             1.030               7
+     7400             1.031               7
+     7500             1.030               7
+     7600             1.028               7
+     7700             1.029               7
+     7800             1.030               7
+     7900             1.031               7
+     8000             1.030               7
+     8100             1.029               7
+     8200             1.027               7
+     8300             1.026               7
+     8400             1.027               7
+     8500             1.028               7
+     8600             1.028               7
+     8700             1.029               7
+     8800             1.027               7
+     8900             1.027               7
+     9000             1.026               7
+     9100             1.025               7
+     9200             1.026               7
+     9300             1.025               7
+     9400             1.024               7
+     9500             1.025               7
+     9600             1.027               7
+     9700             1.027               7
+     9800             1.028               7
+     9900             1.027               7
+     10000            1.027               7
+     10100            1.026               7
+     10200            1.025               7
+     10300            1.026               7
+     10400            1.026               7
+     10500            1.026               7
+     10600            1.027               7
+     10700            1.027               7
+     10800            1.027               7
+     10900            1.027               7
+     11000            1.027               7
+     11100            1.027               7
+     11200            1.027               7
+     11300            1.026               7
+     11400            1.026               7
+     11500            1.027               7
+     11600            1.026               7
+     11700            1.025               7
+     11800            1.025               7
+     11900            1.024               7
+     12000            1.024               7
+     12100            1.024               7
+     12200            1.024               7
+     12300            1.023               7
+     12400            1.024               7
+     12500            1.024               7
+     12600            1.025               7
+     12700            1.026               7
+     12800            1.027               7
+     12900            1.027               7
+     13000            1.027               7
+     13100            1.028               7
+     13200            1.028               7
+     13300            1.028               7
+     13400            1.028               7
+     13500            1.028               7
+     13600            1.029               7
+     13700            1.030               7
+     13800            1.030               7
+     13900            1.031               7
+     14000            1.031               7
+     14100            1.032               7
+     14200            1.033               7
+     14300            1.033               7
+     14400            1.033               7
+     14500            1.034               7
+     14600            1.032               7
+     14700            1.033               7
+     14800            1.033               7
+     14900            1.033               7
+     15000            1.034               7
+     15100            1.035               7
+     15200            1.035               7
+     15300            1.035               7
+     15400            1.035               7
+     15500            1.034               7
+     15600            1.034               7
+     15700            1.033               7
+     15800            1.032               7
+     15900            1.033               7
+     16000            1.033               7
+     16100            1.032               7
+     16200            1.032               7
+     16300            1.034               7
+     16400            1.035               7
+     16500            1.035               7
+     16600            1.035               7
+     16700            1.036               7
+     16800            1.035               7
+     16900            1.036               7
+     17000            1.036               7
+     17100            1.035               7
+     17200            1.036               7
+     17300            1.036               7
+     17400            1.036               7
+     17500            1.036               7
+     17600            1.036               7
+     17700            1.037               7
+     17800            1.037               7
+     17900            1.037               7
+     18000            1.037               7
+     18100            1.037               7
+     18200            1.038               7
+     18300            1.038               7
+     18400            1.038               7
+     18500            1.037               7
+     18600            1.037               7
+     18700            1.037               7
+     18800            1.038               7
+     18900            1.039               7
+     19000            1.039               7
+     19100            1.038               7
+     19200            1.038               7
+     19300            1.038               7
+     19400            1.039               7
+     19500            1.039               7
+     19600            1.038               7
+     19700            1.038               7
+     19800            1.039               7
+     19900            1.039               7
+     20000            1.038               7
+
+
+PLOT INFORMATION
+
+The following plots are available:
+
+  Histograms (sample values)
+  Scatterplots (sample values)
+  Between-level histograms (sample values, sample means/variances)
+  Between-level scatterplots (sample values, sample means/variances)
+  Time series plots (sample values, ACF, PACF)
+  Bayesian posterior parameter distributions
+  Bayesian posterior parameter trace plots
+  Bayesian autocorrelation plots
+
+DIAGRAM INFORMATION
+
+  Mplus diagrams are currently not available for multilevel analysis.
+  No diagram output was produced.
+
+
+     Beginning Time:  11:47:12
+        Ending Time:  11:57:24
+       Elapsed Time:  00:10:12
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

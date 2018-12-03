@@ -1,0 +1,110 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+12/03/2018   3:47 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "ML_Mplus_files/PlosOneAllVar.dat";
+  VARIABLE:
+  NAMES = subjn time worry fear sad cheer relax neur;
+  MISSING=.;
+  USEVAR = worry fear sad cheer relax neur;
+  CLUSTER = subjn;
+  !WITHIN = time;
+  BETWEEN = neur;
+
+  ANALYSIS:
+  TYPE = TWOLEVEL;
+  ESTIMATOR = BAYES;
+  BITERATIONS = (5000);
+  PROCESSORS = 2;
+  THIN = 20
+  BSEED = 123
+
+  MODEL:
+
+  %WITHIN%
+
+  ! common states
+  NA BY worry@1
+  fear
+  sad  (&1) ;
+  NA ON NA&1 ;
+
+  PA BY cheer@1
+  relax (&1) ;
+  PA ON PA&1 ;
+
+  worry;
+  fear;
+  sad;
+  cheer;
+  relax;
+
+  NA;
+  PA;
+
+  NA WITH PA@0
+
+  %BETWEEN%
+
+  ! common trait
+  NA_W BY worry@1 ;
+  NA_F BY fear@1 ;
+  NA_S BY sad@1 ;
+  PA_C BY cheer@1 ;
+  PA_R BY relax@1 ;
+
+  NA_W ON neur;
+  NA_F ON neur;
+  NA_S ON neur;
+  PA_C ON neur;
+  PA_R ON neur;
+
+  [worry@0.001];
+  [fear@0.001];
+  [sad@0.001];
+  [cheer@0.001];
+  [relax@0.001];
+
+  [NA_W*];
+  [NA_F*];
+  [NA_S*];
+  [PA_C*];
+  [PA_R*];
+
+  worry@0.001;
+  fear@0.001;
+  sad@0.001;
+  cheer@0.001;
+  relax@0.001;
+
+  NA_W;
+  NA_F;
+  NA_S;
+  PA_C;
+  PA_R;
+
+  OUTPUT: TECH8;
+  !PLOT: TYPE = PLOT3;
+
+*** ERROR
+  Data set contains cases with missing on x-variables.  These cases are not allowed
+  in time series analysis.  The variables should be converted to a dependent variable
+  by including the variance or mean parameter in the model.  The following x-variable(s)
+  have cases with missing:
+
+      NEUR (1478 cases with missing data)
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

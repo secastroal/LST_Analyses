@@ -1,0 +1,55 @@
+TITLE: Your title goes here
+DATA: FILE = "ML_Mplus_files/PlosOne60L.dat";
+VARIABLE: 
+NAMES = subjn worry fear sad; 
+MISSING=.;
+USEVAR = worry fear sad;
+CLUSTER = subjn;
+
+ANALYSIS:
+TYPE = TWOLEVEL;
+ESTIMATOR = BAYES;
+BITERATIONS = (10000);
+PROCESSORS = 2;
+THIN = 20
+BSEED = 123
+
+MODEL:
+
+%WITHIN%
+
+! common states
+eta BY worry@1
+fear
+sad  (&1) ;
+eta ON eta&1 ;
+
+worry;
+fear;
+sad;
+
+eta;
+
+%BETWEEN%
+
+! common trait
+theta1 BY worry@1 ;
+theta2 BY fear@1 ;
+theta3 BY sad@1 ;
+[worry@0.001];
+[fear@0.001];
+[sad@0.001];
+
+[theta1*]
+[theta2*];
+[theta3*];
+
+worry@0.001;
+fear@0.001;
+sad@0.001;
+theta1 ;
+theta2 ;
+theta3 ;
+
+OUTPUT: TECH8;
+PLOT: TYPE = PLOT3;
