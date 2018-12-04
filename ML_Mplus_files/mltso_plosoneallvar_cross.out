@@ -1,0 +1,1081 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+12/03/2018   4:55 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "ML_Mplus_files/PlosOneAllVar.dat";
+  VARIABLE:
+  NAMES = subjn time worry fear sad cheer relax neur;
+  MISSING=.;
+  USEVAR = worry fear sad cheer relax time;
+  CLUSTER = subjn;
+  WITHIN = time;
+  !BETWEEN = neur;
+
+  ANALYSIS:
+  TYPE = TWOLEVEL;
+  ESTIMATOR = BAYES;
+  BITERATIONS = (5000);
+  PROCESSORS = 2;
+  THIN = 20
+  BSEED = 123
+
+  MODEL:
+
+  %WITHIN%
+
+  ! common states
+  NA BY worry@1
+  fear
+  sad  (&1) ;
+  NA ON NA&1 ;
+
+  PA BY cheer@1
+  relax (&1) ;
+  PA ON PA&1 ;
+
+  NA ON PA&1;
+  PA ON NA&1;
+
+  worry ON time@0.001;
+  fear ON time@0.001;
+  sad ON time@0.001;
+  cheer ON time@0.001;
+  relax ON time@0.001;
+
+  worry;
+  fear;
+  sad;
+  cheer;
+  relax;
+
+  NA;
+  PA;
+
+  NA WITH PA@0
+
+  %BETWEEN%
+
+  ! common trait
+  NA_W BY worry@1 ;
+  NA_F BY fear@1 ;
+  NA_S BY sad@1 ;
+  PA_C BY cheer@1 ;
+  PA_R BY relax@1 ;
+
+  !NA_W ON neur;
+  !NA_F ON neur;
+  !NA_S ON neur;
+  !PA_C ON neur;
+  !PA_R ON neur;
+
+  [worry@0.001];
+  [fear@0.001];
+  [sad@0.001];
+  [cheer@0.001];
+  [relax@0.001];
+
+  [NA_W*];
+  [NA_F*];
+  [NA_S*];
+  [PA_C*];
+  [PA_R*];
+
+  worry@0.001;
+  fear@0.001;
+  sad@0.001;
+  cheer@0.001;
+  relax@0.001;
+
+  NA_W;
+  NA_F;
+  NA_S;
+  PA_C;
+  PA_R;
+
+  OUTPUT: TECH8;
+  !PLOT: TYPE = PLOT3;
+
+
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      FEAR        10812 10741 10843 10799 10814 10768 10835 10747 10863
+      SAD         10812 10843 10755
+
+*** WARNING
+  Data set contains cases with missing on all variables.  Cases that appeared before the first
+  case with observed data and that appeared after the last case with observed data were not
+  included in the analysis.  Number of deleted cases:  256
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        7544
+
+Number of dependent variables                                    5
+Number of independent variables                                  1
+Number of continuous latent variables                            9
+
+Observed dependent variables
+
+  Continuous
+   WORRY       FEAR        SAD         CHEER       RELAX
+
+Observed independent variables
+   TIME
+
+Continuous latent variables
+   NA          PA          NA&1        PA&1        NA_W        NA_F
+   NA_S        PA_C        PA_R
+
+Variables with special functions
+
+  Cluster variable      SUBJN
+
+  Within variables
+   TIME
+
+
+Estimator                                                    BAYES
+Specifications for Bayesian Estimation
+  Point estimate                                            MEDIAN
+  Number of Markov chain Monte Carlo (MCMC) chains               2
+  Random seed for the first chain                                0
+  Starting value information                           UNPERTURBED
+  Treatment of categorical mediator                         LATENT
+  Algorithm used for Markov chain Monte Carlo           GIBBS(PX1)
+  Convergence criterion                                  0.500D-01
+  Maximum number of iterations                               50000
+  K-th iteration used for thinning                              20
+
+Input data file(s)
+  ML_Mplus_files/PlosOneAllVar.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of clusters                        129
+
+       Size (s)    Cluster ID with Size s
+
+         21        10776
+         44        10859
+         45        10778
+         49        10760
+         53        10823 10792
+         54        10722
+         55        10728
+         56        10839 10837
+         57        10786 10725 10766 10826 10771 10838 10720 10858 10750
+                   10862
+         58        10819 10780 10781 10827 10830 10742 10791 10763 10844
+                   10846 10856 10795 10796 10817
+         59        10809 10810 10812 10746 10729 10821 10758 10782 10785
+                   10735 10831 10790 10738 10741 10841 10843 10726 10744
+                   10852 10854 10799 10801 10807 10808
+         60        10754 10755 10756 10793 10794 10757 10727 10797 10759
+                   10800 10739 10802 10803 10804 10805 10761 10762 10740
+                   10764 10811 10765 10813 10814 10815 10816 10732 10818
+                   10768 10820 10769 10822 10770 10824 10734 10772 10828
+                   10829 10773 10774 10832 10833 10834 10835 10836 10775
+                   10724 10777 10840 10736 10842 10779 10747 10845 10748
+                   10847 10848 10849 10850 10851 10737 10853 10783 10855
+                   10784 10857 10751 10753 10860 10861 10787 10863
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+     Number of missing data patterns            13
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+ WORRY          0.807
+ FEAR           0.805         0.807
+ SAD            0.805         0.806         0.807
+ CHEER          0.803         0.804         0.803         0.805
+ RELAX          0.805         0.806         0.806         0.803         0.807
+ TIME           0.807         0.807         0.807         0.805         0.807
+
+
+           Covariance Coverage
+              TIME
+              ________
+ TIME           1.000
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     WORRY                 2.912       0.587       1.000   33.88%       1.000      2.000      2.000
+            6086.000       3.454      -0.874       7.000    4.01%       3.000      5.000
+     FEAR                  1.749       1.877       1.000   64.75%       1.000      1.000      1.000
+            6090.000       1.654       2.817       7.000    0.48%       1.000      2.000
+     SAD                   2.478       0.911       1.000   39.81%       1.000      2.000      2.000
+            6089.000       2.633      -0.174       7.000    1.72%       2.000      4.000
+     CHEER                 3.938      -0.326       1.000    9.95%       2.000      4.000      4.000
+            6070.000       2.434      -0.674       7.000    2.26%       4.000      5.000
+     RELAX                 4.066      -0.293       1.000    7.92%       3.000      4.000      4.000
+            6088.000       2.455      -0.640       7.000    3.73%       5.000      5.000
+     TIME                 30.372       0.013       1.000    1.18%      13.000     24.000     30.000
+            7544.000     290.849      -1.190      60.000    1.35%      36.000     48.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     USE THE FBITERATIONS OPTION TO INCREASE THE NUMBER OF ITERATIONS BY A FACTOR
+     OF AT LEAST TWO TO CHECK CONVERGENCE AND THAT THE PSR VALUE DOES NOT INCREASE.
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                              34
+
+Information Criteria
+
+          Deviance (DIC)                        88275.402
+          Estimated Number of Parameters (pD)    5151.045
+
+
+
+MODEL RESULTS
+
+                                Posterior  One-Tailed         95% C.I.
+                    Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%  Significance
+
+Within Level
+
+ NA       BY
+    WORRY              1.000       0.000      0.000       1.000       1.000
+    FEAR               0.561       0.014      0.000       0.532       0.589      *
+    SAD                0.887       0.019      0.000       0.850       0.923      *
+
+ PA       BY
+    CHEER              1.000       0.000      0.000       1.000       1.000
+    RELAX              0.965       0.018      0.000       0.929       1.001      *
+
+ NA         ON
+    NA&1               4.871       0.269      0.000       4.398       5.426      *
+    PA&1               4.579       0.331      0.000       4.041       5.302      *
+
+ PA         ON
+    PA&1              -4.321       0.279      0.000      -4.886      -3.816      *
+    NA&1              -4.572       0.241      0.000      -5.060      -4.125      *
+
+ WORRY      ON
+    TIME               0.001       0.000      0.000       0.001       0.001
+
+ FEAR       ON
+    TIME               0.001       0.000      0.000       0.001       0.001
+
+ SAD        ON
+    TIME               0.001       0.000      0.000       0.001       0.001
+
+ CHEER      ON
+    TIME               0.001       0.000      0.000       0.001       0.001
+
+ RELAX      ON
+    TIME               0.001       0.000      0.000       0.001       0.001
+
+ NA       WITH
+    PA                 0.000       0.000      1.000       0.000       0.000
+
+ Residual Variances
+    WORRY              1.198       0.027      0.000       1.145       1.253      *
+    FEAR               0.767       0.016      0.000       0.738       0.799      *
+    SAD                0.886       0.020      0.000       0.847       0.927      *
+    CHEER              0.756       0.019      0.000       0.720       0.794      *
+    RELAX              0.959       0.022      0.000       0.917       1.004      *
+    NA                 0.005       0.005      0.000       0.001       0.018      *
+    PA                 0.027       0.006      0.000       0.016       0.038      *
+
+Between Level
+
+ NA_W     BY
+    WORRY              1.000       0.000      0.000       1.000       1.000
+
+ NA_F     BY
+    FEAR               1.000       0.000      0.000       1.000       1.000
+
+ NA_S     BY
+    SAD                1.000       0.000      0.000       1.000       1.000
+
+ PA_C     BY
+    CHEER              1.000       0.000      0.000       1.000       1.000
+
+ PA_R     BY
+    RELAX              1.000       0.000      0.000       1.000       1.000
+
+ NA_F     WITH
+    NA_W               0.461       0.102      0.000       0.289       0.685      *
+
+ NA_S     WITH
+    NA_W               0.689       0.133      0.000       0.473       0.985      *
+    NA_F               0.500       0.093      0.000       0.348       0.705      *
+
+ PA_C     WITH
+    NA_W              -0.380       0.108      0.000      -0.625      -0.199      *
+    NA_F              -0.185       0.073      0.002      -0.347      -0.055      *
+    NA_S              -0.457       0.099      0.000      -0.684      -0.294      *
+
+ PA_R     WITH
+    NA_W              -0.476       0.104      0.000      -0.712      -0.304      *
+    NA_F              -0.218       0.069      0.000      -0.368      -0.101      *
+    NA_S              -0.387       0.090      0.000      -0.588      -0.235      *
+    PA_C               0.504       0.088      0.000       0.359       0.709      *
+
+ Means
+    NA_W               2.851       0.105      0.000       2.649       3.059      *
+    NA_F               1.706       0.072      0.000       1.562       1.849      *
+    NA_S               2.410       0.090      0.000       2.238       2.589      *
+    PA_C               3.946       0.080      0.000       3.789       4.104      *
+    PA_R               4.071       0.073      0.000       3.927       4.216      *
+
+ Intercepts
+    WORRY              0.001       0.000      0.000       0.001       0.001
+    FEAR               0.001       0.000      0.000       0.001       0.001
+    SAD                0.001       0.000      0.000       0.001       0.001
+    CHEER              0.001       0.000      0.000       0.001       0.001
+    RELAX              0.001       0.000      0.000       0.001       0.001
+
+ Variances
+    NA_W               1.228       0.180      0.000       0.936       1.644      *
+    NA_F               0.600       0.086      0.000       0.459       0.791      *
+    NA_S               0.896       0.135      0.000       0.679       1.207      *
+    PA_C               0.711       0.107      0.000       0.535       0.957      *
+    PA_R               0.595       0.092      0.000       0.444       0.804      *
+
+ Residual Variances
+    WORRY              0.001       0.000      0.000       0.001       0.001
+    FEAR               0.001       0.000      0.000       0.001       0.001
+    SAD                0.001       0.000      0.000       0.001       0.001
+    CHEER              0.001       0.000      0.000       0.001       0.001
+    RELAX              0.001       0.000      0.000       0.001       0.001
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR WITHIN
+
+
+           NU
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              TIME
+              ________
+                    0
+
+
+           LAMBDA
+              NA            PA            NA&1          PA&1          WORRY
+              ________      ________      ________      ________      ________
+ WORRY              0             0             0             0             0
+ FEAR               0             0             0             0             0
+ SAD                0             0             0             0             0
+ CHEER              0             0             0             0             0
+ RELAX              0             0             0             0             0
+ TIME               0             0             0             0             0
+
+
+           LAMBDA
+              FEAR          SAD           CHEER         RELAX         TIME
+              ________      ________      ________      ________      ________
+ WORRY              0             0             0             0             0
+ FEAR               0             0             0             0             0
+ SAD                0             0             0             0             0
+ CHEER              0             0             0             0             0
+ RELAX              0             0             0             0             0
+ TIME               0             0             0             0             0
+
+
+           THETA
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+ WORRY              0
+ FEAR               0             0
+ SAD                0             0             0
+ CHEER              0             0             0             0
+ RELAX              0             0             0             0             0
+ TIME               0             0             0             0             0
+
+
+           THETA
+              TIME
+              ________
+ TIME               0
+
+
+           ALPHA
+              NA            PA            NA&1          PA&1          WORRY
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           ALPHA
+              FEAR          SAD           CHEER         RELAX         TIME
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           BETA
+              NA            PA            NA&1          PA&1          WORRY
+              ________      ________      ________      ________      ________
+ NA                 0             0             1             2             0
+ PA                 0             0             3             4             0
+ NA&1               0             0             0             0             0
+ PA&1               0             0             0             0             0
+ WORRY              0             0             0             0             0
+ FEAR               5             0             0             0             0
+ SAD                6             0             0             0             0
+ CHEER              0             0             0             0             0
+ RELAX              0             7             0             0             0
+ TIME               0             0             0             0             0
+
+
+           BETA
+              FEAR          SAD           CHEER         RELAX         TIME
+              ________      ________      ________      ________      ________
+ NA                 0             0             0             0             0
+ PA                 0             0             0             0             0
+ NA&1               0             0             0             0             0
+ PA&1               0             0             0             0             0
+ WORRY              0             0             0             0             0
+ FEAR               0             0             0             0             0
+ SAD                0             0             0             0             0
+ CHEER              0             0             0             0             0
+ RELAX              0             0             0             0             0
+ TIME               0             0             0             0             0
+
+
+           PSI
+              NA            PA            NA&1          PA&1          WORRY
+              ________      ________      ________      ________      ________
+ NA                 8
+ PA                 0             9
+ NA&1               0             0             0
+ PA&1               0             0             0             0
+ WORRY              0             0             0             0            10
+ FEAR               0             0             0             0             0
+ SAD                0             0             0             0             0
+ CHEER              0             0             0             0             0
+ RELAX              0             0             0             0             0
+ TIME               0             0             0             0             0
+
+
+           PSI
+              FEAR          SAD           CHEER         RELAX         TIME
+              ________      ________      ________      ________      ________
+ FEAR              11
+ SAD                0            12
+ CHEER              0             0            13
+ RELAX              0             0             0            14
+ TIME               0             0             0             0             0
+
+
+     PARAMETER SPECIFICATION FOR BETWEEN
+
+
+           NU
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           LAMBDA
+              NA_W          NA_F          NA_S          PA_C          PA_R
+              ________      ________      ________      ________      ________
+ WORRY              0             0             0             0             0
+ FEAR               0             0             0             0             0
+ SAD                0             0             0             0             0
+ CHEER              0             0             0             0             0
+ RELAX              0             0             0             0             0
+
+
+           LAMBDA
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+ WORRY              0             0             0             0             0
+ FEAR               0             0             0             0             0
+ SAD                0             0             0             0             0
+ CHEER              0             0             0             0             0
+ RELAX              0             0             0             0             0
+
+
+           THETA
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+ WORRY              0
+ FEAR               0             0
+ SAD                0             0             0
+ CHEER              0             0             0             0
+ RELAX              0             0             0             0             0
+
+
+           ALPHA
+              NA_W          NA_F          NA_S          PA_C          PA_R
+              ________      ________      ________      ________      ________
+                   15            16            17            18            19
+
+
+           ALPHA
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           BETA
+              NA_W          NA_F          NA_S          PA_C          PA_R
+              ________      ________      ________      ________      ________
+ NA_W               0             0             0             0             0
+ NA_F               0             0             0             0             0
+ NA_S               0             0             0             0             0
+ PA_C               0             0             0             0             0
+ PA_R               0             0             0             0             0
+ WORRY              0             0             0             0             0
+ FEAR               0             0             0             0             0
+ SAD                0             0             0             0             0
+ CHEER              0             0             0             0             0
+ RELAX              0             0             0             0             0
+
+
+           BETA
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+ NA_W               0             0             0             0             0
+ NA_F               0             0             0             0             0
+ NA_S               0             0             0             0             0
+ PA_C               0             0             0             0             0
+ PA_R               0             0             0             0             0
+ WORRY              0             0             0             0             0
+ FEAR               0             0             0             0             0
+ SAD                0             0             0             0             0
+ CHEER              0             0             0             0             0
+ RELAX              0             0             0             0             0
+
+
+           PSI
+              NA_W          NA_F          NA_S          PA_C          PA_R
+              ________      ________      ________      ________      ________
+ NA_W              20
+ NA_F              21            22
+ NA_S              23            24            25
+ PA_C              26            27            28            29
+ PA_R              30            31            32            33            34
+ WORRY              0             0             0             0             0
+ FEAR               0             0             0             0             0
+ SAD                0             0             0             0             0
+ CHEER              0             0             0             0             0
+ RELAX              0             0             0             0             0
+
+
+           PSI
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+ WORRY              0
+ FEAR               0             0
+ SAD                0             0             0
+ CHEER              0             0             0             0
+ RELAX              0             0             0             0             0
+
+
+     STARTING VALUES FOR WITHIN
+
+
+           NU
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              TIME
+              ________
+                0.000
+
+
+           LAMBDA
+              NA            PA            NA&1          PA&1          WORRY
+              ________      ________      ________      ________      ________
+ WORRY          0.000         0.000         0.000         0.000         1.000
+ FEAR           0.000         0.000         0.000         0.000         0.000
+ SAD            0.000         0.000         0.000         0.000         0.000
+ CHEER          0.000         0.000         0.000         0.000         0.000
+ RELAX          0.000         0.000         0.000         0.000         0.000
+ TIME           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              FEAR          SAD           CHEER         RELAX         TIME
+              ________      ________      ________      ________      ________
+ WORRY          0.000         0.000         0.000         0.000         0.000
+ FEAR           1.000         0.000         0.000         0.000         0.000
+ SAD            0.000         1.000         0.000         0.000         0.000
+ CHEER          0.000         0.000         1.000         0.000         0.000
+ RELAX          0.000         0.000         0.000         1.000         0.000
+ TIME           0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+ WORRY          0.000
+ FEAR           0.000         0.000
+ SAD            0.000         0.000         0.000
+ CHEER          0.000         0.000         0.000         0.000
+ RELAX          0.000         0.000         0.000         0.000         0.000
+ TIME           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              TIME
+              ________
+ TIME           0.000
+
+
+           ALPHA
+              NA            PA            NA&1          PA&1          WORRY
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              FEAR          SAD           CHEER         RELAX         TIME
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              NA            PA            NA&1          PA&1          WORRY
+              ________      ________      ________      ________      ________
+ NA             0.000         0.000         0.000         0.000         0.000
+ PA             0.000         0.000         0.000         0.000         0.000
+ NA&1           0.000         0.000         0.000         0.000         0.000
+ PA&1           0.000         0.000         0.000         0.000         0.000
+ WORRY          1.000         0.000         0.000         0.000         0.000
+ FEAR           1.000         0.000         0.000         0.000         0.000
+ SAD            1.000         0.000         0.000         0.000         0.000
+ CHEER          0.000         1.000         0.000         0.000         0.000
+ RELAX          0.000         1.000         0.000         0.000         0.000
+ TIME           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              FEAR          SAD           CHEER         RELAX         TIME
+              ________      ________      ________      ________      ________
+ NA             0.000         0.000         0.000         0.000         0.000
+ PA             0.000         0.000         0.000         0.000         0.000
+ NA&1           0.000         0.000         0.000         0.000         0.000
+ PA&1           0.000         0.000         0.000         0.000         0.000
+ WORRY          0.000         0.000         0.000         0.000         0.001
+ FEAR           0.000         0.000         0.000         0.000         0.001
+ SAD            0.000         0.000         0.000         0.000         0.001
+ CHEER          0.000         0.000         0.000         0.000         0.001
+ RELAX          0.000         0.000         0.000         0.000         0.001
+ TIME           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              NA            PA            NA&1          PA&1          WORRY
+              ________      ________      ________      ________      ________
+ NA             1.000
+ PA             0.000         1.000
+ NA&1           0.000         0.000         1.000
+ PA&1           0.000         0.000         0.000         1.000
+ WORRY          0.000         0.000         0.000         0.000         1.727
+ FEAR           0.000         0.000         0.000         0.000         0.000
+ SAD            0.000         0.000         0.000         0.000         0.000
+ CHEER          0.000         0.000         0.000         0.000         0.000
+ RELAX          0.000         0.000         0.000         0.000         0.000
+ TIME           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              FEAR          SAD           CHEER         RELAX         TIME
+              ________      ________      ________      ________      ________
+ FEAR           0.827
+ SAD            0.000         1.316
+ CHEER          0.000         0.000         1.217
+ RELAX          0.000         0.000         0.000         1.227
+ TIME           0.000         0.000         0.000         0.000       145.424
+
+
+     STARTING VALUES FOR BETWEEN
+
+
+           NU
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              NA_W          NA_F          NA_S          PA_C          PA_R
+              ________      ________      ________      ________      ________
+ WORRY          0.000         0.000         0.000         0.000         0.000
+ FEAR           0.000         0.000         0.000         0.000         0.000
+ SAD            0.000         0.000         0.000         0.000         0.000
+ CHEER          0.000         0.000         0.000         0.000         0.000
+ RELAX          0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+ WORRY          1.000         0.000         0.000         0.000         0.000
+ FEAR           0.000         1.000         0.000         0.000         0.000
+ SAD            0.000         0.000         1.000         0.000         0.000
+ CHEER          0.000         0.000         0.000         1.000         0.000
+ RELAX          0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+ WORRY          0.000
+ FEAR           0.000         0.000
+ SAD            0.000         0.000         0.000
+ CHEER          0.000         0.000         0.000         0.000
+ RELAX          0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              NA_W          NA_F          NA_S          PA_C          PA_R
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+                0.001         0.001         0.001         0.001         0.001
+
+
+           BETA
+              NA_W          NA_F          NA_S          PA_C          PA_R
+              ________      ________      ________      ________      ________
+ NA_W           0.000         0.000         0.000         0.000         0.000
+ NA_F           0.000         0.000         0.000         0.000         0.000
+ NA_S           0.000         0.000         0.000         0.000         0.000
+ PA_C           0.000         0.000         0.000         0.000         0.000
+ PA_R           0.000         0.000         0.000         0.000         0.000
+ WORRY          1.000         0.000         0.000         0.000         0.000
+ FEAR           0.000         1.000         0.000         0.000         0.000
+ SAD            0.000         0.000         1.000         0.000         0.000
+ CHEER          0.000         0.000         0.000         1.000         0.000
+ RELAX          0.000         0.000         0.000         0.000         1.000
+
+
+           BETA
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+ NA_W           0.000         0.000         0.000         0.000         0.000
+ NA_F           0.000         0.000         0.000         0.000         0.000
+ NA_S           0.000         0.000         0.000         0.000         0.000
+ PA_C           0.000         0.000         0.000         0.000         0.000
+ PA_R           0.000         0.000         0.000         0.000         0.000
+ WORRY          0.000         0.000         0.000         0.000         0.000
+ FEAR           0.000         0.000         0.000         0.000         0.000
+ SAD            0.000         0.000         0.000         0.000         0.000
+ CHEER          0.000         0.000         0.000         0.000         0.000
+ RELAX          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              NA_W          NA_F          NA_S          PA_C          PA_R
+              ________      ________      ________      ________      ________
+ NA_W           1.000
+ NA_F           0.000         1.000
+ NA_S           0.000         0.000         1.000
+ PA_C           0.000         0.000         0.000         1.000
+ PA_R           0.000         0.000         0.000         0.000         1.000
+ WORRY          0.000         0.000         0.000         0.000         0.000
+ FEAR           0.000         0.000         0.000         0.000         0.000
+ SAD            0.000         0.000         0.000         0.000         0.000
+ CHEER          0.000         0.000         0.000         0.000         0.000
+ RELAX          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              WORRY         FEAR          SAD           CHEER         RELAX
+              ________      ________      ________      ________      ________
+ WORRY          0.001
+ FEAR           0.000         0.001
+ SAD            0.000         0.000         0.001
+ CHEER          0.000         0.000         0.000         0.001
+ RELAX          0.000         0.000         0.000         0.000         0.001
+
+
+
+     PRIORS FOR ALL PARAMETERS            PRIOR MEAN      PRIOR VARIANCE     PRIOR STD. DEV.
+
+     Parameter 1~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 2~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 3~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 4~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 5~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 6~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 7~N(0.000,infinity)           0.0000            infinity            infinity
+     Parameter 8~IG(-1.000,0.000)          infinity            infinity            infinity
+     Parameter 9~IG(-1.000,0.000)          infinity            infinity            infinity
+     Parameter 10~IG(-1.000,0.000)         infinity            infinity            infinity
+     Parameter 11~IG(-1.000,0.000)         infinity            infinity            infinity
+     Parameter 12~IG(-1.000,0.000)         infinity            infinity            infinity
+     Parameter 13~IG(-1.000,0.000)         infinity            infinity            infinity
+     Parameter 14~IG(-1.000,0.000)         infinity            infinity            infinity
+     Parameter 15~N(0.000,infinity)          0.0000            infinity            infinity
+     Parameter 16~N(0.000,infinity)          0.0000            infinity            infinity
+     Parameter 17~N(0.000,infinity)          0.0000            infinity            infinity
+     Parameter 18~N(0.000,infinity)          0.0000            infinity            infinity
+     Parameter 19~N(0.000,infinity)          0.0000            infinity            infinity
+     Parameter 20~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 21~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 22~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 23~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 24~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 25~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 26~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 27~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 28~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 29~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 30~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 31~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 32~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 33~IW(0.000,-6)             infinity            infinity            infinity
+     Parameter 34~IW(0.000,-6)             infinity            infinity            infinity
+
+
+TECHNICAL 8 OUTPUT
+
+
+
+     Kolmogorov-Smirnov comparing posterior distributions across chains 1 and 2 using 100 draws.
+
+
+
+
+
+     Parameter   KS Statistic P-value
+     Parameter 2    0.4300    0.0000
+
+     THE KOLMOGOROV-SMIRNOV DISTRIBUTION TEST FOR PARAMETER 2 HAS A P-VALUE 0.0000,
+     INDICATING DISCREPANT POSTERIOR DISTRIBUTIONS IN THE DIFFERENT MCMC CHAINS.
+     THIS MAY INDICATE NON-CONVERGENCE DUE TO AN INSUFFICIENT NUMBER OF MCMC ITERATIONS OR IT MAY
+     INDICATE A NON-IDENTIFIED MODEL. SPECIFY A LARGER NUMBER OF MCMC ITERATIONS USING THE FBITER
+     OPTION OF THE ANALYSIS COMMAND TO INVESTIGATE THE PROBLEM.
+
+     Parameter 4    0.3400    0.0000
+     Parameter 1    0.3300    0.0000
+     Parameter 3    0.2500    0.0030
+     Parameter 32    0.2000    0.0314
+     Parameter 24    0.1800    0.0691
+     Parameter 25    0.1400    0.2606
+     Parameter 18    0.1300    0.3439
+     Parameter 23    0.1300    0.3439
+     Parameter 19    0.1200    0.4431
+     Parameter 27    0.1200    0.4431
+     Parameter 28    0.1200    0.4431
+     Parameter 20    0.1100    0.5560
+     Parameter 34    0.1000    0.6766
+     Parameter 22    0.1000    0.6766
+     Parameter 31    0.1000    0.6766
+     Parameter 33    0.0900    0.7942
+     Parameter 21    0.0900    0.7942
+     Parameter 17    0.0800    0.8938
+     Parameter 30    0.0800    0.8938
+     Parameter 26    0.0800    0.8938
+     Parameter 15    0.0700    0.9610
+     Parameter 16    0.0700    0.9610
+     Parameter 29    0.0300    1.0000
+     Parameter 12    0.0300    1.0000
+     Parameter 7    0.0200    1.0000
+     Parameter 14    0.0100    1.0000
+     Parameter 5    0.0100    1.0000
+     Parameter 10    0.0100    1.0000
+     Parameter 6    0.0100    1.0000
+     Parameter 9    0.0000    1.0000
+     Parameter 13    0.0000    1.0000
+     Parameter 8    0.0000    1.0000
+     Parameter 11    0.0000    1.0000
+
+
+
+     Simulated prior distributions
+
+     Parameter       Prior Mean  Prior Variance  Prior Std. Dev.
+
+
+     Parameter 1 Improper Prior
+     Parameter 2 Improper Prior
+     Parameter 3 Improper Prior
+     Parameter 4 Improper Prior
+     Parameter 5 Improper Prior
+     Parameter 6 Improper Prior
+     Parameter 7 Improper Prior
+     Parameter 8 Improper Prior
+     Parameter 9 Improper Prior
+     Parameter 10 Improper Prior
+     Parameter 11 Improper Prior
+     Parameter 12 Improper Prior
+     Parameter 13 Improper Prior
+     Parameter 14 Improper Prior
+     Parameter 15 Improper Prior
+     Parameter 16 Improper Prior
+     Parameter 17 Improper Prior
+     Parameter 18 Improper Prior
+     Parameter 19 Improper Prior
+     Parameter 20 Improper Prior
+     Parameter 21 Improper Prior
+     Parameter 22 Improper Prior
+     Parameter 23 Improper Prior
+     Parameter 24 Improper Prior
+     Parameter 25 Improper Prior
+     Parameter 26 Improper Prior
+     Parameter 27 Improper Prior
+     Parameter 28 Improper Prior
+     Parameter 29 Improper Prior
+     Parameter 30 Improper Prior
+     Parameter 31 Improper Prior
+     Parameter 32 Improper Prior
+     Parameter 33 Improper Prior
+     Parameter 34 Improper Prior
+
+
+   TECHNICAL 8 OUTPUT FOR BAYES ESTIMATION
+
+     CHAIN    BSEED
+     1        0
+     2        285380
+
+                     POTENTIAL       PARAMETER WITH
+     ITERATION    SCALE REDUCTION      HIGHEST PSR
+     100              1.702               6
+     200              1.824               3
+     300              1.333               3
+     400              1.105               3
+     500              1.239               3
+     600              1.308               3
+     700              1.373               3
+     800              1.592               3
+     900              2.007               3
+     1000             2.648               3
+     1100             2.658               3
+     1200             3.183               3
+     1300             3.237               3
+     1400             3.227               3
+     1500             3.374               3
+     1600             3.120               3
+     1700             2.923               3
+     1800             2.884               3
+     1900             2.571               3
+     2000             2.570               3
+     2100             2.471               3
+     2200             2.408               3
+     2300             2.338               3
+     2400             2.317               3
+     2500             2.281               3
+     2600             2.309               3
+     2700             2.274               3
+     2800             2.007               3
+     2900             1.617               3
+     3000             1.412               3
+     3100             1.387               3
+     3200             1.361               3
+     3300             1.358               3
+     3400             1.298               3
+     3500             1.233               3
+     3600             1.171               3
+     3700             1.112               3
+     3800             1.114               7
+     3900             1.121               6
+     4000             1.151               6
+     4100             1.176               6
+     4200             1.186               6
+     4300             1.190               6
+     4400             1.182               6
+     4500             1.180               6
+     4600             1.184               6
+     4700             1.172               6
+     4800             1.165               6
+     4900             1.160               6
+     5000             1.159               6
+     5100             1.158               2
+     5200             1.186               2
+     5300             1.230               2
+     5400             1.261               2
+     5500             1.299               2
+     5600             1.352               2
+     5700             1.410               2
+     5800             1.448               2
+     5900             1.440               2
+     6000             1.419               2
+     6100             1.394               2
+     6200             1.364               2
+     6300             1.340               2
+     6400             1.331               2
+     6500             1.344               2
+     6600             1.330               2
+     6700             1.294               2
+     6800             1.269               2
+     6900             1.248               2
+     7000             1.221               2
+     7100             1.211               2
+     7200             1.207               2
+     7300             1.173               2
+     7400             1.131               2
+     7500             1.081               2
+
+
+DIAGRAM INFORMATION
+
+  Mplus diagrams are currently not available for multilevel analysis.
+  No diagram output was produced.
+
+
+     Beginning Time:  16:55:04
+        Ending Time:  17:43:17
+       Elapsed Time:  00:48:13
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

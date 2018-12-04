@@ -3,9 +3,9 @@ DATA: FILE = "ML_Mplus_files/PlosOneAllVar.dat";
 VARIABLE: 
 NAMES = subjn time worry fear sad cheer relax neur; 
 MISSING=.;
-USEVAR = worry fear sad cheer relax ;
+USEVAR = worry fear sad cheer relax time;
 CLUSTER = subjn;
-!WITHIN = time;
+WITHIN = time;
 !BETWEEN = neur;
 
 ANALYSIS:
@@ -29,6 +29,15 @@ NA ON NA&1 ;
 PA BY cheer@1
 relax (&1) ;
 PA ON PA&1 ;
+
+NA ON PA&1;
+PA ON NA&1;
+
+worry ON time@0.001;
+fear ON time@0.001;
+sad ON time@0.001;
+cheer ON time@0.001;
+relax ON time@0.001;
 
 worry;
 fear;
