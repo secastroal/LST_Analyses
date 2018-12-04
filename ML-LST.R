@@ -49,21 +49,51 @@ time <- rep(1:60, 130)
 PlosOne_C <- cbind(PlosOne_C, time)
 rm(time)
 
+# Missing values in neur are eliminated
+
+for(i in 1:130){
+  if(length(unique(PlosOne_C[((60*(i-1))+1):(60*i), "neur"]))==1){
+    PlosOne_C[((60*(i-1))+1):(60*i), "neur"] <- unique(PlosOne_C[((60*(i-1))+1):(60*i), "neur"])[1]
+  }else{
+    PlosOne_C[((60*(i-1))+1):(60*i), "neur"] <- unique(PlosOne_C[((60*(i-1))+1):(60*i), "neur"])[-which(is.na(unique(PlosOne_C[((60*(i-1))+1):(60*i), "neur"])))]
+  }
+}
+rm(i)
+
+# Remove cases due to complete NAs
+
+pos.cases.NA <- which(tapply(rowSums(is.na(PlosOne_C[,6:11])), PlosOne_C$subjn, sum, na.rm = TRUE)==360)
+cases.NA <- unique(PlosOne_C$subjn)[pos.cases.NA]
+PlosOne_C <- PlosOne_C[-which(PlosOne_C$subjn %in% cases.NA),]
+
+rm(pos.cases.NA, cases.NA)
+
 # Only the variables related to negative affect are selected to try LST models.
 PlosOne_W <- reshape(PlosOne_C[, c(1, 8:10, 13)], v.names=c("worry", "fear", "sad"),
                      timevar = "time", idvar="subjn", direction="wide")
-# Person 74 is dicarded due to complete non-response, also the variable subject number is discarded.
-PlosOne_W <- PlosOne_W[-74, -1]
+# The variable subject number is discarded.
+PlosOne_W <- PlosOne_W[, -1]
 
 # Change variable names to delete "." given that this is not allowed in Mplus syntax.
 names(PlosOne_W) <- gsub("\\.", "", names(PlosOne_W))
 
-# CUTS vs MLCUTS ----
+# 2.0 Select number of measurements and delete full NAs cases ----
 
-m <- 60 # number of measurement occasions
+m <- 10 # number of measurement occasions
 t.m <- m*3 # total number of variables
-PlosOne_Cr <- PlosOne_C[PlosOne_C$time <= m, c("subjn","worry", "fear", "sad") ]
+PlosOne_Cr <- PlosOne_C[PlosOne_C$time <= m, c("subjn","time", "worry", "fear", "sad") ]
 PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
+
+if(m != 60){
+  pos.cases.NA <- which(tapply(rowSums(is.na(PlosOne_Cr[,3:5])), PlosOne_Cr$subjn, sum, na.rm = TRUE)==3*m)
+  cases.NA <- unique(PlosOne_Cr$subjn)[pos.cases.NA]
+  if(length(pos.cases.NA) != 0){PlosOne_Cr <- PlosOne_Cr[-which(PlosOne_Cr$subjn %in% cases.NA),]}
+  if(length(pos.cases.NA) != 0){PlosOne_Wr <- PlosOne_Wr[-pos.cases.NA,]}
+  rm(pos.cases.NA, cases.NA)
+}
+
+
+# CUTS vs MLCUTS ----
 
 file.name <- paste0("mlcuts_m", m)
 
@@ -116,11 +146,6 @@ rm(file.name, analysis_syntax, model_syntax)
 
 # MSST vs MLMSSt ----
 
-m <- 10 # number of measurement occasions
-t.m <- m*3 # total number of variables
-PlosOne_Cr <- PlosOne_C[PlosOne_C$time <= m, c("subjn","worry", "fear", "sad", "time") ]
-PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
-
 file.name <- paste0("mlmsst_m", m,"_time")
 
 prepareMplusData(PlosOne_Cr,paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
@@ -164,11 +189,6 @@ runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
 rm(file.name, analysis_syntax, model_syntax)
 
 # TSO vs MLTSO ----
-
-m <- 10 # number of measurement occasions
-t.m <- m*3 # total number of variables
-PlosOne_Cr <- PlosOne_C[PlosOne_C$time <= m, c("subjn","worry", "fear", "sad") ]
-PlosOne_Wr <- PlosOne_W[, 1:(t.m)]
 
 file.name <- paste0("mltso_m", m)
 
