@@ -2,6 +2,10 @@
 # 0.0 Prepare environment
 # 1.0 Read data
 # 1.1 Selection of measurements and variables, turn data into wide format
+# 2.0 Select number of measurements and delete full NAs cases
+# 3.0 CUTS vs MLCUTS
+# 4.0 MSST vs MLMSST
+# 5.0 TSO vs MLTSO
 
 
 # 0.0 Prepare environment ----
@@ -93,7 +97,7 @@ if(m != 60){
 }
 
 
-# CUTS vs MLCUTS ----
+# 3.0 CUTS vs MLCUTS ----
 
 file.name <- paste0("mlcuts_m", m)
 
@@ -144,7 +148,7 @@ runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
 
 rm(file.name, analysis_syntax, model_syntax)
 
-# MSST vs MLMSSt ----
+# 4.0 MSST vs MLMSST ----
 
 file.name <- paste0("mlmsst_m", m,"_time")
 
@@ -188,7 +192,7 @@ runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
 
 rm(file.name, analysis_syntax, model_syntax)
 
-# TSO vs MLTSO ----
+# 5.0 TSO vs MLTSO ----
 
 file.name <- paste0("mltso_m", m)
 
@@ -233,4 +237,4 @@ runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
 
 rm(file.name, analysis_syntax, model_syntax)
 
-# End ----
+# End
