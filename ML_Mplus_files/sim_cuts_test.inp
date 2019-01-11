@@ -1,0 +1,30 @@
+TITLE: Your title goes here
+DATA: FILE = "ML_Mplus_files/sim_cuts_test.dat";
+VARIABLE: 
+NAMES = subjn y1 y2 y3 y4; 
+MISSING=.;
+USEVAR = y1 y2 y3 y4;
+CLUSTER = subjn;
+
+ANALYSIS:
+TYPE = TWOLEVEL;
+ESTIMATOR = ML;
+ITERATIONS = 500000;
+
+MODEL:
+
+%WITHIN%
+
+! common states
+CS BY y1@1
+y2 (lcs2)
+y3 (lcs3)
+y4 (lcs4) ;
+
+%BETWEEN%
+
+! common trait
+CT BY y1@1
+y2 (lct2)
+y3 (lct3)
+y4 (lct4) ;
