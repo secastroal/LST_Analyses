@@ -36,7 +36,7 @@ R <- matrix(rbinom(I*I, 10, prob = 0.6)/10, I)
 R[lower.tri(R)] = t(R)[lower.tri(R)]
 diag(R) <- 1
 R
-D <- diag(sqrt(var_ind_traits))
+D <- diag(sd_ind_traits)
 D
 Sigma <- D%*%R%*%D
 Sigma
@@ -44,7 +44,7 @@ Sigma
 
 # Data simulation ----
 
-trait_scores <- mvrnorm(N, 0, Sigma = Sigma) # factor indicator trait scores
+trait_scores <- mvrnorm(N, rep(0, I), Sigma = Sigma) # factor indicator trait scores
 trait_scores_full <- array(trait_scores, dim = c(N,I,nT)) # matrix with factor trait scores
 
 # array with latent state residual in occasion n=1 and latent occasion specific residuals in occasion n>1
@@ -81,7 +81,7 @@ colnames(sim_data) <- c("subjn", "time", paste0("y", 1:I))
 
 
 # model estimation ----
-file.name <- "sim_msst_test"
+file.name <- "sim_tso_test"
 prepareMplusData(sim_data, paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
 
 analysis_syntax <- "USEVAR = y1 y2 y3 y4;
@@ -89,10 +89,10 @@ CLUSTER = subjn;
 
 ANALYSIS:
 TYPE = TWOLEVEL;
-ESTIMATOR = ML;
-ITERATIONS = 500000;" # increase H1 iterations
+ESTIMATOR = BAYES;
+BITERATIONS = (5000);" # increase H1 iterations
 
-ml_syntax <- write.mlmsst.to.Mplus(sim_data[, -1])
+ml_syntax <- write.mltso.to.Mplus(sim_data[, -c(1, 2)])
 
 write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
