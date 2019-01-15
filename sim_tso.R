@@ -70,9 +70,11 @@ sim_data <- array(matrix(int, nrow = N, ncol = I, byrow = TRUE), dim = c(N, I, n
   state_scores_full * array(matrix(lambda_state, nrow = N, ncol = I, byrow = TRUE), dim= c(N, I, nT)) + # occasion specific scores times occasion specific lambdas
   errors # errors
 
-sim_data <- aperm(sim_data,c(1,3,2))
+sim_data <- aperm(sim_data,c(3,1,2))
+
 sim_data <- matrix(sim_data, N*nT, I)
-sim_data <- data.frame(cbind(rep(1:N, times = nT), rep(1:nT, each = N), sim_data), row.names = NULL)
+
+sim_data <- data.frame(cbind(rep(1:N, each = nT), rep(1:nT, times = N), sim_data), row.names = NULL)
 
 colnames(sim_data) <- c("subjn", "time", paste0("y", 1:I))
 
