@@ -66,9 +66,9 @@ sim_data <- matrix(int, nrow = N *nT, ncol = I, byrow = TRUE) + # intercepts
   cstate_scores_full * matrix(lambda_cstate, nrow = N *nT, ncol = I, byrow = TRUE) + # state scores times state lambdas
   ustate_scores_full # unique states
 
-sim_data <- data.frame(cbind(rep(1:N, each = nT), sim_data), row.names = NULL)
+sim_data <- data.frame(cbind(rep(1:N, each = nT), rep(1:nT, times = N), sim_data), row.names = NULL)
 
-colnames(sim_data) <- c("subjn", paste0("y", 1:I))
+colnames(sim_data) <- c("subjn", "time",  paste0("y", 1:I))
 
 
 

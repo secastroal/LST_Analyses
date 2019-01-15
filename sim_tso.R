@@ -1,5 +1,6 @@
 # Prepare environment---
 library(invgamma)
+library(MASS)
 
 # function to simulate msst data ----
 
@@ -16,45 +17,64 @@ set.seed(seed)
 
 lambda_state <- round(c(1,runif(I - 1, 0.5, 1.5)), 2) # loading parameters for the latent state residual
 var_state <- rinvgamma(1, shape = 1, scale = 1) # Variance latent state residual
-var_m_error <- rinvgamma(I, shape = 3, scale = 1) # Variance of measurement errors
+var_error <- rinvgamma(I, shape = 3, scale = 1) # Variance of latent measurement errors
 
-sd_state <- sqrt(var_state) # sd latent state residuals
-sd_m_error <- sqrt(var_m_error) # sd measurement errors
+sd_state <- sqrt(var_state) # sd latent state residual
+sd_error <- sqrt(var_error) # sd latent measurement errors
+
+ar_effect <- 0.5 # autoregressive effect on the latent state residuals
 
 # Between Paramaters ----
 
-int <- c(0, rnorm(I -1, 0, 0.5)) # intercepts
-lambda_trait <- c(1,runif(I - 1, 0.5, 1.5)) # loading parametes for the latent trait variable
+int <- rnorm(I, 3)
 
-var_trait <- rinvgamma(1, shape = 1, scale = 1) # variance latent trait variable
-mean_trait <- rnorm(1, 3) # mean latent trait variable
+var_ind_traits <- rinvgamma(I, shape = 1, scale = 1) # variance latent indicator trait variables
 
-sd_trait <- sqrt(var_trait) # sd latent trait variable
+sd_ind_traits <- sqrt(var_ind_traits) # sd latent indicator trait variables
+
+R <- matrix(rbinom(I*I, 10, prob = 0.6)/10, I)
+R[lower.tri(R)] = t(R)[lower.tri(R)]
+diag(R) <- 1
+R
+D <- diag(sqrt(var_ind_traits))
+D
+Sigma <- D%*%R%*%D
+Sigma
+
 
 # Data simulation ----
 
-trait_scores <- rnorm(N, mean_trait, sd_trait) # factor trait scores
-trait_scores_full <- matrix(rep(trait_scores, each = nT), nrow = N * nT, ncol = I, byrow = FALSE) # matrix with factor trait scores
+trait_scores <- mvrnorm(N, 0, Sigma = Sigma) # factor indicator trait scores
+trait_scores_full <- array(trait_scores, dim = c(N,I,nT)) # matrix with factor trait scores
 
-state_scores <- rnorm(N * nT, 0, sd_state) # factor state scores
-state_scores_full <- matrix(state_scores, nrow = N * nT, ncol = I , byrow = FALSE) # full matrix with factor state scores
+# array with latent state residual in occasion n=1 and latent occasion specific residuals in occasion n>1
 
-# measurement errors
-errors <- matrix(NA, N * nT, I)
-for(i in 1:I){
-  errors[,i] <- rnorm(N * nT, 0, sd_m_error[i])
+state_scores_full <- array(NA, dim = c(N, I, nT)) 
+state_scores_full[,,1] <- rnorm(N, 0, sd_state)
+for(i in 2:nT){
+  state_scores_full[,,i] <- rnorm(N, 0, sd_state) + ar_effect * state_scores_full[,,i-1]
 }
 rm(i)
 
+
+# measurement errors
+errors <- array(NA,dim = c(N, I , nT))
+for(i in 1:I){
+  errors[,i,] <- rnorm(N * nT, 0, sd_error[i])
+}
+rm(i)
+errors
+
 # Complete data
-sim_data <- matrix(int, nrow = N *nT, ncol = I, byrow = TRUE) + # intercepts
-  trait_scores_full * matrix(lambda_trait, nrow = N *nT, ncol = I, byrow = TRUE) + # trait scores times trait lambdas
-  state_scores_full * matrix(lambda_state, nrow = N *nT, ncol = I, byrow = TRUE) + # state scores times state lambdas
+sim_data <- array(matrix(int, nrow = N, ncol = I, byrow = TRUE), dim = c(N, I, nT)) + trait_scores_full + # Intercepts and trait scores
+  state_scores_full * array(matrix(lambda_state, nrow = N, ncol = I, byrow = TRUE), dim= c(N, I, nT)) + # occasion specific scores times occasion specific lambdas
   errors # errors
 
-sim_data <- data.frame(cbind(rep(1:N, each = nT), sim_data), row.names = NULL)
+sim_data <- aperm(sim_data,c(1,3,2))
+sim_data <- matrix(sim_data, N*nT, I)
+sim_data <- data.frame(cbind(rep(1:N, times = nT), rep(1:nT, each = N), sim_data), row.names = NULL)
 
-colnames(sim_data) <- c("subjn", paste0("y", 1:I))
+colnames(sim_data) <- c("subjn", "time", paste0("y", 1:I))
 
 
 
