@@ -1,0 +1,55 @@
+TITLE: Your title goes here
+DATA: FILE = "ML_Mplus_files/mltso_m10_Test.dat";
+VARIABLE: 
+NAMES = subjn time worry fear sad; 
+MISSING=.;
+USEVAR = worry fear sad;
+CLUSTER = subjn;
+
+ANALYSIS:
+TYPE = TWOLEVEL;
+ESTIMATOR = ML;
+ITERATIONS = 500000;
+
+MODEL:
+
+%WITHIN%
+
+! Latent state residual
+eta BY worry@1
+fear 
+sad   (&1) ;
+
+! Autoregressive effect on the latent state residual
+eta ON eta&1 ;
+
+! Latent errors and latent state variances
+worry(o_err1) ;
+fear(o_err2) ;
+sad(o_err3) ;
+eta(s_var) ;
+
+%BETWEEN%
+
+! Latent trait-indicator variables
+theta1 BY worry@1 ;
+theta2 BY fear@1 ;
+theta3 BY sad@1 ;
+
+! Intercepts
+[worry*] ;
+[fear*] ;
+[sad*] ;
+
+! Fixing means of latent trait-indicator variables at 0
+[theta1@0] ;
+[theta2@0] ;
+[theta3@0] ;
+
+! Fixing level-2 variances at 0 and latent trait-indicator variances
+worry@0.001;
+fear@0.001;
+sad@0.001;
+theta1(t_var1) ;
+theta2(t_var2) ;
+theta3(t_var3) ;

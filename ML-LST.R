@@ -150,7 +150,7 @@ rm(file.name, analysis_syntax, model_syntax)
 
 # 4.0 MSST vs MLMSST ----
 
-file.name <- paste0("mlmsst_m", m,"_time")
+file.name <- paste0("mlmsst_m", m,"_Test")
 
 prepareMplusData(PlosOne_Cr,paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
 
@@ -162,7 +162,7 @@ TYPE = TWOLEVEL;
 ESTIMATOR = ML;
 ITERATIONS = 500000;" # increase H1 iterations
 
-ml_syntax <- write.mlmsst.to.Mplus(PlosOne_Cr[, -1])
+ml_syntax <- write.mlmsst.to.Mplus(PlosOne_Cr[, -(1:2)])
 
 write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)

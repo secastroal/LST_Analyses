@@ -2,18 +2,18 @@ write.mltso.to.Mplus <- function(dt, scale.equivalence = list(tau = FALSE) ){
   nobs <- dim(dt)[2]
   #observed variables
   obs <- names(dt)
-  #common state
+  #Latent state residual
   eta <- "eta"
-  #common trait
+  #Latent trait indicator variables
   theta <- paste0("theta", 1:nobs)
   #loadings
-  las <- paste0("las", 1:nobs) #lambda common states
+  las <- rep(" ", nobs) #lambda latent states residuals
   
   #variance components
   
   o_red <- paste0("o_err", 1:nobs)
   s_var <- "s_var"
-  t_var <- "t_var"
+  t_var <- paste0("t_var", 1:nobs)
   
   # if-else statements to define constraints (parameters equalities)
   las[1] <- 1
@@ -34,7 +34,7 @@ write.mltso.to.Mplus <- function(dt, scale.equivalence = list(tau = FALSE) ){
   ix <- which(las=="1")
   
   paths[ix] <- paste0(obs[ix],"@",las[ix])
-  paths[-ix] <- paste0(obs[-ix]," (",las[-ix],")")
+  paths[-ix] <- paste0(obs[-ix],las[-ix])
   
   paths <- paste(paths, collapse = "\n")
   eta_syntax <- paste(eta, "BY", paths, " (&1) ;", sep = " ")
@@ -42,9 +42,9 @@ write.mltso.to.Mplus <- function(dt, scale.equivalence = list(tau = FALSE) ){
   
   
   
-  theta_int_syntax <- paste0("[", obs, c("@0] ;", rep("] ;", nobs-1)), collapse = "\n")
+  theta_mean_syntax <- paste0("[", theta, "@0] ;", collapse = "\n")
   
-  theta_mean_syntax <- paste0("[", theta, "*] ;", collapse = "\n")
+  theta_int_syntax <- paste0("[", obs, "*] ;", collapse = "\n")
   
   
   var_within_syntax <- paste(paste0(obs, "(", o_red, ") ;", collapse = "\n"),
@@ -52,7 +52,7 @@ write.mltso.to.Mplus <- function(dt, scale.equivalence = list(tau = FALSE) ){
                              sep = "\n")
   
   
-  var_between_syntax <- paste(paste0(obs, "@0;", collapse = "\n"),
+  var_between_syntax <- paste(paste0(obs, "@0.001;", collapse = "\n"),
                               paste0(theta, "(", t_var, ") ;", collapse =  "\n"),
                               sep = "\n")
   
@@ -62,15 +62,20 @@ write.mltso.to.Mplus <- function(dt, scale.equivalence = list(tau = FALSE) ){
   
   complete_syntax <- paste("\nMODEL:",
                            "\n%WITHIN%",
-                           "\n! common states",
+                           "\n! Latent state residual",
                            paste0(eta_syntax, collapse = "\n"),
+                           "\n! Autoregressive effect on the latent state residual",
                            beta_syntax,
+                           "\n! Latent errors and latent state variances",
                            var_within_syntax,
                            "\n%BETWEEN%",
-                           "\n! common trait",
+                           "\n! Latent trait-indicator variables",
                            theta_syntax,
+                           "\n! Intercepts",
                            theta_int_syntax,
+                           "\n! Fixing means of latent trait-indicator variables at 0",
                            theta_mean_syntax,
+                           "\n! Fixing level-2 variances at 0 and latent trait-indicator variances",
                            var_between_syntax,
                            sep = "\n")
   
