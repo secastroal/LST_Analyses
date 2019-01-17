@@ -194,7 +194,7 @@ rm(file.name, analysis_syntax, model_syntax)
 
 # 5.0 TSO vs MLTSO ----
 
-file.name <- paste0("mltso_m", m)
+file.name <- paste0("mltso_m", m, "_Test")
 
 prepareMplusData(PlosOne_Cr,paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
 
@@ -206,7 +206,7 @@ TYPE = TWOLEVEL;
 ESTIMATOR = ML;
 ITERATIONS = 500000;" # increase H1 iterations
 
-ml_syntax <- write.mltso.to.Mplus(PlosOne_Cr[, -1])
+ml_syntax <- write.mltso.to.Mplus(PlosOne_Cr[, -(1:2)])
 
 write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
