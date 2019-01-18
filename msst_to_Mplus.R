@@ -17,13 +17,17 @@
 write.msst.to.Mplus <- function (dt, neta, ntheta = 1, 
                                  equiv.assumption = list(tau = "cong", theta = "equi"), 
                                  scale.invariance = list(lait0 = FALSE, lait1 = FALSE, lat0 = FALSE, lat1 = FALSE),
-                                 homocedasticity.assumption = list(error = FALSE, state.red = FALSE))
+                                 homocedasticity.assumption = list(error = FALSE, state.red = FALSE),
+                                 second.order.trait = TRUE)
 {
 nobs <- dim(dt)[2]  
 #labels
 ind_s <- paste0(rep(1:(nobs/neta) ,neta),
              rep(1:neta, each=(nobs/neta)))
 ind_t <- paste0(1:neta, rep(1,neta))
+if(!second.order.trait){
+  ind_t <- ind_s
+}
 
 #lambdas for states and traits
 las <- paste0("las", ind_s)
@@ -32,6 +36,9 @@ lat <- paste0("lat", ind_t)
 # intercepts for observed and state variables
 ins <- paste0("ins", ind_s)
 int <- paste0("int", ind_t)
+if(!second.order.trait){
+  int <- NULL
+}
 
 
 #latent variables' names
@@ -57,6 +64,9 @@ spe <- paste0("spe", ind_s)
 # if-else statements to define constraints (parameters equalities)
 fixed_s <- seq(1, nobs, by = nobs/neta)
 fixed_t <- seq(1, neta, by = neta/ntheta)
+if(!second.order.trait){
+  fixed_t <- fixed_s
+}
 
 if(equiv.assumption$tau == "equi"){
   ins <- rep(0, nobs)
@@ -87,6 +97,10 @@ if(equiv.assumption$tau == "cong"){
 if(equiv.assumption$theta == "equi"){
   int <- rep(0, neta)
   lat <- rep(1, neta)
+  if(!second.order.trait){
+    int <- NULL
+    lat <- rep(1, nobs)
+  }
 }
 
 if(equiv.assumption$theta == "ess"){
@@ -94,6 +108,9 @@ if(equiv.assumption$theta == "ess"){
   lat <- rep(1, neta)
   if(scale.invariance$lat0){
     int <- rep(int[1:(neta/ntheta)], ntheta)
+  }
+  if(!second.order.trait){
+    stop('When fitting non second order LST models, the equivalence assumption "ess" is not possible')
   }
 }
 
@@ -105,6 +122,12 @@ if(equiv.assumption$theta == "cong"){
   }
   if(scale.invariance$lat1){
     lat <- rep(lat[1:(neta/ntheta)], ntheta)
+    if(!second.order.trait){
+      lat <- rep(lat[1:(nobs/neta)], neta)
+    }
+  }
+  if(!second.order.trait){
+    int <- NULL
   }
 }
 
@@ -149,6 +172,22 @@ for(i in 1:ntheta){
 }
 rm(i, ms, paths, ix)
 
+if(!second.order.trait){
+  theta_syntax <- rep(NA, ntheta)
+  for(i in 1:ntheta){
+    ms <- ((i-1)*(nobs/ntheta) + 1):(i*(nobs/ntheta))
+    paths <- rep(NA, length(ms) )
+    ix <- which(lat[1:length(ms)]=="1")
+    
+    paths[ix] <- paste0(obs[ms[ix]],"@",lat[ms[ix]])
+    paths[-ix] <- paste0(obs[ms[-ix]]," (",lat[ms[-ix]],")")
+    
+    paths <- paste(paths, collapse = "\n")
+    theta_syntax[i] <- paste(theta[i], "BY", paths, ";", sep = " ")
+  }
+  rm(i, ms, paths, ix)
+}
+
 # write intercetps for the latent states
 eta_syntax_int <- rep(NA, neta)
 for(i in 1:neta){
@@ -179,6 +218,10 @@ for(i in 1:ntheta){
 }
 rm(i, ms, paths, ix)
 
+if(!second.order.trait){
+  theta_syntax_int <- NULL
+}
+
 theta_syntax_means <- paste0("[", theta, "*] ;", collapse = "\n")
 
 # write variance components
@@ -195,6 +238,9 @@ def_syntax <- paste(paste0("NEW(", rel, ") ;", collapse = "\n" ),
                     sep = "\n")
 
 lat_r <- rep(lat, each = nobs/neta)
+if(!second.order.trait){
+  lat_r <- lat
+}
 
 total_var <- paste0(lat_r, "^2*",las, "^2*", 
                      rep(t_var, each = neta/ntheta), "+",

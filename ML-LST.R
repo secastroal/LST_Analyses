@@ -180,9 +180,10 @@ H1ITERATIONS = 5000;" # increase H1 iterations
 
 
 model_syntax <- write.msst.to.Mplus(PlosOne_Wr, neta = m, ntheta = 1, 
-                                    equiv.assumption = list(tau = "cong", theta = "equi"),
+                                    equiv.assumption = list(tau = "cong", theta = "cong"),
                                     scale.invariance = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
-                                    homocedasticity.assumption = list(error = TRUE, state.red = TRUE))
+                                    homocedasticity.assumption = list(error = TRUE, state.red = TRUE),
+                                    second.order.trait = FALSE)
   
 
 write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
