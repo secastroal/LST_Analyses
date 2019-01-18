@@ -1,103 +1,56 @@
-# Prepare environment---
-library(invgamma)
-library(MASS)
+# function to simulate tso data ----
 
-# function to simulate msst data ----
-
-# Conditions
-
-N <- 100 # number of persons
-nT <- 30 # number of times // measurement occasions
-I <- 4 # number of variables // items
-seed <- 123
-
-set.seed(seed)
-
-# Within Parameters ----
-
-lambda_state <- round(c(1,runif(I - 1, 0.5, 1.5)), 2) # loading parameters for the latent state residual
-var_state <- rinvgamma(1, shape = 1, scale = 1) # Variance latent state residual
-var_error <- rinvgamma(I, shape = 3, scale = 1) # Variance of latent measurement errors
-
-sd_state <- sqrt(var_state) # sd latent state residual
-sd_error <- sqrt(var_error) # sd latent measurement errors
-
-ar_effect <- 0.5 # autoregressive effect on the latent state residuals
-
-# Between Paramaters ----
-
-int <- rnorm(I, 3)
-
-var_ind_traits <- rinvgamma(I, shape = 1, scale = 1) # variance latent indicator trait variables
-
-sd_ind_traits <- sqrt(var_ind_traits) # sd latent indicator trait variables
-
-R <- matrix(rbinom(I*I, 10, prob = 0.6)/10, I)
-R[lower.tri(R)] = t(R)[lower.tri(R)]
-diag(R) <- 1
-R
-D <- diag(sd_ind_traits)
-D
-Sigma <- D%*%R%*%D
-Sigma
-
-
-# Data simulation ----
-
-sim.data.tso
-
-trait_scores <- mvrnorm(N, rep(0, I), Sigma = Sigma) # factor indicator trait scores
-trait_scores_full <- array(trait_scores, dim = c(N,I,nT)) # array with factor trait scores
-
-# array with latent state residual in occasion n=1 and latent occasion specific residuals in occasion n>1
-
-state_scores_full <- array(NA, dim = c(N, I, nT)) 
-state_scores_full[,,1] <- rnorm(N, 0, sd_state)
-for(i in 2:nT){
-  state_scores_full[,,i] <- rnorm(N, 0, sd_state) + ar_effect * state_scores_full[,,i-1]
+sim.data.tso <- function(N, nT, I, within.parameters, between.parameters, 
+                                       seed = 123){
+  state.sd <- sqrt(within.parameters$state.var)
+  error.sd <- sqrt(within.parameters$error.var)
+  trait.ind.sd <- sqrt(between.parameters$trait.ind.var)
+  
+  D <- diag(trait.ind.sd)
+  Sigma <- D%*%between.parameters$cor.matrix%*%D
+  
+  trait_scores <- mvrnorm(N, rep(0, I), Sigma = Sigma) # factor indicator trait scores
+  trait_scores_full <- array(trait_scores, dim = c(N,I,nT)) # array with factor trait scores
+  
+  # array with latent state residual in occasion n=1 and latent occasion specific residuals in occasion n>1
+  
+  state_scores_full <- array(NA, dim = c(N, I, nT)) 
+  state_scores_full[,,1] <- rnorm(N, 0, state.sd)
+  for(i in 2:nT){
+    state_scores_full[,,i] <- rnorm(N, 0, state.sd) + within.parameters$ar.effect * state_scores_full[,,i-1]
+  }
+  rm(i)
+  
+  # measurement errors
+  errors <- array(NA,dim = c(N, I , nT))
+  for(i in 1:I){
+    errors[,i,] <- rnorm(N * nT, 0, error.sd[i])
+  }
+  rm(i)
+  
+  # Complete data
+  sim_data <- array(matrix(between.parameters$intercepts, nrow = N, ncol = I, byrow = TRUE), dim = c(N, I, nT)) + trait_scores_full + # Intercepts and trait scores
+    state_scores_full * array(matrix(within.parameters$loadings, nrow = N, ncol = I, byrow = TRUE), dim= c(N, I, nT)) + # occasion specific scores times occasion specific lambdas
+    errors # errors
+  
+  sim_data <- aperm(sim_data,c(3,1,2))
+  
+  sim_data <- matrix(sim_data, N*nT, I)
+  
+  sim_data <- data.frame(cbind(rep(1:N, each = nT), rep(1:nT, times = N), sim_data), row.names = NULL)
+  
+  colnames(sim_data) <- c("subjn", "time", paste0("y", 1:I))
+  
+  wide_sim_data <- reshape(sim_data, v.names = paste0("y", 1:I),
+                           timevar = "time", idvar="subjn", direction="wide")
+  names(wide_sim_data) <- gsub("\\.", "", names(wide_sim_data))
+  
+  return(list( within.parameters = within.parameters,
+               between.parameters = between.parameters,
+               data.long = sim_data,
+               data.wide = wide_sim_data))
 }
-rm(i)
 
-
-# measurement errors
-errors <- array(NA,dim = c(N, I , nT))
-for(i in 1:I){
-  errors[,i,] <- rnorm(N * nT, 0, sd_error[i])
-}
-rm(i)
-errors
-
-# Complete data
-sim_data <- array(matrix(int, nrow = N, ncol = I, byrow = TRUE), dim = c(N, I, nT)) + trait_scores_full + # Intercepts and trait scores
-  state_scores_full * array(matrix(lambda_state, nrow = N, ncol = I, byrow = TRUE), dim= c(N, I, nT)) + # occasion specific scores times occasion specific lambdas
-  errors # errors
-
-sim_data <- aperm(sim_data,c(3,1,2))
-
-sim_data <- matrix(sim_data, N*nT, I)
-
-sim_data <- data.frame(cbind(rep(1:N, each = nT), rep(1:nT, times = N), sim_data), row.names = NULL)
-
-colnames(sim_data) <- c("subjn", "time", paste0("y", 1:I))
-
-
-
-# model estimation ----
-file.name <- "sim_tso_test"
-prepareMplusData(sim_data, paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
-
-analysis_syntax <- "USEVAR = y1 y2 y3 y4;
-CLUSTER = subjn;
-
-ANALYSIS:
-TYPE = TWOLEVEL;
-ESTIMATOR = BAYES;
-BITERATIONS = (5000);" # increase H1 iterations
-
-ml_syntax <- write.mltso.to.Mplus(sim_data[, -c(1, 2)])
-
-write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
-write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
 
 
 

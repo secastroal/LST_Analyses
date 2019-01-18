@@ -7,9 +7,6 @@
 
 # 0.0 Prepare environment ----
 rm(list=ls())
-#install.packages("lavaan")
-#install.packages("MplusAutomation")
-#install.packages("devtools")
 #library(devtools) # if lsttheory of sumplement C of Steyer et al. (2015) has not been installed before.
 #install_github("amayer2010/lsttheory", force = TRUE)
 library(lavaan)
@@ -87,19 +84,44 @@ seed <- 123
 
 set.seed(seed)
 
-# Within Parameters ----
+# Within Parameters
 
 lambda_state <- round(c(1,runif(I - 1, 0.5, 1.5)), 2) # loading parameters for the latent state residual
 var_state <- rinvgamma(1, shape = 1, scale = 1) # Variance latent state residual
 var_m_error <- rinvgamma(I, shape = 3, scale = 1) # Variance of measurement errors
 
-# Between Paramaters ----
+within.parameters <- list(loadings = lambda_state, state.var = var_state, error.var = var_m_error)
+
+# Between Paramaters
 
 int <- c(0, rnorm(I -1, 0, 0.5)) # intercepts
 lambda_trait <- c(1,runif(I - 1, 0.5, 1.5)) # loading parametes for the latent trait variable
 
 var_trait <- rinvgamma(1, shape = 1, scale = 1) # variance latent trait variable
 mean_trait <- rnorm(1, 3) # mean latent trait variable
+
+between.parameters <- list(intercepts = int, loadings = lambda_trait, trait.mean = mean_trait,
+                           trait.var = var_trait)
+
+msst.data <- sim.data.msst(N, nT, I, within.parameters = within.parameters, between.parameters = between.parameters)
+
+# model estimation
+file.name <- "sim_msst_test"
+prepareMplusData(sim_data, paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
+
+analysis_syntax <- "USEVAR = y1 y2 y3 y4;
+CLUSTER = subjn;
+
+ANALYSIS:
+TYPE = TWOLEVEL;
+ESTIMATOR = ML;
+ITERATIONS = 500000;" # increase H1 iterations
+
+ml_syntax <- write.mlmsst.to.Mplus(sim_data[, -1])
+
+write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
+
 
 
 # 3.0 TSO ----
@@ -113,7 +135,7 @@ seed <- 123
 
 set.seed(seed)
 
-# Within Parameters ----
+# Within Parameters
 
 lambda_state <- round(c(1,runif(I - 1, 0.5, 1.5)), 2) # loading parameters for the latent state residual
 var_state <- rinvgamma(1, shape = 1, scale = 1) # Variance latent state residual
@@ -121,20 +143,40 @@ var_error <- rinvgamma(I, shape = 3, scale = 1) # Variance of latent measurement
 
 ar_effect <- 0.5 # autoregressive effect on the latent state residuals
 
-# Between Paramaters ----
+within.parameters <- list(loadings = lambda_state, state.var = var_state, error.var = var_error,
+                          ar.effect = ar_effect)
+
+# Between Paramaters 
 
 int <- rnorm(I, 3)
 
 var_ind_traits <- rinvgamma(I, shape = 1, scale = 1) # variance latent indicator trait variables
 
-R <- matrix(rbinom(I*I, 10, prob = 0.6)/10, I)
+R <- matrix(sample((4:9)/10, size = I * I, replace = TRUE), I)
 R[lower.tri(R)] = t(R)[lower.tri(R)]
 diag(R) <- 1
 R
-D <- diag(sd_ind_traits)
-D
-Sigma <- D%*%R%*%D
-Sigma
+
+between.parameters <- list(intercepts = int, trait.ind.var = var_ind_traits, cor.matrix = R)
+
+tso.data <- sim.data.tso(N, nT, I, within.parameters = within.parameters, between.parameters = between.parameters)
+
+# model estimation
+file.name <- "sim_tso_test"
+prepareMplusData(sim_data, paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
+
+analysis_syntax <- "USEVAR = y1 y2 y3 y4;
+CLUSTER = subjn;
+
+ANALYSIS:
+TYPE = TWOLEVEL;
+ESTIMATOR = BAYES;
+BITERATIONS = (5000);" # increase H1 iterations
+
+ml_syntax <- write.mltso.to.Mplus(sim_data[, -c(1, 2)])
+
+write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
 
 
 

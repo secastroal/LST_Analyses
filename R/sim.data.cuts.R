@@ -44,6 +44,7 @@ sim.data.cuts <- function(N, nT, I, within.parameters, between.parameters,
   
   wide_sim_data <- reshape(sim_data, v.names = paste0("y", 1:I),
                            timevar = "time", idvar="subjn", direction="wide")
+  names(wide_sim_data) <- gsub("\\.", "", names(wide_sim_data))
   
   return(list( within.parameters = within.parameters,
                between.parameters = between.parameters,
