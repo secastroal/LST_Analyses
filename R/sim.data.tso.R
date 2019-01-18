@@ -47,7 +47,7 @@ Sigma
 sim.data.tso
 
 trait_scores <- mvrnorm(N, rep(0, I), Sigma = Sigma) # factor indicator trait scores
-trait_scores_full <- array(trait_scores, dim = c(N,I,nT)) # matrix with factor trait scores
+trait_scores_full <- array(trait_scores, dim = c(N,I,nT)) # array with factor trait scores
 
 # array with latent state residual in occasion n=1 and latent occasion specific residuals in occasion n>1
 
