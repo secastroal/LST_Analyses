@@ -3,7 +3,7 @@
 sim.data.msst <- function(N, nT, I, within.parameters, between.parameters, 
                           seed = 123){
   set.seed(seed)
-  
+  #Compute standard deviations
   state.sd <- sqrt(within.parameters$state.var) #state sd
   error.sd <- sqrt(within.parameters$error.var) #errors sd
   trait.sd <- sqrt(between.parameters$trait.var) #trait sd

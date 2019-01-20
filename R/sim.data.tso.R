@@ -2,10 +2,13 @@
 
 sim.data.tso <- function(N, nT, I, within.parameters, between.parameters, 
                                        seed = 123){
-  state.sd <- sqrt(within.parameters$state.var)
-  error.sd <- sqrt(within.parameters$error.var)
-  trait.ind.sd <- sqrt(between.parameters$trait.ind.var)
+  set.seed(seed)
+  #Compute standard deviations
+  state.sd <- sqrt(within.parameters$state.var) # state residual standard deviation
+  error.sd <- sqrt(within.parameters$error.var) # errors sd
+  trait.ind.sd <- sqrt(between.parameters$trait.ind.var) # trait indicators sd
   
+  #Compute variance covariance matrix
   D <- diag(trait.ind.sd)
   Sigma <- D%*%between.parameters$cor.matrix%*%D
   

@@ -12,7 +12,6 @@ rm(list=ls())
 library(lavaan)
 library(lsttheory)
 library(MplusAutomation)
-library(invgamma)
 library(MASS)
 source("R/write.Mplus.options.R")
 source("R/write.cuts.to.Mplus.R")
@@ -37,41 +36,57 @@ set.seed(seed)
 
 # Within Parameters
 
-lambda_cstate <- round(c(1,runif(I - 1, 0.5, 1.5)), 2) # loading parameters for the latent common state
-var_cstate <- rinvgamma(1, shape = 1, scale = 1) # Variance latent common state
-var_ustate <- rinvgamma(I, shape = 3, scale = 1) # Variance of latent unique states
+state_loadings <- sample(seq(0.5, 1.2, by = 0.1), size = I, replace = TRUE) # loading parameters for the latent common state
+state_loadings[1] <- 1 # fixing first loading at 1
+var_CS <- 2 # Variance latent common state
+var_US <- sample(seq(1, 3, by = 0.5), size = I, replace = TRUE) # Variance of latent unique states
 
-within.parameters <- list(loadings = lambda_cstate, CS.var = var_cstate, US.var = var_ustate)
+within.parameters <- list(loadings = state_loadings, CS.var = var_CS, US.var = var_US)
+
+rm(state_loadings, var_CS, var_US)
 
 # Between Paramaters
 
-int <- rnorm(I, 3) # intercepts
-lambda_ctrait <- c(1,runif(I - 1, 0.5, 1.5)) # loading parametes for the latent common trait
+intercepts <- sample(seq(2, 4, by = 0.5), size = I, replace = TRUE) # intercepts
+trait_loadings <- sample(seq(0.5, 1.2, by = 0.1), size = I, replace = TRUE) # loading parametes for the latent common trait
+trait_loadings[1] <- 1 # fixing first loading at 1
+var_CT <- 1.5 # variance latent common trait
+var_UT <- sample(seq(0.5, 2, by = 0.5), size = I, replace = TRUE) # variance latent unique traits
 
-var_ctrait <- rinvgamma(1, shape = 1, scale = 1) # variance latent common trait
-var_utrait <- rinvgamma(I, shape = 3, scale = 1) # variance latent unique traits
+between.parameters <- list(intercepts = intercepts, loadings = trait_loadings, CT.var = var_CT, UT.var = var_UT)
 
-between.parameters <- list(intercepts = int, loadings = lambda_ctrait, CT.var = var_ctrait, UT.var = var_utrait)
+rm(intercepts, trait_loadings, var_CT, var_UT)
 
-cuts.data <- sim.data.cuts(N, nT, I, within.parameters = within.parameters, between.parameters = between.parameters)
+#data simulation
+cuts.data <- sim.data.cuts(N, nT, I, within.parameters = within.parameters, 
+                           between.parameters = between.parameters, seed = seed)
 
 # model estimation
-file.name <- "sim_cuts_test"
-prepareMplusData(sim_data, paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
+file.name <- "sim_cuts_test1"
 
-analysis_syntax <- "USEVAR = y1 y2 y3 y4;
-CLUSTER = subjn;
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(cuts.data$data.long, paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
 
-ANALYSIS:
-TYPE = TWOLEVEL;
-ESTIMATOR = ML;
-ITERATIONS = 500000;" # increase H1 iterations
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(cuts.data$data.long)[-(1:2)],
+                                       cluster = names(cuts.data$data.long)[1],
+                                       analysis_type = "TWOLEVEL",
+                                       estimator = "ML",
+                                       iterations = 500000,
+                                       h1iterations = 500000)
 
-ml_syntax <- write.mlcuts.to.Mplus(sim_data[, -1])
+ml_syntax <- write.mlcuts.to.Mplus(cuts.data$data.long[, -(1:2)])
 
 write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
 
+rm(analysis_syntax, ml_syntax)
+
+# Run modelin Mplus
+runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
+readModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".out"), what = "parameters")$parameters #read Mplus output
+
+rm(N, nT, I, seed, file.name, within.parameters, between.parameters, cuts.data)
 
 # 2.0 MSST ----
 
@@ -86,43 +101,60 @@ set.seed(seed)
 
 # Within Parameters
 
-lambda_state <- round(c(1,runif(I - 1, 0.5, 1.5)), 2) # loading parameters for the latent state residual
-var_state <- rinvgamma(1, shape = 1, scale = 1) # Variance latent state residual
-var_m_error <- rinvgamma(I, shape = 3, scale = 1) # Variance of measurement errors
+state_loadings <- sample(seq(0.5, 1.2, by = 0.1), size = I, replace = TRUE) # loading parameters for the latent state
+state_loadings[1] <- 1 # fixing first loading at 1
+var_state <- 2 # Variance latent state residual
+var_m_error <- sample(seq(1, 3, by = 0.5), size = I, replace = TRUE) # Variance of measurement errors
 
-within.parameters <- list(loadings = lambda_state, state.var = var_state, error.var = var_m_error)
+within.parameters <- list(loadings = state_loadings, state.var = var_state, error.var = var_m_error)
+
+rm(state_loadings, var_state, var_m_error)
 
 # Between Paramaters
 
-int <- c(0, rnorm(I -1, 0, 0.5)) # intercepts
-lambda_trait <- c(1,runif(I - 1, 0.5, 1.5)) # loading parametes for the latent trait variable
+intercepts <- sample(seq(0, 1, by = 0.2), size = I, replace = TRUE) # intercepts
+intercepts[1] <- 0 # fixing first intercept at 0
+trait_loadings <- sample(seq(0.5, 1.2, by = 0.1), size = I, replace = TRUE) # loading parametes for the latent trait
+trait_loadings[1] <- 1 # fixing first loading at 1
 
-var_trait <- rinvgamma(1, shape = 1, scale = 1) # variance latent trait variable
-mean_trait <- rnorm(1, 3) # mean latent trait variable
+var_trait <- 2 # variance latent trait variable
+mean_trait <- 4 # mean latent trait variable
 
-between.parameters <- list(intercepts = int, loadings = lambda_trait, trait.mean = mean_trait,
+between.parameters <- list(intercepts = intercepts, loadings = trait_loadings, trait.mean = mean_trait,
                            trait.var = var_trait)
 
-msst.data <- sim.data.msst(N, nT, I, within.parameters = within.parameters, between.parameters = between.parameters)
+rm(intercepts, trait_loadings, var_trait, mean_trait)
+
+#data simulation
+msst.data <- sim.data.msst(N, nT, I, within.parameters = within.parameters, 
+                           between.parameters = between.parameters, seed = seed)
 
 # model estimation
-file.name <- "sim_msst_test"
-prepareMplusData(sim_data, paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
+file.name <- "sim_msst_test1"
 
-analysis_syntax <- "USEVAR = y1 y2 y3 y4;
-CLUSTER = subjn;
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(msst.data$data.long, paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
 
-ANALYSIS:
-TYPE = TWOLEVEL;
-ESTIMATOR = ML;
-ITERATIONS = 500000;" # increase H1 iterations
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.long)[-(1:2)],
+                                       cluster = names(msst.data$data.long)[1],
+                                       analysis_type = "TWOLEVEL",
+                                       estimator = "ML",
+                                       iterations = 500000,
+                                       h1iterations = 500000)
 
-ml_syntax <- write.mlmsst.to.Mplus(sim_data[, -1])
+ml_syntax <- write.mlmsst.to.Mplus(msst.data$data.long[, -(1:2)])
 
 write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
 
+rm(analysis_syntax, ml_syntax)
 
+# Run modelin Mplus
+runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
+readModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".out"), what = "parameters")$parameters #read Mplus output
+
+rm(N, nT, I, seed, file.name, within.parameters, between.parameters, msst.data)
 
 # 3.0 TSO ----
 
@@ -137,46 +169,61 @@ set.seed(seed)
 
 # Within Parameters
 
-lambda_state <- round(c(1,runif(I - 1, 0.5, 1.5)), 2) # loading parameters for the latent state residual
-var_state <- rinvgamma(1, shape = 1, scale = 1) # Variance latent state residual
-var_error <- rinvgamma(I, shape = 3, scale = 1) # Variance of latent measurement errors
+state_loadings <- sample(seq(0.5, 1.2, by = 0.1), size = I, replace = TRUE) # loading parameters for the latent state
+state_loadings[1] <- 1 # fixing first loading at 1
+var_state <- 2 # Variance latent state residual
+var_error <- sample(seq(1, 3, by = 0.5), size = I, replace = TRUE) # Variance of latent measurement errors
 
 ar_effect <- 0.5 # autoregressive effect on the latent state residuals
 
-within.parameters <- list(loadings = lambda_state, state.var = var_state, error.var = var_error,
+within.parameters <- list(loadings = state_loadings, state.var = var_state, error.var = var_error,
                           ar.effect = ar_effect)
+
+rm(state_loadings, var_state, var_error, ar_effect)
 
 # Between Paramaters 
 
-int <- rnorm(I, 3)
+intercepts <- sample(seq(2, 4, by = 0.5), size = I, replace = TRUE) # intercepts
 
-var_ind_traits <- rinvgamma(I, shape = 1, scale = 1) # variance latent indicator trait variables
+var_ind_traits <- sample(seq(1.5, 2.5, by = 0.5), size = I, replace = TRUE) # variance latent indicator trait variables
 
-R <- matrix(sample((4:9)/10, size = I * I, replace = TRUE), I)
+R <- matrix(sample((6:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
 R[lower.tri(R)] = t(R)[lower.tri(R)]
 diag(R) <- 1
-R
 
-between.parameters <- list(intercepts = int, trait.ind.var = var_ind_traits, cor.matrix = R)
+between.parameters <- list(intercepts = intercepts, trait.ind.var = var_ind_traits, 
+                           cor.matrix = R)
 
-tso.data <- sim.data.tso(N, nT, I, within.parameters = within.parameters, between.parameters = between.parameters)
+rm(intercepts, var_ind_traits, R)
+
+#data simulation
+tso.data <- sim.data.tso(N, nT, I, within.parameters = within.parameters, 
+                         between.parameters = between.parameters, seed = seed)
 
 # model estimation
-file.name <- "sim_tso_test"
-prepareMplusData(sim_data, paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
+file.name <- "sim_tso_test1"
 
-analysis_syntax <- "USEVAR = y1 y2 y3 y4;
-CLUSTER = subjn;
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(tso.data$data.long, paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
 
-ANALYSIS:
-TYPE = TWOLEVEL;
-ESTIMATOR = BAYES;
-BITERATIONS = (5000);" # increase H1 iterations
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(tso.data$data.long)[-(1:2)],
+                                       cluster = names(tso.data$data.long)[1],
+                                       analysis_type = "TWOLEVEL",
+                                       estimator = "BAYES",
+                                       iterations = 5000,
+                                       processors = 2)
 
-ml_syntax <- write.mltso.to.Mplus(sim_data[, -c(1, 2)])
+ml_syntax <- write.mltso.to.Mplus(tso.data$data.long[, -c(1, 2)])
 
 write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
 
+rm(analysis_syntax, ml_syntax)
 
+# Run modelin Mplus
+runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
+readModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".out"), what = "parameters")$parameters #read Mplus output
+
+rm(N, nT, I, seed, file.name, within.parameters, between.parameters, tso.data)
 
