@@ -10,11 +10,13 @@ sim.data.cuts <- function(N, nT, I, within.parameters, between.parameters,
   UT.sd <- sqrt(between.parameters$UT.var) #unique trait sd
   
   ctrait_scores <- rnorm(N, 0, CT.sd) # common trait scores
-  ctrait_scores_full <- matrix(rep(ctrait_scores, each = nT), nrow = N * nT, ncol = I, byrow = FALSE) # matrix with common trait scores
+  ctrait_scores <- ctrait_scores %o% between.parameters$loadings # common trait scores times trait loadings
+  ctrait_scores_full <- ctrait_scores[rep(1:N, each = nT), ] # full matrix with common trait scores
+  #JL# Why are the loadings across the I items constrained to be equal (= columns are equal)?
   
   # unique trait scores
   utrait_scores <- matrix(NA, nrow = N, ncol = I) 
-  for(i in 1:4){
+  for(i in 1:I){ #JL# fixed!
     utrait_scores[,i] <- rnorm(N, 0, UT.sd[i])
   }
   rm(i)
@@ -22,7 +24,7 @@ sim.data.cuts <- function(N, nT, I, within.parameters, between.parameters,
   
   
   cstate_scores <- rnorm(N * nT, 0, CS.sd) # common state scores
-  cstate_scores_full <- matrix(cstate_scores, nrow = N * nT, ncol = I , byrow = FALSE) # full matrix with common state scores
+  cstate_scores_full <- cstate_scores %o% within.parameters$loadings # full matrix with common state scores times state loadings
   
   # unique state or measurement error
   ustate_scores_full <- matrix(NA, N * nT, I)
@@ -33,10 +35,11 @@ sim.data.cuts <- function(N, nT, I, within.parameters, between.parameters,
   
   # Complete data
   sim_data <- matrix(between.parameters$intercepts, nrow = N *nT, ncol = I, byrow = TRUE) + # intercepts
-    ctrait_scores_full * matrix(between.parameters$loadings, nrow = N *nT, ncol = I, byrow = TRUE) + # trait scores times trait lambdas
+    ctrait_scores_full + # trait scores times trait lambdas
     utrait_scores_full + # unique trait scores 
-    cstate_scores_full * matrix(within.parameters$loadings, nrow = N *nT, ncol = I, byrow = TRUE) + # state scores times state lambdas
+    cstate_scores_full + # state scores times state lambdas
     ustate_scores_full # unique states
+  #JL# An idea to manipulate: trunc(sim_data)
   
   sim_data <- data.frame(cbind(rep(1:N, each = nT), rep(1:nT, times = N), sim_data), row.names = NULL)
   
@@ -51,6 +54,9 @@ sim.data.cuts <- function(N, nT, I, within.parameters, between.parameters,
                data.long = sim_data,
                data.wide = wide_sim_data))
   
+  #JL#: You could have thought of coding it the other way around: First wide and then long.
+  #JL#  The reason is that the matrices would have been much simpler (smaller), with less row and column
+  #JL#  repetitions. Easier to debug and code.
 }
 
 

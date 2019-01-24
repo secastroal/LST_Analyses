@@ -9,10 +9,11 @@ sim.data.msst <- function(N, nT, I, within.parameters, between.parameters,
   trait.sd <- sqrt(between.parameters$trait.var) #trait sd
   
   trait_scores <- rnorm(N, between.parameters$trait.mean, trait.sd) # factor trait scores
-  trait_scores_full <- matrix(rep(trait_scores, each = nT), nrow = N * nT, ncol = I, byrow = FALSE) # matrix with factor trait scores
+  trait_scores <- trait_scores %o% between.parameters$loadings # factor trait scores times loadings 
+  trait_scores_full <- trait_scores[rep(1:N, each = nT), ] # full matrix with factor trait scores
   
   state_scores <- rnorm(N * nT, 0, state.sd) # factor state scores
-  state_scores_full <- matrix(state_scores, nrow = N * nT, ncol = I , byrow = FALSE) # full matrix with factor state scores
+  state_scores_full <- state_scores %o% within.parameters$loadings # Factor state scores times state loadings
   
   # measurement errors
   errors <- matrix(NA, N * nT, I)
@@ -23,8 +24,8 @@ sim.data.msst <- function(N, nT, I, within.parameters, between.parameters,
   
   # Complete data
   sim_data <- matrix(between.parameters$intercepts, nrow = N *nT, ncol = I, byrow = TRUE) + # intercepts
-    trait_scores_full * matrix(between.parameters$loadings, nrow = N *nT, ncol = I, byrow = TRUE) + # trait scores times trait lambdas
-    state_scores_full * matrix(within.parameters$loadings, nrow = N *nT, ncol = I, byrow = TRUE) + # state scores times state lambdas
+    trait_scores_full + # trait scores times trait lambdas
+    state_scores_full + # state scores times state lambdas
     errors # errors
   
   sim_data <- data.frame(cbind(rep(1:N, each = nT), rep(1:nT, times = N), sim_data), row.names = NULL)

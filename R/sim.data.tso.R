@@ -32,7 +32,8 @@ sim.data.tso <- function(N, nT, I, within.parameters, between.parameters,
   rm(i)
   
   # Complete data
-  sim_data <- array(matrix(between.parameters$intercepts, nrow = N, ncol = I, byrow = TRUE), dim = c(N, I, nT)) + trait_scores_full + # Intercepts and trait scores
+  sim_data <- array(matrix(between.parameters$intercepts, nrow = N, ncol = I, byrow = TRUE), dim = c(N, I, nT)) + # intercepts
+    trait_scores_full + # trait scores
     state_scores_full * array(matrix(within.parameters$loadings, nrow = N, ncol = I, byrow = TRUE), dim= c(N, I, nT)) + # occasion specific scores times occasion specific lambdas
     errors # errors
   
