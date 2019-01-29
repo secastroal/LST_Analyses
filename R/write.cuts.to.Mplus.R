@@ -88,7 +88,7 @@ ct_var <- "ct_var"
 fixed_s <- seq(1, nobs, by = nobs/nstate)
 
 lcs[fixed_s] <- 1
-lct[fixed_s] <- 1
+lct[1] <- 1
 lut[1:(nobs/nstate)]<-1
 
 m.obs <- obs
