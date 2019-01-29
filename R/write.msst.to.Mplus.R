@@ -65,7 +65,7 @@ spe <- paste0("spe", ind_s)
 fixed_s <- seq(1, nobs, by = nobs/neta)
 fixed_t <- seq(1, neta, by = neta/ntheta)
 if(!second.order.trait){
-  fixed_t <- fixed_s
+  fixed_t <- seq(1, nobs, by = nobs/ntheta)
 }
 
 if(equiv.assumption$tau == "equi"){
