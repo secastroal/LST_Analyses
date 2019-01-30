@@ -37,7 +37,7 @@ lat <- paste0("lat", ind_t)
 ins <- paste0("ins", ind_s)
 int <- paste0("int", ind_t)
 if(!second.order.trait){
-  int <- NULL
+  ins <- NULL
 }
 
 
@@ -71,6 +71,9 @@ if(!second.order.trait){
 if(equiv.assumption$tau == "equi"){
   ins <- rep(0, nobs)
   las <- rep(1, nobs)
+  if(!second.order.trait){
+    ins <- NULL
+  }
   
 }
 
@@ -79,6 +82,9 @@ if(equiv.assumption$tau == "ess"){
   las <- rep(1, nobs)
   if(scale.invariance$lait0){
     ins <- rep(ins[1:(nobs/neta)], neta)
+  }
+  if(!second.order.trait){
+    stop('When fitting non second order LST models, the equivalence assumption "ess" is not possible')
   }
 }
 
@@ -91,6 +97,9 @@ if(equiv.assumption$tau == "cong"){
   if(scale.invariance$lait1){
     las <- rep(las[1:(nobs/neta)], neta)
   }
+  if(!second.order.trait){
+    ins <- NULL
+  }
 }
 
 
@@ -98,7 +107,7 @@ if(equiv.assumption$theta == "equi"){
   int <- rep(0, neta)
   lat <- rep(1, neta)
   if(!second.order.trait){
-    int <- NULL
+    int <- rep(0, nobs)
     lat <- rep(1, nobs)
   }
 }
@@ -108,9 +117,9 @@ if(equiv.assumption$theta == "ess"){
   lat <- rep(1, neta)
   if(scale.invariance$lat0){
     int <- rep(int[1:(neta/ntheta)], ntheta)
-  }
-  if(!second.order.trait){
-    stop('When fitting non second order LST models, the equivalence assumption "ess" is not possible')
+    if(!second.order.trait){
+      int <- rep(int[1:(nobs/neta)], neta)
+    }
   }
 }
 
@@ -119,15 +128,15 @@ if(equiv.assumption$theta == "cong"){
   lat[fixed_t] <- 1
   if(scale.invariance$lat0){
     int <- rep(int[1:(neta/ntheta)], ntheta)
+    if(!second.order.trait){
+      int <- rep(int[1:(nobs/neta)], neta)
+    }
   }
   if(scale.invariance$lat1){
     lat <- rep(lat[1:(neta/ntheta)], ntheta)
-    if(!second.order.trait){
-      lat <- rep(lat[1:(nobs/neta)], neta)
-    }
-  }
-  if(!second.order.trait){
-    int <- NULL
+      if(!second.order.trait){
+        lat <- rep(lat[1:(nobs/neta)], neta)
+      }
   }
 }
 
