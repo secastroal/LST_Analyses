@@ -59,6 +59,18 @@ sim.data.cuts <- function(N, nT, I, within.parameters, between.parameters,
   #JL#  repetitions. Easier to debug and code.
 }
 
+# Modified function to allow simulating cuts data with time variant parameters ----
+# This function simulates the data in wide format.
+# To make it simple, the parameters provided are always time invariant parameters. When time.invariant is false,
+#   time variant parameters are generated based on the time invariant parameters provided. Loadings are always 
+#   sampled from the seq(0.5, 1.2, by = 0.1). Intercepts and variances are sampled from an interval centered on
+#   the mean of the respective time invariant parameters, which is half the mean long. For example, given the 
+#   time-invariant intercetps c(2, 3, 4), the new time-variant intercepts are sampled from ten numbers within
+#   the interval c(1.5, 4.5). # Intercepts and variances are sampled in this way because they have a huge 
+#   impact on the final simulated data
+
+
+
 sim.data.cuts.tv <- function(N, nT, I, within.parameters, between.parameters, time.invariant = TRUE, 
                           seed = 123){
   set.seed(seed)
@@ -76,33 +88,25 @@ sim.data.cuts.tv <- function(N, nT, I, within.parameters, between.parameters, ti
     between.parameters$loadings.UT <- matrix(1, nrow = nT, ncol = I)
   }
   
-  # Generate time variant parameters when time.invariant is FALSE. The idea is to sample values between
-  #   minimun and maximun of the time invariant parameters or close to the time invariant parameter. For
-  #   example if the time invariant within loadings are c(1, 0.7, 1.3), the time variant parameters are 
-  #   sampled from the interval c(0.7, 1.3). 
   if(!time.invariant){
     #within parameters
-    within.parameters$loadings <- matrix(sample(seq(min(within.parameters$loadings), max(within.parameters$loadings), 
-                                                    length.out = nT), size = nT * I, replace = TRUE), nrow = nT, 
+    within.parameters$loadings <- matrix(sample(seq(0.5, 1.2, by = 0.1), size = nT * I, replace = TRUE), nrow = nT, 
                                          ncol = I, byrow = TRUE)
     within.parameters$loadings[ , 1] <- 1
-    within.parameters$CS.var <- sample(seq(within.parameters$CS.var - within.parameters$CS.var/4, 
-                                           within.parameters$CS.var + within.parameters$CS.var/4, length.out = nT), 
-                                       size = nT, replace = TRUE)
-    within.parameters$US.var <- matrix(sample(seq(min(within.parameters$US.var), max(within.parameters$US.var), 
-                                                  length.out = nT), size = nT * I, replace = TRUE), nrow = nT, 
+    within.parameters$CS.var <- sample(seq(within.parameters$CS.var * (3/4), within.parameters$CS.var * (5/4), 
+                                           length.out = 11), size = nT, replace = TRUE)
+    within.parameters$US.var <- matrix(sample(seq(mean(within.parameters$US.var) * (3/4), mean(within.parameters$US.var) * (5/4), 
+                                                  length.out = 11), size = nT * I, replace = TRUE), nrow = nT, 
                                        ncol = I, byrow = TRUE)
     
     #between parameters
-    between.parameters$intercepts <- matrix(sample(seq(min(between.parameters$intercepts), max(between.parameters$intercepts), 
-                                                       length.out = nT), size = nT * I, replace = TRUE), nrow = nT, 
+    between.parameters$intercepts <- matrix(sample(seq(mean(between.parameters$intercepts) *  (3/4), mean(between.parameters$intercepts) *  (5/4), 
+                                                       length.out = 11), size = nT * I, replace = TRUE), nrow = nT, 
                                             ncol = I, byrow = TRUE)
-    between.parameters$loadings <- matrix(sample(seq(min(between.parameters$loadings), max(between.parameters$loadings), 
-                                                     length.out = nT), size = nT * I, replace = TRUE), nrow = nT, 
+    between.parameters$loadings <- matrix(sample(seq(0.5, 1.2, by = 0.1), size = nT * I, replace = TRUE), nrow = nT, 
                                           ncol = I, byrow = TRUE)
     between.parameters$loadings[1,1] <- 1
-    between.parameters$loadings.UT <- matrix(sample(seq(min(between.parameters$loadings), max(between.parameters$loadings), 
-                                                        length.out = nT), size = nT * I, replace = TRUE), nrow = nT, 
+    between.parameters$loadings.UT <- matrix(sample(seq(0.5, 1.2, by = 0.1), size = nT * I, replace = TRUE), nrow = nT, 
                                              ncol = I, byrow = TRUE)
     between.parameters$loadings.UT[1, ] <- 1
   }
@@ -113,7 +117,12 @@ sim.data.cuts.tv <- function(N, nT, I, within.parameters, between.parameters, ti
   CT.sd <- sqrt(between.parameters$CT.var) #common trait sd
   UT.sd <- sqrt(between.parameters$UT.var) #unique trait sd
   
-  #Generate data in wide format
+  #Generate data in wide format----
+  # A more optimal way to code this part is to define all the NA matrices before the loops and do only one loop 
+  #     for(i in 1:nT){}. Thus, the function would only use three loops instead of 5. However with more loops, 
+  #     the code is clearer.
+  
+  # common trait scores
   ctrait_scores <- rnorm(N, 0, CT.sd) # common trait scores
   ctrait_scores_full <- ctrait_scores %o% c(t(between.parameters$loadings)) # common trait scores times trait loadings
   
@@ -126,14 +135,13 @@ sim.data.cuts.tv <- function(N, nT, I, within.parameters, between.parameters, ti
   
   utrait_scores_full <- matrix(NA, nrow = N, ncol = I * nT)
   for(i in 1:nT){ #unique traits times loadings per each time
-    utrait_scores_full[, (((i - 1) * I) + 1):(i * I)] <- utrait_scores * matrix(between.parameters$loadings.UT[i,], 
-                                                                                N, I, byrow = TRUE)
+    utrait_scores_full[, (((i - 1) * I) + 1):(i * I)] <- t(between.parameters$loadings.UT[i, ] * t(utrait_scores))
   }
   rm(i)
   
   #Common state scores
   cstate_scores_full <- matrix(NA, nrow = N, ncol = I * nT) #matrix to store common state scores
-  for(i in 1:nT){ #Generate common state score times the corresponding loadings for each time
+  for(i in 1:nT){ #Generate common state score times the corresponding loadings on each time
     cstate_scores_full[, (((i - 1) * I) + 1):(i * I)] <- rnorm(N, 0, CS.sd[i]) %o% within.parameters$loadings[i, ]
   }
   rm(i)
@@ -148,15 +156,9 @@ sim.data.cuts.tv <- function(N, nT, I, within.parameters, between.parameters, ti
   rm(i, j)
   
   #intercepts complete matrix
-  intercepts_full <- matrix(NA, nrow = N, ncol = I * nT)
-  for(i in 1:nT){ #Generate common state score times the corresponding loadings for each time
-    intercepts_full[, (((i - 1) * I) + 1):(i * I)] <- matrix(between.parameters$intercepts[i, ], nrow = N, 
-                                                             ncol = I, byrow = TRUE)
-  }
-  rm(i)
+  intercepts_full <- matrix(c(t(between.parameters$intercepts)), nrow = N, ncol = nT * I, byrow = TRUE)
   
-  
-  # Complete data
+  # Complete data ----
   sim_data <- intercepts_full + # intercepts
     ctrait_scores_full + # trait scores times trait lambdas
     utrait_scores_full + # unique trait scores 
