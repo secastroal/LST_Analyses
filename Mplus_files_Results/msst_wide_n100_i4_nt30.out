@@ -1,0 +1,1766 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+02/01/2019   5:19 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "Mplus_files_Results/msst_wide_N100_I4_nT30.dat";
+  VARIABLE:
+  NAMES = subjn y11 y21 y31 y41 y12 y22 y32 y42 y13 y23 y33 y43 y14 y24 y34 y44 y15
+       y25 y35 y45 y16 y26 y36 y46 y17 y27 y37 y47 y18 y28 y38 y48 y19 y29 y39 y49
+       y110 y210 y310 y410 y111 y211 y311 y411 y112 y212 y312 y412 y113 y213 y313 y413
+       y114 y214 y314 y414 y115 y215 y315 y415 y116 y216 y316 y416 y117 y217 y317 y417
+       y118 y218 y318 y418 y119 y219 y319 y419 y120 y220 y320 y420 y121 y221 y321 y421
+       y122 y222 y322 y422 y123 y223 y323 y423 y124 y224 y324 y424 y125 y225 y325 y425
+       y126 y226 y326 y426 y127 y227 y327 y427 y128 y228 y328 y428 y129 y229 y329 y429
+       y130 y230 y330 y430;
+  MISSING=.;
+  USEVAR = y11
+  y21
+  y31
+  y41
+  y12
+  y22
+  y32
+  y42
+  y13
+  y23
+  y33
+  y43
+  y14
+  y24
+  y34
+  y44
+  y15
+  y25
+  y35
+  y45
+  y16
+  y26
+  y36
+  y46
+  y17
+  y27
+  y37
+  y47
+  y18
+  y28
+  y38
+  y48
+  y19
+  y29
+  y39
+  y49
+  y110
+  y210
+  y310
+  y410
+  y111
+  y211
+  y311
+  y411
+  y112
+  y212
+  y312
+  y412
+  y113
+  y213
+  y313
+  y413
+  y114
+  y214
+  y314
+  y414
+  y115
+  y215
+  y315
+  y415
+  y116
+  y216
+  y316
+  y416
+  y117
+  y217
+  y317
+  y417
+  y118
+  y218
+  y318
+  y418
+  y119
+  y219
+  y319
+  y419
+  y120
+  y220
+  y320
+  y420
+  y121
+  y221
+  y321
+  y421
+  y122
+  y222
+  y322
+  y422
+  y123
+  y223
+  y323
+  y423
+  y124
+  y224
+  y324
+  y424
+  y125
+  y225
+  y325
+  y425
+  y126
+  y226
+  y326
+  y426
+  y127
+  y227
+  y327
+  y427
+  y128
+  y228
+  y328
+  y428
+  y129
+  y229
+  y329
+  y429
+  y130
+  y230
+  y330
+  y430 ;
+
+
+  ANALYSIS:
+  TYPE = GENERAL ;
+  ESTIMATOR = ML ;
+  ITERATIONS = 5e+05 ;
+  H1ITERATIONS = 5e+05 ;
+
+
+  MODEL:
+
+  ! Latent state variables
+  eta1 BY y11@1
+  y21 (las21)
+  y31 (las31)
+  y41 (las41) ;
+  eta2 BY y12@1
+  y22 (las21)
+  y32 (las31)
+  y42 (las41) ;
+  eta3 BY y13@1
+  y23 (las21)
+  y33 (las31)
+  y43 (las41) ;
+  eta4 BY y14@1
+  y24 (las21)
+  y34 (las31)
+  y44 (las41) ;
+  eta5 BY y15@1
+  y25 (las21)
+  y35 (las31)
+  y45 (las41) ;
+  eta6 BY y16@1
+  y26 (las21)
+  y36 (las31)
+  y46 (las41) ;
+  eta7 BY y17@1
+  y27 (las21)
+  y37 (las31)
+  y47 (las41) ;
+  eta8 BY y18@1
+  y28 (las21)
+  y38 (las31)
+  y48 (las41) ;
+  eta9 BY y19@1
+  y29 (las21)
+  y39 (las31)
+  y49 (las41) ;
+  eta10 BY y110@1
+  y210 (las21)
+  y310 (las31)
+  y410 (las41) ;
+  eta11 BY y111@1
+  y211 (las21)
+  y311 (las31)
+  y411 (las41) ;
+  eta12 BY y112@1
+  y212 (las21)
+  y312 (las31)
+  y412 (las41) ;
+  eta13 BY y113@1
+  y213 (las21)
+  y313 (las31)
+  y413 (las41) ;
+  eta14 BY y114@1
+  y214 (las21)
+  y314 (las31)
+  y414 (las41) ;
+  eta15 BY y115@1
+  y215 (las21)
+  y315 (las31)
+  y415 (las41) ;
+  eta16 BY y116@1
+  y216 (las21)
+  y316 (las31)
+  y416 (las41) ;
+  eta17 BY y117@1
+  y217 (las21)
+  y317 (las31)
+  y417 (las41) ;
+  eta18 BY y118@1
+  y218 (las21)
+  y318 (las31)
+  y418 (las41) ;
+  eta19 BY y119@1
+  y219 (las21)
+  y319 (las31)
+  y419 (las41) ;
+  eta20 BY y120@1
+  y220 (las21)
+  y320 (las31)
+  y420 (las41) ;
+  eta21 BY y121@1
+  y221 (las21)
+  y321 (las31)
+  y421 (las41) ;
+  eta22 BY y122@1
+  y222 (las21)
+  y322 (las31)
+  y422 (las41) ;
+  eta23 BY y123@1
+  y223 (las21)
+  y323 (las31)
+  y423 (las41) ;
+  eta24 BY y124@1
+  y224 (las21)
+  y324 (las31)
+  y424 (las41) ;
+  eta25 BY y125@1
+  y225 (las21)
+  y325 (las31)
+  y425 (las41) ;
+  eta26 BY y126@1
+  y226 (las21)
+  y326 (las31)
+  y426 (las41) ;
+  eta27 BY y127@1
+  y227 (las21)
+  y327 (las31)
+  y427 (las41) ;
+  eta28 BY y128@1
+  y228 (las21)
+  y328 (las31)
+  y428 (las41) ;
+  eta29 BY y129@1
+  y229 (las21)
+  y329 (las31)
+  y429 (las41) ;
+  eta30 BY y130@1
+  y230 (las21)
+  y330 (las31)
+  y430 (las41) ;
+
+  ! Latent trait variables
+  theta1 BY y11@1
+  y21 (lat21)
+  y31 (lat31)
+  y41 (lat41)
+  y12@1
+  y22 (lat21)
+  y32 (lat31)
+  y42 (lat41)
+  y13@1
+  y23 (lat21)
+  y33 (lat31)
+  y43 (lat41)
+  y14@1
+  y24 (lat21)
+  y34 (lat31)
+  y44 (lat41)
+  y15@1
+  y25 (lat21)
+  y35 (lat31)
+  y45 (lat41)
+  y16@1
+  y26 (lat21)
+  y36 (lat31)
+  y46 (lat41)
+  y17@1
+  y27 (lat21)
+  y37 (lat31)
+  y47 (lat41)
+  y18@1
+  y28 (lat21)
+  y38 (lat31)
+  y48 (lat41)
+  y19@1
+  y29 (lat21)
+  y39 (lat31)
+  y49 (lat41)
+  y110@1
+  y210 (lat21)
+  y310 (lat31)
+  y410 (lat41)
+  y111@1
+  y211 (lat21)
+  y311 (lat31)
+  y411 (lat41)
+  y112@1
+  y212 (lat21)
+  y312 (lat31)
+  y412 (lat41)
+  y113@1
+  y213 (lat21)
+  y313 (lat31)
+  y413 (lat41)
+  y114@1
+  y214 (lat21)
+  y314 (lat31)
+  y414 (lat41)
+  y115@1
+  y215 (lat21)
+  y315 (lat31)
+  y415 (lat41)
+  y116@1
+  y216 (lat21)
+  y316 (lat31)
+  y416 (lat41)
+  y117@1
+  y217 (lat21)
+  y317 (lat31)
+  y417 (lat41)
+  y118@1
+  y218 (lat21)
+  y318 (lat31)
+  y418 (lat41)
+  y119@1
+  y219 (lat21)
+  y319 (lat31)
+  y419 (lat41)
+  y120@1
+  y220 (lat21)
+  y320 (lat31)
+  y420 (lat41)
+  y121@1
+  y221 (lat21)
+  y321 (lat31)
+  y421 (lat41)
+  y122@1
+  y222 (lat21)
+  y322 (lat31)
+  y422 (lat41)
+  y123@1
+  y223 (lat21)
+  y323 (lat31)
+  y423 (lat41)
+  y124@1
+  y224 (lat21)
+  y324 (lat31)
+  y424 (lat41)
+  y125@1
+  y225 (lat21)
+  y325 (lat31)
+  y425 (lat41)
+  y126@1
+  y226 (lat21)
+  y326 (lat31)
+  y426 (lat41)
+  y127@1
+  y227 (lat21)
+  y327 (lat31)
+  y427 (lat41)
+  y128@1
+  y228 (lat21)
+  y328 (lat31)
+  y428 (lat41)
+  y129@1
+  y229 (lat21)
+  y329 (lat31)
+  y429 (lat41)
+  y130@1
+  y230 (lat21)
+  y330 (lat31)
+  y430 (lat41) ;
+
+  ! Intercepts and means
+
+  [y11@0] ;
+  [y21*] (int21) ;
+  [y31*] (int31) ;
+  [y41*] (int41) ;
+  [y12@0] ;
+  [y22*] (int21) ;
+  [y32*] (int31) ;
+  [y42*] (int41) ;
+  [y13@0] ;
+  [y23*] (int21) ;
+  [y33*] (int31) ;
+  [y43*] (int41) ;
+  [y14@0] ;
+  [y24*] (int21) ;
+  [y34*] (int31) ;
+  [y44*] (int41) ;
+  [y15@0] ;
+  [y25*] (int21) ;
+  [y35*] (int31) ;
+  [y45*] (int41) ;
+  [y16@0] ;
+  [y26*] (int21) ;
+  [y36*] (int31) ;
+  [y46*] (int41) ;
+  [y17@0] ;
+  [y27*] (int21) ;
+  [y37*] (int31) ;
+  [y47*] (int41) ;
+  [y18@0] ;
+  [y28*] (int21) ;
+  [y38*] (int31) ;
+  [y48*] (int41) ;
+  [y19@0] ;
+  [y29*] (int21) ;
+  [y39*] (int31) ;
+  [y49*] (int41) ;
+  [y110@0] ;
+  [y210*] (int21) ;
+  [y310*] (int31) ;
+  [y410*] (int41) ;
+  [y111@0] ;
+  [y211*] (int21) ;
+  [y311*] (int31) ;
+  [y411*] (int41) ;
+  [y112@0] ;
+  [y212*] (int21) ;
+  [y312*] (int31) ;
+  [y412*] (int41) ;
+  [y113@0] ;
+  [y213*] (int21) ;
+  [y313*] (int31) ;
+  [y413*] (int41) ;
+  [y114@0] ;
+  [y214*] (int21) ;
+  [y314*] (int31) ;
+  [y414*] (int41) ;
+  [y115@0] ;
+  [y215*] (int21) ;
+  [y315*] (int31) ;
+  [y415*] (int41) ;
+  [y116@0] ;
+  [y216*] (int21) ;
+  [y316*] (int31) ;
+  [y416*] (int41) ;
+  [y117@0] ;
+  [y217*] (int21) ;
+  [y317*] (int31) ;
+  [y417*] (int41) ;
+  [y118@0] ;
+  [y218*] (int21) ;
+  [y318*] (int31) ;
+  [y418*] (int41) ;
+  [y119@0] ;
+  [y219*] (int21) ;
+  [y319*] (int31) ;
+  [y419*] (int41) ;
+  [y120@0] ;
+  [y220*] (int21) ;
+  [y320*] (int31) ;
+  [y420*] (int41) ;
+  [y121@0] ;
+  [y221*] (int21) ;
+  [y321*] (int31) ;
+  [y421*] (int41) ;
+  [y122@0] ;
+  [y222*] (int21) ;
+  [y322*] (int31) ;
+  [y422*] (int41) ;
+  [y123@0] ;
+  [y223*] (int21) ;
+  [y323*] (int31) ;
+  [y423*] (int41) ;
+  [y124@0] ;
+  [y224*] (int21) ;
+  [y324*] (int31) ;
+  [y424*] (int41) ;
+  [y125@0] ;
+  [y225*] (int21) ;
+  [y325*] (int31) ;
+  [y425*] (int41) ;
+  [y126@0] ;
+  [y226*] (int21) ;
+  [y326*] (int31) ;
+  [y426*] (int41) ;
+  [y127@0] ;
+  [y227*] (int21) ;
+  [y327*] (int31) ;
+  [y427*] (int41) ;
+  [y128@0] ;
+  [y228*] (int21) ;
+  [y328*] (int31) ;
+  [y428*] (int41) ;
+  [y129@0] ;
+  [y229*] (int21) ;
+  [y329*] (int31) ;
+  [y429*] (int41) ;
+  [y130@0] ;
+  [y230*] (int21) ;
+  [y330*] (int31) ;
+  [y430*] (int41) ;
+  [theta1*] ;
+
+  ! Variance components
+  y11(o_err11) ;
+  y21(o_err21) ;
+  y31(o_err31) ;
+  y41(o_err41) ;
+  y12(o_err11) ;
+  y22(o_err21) ;
+  y32(o_err31) ;
+  y42(o_err41) ;
+  y13(o_err11) ;
+  y23(o_err21) ;
+  y33(o_err31) ;
+  y43(o_err41) ;
+  y14(o_err11) ;
+  y24(o_err21) ;
+  y34(o_err31) ;
+  y44(o_err41) ;
+  y15(o_err11) ;
+  y25(o_err21) ;
+  y35(o_err31) ;
+  y45(o_err41) ;
+  y16(o_err11) ;
+  y26(o_err21) ;
+  y36(o_err31) ;
+  y46(o_err41) ;
+  y17(o_err11) ;
+  y27(o_err21) ;
+  y37(o_err31) ;
+  y47(o_err41) ;
+  y18(o_err11) ;
+  y28(o_err21) ;
+  y38(o_err31) ;
+  y48(o_err41) ;
+  y19(o_err11) ;
+  y29(o_err21) ;
+  y39(o_err31) ;
+  y49(o_err41) ;
+  y110(o_err11) ;
+  y210(o_err21) ;
+  y310(o_err31) ;
+  y410(o_err41) ;
+  y111(o_err11) ;
+  y211(o_err21) ;
+  y311(o_err31) ;
+  y411(o_err41) ;
+  y112(o_err11) ;
+  y212(o_err21) ;
+  y312(o_err31) ;
+  y412(o_err41) ;
+  y113(o_err11) ;
+  y213(o_err21) ;
+  y313(o_err31) ;
+  y413(o_err41) ;
+  y114(o_err11) ;
+  y214(o_err21) ;
+  y314(o_err31) ;
+  y414(o_err41) ;
+  y115(o_err11) ;
+  y215(o_err21) ;
+  y315(o_err31) ;
+  y415(o_err41) ;
+  y116(o_err11) ;
+  y216(o_err21) ;
+  y316(o_err31) ;
+  y416(o_err41) ;
+  y117(o_err11) ;
+  y217(o_err21) ;
+  y317(o_err31) ;
+  y417(o_err41) ;
+  y118(o_err11) ;
+  y218(o_err21) ;
+  y318(o_err31) ;
+  y418(o_err41) ;
+  y119(o_err11) ;
+  y219(o_err21) ;
+  y319(o_err31) ;
+  y419(o_err41) ;
+  y120(o_err11) ;
+  y220(o_err21) ;
+  y320(o_err31) ;
+  y420(o_err41) ;
+  y121(o_err11) ;
+  y221(o_err21) ;
+  y321(o_err31) ;
+  y421(o_err41) ;
+  y122(o_err11) ;
+  y222(o_err21) ;
+  y322(o_err31) ;
+  y422(o_err41) ;
+  y123(o_err11) ;
+  y223(o_err21) ;
+  y323(o_err31) ;
+  y423(o_err41) ;
+  y124(o_err11) ;
+  y224(o_err21) ;
+  y324(o_err31) ;
+  y424(o_err41) ;
+  y125(o_err11) ;
+  y225(o_err21) ;
+  y325(o_err31) ;
+  y425(o_err41) ;
+  y126(o_err11) ;
+  y226(o_err21) ;
+  y326(o_err31) ;
+  y426(o_err41) ;
+  y127(o_err11) ;
+  y227(o_err21) ;
+  y327(o_err31) ;
+  y427(o_err41) ;
+  y128(o_err11) ;
+  y228(o_err21) ;
+  y328(o_err31) ;
+  y428(o_err41) ;
+  y129(o_err11) ;
+  y229(o_err21) ;
+  y329(o_err31) ;
+  y429(o_err41) ;
+  y130(o_err11) ;
+  y230(o_err21) ;
+  y330(o_err31) ;
+  y430(o_err41) ;
+  eta1(s_var11) ;
+  eta2(s_var11) ;
+  eta3(s_var11) ;
+  eta4(s_var11) ;
+  eta5(s_var11) ;
+  eta6(s_var11) ;
+  eta7(s_var11) ;
+  eta8(s_var11) ;
+  eta9(s_var11) ;
+  eta10(s_var11) ;
+  eta11(s_var11) ;
+  eta12(s_var11) ;
+  eta13(s_var11) ;
+  eta14(s_var11) ;
+  eta15(s_var11) ;
+  eta16(s_var11) ;
+  eta17(s_var11) ;
+  eta18(s_var11) ;
+  eta19(s_var11) ;
+  eta20(s_var11) ;
+  eta21(s_var11) ;
+  eta22(s_var11) ;
+  eta23(s_var11) ;
+  eta24(s_var11) ;
+  eta25(s_var11) ;
+  eta26(s_var11) ;
+  eta27(s_var11) ;
+  eta28(s_var11) ;
+  eta29(s_var11) ;
+  eta30(s_var11) ;
+  theta1(t_var1) ;
+
+  MODEL CONSTRAINT:
+  NEW(rel11) ;
+  NEW(rel21) ;
+  NEW(rel31) ;
+  NEW(rel41) ;
+  NEW(rel12) ;
+  NEW(rel22) ;
+  NEW(rel32) ;
+  NEW(rel42) ;
+  NEW(rel13) ;
+  NEW(rel23) ;
+  NEW(rel33) ;
+  NEW(rel43) ;
+  NEW(rel14) ;
+  NEW(rel24) ;
+  NEW(rel34) ;
+  NEW(rel44) ;
+  NEW(rel15) ;
+  NEW(rel25) ;
+  NEW(rel35) ;
+  NEW(rel45) ;
+  NEW(rel16) ;
+  NEW(rel26) ;
+  NEW(rel36) ;
+  NEW(rel46) ;
+  NEW(rel17) ;
+  NEW(rel27) ;
+  NEW(rel37) ;
+  NEW(rel47) ;
+  NEW(rel18) ;
+  NEW(rel28) ;
+  NEW(rel38) ;
+  NEW(rel48) ;
+  NEW(rel19) ;
+  NEW(rel29) ;
+  NEW(rel39) ;
+  NEW(rel49) ;
+  NEW(rel110) ;
+  NEW(rel210) ;
+  NEW(rel310) ;
+  NEW(rel410) ;
+  NEW(rel111) ;
+  NEW(rel211) ;
+  NEW(rel311) ;
+  NEW(rel411) ;
+  NEW(rel112) ;
+  NEW(rel212) ;
+  NEW(rel312) ;
+  NEW(rel412) ;
+  NEW(rel113) ;
+  NEW(rel213) ;
+  NEW(rel313) ;
+  NEW(rel413) ;
+  NEW(rel114) ;
+  NEW(rel214) ;
+  NEW(rel314) ;
+  NEW(rel414) ;
+  NEW(rel115) ;
+  NEW(rel215) ;
+  NEW(rel315) ;
+  NEW(rel415) ;
+  NEW(rel116) ;
+  NEW(rel216) ;
+  NEW(rel316) ;
+  NEW(rel416) ;
+  NEW(rel117) ;
+  NEW(rel217) ;
+  NEW(rel317) ;
+  NEW(rel417) ;
+  NEW(rel118) ;
+  NEW(rel218) ;
+  NEW(rel318) ;
+  NEW(rel418) ;
+  NEW(rel119) ;
+  NEW(rel219) ;
+  NEW(rel319) ;
+  NEW(rel419) ;
+  NEW(rel120) ;
+  NEW(rel220) ;
+  NEW(rel320) ;
+  NEW(rel420) ;
+  NEW(rel121) ;
+  NEW(rel221) ;
+  NEW(rel321) ;
+  NEW(rel421) ;
+  NEW(rel122) ;
+  NEW(rel222) ;
+  NEW(rel322) ;
+  NEW(rel422) ;
+  NEW(rel123) ;
+  NEW(rel223) ;
+  NEW(rel323) ;
+  NEW(rel423) ;
+  NEW(rel124) ;
+  NEW(rel224) ;
+  NEW(rel324) ;
+  NEW(rel424) ;
+  NEW(rel125) ;
+  NEW(rel225) ;
+  NEW(rel325) ;
+  NEW(rel425) ;
+  NEW(rel126) ;
+  NEW(rel226) ;
+  NEW(rel326) ;
+  NEW(rel426) ;
+  NEW(rel127) ;
+  NEW(rel227) ;
+  NEW(rel327) ;
+  NEW(rel427) ;
+  NEW(rel128) ;
+  NEW(rel228) ;
+  NEW(rel328) ;
+  NEW(rel428) ;
+  NEW(rel129) ;
+  NEW(rel229) ;
+  NEW(rel329) ;
+  NEW(rel429) ;
+  NEW(rel130) ;
+  NEW(rel230) ;
+  NEW(rel330) ;
+  NEW(rel430) ;
+  NEW(con11) ;
+  NEW(con21) ;
+  NEW(con31) ;
+  NEW(con41) ;
+  NEW(con12) ;
+  NEW(con22) ;
+  NEW(con32) ;
+  NEW(con42) ;
+  NEW(con13) ;
+  NEW(con23) ;
+  NEW(con33) ;
+  NEW(con43) ;
+  NEW(con14) ;
+  NEW(con24) ;
+  NEW(con34) ;
+  NEW(con44) ;
+  NEW(con15) ;
+  NEW(con25) ;
+  NEW(con35) ;
+  NEW(con45) ;
+  NEW(con16) ;
+  NEW(con26) ;
+  NEW(con36) ;
+  NEW(con46) ;
+  NEW(con17) ;
+  NEW(con27) ;
+  NEW(con37) ;
+  NEW(con47) ;
+  NEW(con18) ;
+  NEW(con28) ;
+  NEW(con38) ;
+  NEW(con48) ;
+  NEW(con19) ;
+  NEW(con29) ;
+  NEW(con39) ;
+  NEW(con49) ;
+  NEW(con110) ;
+  NEW(con210) ;
+  NEW(con310) ;
+  NEW(con410) ;
+  NEW(con111) ;
+  NEW(con211) ;
+  NEW(con311) ;
+  NEW(con411) ;
+  NEW(con112) ;
+  NEW(con212) ;
+  NEW(con312) ;
+  NEW(con412) ;
+  NEW(con113) ;
+  NEW(con213) ;
+  NEW(con313) ;
+  NEW(con413) ;
+  NEW(con114) ;
+  NEW(con214) ;
+  NEW(con314) ;
+  NEW(con414) ;
+  NEW(con115) ;
+  NEW(con215) ;
+  NEW(con315) ;
+  NEW(con415) ;
+  NEW(con116) ;
+  NEW(con216) ;
+  NEW(con316) ;
+  NEW(con416) ;
+  NEW(con117) ;
+  NEW(con217) ;
+  NEW(con317) ;
+  NEW(con417) ;
+  NEW(con118) ;
+  NEW(con218) ;
+  NEW(con318) ;
+  NEW(con418) ;
+  NEW(con119) ;
+  NEW(con219) ;
+  NEW(con319) ;
+  NEW(con419) ;
+  NEW(con120) ;
+  NEW(con220) ;
+  NEW(con320) ;
+  NEW(con420) ;
+  NEW(con121) ;
+  NEW(con221) ;
+  NEW(con321) ;
+  NEW(con421) ;
+  NEW(con122) ;
+  NEW(con222) ;
+  NEW(con322) ;
+  NEW(con422) ;
+  NEW(con123) ;
+  NEW(con223) ;
+  NEW(con323) ;
+  NEW(con423) ;
+  NEW(con124) ;
+  NEW(con224) ;
+  NEW(con324) ;
+  NEW(con424) ;
+  NEW(con125) ;
+  NEW(con225) ;
+  NEW(con325) ;
+  NEW(con425) ;
+  NEW(con126) ;
+  NEW(con226) ;
+  NEW(con326) ;
+  NEW(con426) ;
+  NEW(con127) ;
+  NEW(con227) ;
+  NEW(con327) ;
+  NEW(con427) ;
+  NEW(con128) ;
+  NEW(con228) ;
+  NEW(con328) ;
+  NEW(con428) ;
+  NEW(con129) ;
+  NEW(con229) ;
+  NEW(con329) ;
+  NEW(con429) ;
+  NEW(con130) ;
+  NEW(con230) ;
+  NEW(con330) ;
+  NEW(con430) ;
+  NEW(spe11) ;
+  NEW(spe21) ;
+  NEW(spe31) ;
+  NEW(spe41) ;
+  NEW(spe12) ;
+  NEW(spe22) ;
+  NEW(spe32) ;
+  NEW(spe42) ;
+  NEW(spe13) ;
+  NEW(spe23) ;
+  NEW(spe33) ;
+  NEW(spe43) ;
+  NEW(spe14) ;
+  NEW(spe24) ;
+  NEW(spe34) ;
+  NEW(spe44) ;
+  NEW(spe15) ;
+  NEW(spe25) ;
+  NEW(spe35) ;
+  NEW(spe45) ;
+  NEW(spe16) ;
+  NEW(spe26) ;
+  NEW(spe36) ;
+  NEW(spe46) ;
+  NEW(spe17) ;
+  NEW(spe27) ;
+  NEW(spe37) ;
+  NEW(spe47) ;
+  NEW(spe18) ;
+  NEW(spe28) ;
+  NEW(spe38) ;
+  NEW(spe48) ;
+  NEW(spe19) ;
+  NEW(spe29) ;
+  NEW(spe39) ;
+  NEW(spe49) ;
+  NEW(spe110) ;
+  NEW(spe210) ;
+  NEW(spe310) ;
+  NEW(spe410) ;
+  NEW(spe111) ;
+  NEW(spe211) ;
+  NEW(spe311) ;
+  NEW(spe411) ;
+  NEW(spe112) ;
+  NEW(spe212) ;
+  NEW(spe312) ;
+  NEW(spe412) ;
+  NEW(spe113) ;
+  NEW(spe213) ;
+  NEW(spe313) ;
+  NEW(spe413) ;
+  NEW(spe114) ;
+  NEW(spe214) ;
+  NEW(spe314) ;
+  NEW(spe414) ;
+  NEW(spe115) ;
+  NEW(spe215) ;
+  NEW(spe315) ;
+  NEW(spe415) ;
+  NEW(spe116) ;
+  NEW(spe216) ;
+  NEW(spe316) ;
+  NEW(spe416) ;
+  NEW(spe117) ;
+  NEW(spe217) ;
+  NEW(spe317) ;
+  NEW(spe417) ;
+  NEW(spe118) ;
+  NEW(spe218) ;
+  NEW(spe318) ;
+  NEW(spe418) ;
+  NEW(spe119) ;
+  NEW(spe219) ;
+  NEW(spe319) ;
+  NEW(spe419) ;
+  NEW(spe120) ;
+  NEW(spe220) ;
+  NEW(spe320) ;
+  NEW(spe420) ;
+  NEW(spe121) ;
+  NEW(spe221) ;
+  NEW(spe321) ;
+  NEW(spe421) ;
+  NEW(spe122) ;
+  NEW(spe222) ;
+  NEW(spe322) ;
+  NEW(spe422) ;
+  NEW(spe123) ;
+  NEW(spe223) ;
+  NEW(spe323) ;
+  NEW(spe423) ;
+  NEW(spe124) ;
+  NEW(spe224) ;
+  NEW(spe324) ;
+  NEW(spe424) ;
+  NEW(spe125) ;
+  NEW(spe225) ;
+  NEW(spe325) ;
+  NEW(spe425) ;
+  NEW(spe126) ;
+  NEW(spe226) ;
+  NEW(spe326) ;
+  NEW(spe426) ;
+  NEW(spe127) ;
+  NEW(spe227) ;
+  NEW(spe327) ;
+  NEW(spe427) ;
+  NEW(spe128) ;
+  NEW(spe228) ;
+  NEW(spe328) ;
+  NEW(spe428) ;
+  NEW(spe129) ;
+  NEW(spe229) ;
+  NEW(spe329) ;
+  NEW(spe429) ;
+  NEW(spe130) ;
+  NEW(spe230) ;
+  NEW(spe330) ;
+  NEW(spe430) ;
+
+  ! Reliabily
+  rel11= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel21= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel31= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel41= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel12= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel22= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel32= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel42= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel13= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel23= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel33= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel43= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel14= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel24= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel34= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel44= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel15= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel25= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel35= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel45= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel16= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel26= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel36= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel46= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel17= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel27= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel37= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel47= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel18= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel28= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel38= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel48= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel19= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel29= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel39= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel49= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel110= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel210= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel310= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel410= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel111= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel211= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel311= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel411= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel112= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel212= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel312= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel412= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel113= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel213= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel313= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel413= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel114= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel214= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel314= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel414= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel115= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel215= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel315= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel415= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel116= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel216= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel316= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel416= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel117= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel217= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel317= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel417= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel118= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel218= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel318= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel418= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel119= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel219= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel319= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel419= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel120= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel220= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel320= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel420= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel121= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel221= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel321= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel421= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel122= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel222= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel322= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel422= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel123= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel223= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel323= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel423= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel124= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel224= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel324= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel424= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel125= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel225= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel325= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel425= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel126= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel226= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel326= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel426= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel127= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel227= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel327= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel427= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel128= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel228= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel328= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel428= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel129= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel229= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel329= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel429= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  rel130= (1^2*1^2*t_var1+1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  rel230= (lat21^2*las21^2*t_var1+las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  rel330= (lat31^2*las31^2*t_var1+las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  rel430= (lat41^2*las41^2*t_var1+las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+
+  ! Occasion specificity
+  spe11= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe21= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe31= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe41= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe12= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe22= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe32= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe42= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe13= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe23= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe33= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe43= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe14= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe24= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe34= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe44= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe15= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe25= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe35= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe45= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe16= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe26= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe36= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe46= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe17= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe27= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe37= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe47= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe18= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe28= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe38= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe48= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe19= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe29= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe39= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe49= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe110= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe210= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe310= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe410= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe111= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe211= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe311= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe411= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe112= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe212= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe312= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe412= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe113= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe213= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe313= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe413= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe114= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe214= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe314= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe414= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe115= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe215= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe315= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe415= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe116= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe216= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe316= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe416= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe117= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe217= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe317= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe417= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe118= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe218= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe318= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe418= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe119= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe219= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe319= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe419= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe120= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe220= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe320= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe420= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe121= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe221= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe321= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe421= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe122= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe222= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe322= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe422= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe123= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe223= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe323= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe423= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe124= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe224= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe324= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe424= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe125= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe225= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe325= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe425= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe126= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe226= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe326= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe426= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe127= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe227= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe327= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe427= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe128= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe228= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe328= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe428= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe129= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe229= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe329= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe429= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  spe130= (1^2*s_var11)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  spe230= (las21^2*s_var11)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  spe330= (las31^2*s_var11)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  spe430= (las41^2*s_var11)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+
+  ! Consistency
+  con11= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con21= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con31= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con41= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con12= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con22= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con32= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con42= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con13= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con23= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con33= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con43= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con14= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con24= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con34= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con44= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con15= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con25= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con35= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con45= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con16= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con26= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con36= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con46= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con17= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con27= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con37= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con47= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con18= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con28= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con38= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con48= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con19= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con29= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con39= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con49= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con110= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con210= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con310= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con410= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con111= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con211= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con311= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con411= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con112= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con212= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con312= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con412= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con113= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con213= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con313= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con413= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con114= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con214= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con314= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con414= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con115= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con215= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con315= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con415= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con116= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con216= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con316= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con416= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con117= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con217= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con317= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con417= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con118= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con218= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con318= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con418= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con119= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con219= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con319= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con419= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con120= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con220= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con320= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con420= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con121= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con221= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con321= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con421= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con122= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con222= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con322= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con422= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con123= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con223= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con323= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con423= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con124= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con224= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con324= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con424= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con125= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con225= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con325= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con425= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con126= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con226= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con326= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con426= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con127= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con227= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con327= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con427= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con128= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con228= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con328= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con428= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con129= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con229= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con329= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con429= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+  con130= (1^2*1^2*t_var1)/
+  (1^2*1^2*t_var1+1^2*s_var11+o_err11) ;
+  con230= (lat21^2*las21^2*t_var1)/
+  (lat21^2*las21^2*t_var1+las21^2*s_var11+o_err21) ;
+  con330= (lat31^2*las31^2*t_var1)/
+  (lat31^2*las31^2*t_var1+las31^2*s_var11+o_err31) ;
+  con430= (lat41^2*las41^2*t_var1)/
+  (lat41^2*las41^2*t_var1+las41^2*s_var11+o_err41) ;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Your title goes here
+

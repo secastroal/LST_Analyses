@@ -23,6 +23,7 @@ source("R/write.mltso.to.Mplus.R")
 source("R/sim.data.cuts.R")
 source("R/sim.data.msst.R")
 source("R/sim.data.tso.R")
+folder <- "Mplus_files_Results/" #Folder to store results
 
 # 1.0 CUTS ----
 
@@ -30,7 +31,7 @@ source("R/sim.data.tso.R")
 
 model <- "cuts"
 N <- 100 # number of persons
-nT <- 50 # number of times // measurement occasions
+nT <- 30 # number of times // measurement occasions
 I <- 4 # number of variables // items
 seed <- 123
 
@@ -76,8 +77,6 @@ cuts.data.tv <- sim.data.cuts.tv(N, nT, I, within.parameters = within.parameters
 
 # 1.3 Model estimation ---- 
 
-folder <- "Mplus_files_Results/"
-
 # Matrix to store estimated parameters
 
 est.par <- data.frame(matrix(NA, 5*I + 2, 6))
@@ -114,7 +113,9 @@ long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "para
 
 est.par[, 3] <- long.fit$unstandardized[,3]
 
-# 1.3.2 ML-cuts data.wide ----
+rm(file.name, long.fit)
+
+# 1.3.2 cuts data.wide ----
 
 file.name <- paste0(model, "_wide_N", N, "_I", I, "_nT", nT)
 
@@ -142,7 +143,7 @@ write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
 
 rm(analysis_syntax, mplus_syntax)
 
-# Run modelin Mplus
+# Run model in Mplus
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
 
 wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
@@ -156,6 +157,7 @@ est.par[, 4] <- wide.fit$unstandardized[c(1:I,
                                           ((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + I)),
                                         3]
 
+rm(file.name, wide.fit)
 
 # 1.3.3 ML-cuts data.trunc ----
 
@@ -179,12 +181,14 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 
 rm(analysis_syntax, ml_syntax)
 
-# Run modelin Mplus
+# Run model in Mplus
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
 
 trunc.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
 
 est.par[, 5] <- trunc.fit$unstandardized[,3]
+
+rm(file.name, trunc.fit)
 
 # 1.3.4 ML-cuts time-variant data ----
 
@@ -208,20 +212,25 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 
 rm(analysis_syntax, ml_syntax)
 
-# Run modelin Mplus
+# Run model in Mplus
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
 
 tv.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
 
 est.par[, 6] <- tv.fit$unstandardized[,3]
 
-rm(N, nT, I, seed, file.name, within.parameters, between.parameters, cuts.data, cuts.data.tv)
+rm(file.name, tv.fit)
+
+# 1.4 Clean environment ----
+
+rm(N, nT, I, seed, within.parameters, between.parameters, cuts.data, cuts.data.tv, est.par, model)
 
 
 # 2.0 MSST ----
 
-# Conditions
+# 2.1 Set Conditions and true parameters ----
 
+model <- "msst" 
 N <- 100 # number of persons
 nT <- 30 # number of times // measurement occasions
 I <- 4 # number of variables // items
@@ -250,20 +259,41 @@ trait_loadings[1] <- 1 # fixing first loading at 1
 var_trait <- 2 # variance latent trait variable
 mean_trait <- 4 # mean latent trait variable
 
-between.parameters <- list(intercepts = intercepts, loadings = trait_loadings, trait.mean = mean_trait,
+between.parameters <- list(loadings = trait_loadings, intercepts = intercepts, trait.mean = mean_trait,
                            trait.var = var_trait)
 
 rm(intercepts, trait_loadings, var_trait, mean_trait)
 
-#data simulation
+# 2.2 Simulate data ----
+
+#Time invariant data
 msst.data <- sim.data.msst(N, nT, I, within.parameters = within.parameters, 
                            between.parameters = between.parameters, seed = seed)
 
-# model estimation
-file.name <- "sim_msst_test1"
+# Truncate time invariant data long
+
+msst.data$data.trunc <- trunc(msst.data$data.long)
+
+# Time variant data
+
+msst.data.tv <- sim.data.msst.tv(N, nT, I,  within.parameters = within.parameters, 
+                                 between.parameters = between.parameters, time.invariant = FALSE, seed = seed)
+
+# 2.3 Model estimation ----
+
+# Matrix to store estimated parameters
+
+est.par <- data.frame(matrix(NA, 4*I + 3, 6))
+est.par[, 2] <- c(unlist(within.parameters), unlist(between.parameters))
+est.par[, 1] <- names(c(unlist(within.parameters), unlist(between.parameters)))
+names(est.par) <- c("par", "true", "long", "wide", "trunc", "tv" )
+
+# 2.3.1 ML-msst data.long ----
+
+file.name <- paste0(model, "_long_N", N, "_I", I, "_nT", nT)
 
 # Prepare data: Write data in Mplus format and write input file template
-prepareMplusData(msst.data$data.long, paste0("ML_Mplus_files/",file.name,".dat"), inpfile = T)
+prepareMplusData(msst.data$data.long, paste0(folder,file.name,".dat"), inpfile = T)
 
 # Complete Mplus syntax
 analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.long)[-(1:2)],
@@ -275,16 +305,123 @@ analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.long)
 
 ml_syntax <- write.mlmsst.to.Mplus(msst.data$data.long[, -(1:2)])
 
-write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
-write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 
 rm(analysis_syntax, ml_syntax)
 
-# Run modelin Mplus
-runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
-readModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".out"), what = "parameters")$parameters #read Mplus output
+# Run model in Mplus
+runModels(paste0(getwd(),"/", folder,file.name,".inp"))
 
-rm(N, nT, I, seed, file.name, within.parameters, between.parameters, msst.data)
+long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
+
+est.par[,3] <- long.fit$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
+                                         (4*I + 2), (6*I +3)),3]
+
+rm(file.name, long.fit)
+
+# 2.3.2 msst data.wide ----
+
+file.name <- paste0(model, "_wide_N", N, "_I", I, "_nT", nT)
+
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(msst.data$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
+
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.wide)[-1],
+                                       analysis_type = "GENERAL",
+                                       estimator = "ML",
+                                       iterations = 500000,
+                                       h1iterations = 500000)
+
+mplus_syntax <- write.msst.to.Mplus(msst.data$data.wide[-1], neta = nT, ntheta = 1, 
+                                    equiv.assumption = list(tau = "cong", theta = "cong"),
+                                    scale.invariance = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
+                                    homocedasticity.assumption = list(error = TRUE, state.red = TRUE),
+                                    second.order.trait = FALSE)
+
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, mplus_syntax)
+
+# Run model in Mplus
+runModels(paste0(getwd(),"/", folder,file.name,".inp"))
+
+wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
+
+est.par[,4] <- wide.fit$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
+                                         (4*I + 2), (6*I +3)),3]
+
+rm(file.name, wide.fit)
+
+# 2.3.3 ML-msst data.trunc ----
+
+file.name <- paste0(model, "_trunc_N", N, "_I", I, "_nT", nT)
+
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(msst.data$data.trunc, paste0(folder,file.name,".dat"), inpfile = T)
+
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.trunc)[-(1:2)],
+                                       cluster = names(msst.data$data.trunc)[1],
+                                       analysis_type = "TWOLEVEL",
+                                       estimator = "ML",
+                                       iterations = 500000,
+                                       h1iterations = 500000)
+
+ml_syntax <- write.mlmsst.to.Mplus(msst.data$data.trunc[, -(1:2)])
+
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, ml_syntax)
+
+# Run model in Mplus
+runModels(paste0(getwd(),"/", folder,file.name,".inp"))
+
+trunc.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
+
+est.par[,5] <- trunc.fit$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
+                                         (4*I + 2), (6*I +3)),3]
+
+rm(file.name, trunc.fit)
+
+# 2.3.1 ML-msst time-variant data ----
+
+file.name <- paste0(model, "_tv_N", N, "_I", I, "_nT", nT)
+
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(msst.data.tv$data.long, paste0(folder,file.name,".dat"), inpfile = T)
+
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(msst.data.tv$data.long)[-(1:2)],
+                                       cluster = names(msst.data.tv$data.long)[1],
+                                       analysis_type = "TWOLEVEL",
+                                       estimator = "ML",
+                                       iterations = 500000,
+                                       h1iterations = 500000)
+
+ml_syntax <- write.mlmsst.to.Mplus(msst.data.tv$data.long[, -(1:2)])
+
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, ml_syntax)
+
+# Run model in Mplus
+runModels(paste0(getwd(),"/", folder,file.name,".inp"))
+
+tv.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
+
+est.par[,6] <- tv.fit$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
+                                         (4*I + 2), (6*I +3)),3]
+
+rm(file.name, tv.fit)
+
+# 1.4 Clean environment ----
+
+rm(N, nT, I, seed, within.parameters, between.parameters, msst.data, msst.data.tv, est.par, model)
 
 # 3.0 TSO ----
 

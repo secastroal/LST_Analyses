@@ -147,6 +147,9 @@ if(homocedasticity.assumption$error){
 
 if(homocedasticity.assumption$state.red){
   s_red <- rep(s_red[1:(neta/ntheta)], ntheta)
+  if(!second.order.trait){
+    s_red <- rep(s_red[1], neta)
+  }
 }
 
 # write equations for the latent states
@@ -211,6 +214,10 @@ for(i in 1:neta){
 }
 rm(i, ms, paths, ix)
 
+if(!second.order.trait){
+  eta_syntax_int <- NULL
+}
+
 
 # write intercepts for the latent trait
 
@@ -228,8 +235,21 @@ for(i in 1:ntheta){
 rm(i, ms, paths, ix)
 
 if(!second.order.trait){
-  theta_syntax_int <- NULL
+  theta_syntax_int <- rep(NA, ntheta)
+  for(i in 1:ntheta){
+    ms <- ((i-1)*(nobs/ntheta) + 1):(i*(nobs/ntheta))
+    paths <- rep(NA, length(ms) )
+    ix <- which(int[1:length(ms)]=="0")
+    
+    paths[ix] <- paste0("[", obs[ms[ix]],"@",int[ms[ix]], "]", " ;")
+    paths[-ix] <- paste0("[", obs[ms[-ix]], "*]", " (",int[ms[-ix]],")", " ;")
+    
+    theta_syntax_int[i] <- paste(paths, collapse = "\n")
+  }
+  rm(i, ms, paths, ix)
+  
 }
+
 
 theta_syntax_means <- paste0("[", theta, "*] ;", collapse = "\n")
 
