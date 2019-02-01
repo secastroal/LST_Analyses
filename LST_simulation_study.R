@@ -30,7 +30,7 @@ source("R/sim.data.tso.R")
 
 model <- "cuts"
 N <- 100 # number of persons
-nT <- 30 # number of times // measurement occasions
+nT <- 50 # number of times // measurement occasions
 I <- 4 # number of variables // items
 seed <- 123
 
