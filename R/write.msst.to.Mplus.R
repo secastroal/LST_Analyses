@@ -260,6 +260,18 @@ var_syntax <- paste(paste0(obs, "(", o_red, ") ;", collapse = "\n"),
                      paste0(theta, "(", t_var, ") ;", collapse =  "\n"),
                      sep = "\n")
 
+# write 0 correlations among occasions  and traits
+if(!second.order.trait){latent.v <- c(eta, theta)
+
+cor_syntax <- rep(NA, length(latent.v)-1)
+for(i in 1:(length(latent.v)-1)){
+  
+  cor_syntax[i] <- paste0(latent.v[i], " WITH ",
+                          paste0(latent.v[-(1:i)], "@0", collapse = "\n"), " ;")
+}
+rm(i)
+}
+
 # define computed parameters
 def_syntax <- paste(paste0("NEW(", rel, ") ;", collapse = "\n" ),
                     paste0("NEW(", con, ") ;", collapse = "\n" ),
@@ -313,6 +325,23 @@ complete_syntax <- paste("\nMODEL:",
                         "\n! Consistency",
                         con_syntax,
                         sep = "\n")
+
+if(!second.order.trait){
+  complete_syntax <- paste("\nMODEL:",
+                           "\n! Latent state variables",
+                           paste0(eta_syntax, collapse = "\n"),
+                           "\n! Latent trait variables",
+                           paste0(theta_syntax, collapse = "\n"),
+                           "\n! Intercepts and means",
+                           paste0(eta_syntax_int, collapse = "\n"),
+                           paste0(theta_syntax_int, collapse = "\n"),
+                           paste0(theta_syntax_means, collapse = "\n"),
+                           "\n! Variance components",
+                           var_syntax,
+                           "\n! Set zero covariances",
+                           paste0(cor_syntax, collapse = "\n"),
+                           sep = "\n")
+}
 return(complete_syntax)
 
 }
