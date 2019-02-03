@@ -1,11 +1,11 @@
 Mplus VERSION 8
 MUTHEN & MUTHEN
-02/03/2019   5:17 PM
+02/03/2019   5:08 PM
 
 INPUT INSTRUCTIONS
 
   TITLE: Your title goes here
-  DATA: FILE = "Mplus_files_Results/msst_trunc_N100_I4_nT30.dat";
+  DATA: FILE = "Mplus_files_Results/msst_tv_N100_I4_nT10.dat";
   VARIABLE:
   NAMES = subjn time y1 y2 y3 y4;
   MISSING=.;
@@ -86,7 +86,7 @@ Your title goes here
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                        3000
+Number of observations                                        1000
 
 Number of dependent variables                                    4
 Number of independent variables                                  0
@@ -120,7 +120,7 @@ Convergence criterion for H1                             0.100D-03
 Optimization algorithm                                         EMA
 
 Input data file(s)
-  Mplus_files_Results/msst_trunc_N100_I4_nT30.dat
+  Mplus_files_Results/msst_tv_N100_I4_nT10.dat
 Input data format  FREE
 
 
@@ -129,15 +129,15 @@ SUMMARY OF DATA
      Number of missing data patterns             1
      Number of clusters                        100
 
-     Average cluster size       30.000
+     Average cluster size       10.000
 
      Estimated Intraclass Correlations for the Y Variables
 
                 Intraclass              Intraclass              Intraclass
      Variable  Correlation   Variable  Correlation   Variable  Correlation
 
-     Y1           0.257      Y2           0.288      Y3           0.116
-     Y4           0.272
+     Y1           0.205      Y2           0.209      Y3           0.246
+     Y4           0.189
 
 
 
@@ -167,14 +167,14 @@ UNIVARIATE SAMPLE STATISTICS
          Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
         Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
 
-     Y1                    3.695       0.169      -4.000    0.13%       1.000      3.000      4.000
-            3000.000       6.368      -0.213      13.000    0.03%       4.000      6.000
-     Y2                    3.657       0.186      -4.000    0.03%       2.000      3.000      4.000
-            3000.000       4.679      -0.117      13.000    0.07%       4.000      5.000
-     Y3                    2.625       0.224      -3.000    0.03%       1.000      2.000      3.000
-            3000.000       3.409      -0.324       9.000    0.07%       3.000      4.000
-     Y4                    4.891       0.082      -4.000    0.07%       2.000      4.000      5.000
-            3000.000       7.911      -0.223      16.000    0.03%       6.000      7.000
+     Y1                    3.816       0.106      -4.304    0.10%       1.592      3.144      3.777
+            1000.000       6.503      -0.281      10.785    0.10%       4.365      6.032
+     Y2                    3.493       0.309      -2.932    0.10%       1.559      2.857      3.452
+            1000.000       5.013       0.431      13.727    0.10%       3.979      5.278
+     Y3                    3.856       0.113      -3.416    0.10%       1.950      3.243      3.813
+            1000.000       5.396       0.429      12.272    0.10%       4.375      5.710
+     Y4                    3.707       0.320      -2.637    0.10%       1.654      3.053      3.601
+            1000.000       5.820       0.536      13.680    0.10%       4.322      5.553
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -187,21 +187,21 @@ Number of Free Parameters                       16
 
 Loglikelihood
 
-          H0 Value                      -23882.230
-          H1 Value                      -23879.640
+          H0 Value                       -8401.475
+          H1 Value                       -8399.828
 
 Information Criteria
 
-          Akaike (AIC)                   47796.459
-          Bayesian (BIC)                 47892.561
-          Sample-Size Adjusted BIC       47841.723
+          Akaike (AIC)                   16834.949
+          Bayesian (BIC)                 16913.473
+          Sample-Size Adjusted BIC       16862.656
             (n* = (n + 2) / 24)
 
 Chi-Square Test of Model Fit
 
-          Value                              5.179
+          Value                              3.294
           Degrees of Freedom                     8
-          P-Value                           0.7383
+          P-Value                           0.9146
 
 RMSEA (Root Mean Square Error Of Approximation)
 
@@ -210,18 +210,18 @@ RMSEA (Root Mean Square Error Of Approximation)
 CFI/TLI
 
           CFI                                1.000
-          TLI                                1.001
+          TLI                                1.007
 
 Chi-Square Test of Model Fit for the Baseline Model
 
-          Value                           4058.799
+          Value                           1077.765
           Degrees of Freedom                    12
           P-Value                           0.0000
 
 SRMR (Standardized Root Mean Square Residual)
 
-          Value for Within                   0.004
-          Value for Between                  0.006
+          Value for Within                   0.012
+          Value for Between                  0.003
 
 
 
@@ -234,18 +234,18 @@ Within Level
 
  ETA      BY
     Y1                 1.000      0.000    999.000    999.000
-    Y2                 1.105      0.036     30.655      0.000
-    Y3                 0.794      0.030     26.754      0.000
-    Y4                 1.242      0.042     29.315      0.000
+    Y2                 0.894      0.068     13.174      0.000
+    Y3                 0.775      0.066     11.795      0.000
+    Y4                 1.122      0.082     13.619      0.000
 
  Variances
-    ETA                1.868      0.110     17.023      0.000
+    ETA                1.928      0.225      8.581      0.000
 
  Residual Variances
-    Y1                 2.866      0.088     32.500      0.000
-    Y2                 1.056      0.056     18.731      0.000
-    Y3                 1.843      0.056     32.735      0.000
-    Y4                 2.886      0.100     28.931      0.000
+    Y1                 3.250      0.190     17.135      0.000
+    Y2                 2.422      0.147     16.511      0.000
+    Y3                 2.914      0.155     18.807      0.000
+    Y4                 2.302      0.178     12.896      0.000
 
 Between Level
 
@@ -263,12 +263,12 @@ Between Level
 
  THETA    BY
     THETA1             1.000      0.000    999.000    999.000
-    THETA2             0.906      0.027     33.101      0.000
-    THETA3             0.488      0.024     20.135      0.000
-    THETA4             1.145      0.038     30.177      0.000
+    THETA2             0.891      0.066     13.507      0.000
+    THETA3             0.999      0.073     13.666      0.000
+    THETA4             0.908      0.067     13.494      0.000
 
  Means
-    THETA              3.695      0.134     27.603      0.000
+    THETA              3.816      0.136     28.114      0.000
 
  Intercepts
     Y1                 0.000      0.000    999.000    999.000
@@ -276,12 +276,12 @@ Between Level
     Y3                 0.000      0.000    999.000    999.000
     Y4                 0.000      0.000    999.000    999.000
     THETA1             0.000      0.000    999.000    999.000
-    THETA2             0.310      0.107      2.903      0.004
-    THETA3             0.821      0.094      8.691      0.000
-    THETA4             0.659      0.148      4.453      0.000
+    THETA2             0.095      0.261      0.363      0.717
+    THETA3             0.043      0.290      0.149      0.882
+    THETA4             0.241      0.267      0.904      0.366
 
  Variances
-    THETA              1.634      0.253      6.460      0.000
+    THETA              1.324      0.257      5.161      0.000
 
  Residual Variances
     Y1                 0.000      0.000    999.000    999.000
@@ -296,13 +296,13 @@ Between Level
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.333E-03
+     Condition Number for the Information Matrix              0.522E-03
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:17:55
-        Ending Time:  17:18:04
-       Elapsed Time:  00:00:09
+     Beginning Time:  17:08:56
+        Ending Time:  17:08:57
+       Elapsed Time:  00:00:01
 
 
 

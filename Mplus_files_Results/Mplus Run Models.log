@@ -1,10 +1,10 @@
-------Begin Mplus Model Run: 01feb2019 17:19:02------
-Target directory: X:/My Documents/Git/LST_Analyses/Mplus_files_Results
+------Begin Mplus Model Run: 03feb.2019 17:18:05------
+Target directory: C:/Users/Sebastian/Dropbox/Research_Master/2017-2018/Master Thesis/LST_Analyses/Mplus_files_Results
 Run options:
 	Recursive (run models in subdirectories): FALSE
 	Show output on console: FALSE
 	Replace existing outfile: always
 ------
-Currently running model: msst_wide_N100_I4_nT30.inp
-Run terminated abnormally
-Killing wayward Mplus processes
+Currently running model: msst_tv_N100_I4_nT30.inp
+
+------End Mplus Model Run: 03feb.2019 17:18:07------
