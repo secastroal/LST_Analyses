@@ -331,8 +331,8 @@ prepareMplusData(msst.data$data.wide, paste0(folder,file.name,".dat"), inpfile =
 analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.wide)[-1],
                                        analysis_type = "GENERAL",
                                        estimator = "ML",
-                                       iterations = 500000,
-                                       h1iterations = 500000)
+                                       iterations = 50000,
+                                       h1iterations = 50000)
 
 mplus_syntax <- write.msst.to.Mplus(msst.data$data.wide[-1], neta = nT, ntheta = 1, 
                                     equiv.assumption = list(tau = "cong", theta = "cong"),
@@ -350,8 +350,13 @@ runModels(paste0(getwd(),"/", folder,file.name,".inp"))
 
 wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
 
-est.par[,4] <- wide.fit$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
-                                         (4*I + 2), (6*I +3)),3]
+est.par[,4] <- wide.fit$unstandardized[c(1:I,
+                                         (I * nT * 3) + ((nT+1) * nT / 2) + 2,
+                                         ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2),
+                                         ((I * nT + 1):(I * nT + I)), 
+                                         ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1),
+                                         ((I * nT * 2) + ((nT+1) * nT / 2) + 1), 
+                                         ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2)),3]
 
 rm(file.name, wide.fit)
 
