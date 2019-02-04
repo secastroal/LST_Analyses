@@ -130,7 +130,7 @@ analysis_syntax <- write.Mplus.options(usevariables = names(cuts.data$data.wide)
                                        h1iterations = 500000)
 
 
-mplus_syntax <- write.cuts.to.Mplus(cuts.data$data.wide[-1],  nstate = nT,
+mplus_syntax <- write.cuts.to.Mplus(cuts.data$data.wide[,-1],  nstate = nT,
                                     method.trait = "om",
                                     scale.invariance = list(int = TRUE, lambda = TRUE),
                                     state.trait.invariance = FALSE,
@@ -334,7 +334,7 @@ analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.wide)
                                        iterations = 50000,
                                        h1iterations = 50000)
 
-mplus_syntax <- write.msst.to.Mplus(msst.data$data.wide[-1], neta = nT, ntheta = 1, 
+mplus_syntax <- write.msst.to.Mplus(msst.data$data.wide[,-1], neta = nT, ntheta = 1, 
                                     equiv.assumption = list(tau = "cong", theta = "cong"),
                                     scale.invariance = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
                                     homocedasticity.assumption = list(error = TRUE, state.red = TRUE),
@@ -430,8 +430,9 @@ rm(N, nT, I, seed, within.parameters, between.parameters, msst.data, msst.data.t
 
 # 3.0 TSO ----
 
-# Conditions
+# 3.1 Set Conditions and true parameters ----
 
+model <- "tso" 
 N <- 100 # number of persons
 nT <- 30 # number of times // measurement occasions
 I <- 4 # number of variables // items
@@ -448,8 +449,8 @@ var_error <- sample(seq(1, 3, by = 0.5), size = I, replace = TRUE) # Variance of
 
 ar_effect <- 0.5 # autoregressive effect on the latent state residuals
 
-within.parameters <- list(loadings = state_loadings, state.var = var_state, error.var = var_error,
-                          ar.effect = ar_effect)
+within.parameters <- list(loadings = state_loadings, ar.effect = ar_effect, error.var = var_error,
+                          state.var = var_state)
 
 rm(state_loadings, var_state, var_error, ar_effect)
 
@@ -488,14 +489,131 @@ analysis_syntax <- write.Mplus.options(usevariables = names(tso.data$data.long)[
 
 ml_syntax <- write.mltso.to.Mplus(tso.data$data.long[, -c(1, 2)])
 
-write(analysis_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T) # Write Analysis specifications
-write(ml_syntax, paste0("ML_Mplus_files/",file.name,".inp"), append = T)
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 
 rm(analysis_syntax, ml_syntax)
 
 # Run modelin Mplus
-runModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".inp"))
-readModels(paste0(getwd(),"/ML_Mplus_files/",file.name,".out"), what = "parameters")$parameters #read Mplus output
+runModels(paste0(getwd(),"/",folder,file.name,".inp"))
 
-rm(N, nT, I, seed, file.name, within.parameters, between.parameters, tso.data)
+long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
+
+est.par[, 3] <- long.fit$unstandardized[c(1:(2*I + 2),
+                                          (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
+                                          (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 3]
+
+rm(file.name, long.fit)
+
+# 3.3.2 tso data.wide ----
+
+file.name <- paste0(model, "_wide_N", N, "_I", I, "_nT", nT)
+
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(tso.data$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
+
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(tso.data$data.wide)[-1],
+                                       analysis_type = "GENERAL",
+                                       estimator = "ML",
+                                       iterations = 50000,
+                                       h1iterations = 50000)
+
+ml_syntax <- write.tso.to.Mplus(tso.data$data.wide[,-1], nocc = nT, figure = "3b",
+                                equiv.assumption = list(occ = "cong", theta = "equi"),
+                                scale.invariance = list(int = TRUE, lambda = TRUE),
+                                homocedasticity.assumption = list(error = TRUE, occ.red = TRUE),
+                                autoregressive.homogeneity = TRUE)
+
+
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, ml_syntax)
+
+# Run modelin Mplus
+runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+
+wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
+
+est.par[, 4] <- wide.fit$unstandardized[c(1:I, #loadings
+                                          (2 * I * nT + 1), # autoregressive effect
+                                          ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
+                                          ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                                          ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
+                                          ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
+                                          ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                        3]
+
+rm(file.name, wide.fit)
+
+# 3.3.3 ML-tso data.trunc ----
+
+file.name <- paste0(model, "_trunc_N", N, "_I", I, "_nT", nT)
+
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(tso.data$data.trunc, paste0(folder,file.name,".dat"), inpfile = T)
+
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(tso.data$data.trunc)[-(1:2)],
+                                       cluster = names(tso.data$data.trunc)[1],
+                                       analysis_type = "TWOLEVEL",
+                                       estimator = "BAYES",
+                                       iterations = 5000,
+                                       processors = 2)
+
+ml_syntax <- write.mltso.to.Mplus(tso.data$data.trunc[, -c(1, 2)])
+
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, ml_syntax)
+
+# Run modelin Mplus
+runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+
+trunc.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
+
+est.par[, 5] <- trunc.fit$unstandardized[c(1:(2*I + 2),
+                                          (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
+                                          (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 3]
+
+rm(file.name, trunc.fit)
+
+# 3.3.1 ML-tso time-variant data ----
+
+file.name <- paste0(model, "_tv_N", N, "_I", I, "_nT", nT)
+
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(tso.data.tv$data.long, paste0(folder,file.name,".dat"), inpfile = T)
+
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(tso.data.tv$data.long)[-(1:2)],
+                                       cluster = names(tso.data.tv$data.long)[1],
+                                       analysis_type = "TWOLEVEL",
+                                       estimator = "BAYES",
+                                       iterations = 5000,
+                                       processors = 2)
+
+ml_syntax <- write.mltso.to.Mplus(tso.data.tv$data.long[, -c(1, 2)])
+
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, ml_syntax)
+
+# Run modelin Mplus
+runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+
+tv.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
+
+est.par[, 6] <- tv.fit$unstandardized[c(1:(2*I + 2),
+                                          (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
+                                          (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 3]
+
+rm(file.name, tv.fit)
+
+# 3.4 Clean environment ----
+
+rm(N, nT, I, seed, within.parameters, between.parameters, tso.data, tso.data.tv, est.par, model)
 
