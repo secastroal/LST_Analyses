@@ -427,7 +427,7 @@ rmse[, 4] <- sqrt((est.par[ , 5] - est.par[ , 2]) ^ 2)
 
 rm(file.name, trunc.fit)
 
-# 2.3.1 ML-msst time-variant data ----
+# 2.3.4 ML-msst time-variant data ----
 
 file.name <- paste0(model, "_tv_N", N, "_I", I, "_nT", nT)
 
@@ -536,7 +536,6 @@ tso.data$data.trunc <- trunc(tso.data$data.long)
 tso.data.tv <- sim.data.tso.tv(N, nT, I, within.parameters = within.parameters, time.invariant = FALSE,
                                 between.parameters = between.parameters, seed = seed)
 
-
 # 3.3 Model estimation ----
 
 # Matrix to store estimated parameters
@@ -551,6 +550,9 @@ cov.ind <- which(t(lower.tri(tso.data$between.parameters$Sigma))==TRUE, arr.ind 
 est.par[, 1] <- c(names(c(unlist(within.parameters), unlist(between.parameters)[1:(2*I)])),
                   paste0("cov", cov.ind[,1], cov.ind[,2]))
 names(est.par) <- c("par", "true", "long", "wide", "trunc", "tv" )
+
+# Matrix to store rmse
+rmse <- est.par[, -2] 
 
 rm(cov.ind)
 
@@ -584,6 +586,8 @@ long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "para
 est.par[, 3] <- long.fit$unstandardized[c(1:(2*I + 2),
                                           (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
                                           (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 3]
+
+rmse[, 2] <- sqrt((est.par[ , 3] - est.par[ , 2]) ^ 2) 
 
 rm(file.name, long.fit)
 
@@ -627,6 +631,8 @@ est.par[, 4] <- wide.fit$unstandardized[c(1:I, #loadings
                                           ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
                                         3]
 
+rmse[, 3] <- sqrt((est.par[ , 4] - est.par[ , 2]) ^ 2) 
+
 rm(file.name, wide.fit)
 
 # 3.3.3 ML-tso data.trunc ----
@@ -660,9 +666,11 @@ est.par[, 5] <- trunc.fit$unstandardized[c(1:(2*I + 2),
                                           (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
                                           (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 3]
 
+rmse[, 4] <- sqrt((est.par[ , 5] - est.par[ , 2]) ^ 2)
+
 rm(file.name, trunc.fit)
 
-# 3.3.1 ML-tso time-variant data ----
+# 3.3.4 ML-tso time-variant data ----
 
 file.name <- paste0(model, "_tv_N", N, "_I", I, "_nT", nT)
 
@@ -693,9 +701,27 @@ est.par[, 6] <- tv.fit$unstandardized[c(1:(2*I + 2),
                                           (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
                                           (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 3]
 
-rm(file.name, tv.fit)
+# In this case, the rmse is root mean of the se between the estimated parameter vs the set of 
+# time-variant true parameters. 
 
-# 3.4 Clean environment ----
+tv.rmse <- rbind((est.par[1:I, 6] - t(tso.data.tv$within.parameters$loadings)) ^ 2,
+                 (est.par[I + 1, 6] - t(c(tso.data.tv$within.parameters$ar.effect, NA))) ^ 2, # An NA is added to complete a vector of length nT
+                 (est.par[(I + 2):(2 * I + 1), 6] - t(tso.data.tv$within.parameters$error.var)) ^ 2,
+                 (est.par[(2 * I + 2), 6] - t(tso.data.tv$within.parameters$state.var)) ^ 2,
+                 (est.par[(2 * I + 3):(3 * I + 2), 6] - t(tso.data.tv$between.parameters$intercepts)) ^ 2)
 
-rm(N, nT, I, seed, within.parameters, between.parameters, tso.data, tso.data.tv, est.par, model)
+rmse[1:(3 * I + 2), 5] <- sqrt(apply(tv.rmse, 1, mean, na.rm = TRUE))
+rmse[(3*I + 3):(4*I + 2 + (I * (I-1) /2)), 5] <- sqrt((est.par[(3*I + 3):(4*I + 2 + (I * (I-1) /2)), 6] - 
+                                                         est.par[(3*I + 3):(4*I + 2 + (I * (I-1) /2)), 2]) ^ 2)
+
+rm(file.name, tv.fit, tv.rmse)
+
+# 3.4 Save output ----
+
+write.table(est.par, paste0(folder, model, "_par_N", N, "_I", I, "_nT", nT, ".dat"))
+write.table(rmse, paste0(folder, model, "_rmse_N", N, "_I", I, "_nT", nT, ".dat"))
+
+# 3.5 Clean environment ----
+
+rm(N, nT, I, seed, within.parameters, between.parameters, tso.data, tso.data.tv, est.par, model, rmse)
 
