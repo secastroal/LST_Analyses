@@ -249,7 +249,7 @@ write.table(rmse, paste0(folder, model, "_rmse_N", N, "_I", I, "_nT", nT, ".dat"
 
 # 1.5 Clean environment ----
 
-rm(N, nT, I, seed, within.parameters, between.parameters, cuts.data, cuts.data.tv, est.par, model)
+rm(N, nT, I, seed, within.parameters, between.parameters, cuts.data, cuts.data.tv, est.par, model, rmse)
 
 
 # 2.0 MSST ----
@@ -314,6 +314,9 @@ est.par[, 2] <- c(unlist(within.parameters), unlist(between.parameters))
 est.par[, 1] <- names(c(unlist(within.parameters), unlist(between.parameters)))
 names(est.par) <- c("par", "true", "long", "wide", "trunc", "tv" )
 
+# Matrix to store rmse
+rmse <- est.par[, -2]
+
 # 2.3.1 ML-msst data.long ----
 
 file.name <- paste0(model, "_long_N", N, "_I", I, "_nT", nT)
@@ -343,6 +346,8 @@ long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "para
 
 est.par[,3] <- long.fit$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
                                          (4*I + 2), (6*I +3)),3]
+
+rmse[, 2] <- sqrt((est.par[ , 3] - est.par[ , 2]) ^ 2) 
 
 rm(file.name, long.fit)
 
@@ -384,6 +389,8 @@ est.par[,4] <- wide.fit$unstandardized[c(1:I,
                                          ((I * nT * 2) + ((nT+1) * nT / 2) + 1), 
                                          ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2)),3]
 
+rmse[, 3] <- sqrt((est.par[ , 4] - est.par[ , 2]) ^ 2) 
+
 rm(file.name, wide.fit)
 
 # 2.3.3 ML-msst data.trunc ----
@@ -415,6 +422,8 @@ trunc.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "par
 
 est.par[,5] <- trunc.fit$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
                                          (4*I + 2), (6*I +3)),3]
+
+rmse[, 4] <- sqrt((est.par[ , 5] - est.par[ , 2]) ^ 2)
 
 rm(file.name, trunc.fit)
 
@@ -448,11 +457,28 @@ tv.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parame
 est.par[,6] <- tv.fit$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
                                          (4*I + 2), (6*I +3)),3]
 
-rm(file.name, tv.fit)
+# In this case, the rmse is root mean of the se between the estimated parameter vs the set of 
+# time-variant true parameters. 
 
-# 1.4 Clean environment ----
+tv.rmse <- rbind((est.par[1:I, 6] - t(msst.data.tv$within.parameters$loadings)) ^ 2,
+                 (est.par[I + 1, 6] - t(msst.data.tv$within.parameters$state.var)) ^ 2,
+                 (est.par[(I + 2):(2 * I + 1), 6] - t(msst.data.tv$within.parameters$error.var)) ^ 2,
+                 (est.par[(2 * I + 2):(3 * I + 1), 6] - t(msst.data.tv$between.parameters$loadings)) ^ 2,
+                 (est.par[(3 * I + 2):(4 * I + 1), 6] - t(msst.data.tv$between.parameters$intercepts)) ^ 2)
 
-rm(N, nT, I, seed, within.parameters, between.parameters, msst.data, msst.data.tv, est.par, model)
+rmse[1:(4 * I + 1), 5] <- sqrt(apply(tv.rmse, 1, mean))
+rmse[(4*I + 2):(4*I + 3), 5] <- sqrt((est.par[(4*I + 2):(4*I + 3), 6] - est.par[(4*I + 2):(4*I + 3), 2]) ^ 2)
+
+rm(file.name, tv.fit, tv.rmse)
+
+# 2.4 Save output ----
+
+write.table(est.par, paste0(folder, model, "_par_N", N, "_I", I, "_nT", nT, ".dat"))
+write.table(rmse, paste0(folder, model, "_rmse_N", N, "_I", I, "_nT", nT, ".dat"))
+
+# 2.5 Clean environment ----
+
+rm(N, nT, I, seed, within.parameters, between.parameters, msst.data, msst.data.tv, est.par, model, rmse)
 
 # 3.0 TSO ----
 
