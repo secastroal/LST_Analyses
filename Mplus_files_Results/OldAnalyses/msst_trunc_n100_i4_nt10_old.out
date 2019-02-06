@@ -1,0 +1,318 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+02/03/2019   5:08 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "Mplus_files_Results/msst_trunc_N100_I4_nT10.dat";
+  VARIABLE:
+  NAMES = subjn time y1 y2 y3 y4;
+  MISSING=.;
+  USEVAR = y1
+  y2
+  y3
+  y4 ;
+  CLUSTER = subjn ;
+
+  ANALYSIS:
+  TYPE = TWOLEVEL ;
+  ESTIMATOR = ML ;
+  ITERATIONS = 5e+05 ;
+  H1ITERATIONS = 5e+05 ;
+
+
+  MODEL:
+
+  %WITHIN%
+
+  ! Latent state residual
+  eta BY y1@1
+  y2 (las2)
+  y3 (las3)
+  y4 (las4) ;
+
+  ! Latent errors and latent state variances
+  y1(o_err1) ;
+  y2(o_err2) ;
+  y3(o_err3) ;
+  y4(o_err4) ;
+  eta(s_var) ;
+
+  %BETWEEN%
+
+  ! Indicator trait variables
+  theta1  BY  y1@1 ;
+  theta2  BY  y2@1 ;
+  theta3  BY  y3@1 ;
+  theta4  BY  y4@1 ;
+
+  ! Latent trait variable
+  theta BY theta1@1
+  theta2 (lat2)
+  theta3 (lat3)
+  theta4 (lat4) ;
+
+  ! Means and Intercepts
+  [y1@0] ;
+  [y2@0] ;
+  [y3@0] ;
+  [y4@0] ;
+  [theta1@0] ;
+  [theta2*] (int2) ;
+  [theta3*] (int3) ;
+  [theta4*] (int4) ;
+  [theta*] ;
+
+  ! Fixing level-2 residual variances at 0 and latent trait variance
+  y1@0;
+  y2@0;
+  y3@0;
+  y4@0;
+  theta1@0;
+  theta2@0;
+  theta3@0;
+  theta4@0;
+  theta(t_var) ;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        1000
+
+Number of dependent variables                                    4
+Number of independent variables                                  0
+Number of continuous latent variables                            6
+
+Observed dependent variables
+
+  Continuous
+   Y1          Y2          Y3          Y4
+
+Continuous latent variables
+   ETA         THETA1      THETA2      THETA3      THETA4      THETA
+
+Variables with special functions
+
+  Cluster variable      SUBJN
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                500000
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                         500000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  Mplus_files_Results/msst_trunc_N100_I4_nT10.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             1
+     Number of clusters                        100
+
+     Average cluster size       10.000
+
+     Estimated Intraclass Correlations for the Y Variables
+
+                Intraclass              Intraclass              Intraclass
+     Variable  Correlation   Variable  Correlation   Variable  Correlation
+
+     Y1           0.220      Y2           0.264      Y3           0.096
+     Y4           0.247
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              Y1            Y2            Y3            Y4
+              ________      ________      ________      ________
+ Y1             1.000
+ Y2             1.000         1.000
+ Y3             1.000         1.000         1.000
+ Y4             1.000         1.000         1.000         1.000
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     Y1                    3.725       0.163      -3.000    0.40%       1.000      3.000      4.000
+            1000.000       6.483      -0.254      12.000    0.20%       4.000      6.000
+     Y2                    3.660       0.146      -3.000    0.20%       2.000      3.000      4.000
+            1000.000       4.536      -0.130      11.000    0.20%       4.000      5.000
+     Y3                    2.626       0.281      -3.000    0.10%       1.000      2.000      3.000
+            1000.000       3.426      -0.064       9.000    0.30%       3.000      4.000
+     Y4                    4.883       0.243      -5.000    0.10%       3.000      4.000      5.000
+            1000.000       7.881       0.100      15.000    0.10%       5.000      7.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       16
+
+Loglikelihood
+
+          H0 Value                       -7987.912
+          H1 Value                       -7983.810
+
+Information Criteria
+
+          Akaike (AIC)                   16007.825
+          Bayesian (BIC)                 16086.349
+          Sample-Size Adjusted BIC       16035.532
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                              8.204
+          Degrees of Freedom                     8
+          P-Value                           0.4138
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.005
+
+CFI/TLI
+
+          CFI                                1.000
+          TLI                                1.000
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1634.487
+          Degrees of Freedom                    12
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value for Within                   0.014
+          Value for Between                  0.012
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ ETA      BY
+    Y1                 1.000      0.000    999.000    999.000
+    Y2                 1.024      0.054     19.035      0.000
+    Y3                 0.759      0.047     16.217      0.000
+    Y4                 1.180      0.065     18.155      0.000
+
+ Variances
+    ETA                2.250      0.217     10.379      0.000
+
+ Residual Variances
+    Y1                 2.817      0.153     18.381      0.000
+    Y2                 0.992      0.091     10.946      0.000
+    Y3                 1.804      0.095     18.895      0.000
+    Y4                 2.835      0.171     16.580      0.000
+
+Between Level
+
+ THETA1   BY
+    Y1                 1.000      0.000    999.000    999.000
+
+ THETA2   BY
+    Y2                 1.000      0.000    999.000    999.000
+
+ THETA3   BY
+    Y3                 1.000      0.000    999.000    999.000
+
+ THETA4   BY
+    Y4                 1.000      0.000    999.000    999.000
+
+ THETA    BY
+    THETA1             1.000      0.000    999.000    999.000
+    THETA2             0.915      0.055     16.763      0.000
+    THETA3             0.479      0.048     10.026      0.000
+    THETA4             1.162      0.077     15.046      0.000
+
+ Means
+    THETA              3.725      0.139     26.866      0.000
+
+ Intercepts
+    Y1                 0.000      0.000    999.000    999.000
+    Y2                 0.000      0.000    999.000    999.000
+    Y3                 0.000      0.000    999.000    999.000
+    Y4                 0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.251      0.211      1.188      0.235
+    THETA3             0.843      0.185      4.557      0.000
+    THETA4             0.554      0.299      1.854      0.064
+
+ Variances
+    THETA              1.416      0.271      5.222      0.000
+
+ Residual Variances
+    Y1                 0.000      0.000    999.000    999.000
+    Y2                 0.000      0.000    999.000    999.000
+    Y3                 0.000      0.000    999.000    999.000
+    Y4                 0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+    THETA2             0.000      0.000    999.000    999.000
+    THETA3             0.000      0.000    999.000    999.000
+    THETA4             0.000      0.000    999.000    999.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.288E-03
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  17:08:53
+        Ending Time:  17:08:55
+       Elapsed Time:  00:00:02
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen
