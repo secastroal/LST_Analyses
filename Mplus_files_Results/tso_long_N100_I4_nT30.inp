@@ -1,5 +1,5 @@
 TITLE: Your title goes here
-DATA: FILE = "Mplus_files_Results/tso_long_N100_I4_nT30.dat";
+DATA: FILE = "Mplus_files_Results/tso_long_n100_i4_nt30.dat";
 VARIABLE: 
 NAMES = subjn time y1 y2 y3 y4; 
 MISSING=.;

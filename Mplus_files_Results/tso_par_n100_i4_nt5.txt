@@ -1,0 +1,36 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Wed Feb 06 18:38:16 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lllll}
+  \hline
+par & true & long & wide & trunc \\ 
+  \hline
+Status & NA & Warnings and Errors & Ok & Warnings and Errors \\ 
+  loadings1 & 1 & 1 & 1 & 1 \\ 
+  loadings2 & 0.5 & 0.536 & 0.533 & 0.546 \\ 
+  loadings3 & 1.3 & 1.377 & 1.368 & 1.388 \\ 
+  loadings4 & 0.8 & 0.769 & 0.767 & 0.795 \\ 
+  ar.effect & 0.5 & 0.509 & 0.484 & 0.523 \\ 
+  error.var1 & 1 & 0.992 & 0.975 & 0.899 \\ 
+  error.var2 & 0.5 & 0.535 & 0.529 & 0.567 \\ 
+  error.var3 & 1.5 & 1.298 & 1.292 & 1.183 \\ 
+  error.var4 & 0.8 & 0.825 & 0.814 & 0.836 \\ 
+  state.var & 2 & 1.896 & 1.956 & 1.553 \\ 
+  intercepts1 & 2 & 2.008 & 1.916 & 1.709 \\ 
+  intercepts2 & 2.5 & 2.482 & 2.434 & 2.068 \\ 
+  intercepts3 & 3 & 3.089 & 3.014 & 2.724 \\ 
+  intercepts4 & 3.5 & 3.509 & 3.442 & 3.068 \\ 
+  trait.ind.var1 & 2 & 2.414 & 2.235 & 1.747 \\ 
+  trait.ind.var2 & 1.5 & 1.291 & 1.195 & 1.039 \\ 
+  trait.ind.var3 & 2.5 & 2.358 & 2.254 & 1.925 \\ 
+  trait.ind.var4 & 1.75 & 2.011 & 1.852 & 1.721 \\ 
+  cov12 & 1.56 & 1.439 & 1.353 & 1.076 \\ 
+  cov13 & 1.79 & 1.899 & 1.815 & 1.453 \\ 
+  cov23 & 1.55 & 1.346 & 1.289 & 1.039 \\ 
+  cov14 & 1.68 & 1.892 & 1.77 & 1.486 \\ 
+  cov24 & 1.3 & 1.269 & 1.191 & 1.037 \\ 
+  cov34 & 1.46 & 1.515 & 1.46 & 1.268 \\ 
+   \hline
+\end{tabular}
+\end{table}

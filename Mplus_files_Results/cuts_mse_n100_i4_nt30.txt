@@ -1,0 +1,33 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Wed Feb 06 18:27:00 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrr}
+  \hline
+par & long & wide & trunc \\ 
+  \hline
+loadings1 & 0.00 & 0.00 & 0.00 \\ 
+  loadings2 & 0.00 & 0.00 & 0.00 \\ 
+  loadings3 & 0.00 & 0.00 & 0.00 \\ 
+  loadings4 & 0.00 & 0.00 & 0.01 \\ 
+  CS.var & 0.00 & 0.00 & 0.18 \\ 
+  US.var1 & 0.00 & 0.00 & 0.01 \\ 
+  US.var2 & 0.00 & 0.00 & 0.00 \\ 
+  US.var3 & 0.00 & 0.00 & 0.02 \\ 
+  US.var4 & 0.00 & 0.00 & 0.00 \\ 
+  loadings1 & 0.00 & 0.00 & 0.00 \\ 
+  loadings2 & 0.00 & 0.00 & 0.00 \\ 
+  loadings3 & 0.01 & 0.01 & 0.01 \\ 
+  loadings4 & 0.02 & 0.02 & 0.01 \\ 
+  intercepts1 & 0.00 & 0.00 & 0.09 \\ 
+  intercepts2 & 0.04 & 0.04 & 0.06 \\ 
+  intercepts3 & 0.01 & 0.01 & 0.07 \\ 
+  intercepts4 & 0.05 & 0.05 & 0.07 \\ 
+  CT.var & 0.24 & 0.24 & 0.46 \\ 
+  UT.var1 & 0.00 & 0.00 & 0.01 \\ 
+  UT.var2 & 0.00 & 0.00 & 0.02 \\ 
+  UT.var3 & 0.00 & 0.00 & 0.00 \\ 
+  UT.var4 & 0.00 & 0.00 & 0.00 \\ 
+   \hline
+\end{tabular}
+\end{table}

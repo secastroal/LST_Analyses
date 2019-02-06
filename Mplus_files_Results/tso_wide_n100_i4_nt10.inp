@@ -1,0 +1,347 @@
+TITLE: Your title goes here
+DATA: FILE = "Mplus_files_Results/tso_wide_n100_i4_nt10.dat";
+VARIABLE: 
+NAMES = subjn y11 y21 y31 y41 y12 y22 y32 y42 y13 y23 y33 y43 y14 y24 y34 y44 y15
+     y25 y35 y45 y16 y26 y36 y46 y17 y27 y37 y47 y18 y28 y38 y48 y19 y29 y39 y49
+     y110 y210 y310 y410; 
+MISSING=.;
+USEVAR = y11
+y21
+y31
+y41
+y12
+y22
+y32
+y42
+y13
+y23
+y33
+y43
+y14
+y24
+y34
+y44
+y15
+y25
+y35
+y45
+y16
+y26
+y36
+y46
+y17
+y27
+y37
+y47
+y18
+y28
+y38
+y48
+y19
+y29
+y39
+y49
+y110
+y210
+y310
+y410 ;
+
+
+ANALYSIS:
+TYPE = GENERAL ;
+ESTIMATOR = ML ;
+ITERATIONS = 50000 ;
+H1ITERATIONS = 50000 ;
+
+
+MODEL:
+
+! Latent occasion variables
+occ1 BY y11@1
+y21 (las21)
+y31 (las31)
+y41 (las41) ;
+occ2 BY y12@1
+y22 (las21)
+y32 (las31)
+y42 (las41) ;
+occ3 BY y13@1
+y23 (las21)
+y33 (las31)
+y43 (las41) ;
+occ4 BY y14@1
+y24 (las21)
+y34 (las31)
+y44 (las41) ;
+occ5 BY y15@1
+y25 (las21)
+y35 (las31)
+y45 (las41) ;
+occ6 BY y16@1
+y26 (las21)
+y36 (las31)
+y46 (las41) ;
+occ7 BY y17@1
+y27 (las21)
+y37 (las31)
+y47 (las41) ;
+occ8 BY y18@1
+y28 (las21)
+y38 (las31)
+y48 (las41) ;
+occ9 BY y19@1
+y29 (las21)
+y39 (las31)
+y49 (las41) ;
+occ10 BY y110@1
+y210 (las21)
+y310 (las31)
+y410 (las41) ;
+
+! Latent trait variable or trait indicators
+theta1 BY y11@1
+y12@1
+y13@1
+y14@1
+y15@1
+y16@1
+y17@1
+y18@1
+y19@1
+y110@1 ;
+theta2 BY y21@1
+y22@1
+y23@1
+y24@1
+y25@1
+y26@1
+y27@1
+y28@1
+y29@1
+y210@1 ;
+theta3 BY y31@1
+y32@1
+y33@1
+y34@1
+y35@1
+y36@1
+y37@1
+y38@1
+y39@1
+y310@1 ;
+theta4 BY y41@1
+y42@1
+y43@1
+y44@1
+y45@1
+y46@1
+y47@1
+y48@1
+y49@1
+y410@1 ;
+
+! Intercepts and means
+[y11*] (ins11) ;
+[y21*] (ins21) ;
+[y31*] (ins31) ;
+[y41*] (ins41) ;
+[y12*] (ins11) ;
+[y22*] (ins21) ;
+[y32*] (ins31) ;
+[y42*] (ins41) ;
+[y13*] (ins11) ;
+[y23*] (ins21) ;
+[y33*] (ins31) ;
+[y43*] (ins41) ;
+[y14*] (ins11) ;
+[y24*] (ins21) ;
+[y34*] (ins31) ;
+[y44*] (ins41) ;
+[y15*] (ins11) ;
+[y25*] (ins21) ;
+[y35*] (ins31) ;
+[y45*] (ins41) ;
+[y16*] (ins11) ;
+[y26*] (ins21) ;
+[y36*] (ins31) ;
+[y46*] (ins41) ;
+[y17*] (ins11) ;
+[y27*] (ins21) ;
+[y37*] (ins31) ;
+[y47*] (ins41) ;
+[y18*] (ins11) ;
+[y28*] (ins21) ;
+[y38*] (ins31) ;
+[y48*] (ins41) ;
+[y19*] (ins11) ;
+[y29*] (ins21) ;
+[y39*] (ins31) ;
+[y49*] (ins41) ;
+[y110*] (ins11) ;
+[y210*] (ins21) ;
+[y310*] (ins31) ;
+[y410*] (ins41) ;
+[occ1@0] ;
+[occ2@0] ;
+[occ3@0] ;
+[occ4@0] ;
+[occ5@0] ;
+[occ6@0] ;
+[occ7@0] ;
+[occ8@0] ;
+[occ9@0] ;
+[occ10@0] ;
+
+! Set 0 correlations
+occ1 WITH occ2@0
+occ3@0
+occ4@0
+occ5@0
+occ6@0
+occ7@0
+occ8@0
+occ9@0
+occ10@0
+theta1@0
+theta2@0
+theta3@0
+theta4@0 ;
+occ2 WITH occ3@0
+occ4@0
+occ5@0
+occ6@0
+occ7@0
+occ8@0
+occ9@0
+occ10@0
+theta1@0
+theta2@0
+theta3@0
+theta4@0 ;
+occ3 WITH occ4@0
+occ5@0
+occ6@0
+occ7@0
+occ8@0
+occ9@0
+occ10@0
+theta1@0
+theta2@0
+theta3@0
+theta4@0 ;
+occ4 WITH occ5@0
+occ6@0
+occ7@0
+occ8@0
+occ9@0
+occ10@0
+theta1@0
+theta2@0
+theta3@0
+theta4@0 ;
+occ5 WITH occ6@0
+occ7@0
+occ8@0
+occ9@0
+occ10@0
+theta1@0
+theta2@0
+theta3@0
+theta4@0 ;
+occ6 WITH occ7@0
+occ8@0
+occ9@0
+occ10@0
+theta1@0
+theta2@0
+theta3@0
+theta4@0 ;
+occ7 WITH occ8@0
+occ9@0
+occ10@0
+theta1@0
+theta2@0
+theta3@0
+theta4@0 ;
+occ8 WITH occ9@0
+occ10@0
+theta1@0
+theta2@0
+theta3@0
+theta4@0 ;
+occ9 WITH occ10@0
+theta1@0
+theta2@0
+theta3@0
+theta4@0 ;
+occ10 WITH theta1@0
+theta2@0
+theta3@0
+theta4@0 ;
+
+! autoregressive effects
+occ2 ON occ1 (beta1) ;
+occ3 ON occ2 (beta1) ;
+occ4 ON occ3 (beta1) ;
+occ5 ON occ4 (beta1) ;
+occ6 ON occ5 (beta1) ;
+occ7 ON occ6 (beta1) ;
+occ8 ON occ7 (beta1) ;
+occ9 ON occ8 (beta1) ;
+occ10 ON occ9 (beta1) ;
+
+! Variance components
+y11 (err11) ;
+y21 (err21) ;
+y31 (err31) ;
+y41 (err41) ;
+y12 (err11) ;
+y22 (err21) ;
+y32 (err31) ;
+y42 (err41) ;
+y13 (err11) ;
+y23 (err21) ;
+y33 (err31) ;
+y43 (err41) ;
+y14 (err11) ;
+y24 (err21) ;
+y34 (err31) ;
+y44 (err41) ;
+y15 (err11) ;
+y25 (err21) ;
+y35 (err31) ;
+y45 (err41) ;
+y16 (err11) ;
+y26 (err21) ;
+y36 (err31) ;
+y46 (err41) ;
+y17 (err11) ;
+y27 (err21) ;
+y37 (err31) ;
+y47 (err41) ;
+y18 (err11) ;
+y28 (err21) ;
+y38 (err31) ;
+y48 (err41) ;
+y19 (err11) ;
+y29 (err21) ;
+y39 (err31) ;
+y49 (err41) ;
+y110 (err11) ;
+y210 (err21) ;
+y310 (err31) ;
+y410 (err41) ;
+occ1 (oc_var1) ;
+occ2 (oc_var1) ;
+occ3 (oc_var1) ;
+occ4 (oc_var1) ;
+occ5 (oc_var1) ;
+occ6 (oc_var1) ;
+occ7 (oc_var1) ;
+occ8 (oc_var1) ;
+occ9 (oc_var1) ;
+occ10 (oc_var1) ;
+theta1(t_var1) ;
+theta2(t_var2) ;
+theta3(t_var3) ;
+theta4(t_var4) ;

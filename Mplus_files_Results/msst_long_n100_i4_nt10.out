@@ -1,11 +1,11 @@
 Mplus VERSION 8
 MUTHEN & MUTHEN
-02/03/2019   4:13 PM
+02/06/2019   6:45 PM
 
 INPUT INSTRUCTIONS
 
   TITLE: Your title goes here
-  DATA: FILE = "Mplus_files_Results/msst_long_N100_I4_nT10.dat";
+  DATA: FILE = "Mplus_files_Results/msst_long_n100_i4_nt10.dat";
   VARIABLE:
   NAMES = subjn time y1 y2 y3 y4;
   MISSING=.;
@@ -120,7 +120,7 @@ Convergence criterion for H1                             0.100D-03
 Optimization algorithm                                         EMA
 
 Input data file(s)
-  Mplus_files_Results/msst_long_N100_I4_nT10.dat
+  Mplus_files_Results/msst_long_n100_i4_nt10.dat
 Input data format  FREE
 
 
@@ -136,8 +136,8 @@ SUMMARY OF DATA
                 Intraclass              Intraclass              Intraclass
      Variable  Correlation   Variable  Correlation   Variable  Correlation
 
-     Y1           0.220      Y2           0.262      Y3           0.106
-     Y4           0.252
+     Y1           0.317      Y2           0.507      Y3           0.310
+     Y4           0.357
 
 
 
@@ -167,14 +167,14 @@ UNIVARIATE SAMPLE STATISTICS
          Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
         Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
 
-     Y1                    4.187      -0.009      -3.807    0.10%       1.889      3.521      4.285
-            1000.000       6.879      -0.072      12.427    0.10%       4.884      6.412
-     Y2                    4.131       0.043      -3.226    0.10%       2.201      3.559      4.133
-            1000.000       4.660       0.059      11.261    0.10%       4.675      5.925
-     Y3                    3.068       0.019      -3.256    0.10%       1.441      2.594      3.105
-            1000.000       3.797       0.159       9.289    0.10%       3.592      4.608
-     Y4                    5.356       0.123      -5.174    0.10%       3.004      4.597      5.221
-            1000.000       8.068       0.197      15.060    0.10%       5.993      7.645
+     Y1                    4.173      -0.008      -2.641    0.10%       2.278      3.627      4.176
+            1000.000       4.736       0.072      10.815    0.10%       4.717      5.998
+     Y2                    3.506       0.064      -1.184    0.10%       2.287      3.087      3.496
+            1000.000       2.030      -0.037       7.953    0.10%       3.837      4.699
+     Y3                    5.374       0.021      -3.360    0.10%       3.073      4.750      5.422
+            1000.000       7.349       0.167      14.578    0.10%       5.995      7.577
+     Y4                    4.321       0.120      -2.455    0.10%       2.773      3.804      4.270
+            1000.000       3.331       0.188      10.125    0.10%       4.707      5.856
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -187,21 +187,21 @@ Number of Free Parameters                       16
 
 Loglikelihood
 
-          H0 Value                       -8041.208
-          H1 Value                       -8038.020
+          H0 Value                       -6548.167
+          H1 Value                       -6545.266
 
 Information Criteria
 
-          Akaike (AIC)                   16114.415
-          Bayesian (BIC)                 16192.939
-          Sample-Size Adjusted BIC       16142.123
+          Akaike (AIC)                   13128.333
+          Bayesian (BIC)                 13206.858
+          Sample-Size Adjusted BIC       13156.041
             (n* = (n + 2) / 24)
 
 Chi-Square Test of Model Fit
 
-          Value                              6.375
+          Value                              5.802
           Degrees of Freedom                     8
-          P-Value                           0.6053
+          P-Value                           0.6694
 
 RMSEA (Root Mean Square Error Of Approximation)
 
@@ -214,14 +214,14 @@ CFI/TLI
 
 Chi-Square Test of Model Fit for the Baseline Model
 
-          Value                           1730.343
+          Value                           2608.442
           Degrees of Freedom                    12
           P-Value                           0.0000
 
 SRMR (Standardized Root Mean Square Residual)
 
-          Value for Within                   0.012
-          Value for Between                  0.010
+          Value for Within                   0.008
+          Value for Between                  0.005
 
 
 
@@ -234,18 +234,18 @@ Within Level
 
  ETA      BY
     Y1                 1.000      0.000    999.000    999.000
-    Y2                 0.989      0.049     20.132      0.000
-    Y3                 0.762      0.045     16.947      0.000
-    Y4                 1.132      0.060     18.997      0.000
+    Y2                 0.475      0.020     23.873      0.000
+    Y3                 1.238      0.044     28.185      0.000
+    Y4                 0.784      0.028     27.964      0.000
 
  Variances
-    ETA                2.527      0.233     10.839      0.000
+    ETA                2.306      0.154     14.960      0.000
 
  Residual Variances
-    Y1                 2.847      0.156     18.218      0.000
-    Y2                 0.973      0.089     10.968      0.000
-    Y3                 1.934      0.102     18.943      0.000
-    Y4                 2.813      0.168     16.753      0.000
+    Y1                 0.953      0.064     14.825      0.000
+    Y2                 0.482      0.026     18.678      0.000
+    Y3                 1.530      0.101     15.094      0.000
+    Y4                 0.728      0.044     16.441      0.000
 
 Between Level
 
@@ -263,12 +263,12 @@ Between Level
 
  THETA    BY
     THETA1             1.000      0.000    999.000    999.000
-    THETA2             0.900      0.052     17.323      0.000
-    THETA3             0.513      0.048     10.594      0.000
-    THETA4             1.158      0.075     15.518      0.000
+    THETA2             0.835      0.033     25.331      0.000
+    THETA3             1.243      0.048     26.103      0.000
+    THETA4             0.895      0.034     26.434      0.000
 
  Means
-    THETA              4.187      0.143     29.305      0.000
+    THETA              4.173      0.134     31.078      0.000
 
  Intercepts
     Y1                 0.000      0.000    999.000    999.000
@@ -276,12 +276,12 @@ Between Level
     Y3                 0.000      0.000    999.000    999.000
     Y4                 0.000      0.000    999.000    999.000
     THETA1             0.000      0.000    999.000    999.000
-    THETA2             0.365      0.225      1.621      0.105
-    THETA3             0.920      0.210      4.391      0.000
-    THETA4             0.509      0.323      1.576      0.115
+    THETA2             0.023      0.143      0.160      0.873
+    THETA3             0.186      0.206      0.900      0.368
+    THETA4             0.584      0.147      3.983      0.000
 
  Variances
-    THETA              1.504      0.288      5.227      0.000
+    THETA              1.477      0.254      5.813      0.000
 
  Residual Variances
     Y1                 0.000      0.000    999.000    999.000
@@ -296,13 +296,13 @@ Between Level
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.269E-03
+     Condition Number for the Information Matrix              0.292E-03
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  16:13:18
-        Ending Time:  16:13:21
-       Elapsed Time:  00:00:03
+     Beginning Time:  18:45:51
+        Ending Time:  18:45:52
+       Elapsed Time:  00:00:01
 
 
 
