@@ -28,11 +28,15 @@ folder <- "Mplus_files_Results/" #Folder to store results
 
 # 1.0 CUTS ----
 
+times <- c(50, 60, 70, 80, 90, 100)
+
+for(i in 1:length(times)){
+
 # 1.1 Set Conditions and true parameters ----
 
 model <- "cuts"
 N <- 100 # number of persons
-nT <- 40 # number of times // measurement occasions
+nT <- times[i] # number of times // measurement occasions
 I <- 4 # number of variables // items
 seed <- 123
 
@@ -684,3 +688,5 @@ print(xtable(rmse, type = "latex"), include.rownames = FALSE, file = paste0(fold
 # 3.5 Clean environment ----
 
 rm(N, nT, I, seed, within.parameters, between.parameters, tso.data, est.par, model, rmse, mse, status)
+
+}
