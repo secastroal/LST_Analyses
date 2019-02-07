@@ -1,0 +1,36 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Wed Feb 06 22:06:06 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lllll}
+  \hline
+par & true & long & wide & trunc \\ 
+  \hline
+Status & NA & Warnings and Errors & Non-Convergence & Warnings and Errors \\ 
+  loadings1 & 1 & 1 &  & 1 \\ 
+  loadings2 & 0.5 & 0.502 &  & 0.534 \\ 
+  loadings3 & 1.3 & 1.282 &  & 1.352 \\ 
+  loadings4 & 0.8 & 0.807 &  & 0.881 \\ 
+  ar.effect & 0.5 & 0.489 &  & 0.492 \\ 
+  error.var1 & 1 & 1.015 &  & 0.897 \\ 
+  error.var2 & 0.5 & 0.507 &  & 0.544 \\ 
+  error.var3 & 1.5 & 1.509 &  & 1.386 \\ 
+  error.var4 & 0.8 & 0.782 &  & 0.818 \\ 
+  state.var & 2 & 2.012 &  & 1.532 \\ 
+  intercepts1 & 2 & 1.668 &  & 1.414 \\ 
+  intercepts2 & 2.5 & 2.241 &  & 1.817 \\ 
+  intercepts3 & 3 & 2.813 &  & 2.48 \\ 
+  intercepts4 & 3.5 & 3.253 &  & 2.82 \\ 
+  trait.ind.var1 & 2 & 1.882 &  & 1.405 \\ 
+  trait.ind.var2 & 1.5 & 1.289 &  & 1.068 \\ 
+  trait.ind.var3 & 2.5 & 2.229 &  & 1.86 \\ 
+  trait.ind.var4 & 1.75 & 1.726 &  & 1.544 \\ 
+  cov12 & 1.56 & 1.375 &  & 1.075 \\ 
+  cov13 & 1.79 & 1.566 &  & 1.227 \\ 
+  cov23 & 1.55 & 1.344 &  & 1.107 \\ 
+  cov14 & 1.68 & 1.605 &  & 1.317 \\ 
+  cov24 & 1.3 & 1.177 &  & 1.012 \\ 
+  cov34 & 1.46 & 1.327 &  & 1.149 \\ 
+   \hline
+\end{tabular}
+\end{table}
