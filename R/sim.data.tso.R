@@ -1,7 +1,7 @@
 # function to simulate tso data ----
 
 sim.data.tso <- function(N, nT, I, within.parameters, between.parameters, 
-                                       seed = 123){
+                                       na.prop = 0, seed = 123){
   set.seed(seed)
   #Compute standard deviations
   state.sd <- sqrt(within.parameters$state.var) # state residual standard deviation
@@ -50,6 +50,16 @@ sim.data.tso <- function(N, nT, I, within.parameters, between.parameters,
   
   colnames(sim_data) <- c("subjn", "time", paste0("y", 1:I))
   
+  #introduce missing completely at random
+  
+  if (na.prop != 0) {
+    pos.NA   <- matrix(rbinom(N * I * nT, 1, 1 - na.prop), nrow = N * nT)
+    pos.NA[pos.NA == 0] <- NA
+    sim_data[, 3:(I+2)]     <- sim_data[,3:(I + 2)] * pos.NA
+    rm(pos.NA)       # clean
+  }
+  
+  #reshape into wide format
   wide_sim_data <- reshape(sim_data, v.names = paste0("y", 1:I),
                            timevar = "time", idvar="subjn", direction="wide")
   names(wide_sim_data) <- gsub("\\.", "", names(wide_sim_data))
