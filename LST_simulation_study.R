@@ -36,8 +36,9 @@ for(i in 1:length(times)){
 
 model <- "cuts"
 N <- 100 # number of persons
-nT <- times[i] # number of times // measurement occasions
+nT <- 15 # number of times // measurement occasions
 I <- 4 # number of variables // items
+na.prop <- 0.2 #proportion of missingness
 seed <- 123
 
 set.seed(seed)
@@ -66,32 +67,37 @@ rm(intercepts, trait_loadings, var_CT, var_UT)
 # 1.2 Simulate data ----
 
 # Time invariant data
-cuts.data <- sim.data.cuts(N, nT, I, within.parameters = within.parameters, 
+cuts.data <- sim.data.cuts(N, nT, I, within.parameters = within.parameters, na.prop = na.prop,
                            between.parameters = between.parameters, seed = seed)
 
-# Truncate time invariant data long
+# Truncate time invariant data long and wide
 
-cuts.data$data.trunc <- trunc(cuts.data$data.long)
+cuts.data$data.l.trunc <- trunc(cuts.data$data.long)
+cuts.data$data.w.trunc <- trunc(cuts.data$data.wide)
 
 # 1.3 Model estimation ---- 
 
 # Matrix to store estimated parameters
 
-est.par <- data.frame(matrix(NA, 5*I + 2, 5))
+est.par <- data.frame(matrix(NA, 5*I + 2, 6))
 est.par[, 2] <- c(unlist(within.parameters), unlist(between.parameters))
 est.par[, 1] <- names(c(unlist(within.parameters), unlist(between.parameters)))
-names(est.par) <- c("par", "true", "long", "wide", "trunc")
+names(est.par) <- c("par", "true", "long", "wide", "Ltrunc", "Wtrunc" )
 
 # Matrix to store rmse and mse
-rmse <- mse <- est.par[, -2] 
+se <- rmse <- mse <- est.par[, -2] 
+
+# Matrix to store variance coefficients
+
+var.coeff <- matrix(NA, I * 5,)
 
 # Save convergence check
 
-status <- est.par[1, 3:5]
+status <- rep(NA, 4)
 
 # 1.3.1 ML-cuts data.long ----
 
-file.name <- paste0(model, "_long_n", N, "_i", I, "_nt", nT)
+file.name <- paste0(model, "_long_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
 prepareMplusData(cuts.data$data.long, paste0(folder, file.name, ".dat"), inpfile = T)
@@ -135,7 +141,7 @@ rm(file.name, long.fit)
 
 # 1.3.2 cuts data.wide ----
 
-file.name <- paste0(model, "_wide_n", N, "_i", I, "_nt", nT)
+file.name <- paste0(model, "_wide_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
 prepareMplusData(cuts.data$data.wide, paste0(folder, file.name, ".dat"), inpfile = T)
@@ -190,22 +196,22 @@ if(check.mplus(wide.fit) == "Ok"){
 
 rm(file.name, wide.fit)
 
-# 1.3.3 ML-cuts data.trunc ----
+# 1.3.3 ML-cuts data.l.trunc ----
 
-file.name <- paste0(model, "_trunc_n", N, "_i", I, "_nt", nT)
+file.name <- paste0(model, "_long_trunc_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
-prepareMplusData(cuts.data$data.trunc, paste0(folder, file.name, ".dat"), inpfile = T)
+prepareMplusData(cuts.data$data.l.trunc, paste0(folder, file.name, ".dat"), inpfile = T)
 
 # Complete Mplus syntax
-analysis_syntax <- write.Mplus.options(usevariables = names(cuts.data$data.trunc)[-(1:2)],
-                                       cluster = names(cuts.data$data.trunc)[1],
+analysis_syntax <- write.Mplus.options(usevariables = names(cuts.data$data.l.trunc)[-(1:2)],
+                                       cluster = names(cuts.data$data.l.trunc)[1],
                                        analysis_type = "TWOLEVEL",
                                        estimator = "ML",
                                        iterations = 500000,
                                        h1iterations = 500000)
 
-ml_syntax <- write.mlcuts.to.Mplus(cuts.data$data.trunc[, -(1:2)])
+ml_syntax <- write.mlcuts.to.Mplus(cuts.data$data.l.trunc[, -(1:2)])
 
 write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
@@ -232,6 +238,64 @@ if(check.mplus(trunc.fit) == "Ok"){
 }
 
 rm(file.name, trunc.fit)
+
+# 1.3.4 cuts data.w.trunc ----
+
+file.name <- paste0(model, "_wide_trunc_n", N, "_i", I, "_nt", nT, "_na", na.prop)
+
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(cuts.data$data.w.trunc, paste0(folder, file.name, ".dat"), inpfile = T)
+
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(cuts.data$data.w.trunc)[-1],
+                                       analysis_type = "GENERAL",
+                                       estimator = "ML",
+                                       iterations = 500000,
+                                       h1iterations = 500000)
+
+
+mplus_syntax <- write.cuts.to.Mplus(cuts.data$data.w.trunc[,-1],  nstate = nT,
+                                    method.trait = "om",
+                                    scale.invariance = list(int = TRUE, lambda = TRUE),
+                                    state.trait.invariance = FALSE,
+                                    fixed.method.loadings = TRUE,
+                                    homocedasticity.assumption = list(error = TRUE, cs.red = TRUE, ut.red = FALSE))
+
+
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, mplus_syntax)
+
+# Run model in Mplus
+runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+
+wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+
+if(check.mplus(wide.fit) == "Ok"){
+  
+  status[4] <- check.mplus(wide.fit)
+  
+  est.par[, 6] <- wide.fit$parameters$unstandardized[c(1:I,
+                                                       (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + 1,
+                                                       ((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2 + I):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + 2*I),
+                                                       (I*nT + 1):(I*nT + I),
+                                                       ((((nT + I + 1)*(nT + I))/2) + (nT*I*3) + 1):((((nT + I + 1)*(nT + I))/2) + (nT*I*3) + I),
+                                                       (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1,
+                                                       ((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + I)),
+                                                     3]
+  mse[, 5] <- (est.par[ , 6] - est.par[ , 2]) ^ 2 
+  
+  rmse[, 5] <- sqrt((est.par[ , 6] - est.par[ , 2]) ^ 2) 
+  
+  
+}else{
+  status[4] <- check.mplus(wide.fit)
+}
+
+
+rm(file.name, wide.fit)
+
 
 # 1.4 Save output ----
 
@@ -281,32 +345,34 @@ rm(intercepts, trait_loadings, var_trait, mean_trait)
 # 2.2 Simulate data ----
 
 #Time invariant data
-msst.data <- sim.data.msst(N, nT, I, within.parameters = within.parameters, 
+msst.data <- sim.data.msst(N, nT, I, within.parameters = within.parameters, na.prop = na.prop,
                            between.parameters = between.parameters, seed = seed)
 
-# Truncate time invariant data long
+# Truncate time invariant data long and wide
 
-msst.data$data.trunc <- trunc(msst.data$data.long)
+msst.data$data.l.trunc <- trunc(msst.data$data.long)
+msst.data$data.w.trunc <- trunc(msst.data$data.wide)
+
 
 # 2.3 Model estimation ----
 
 # Matrix to store estimated parameters
 
-est.par <- data.frame(matrix(NA, 4*I + 3, 5))
+est.par <- data.frame(matrix(NA, 4*I + 3, 6))
 est.par[, 2] <- c(unlist(within.parameters), unlist(between.parameters))
 est.par[, 1] <- names(c(unlist(within.parameters), unlist(between.parameters)))
-names(est.par) <- c("par", "true", "long", "wide", "trunc")
+names(est.par) <- c("par", "true", "long", "wide", "Ltrunc", "Wtrunc")
 
 # Matrix to store rmse and mse
 rmse <- mse <- est.par[, -2]
 
 # Save convergence check
 
-status <- est.par[1, 3:5]
+status <- rep(NA, 4)
 
 # 2.3.1 ML-msst data.long ----
 
-file.name <- paste0(model, "_long_n", N, "_i", I, "_nt", nT)
+file.name <- paste0(model, "_long_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
 prepareMplusData(msst.data$data.long, paste0(folder,file.name,".dat"), inpfile = T)
@@ -350,7 +416,7 @@ rm(file.name, long.fit)
 
 # 2.3.2 msst data.wide ----
 
-file.name <- paste0(model, "_wide_n", N, "_i", I, "_nt", nT)
+file.name <- paste0(model, "_wide_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
 prepareMplusData(msst.data$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
@@ -401,22 +467,22 @@ if(check.mplus(wide.fit) == "Ok"){
 
 rm(file.name, wide.fit)
 
-# 2.3.3 ML-msst data.trunc ----
+# 2.3.3 ML-msst data.l.trunc ----
 
-file.name <- paste0(model, "_trunc_n", N, "_i", I, "_nt", nT)
+file.name <- paste0(model, "_long_trunc_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
-prepareMplusData(msst.data$data.trunc, paste0(folder,file.name,".dat"), inpfile = T)
+prepareMplusData(msst.data$data.l.trunc, paste0(folder,file.name,".dat"), inpfile = T)
 
 # Complete Mplus syntax
-analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.trunc)[-(1:2)],
-                                       cluster = names(msst.data$data.trunc)[1],
+analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.l.trunc)[-(1:2)],
+                                       cluster = names(msst.data$data.l.trunc)[1],
                                        analysis_type = "TWOLEVEL",
                                        estimator = "ML",
                                        iterations = 500000,
                                        h1iterations = 500000)
 
-ml_syntax <- write.mlmsst.to.Mplus(msst.data$data.trunc[, -(1:2)])
+ml_syntax <- write.mlmsst.to.Mplus(msst.data$data.l.trunc[, -(1:2)])
 
 write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
@@ -445,6 +511,59 @@ if(check.mplus(trunc.fit) == "Ok"){
 
 
 rm(file.name, trunc.fit)
+
+# 2.3.4 msst data.w.trunc ----
+
+file.name <- paste0(model, "_wide_trunc_n", N, "_i", I, "_nt", nT, "_na", na.prop)
+
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(msst.data$data.w.trunc, paste0(folder,file.name,".dat"), inpfile = T)
+
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.w.trunc)[-1],
+                                       analysis_type = "GENERAL",
+                                       estimator = "ML",
+                                       iterations = 50000,
+                                       h1iterations = 50000)
+
+mplus_syntax <- write.msst.to.Mplus(msst.data$data.w.trunc[,-1], neta = nT, ntheta = 1, 
+                                    equiv.assumption = list(tau = "cong", theta = "cong"),
+                                    scale.invariance = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
+                                    homocedasticity.assumption = list(error = TRUE, state.red = TRUE),
+                                    second.order.trait = FALSE)
+
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, mplus_syntax)
+
+# Run model in Mplus
+runModels(paste0(getwd(),"/", folder,file.name,".inp"))
+
+wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+
+if(check.mplus(wide.fit) == "Ok"){
+  
+  status[4] <- check.mplus(wide.fit)
+  
+  est.par[,6] <- wide.fit$parameters$unstandardized[c(1:I,
+                                                      (I * nT * 3) + ((nT+1) * nT / 2) + 2,
+                                                      ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2),
+                                                      ((I * nT + 1):(I * nT + I)), 
+                                                      ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1),
+                                                      ((I * nT * 2) + ((nT+1) * nT / 2) + 1), 
+                                                      ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2)),3]
+  
+  mse[, 5] <- (est.par[ , 6] - est.par[ , 2]) ^ 2 
+  
+  rmse[, 5] <- sqrt((est.par[ , 6] - est.par[ , 2]) ^ 2) 
+  
+  
+}else{
+  status[4] <- check.mplus(wide.fit)
+}
+
+rm(file.name, wide.fit)
 
 # 2.4 Save output ----
 
@@ -498,18 +617,19 @@ rm(intercepts, var_ind_traits, R)
 # 3.2 Simulate data ----
 
 # Time invariant data
-tso.data <- sim.data.tso(N, nT, I, within.parameters = within.parameters, 
+tso.data <- sim.data.tso(N, nT, I, within.parameters = within.parameters, na.prop = na.prop, 
                          between.parameters = between.parameters, seed = seed)
 
-# Truncate time invariant data long
+# Truncate time invariant data long and wide
 
-tso.data$data.trunc <- trunc(tso.data$data.long)
+tso.data$data.l.trunc <- trunc(tso.data$data.long)
+tso.data$data.w.trunc <- trunc(tso.data$data.wide)
 
 # 3.3 Model estimation ----
 
 # Matrix to store estimated parameters
 
-est.par <- data.frame(matrix(NA, 4*I + 2 + (I * (I-1) /2), 5))
+est.par <- data.frame(matrix(NA, 4*I + 2 + (I * (I-1) /2), 6))
 # Get true parameters + lower triangle of the true variance-covariance matrix 
 est.par[, 2] <- round(c(unlist(within.parameters), unlist(between.parameters)[1:(2*I)],
                   tso.data$between.parameters$Sigma[t(lower.tri(tso.data$between.parameters$Sigma))]),2)
@@ -518,7 +638,7 @@ cov.ind <- which(t(lower.tri(tso.data$between.parameters$Sigma))==TRUE, arr.ind 
 # Define parameter names + covariance names
 est.par[, 1] <- c(names(c(unlist(within.parameters), unlist(between.parameters)[1:(2*I)])),
                   paste0("cov", cov.ind[,1], cov.ind[,2]))
-names(est.par) <- c("par", "true", "long", "wide", "trunc")
+names(est.par) <- c("par", "true", "long", "wide", "Ltrunc", "Wtrunc")
 
 # Matrix to store rmse
 rmse <- mse <- est.par[, -2] 
@@ -527,11 +647,11 @@ rm(cov.ind)
 
 # Save convergence check
 
-status <- est.par[1, 3:5]
+status <- rep(NA, 4)
 
 # 3.3.1 ML-tso data.long ----
 
-file.name <- paste0(model, "_long_n", N, "_i", I, "_nt", nT)
+file.name <- paste0(model, "_long_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
 prepareMplusData(tso.data$data.long, paste0(folder,file.name,".dat"), inpfile = T)
@@ -556,7 +676,7 @@ runModels(paste0(getwd(),"/",folder,file.name,".inp"))
 
 long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(long.fit) != "Non-Convergence"){
+if(check.mplus(long.fit) == "Ok"){
   
   status[1] <- check.mplus(long.fit)
   
@@ -576,7 +696,7 @@ rm(file.name, long.fit)
 
 # 3.3.2 tso data.wide ----
 
-file.name <- paste0(model, "_wide_n", N, "_i", I, "_nt", nT)
+file.name <- paste0(model, "_wide_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
 prepareMplusData(tso.data$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
@@ -584,9 +704,9 @@ prepareMplusData(tso.data$data.wide, paste0(folder,file.name,".dat"), inpfile = 
 # Complete Mplus syntax
 analysis_syntax <- write.Mplus.options(usevariables = names(tso.data$data.wide)[-1],
                                        analysis_type = "GENERAL",
-                                       estimator = "ML",
-                                       iterations = 50000,
-                                       h1iterations = 50000)
+                                       estimator = "BAYES",
+                                       iterations = 5000,
+                                       processors = 2)
 
 ml_syntax <- write.tso.to.Mplus(tso.data$data.wide[,-1], nocc = nT, figure = "3b",
                                 equiv.assumption = list(occ = "cong", theta = "equi"),
@@ -629,22 +749,22 @@ if(check.mplus(wide.fit) == "Ok"){
 
 rm(file.name, wide.fit)
 
-# 3.3.3 ML-tso data.trunc ----
+# 3.3.3 ML-tso data.l.trunc ----
 
-file.name <- paste0(model, "_trunc_n", N, "_i", I, "_nt", nT)
+file.name <- paste0(model, "_long_trunc_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
-prepareMplusData(tso.data$data.trunc, paste0(folder,file.name,".dat"), inpfile = T)
+prepareMplusData(tso.data$data.l.trunc, paste0(folder,file.name,".dat"), inpfile = T)
 
 # Complete Mplus syntax
-analysis_syntax <- write.Mplus.options(usevariables = names(tso.data$data.trunc)[-(1:2)],
-                                       cluster = names(tso.data$data.trunc)[1],
+analysis_syntax <- write.Mplus.options(usevariables = names(tso.data$data.l.trunc)[-(1:2)],
+                                       cluster = names(tso.data$data.l.trunc)[1],
                                        analysis_type = "TWOLEVEL",
                                        estimator = "BAYES",
                                        iterations = 5000,
                                        processors = 2)
 
-ml_syntax <- write.mltso.to.Mplus(tso.data$data.trunc[, -c(1, 2)])
+ml_syntax <- write.mltso.to.Mplus(tso.data$data.l.trunc[, -c(1, 2)])
 
 write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
@@ -656,7 +776,7 @@ runModels(paste0(getwd(),"/",folder,file.name,".inp"))
 
 trunc.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(trunc.fit) != "Non-Convergence"){
+if(check.mplus(trunc.fit) == "Ok"){
   
   status[3] <- check.mplus(trunc.fit)
   
@@ -674,6 +794,61 @@ if(check.mplus(trunc.fit) != "Non-Convergence"){
 
 
 rm(file.name, trunc.fit)
+
+# 3.3.4 tso data.w.trunc ----
+
+file.name <- paste0(model, "_wide_trunc_n", N, "_i", I, "_nt", nT, "_na", na.prop)
+
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(tso.data$data.w.trunc, paste0(folder,file.name,".dat"), inpfile = T)
+
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(tso.data$data.w.trunc)[-1],
+                                       analysis_type = "GENERAL",
+                                       estimator = "BAYES",
+                                       iterations = 5000,
+                                       processors = 2)
+
+ml_syntax <- write.tso.to.Mplus(tso.data$data.w.trunc[,-1], nocc = nT, figure = "3b",
+                                equiv.assumption = list(occ = "cong", theta = "equi"),
+                                scale.invariance = list(int = TRUE, lambda = TRUE),
+                                homocedasticity.assumption = list(error = TRUE, occ.red = TRUE),
+                                autoregressive.homogeneity = TRUE)
+
+
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, ml_syntax)
+
+# Run modelin Mplus
+runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+
+wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+
+if(check.mplus(wide.fit) == "Ok"){
+  
+  status[4] <- check.mplus(wide.fit)
+  
+  est.par[, 6] <- wide.fit$parameters$unstandardized[c(1:I, #loadings
+                                                       (2 * I * nT + 1), # autoregressive effect
+                                                       ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
+                                                       ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                                                       ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
+                                                       ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
+                                                       ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                                     3]
+  
+  mse[, 5] <- (est.par[ , 6] - est.par[ , 2]) ^ 2 
+  
+  rmse[, 5] <- sqrt((est.par[ , 6] - est.par[ , 2]) ^ 2) 
+  
+  
+}else{
+  status[4] <- check.mplus(wide.fit)
+}
+
+rm(file.name, wide.fit)
 
 # 3.4 Save output ----
 
