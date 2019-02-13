@@ -10,7 +10,20 @@ check.mplus <- function(mplus.model){
       return("Non-convergence")
     }else{
       if(length(fit$errors)!=0){
-        return("Errors and Warnings") 
+        if("USE THE FBITERATIONS OPTION TO INCREASE THE NUMBER OF ITERATIONS BY A FACTOR" %in% unlist(fit$errors) &&
+           length(fit$errors) == 1){
+          if(length(fit$warnings)!=0){
+            if(paste0(length(fit$warnings)," WARNING(S) FOUND IN THE INPUT INSTRUCTIONS") %in% unlist(fit$warnings)){
+              return("Ok")
+            }else{
+              return("Errors and Warnings")
+            } 
+          }else{
+            return("Ok")
+          }
+        }else{
+             return("Errors and Warnings")
+           }
       }else{
         if(length(fit$warnings)!=0){
           if(paste0(length(fit$warnings)," WARNING(S) FOUND IN THE INPUT INSTRUCTIONS") %in% unlist(fit$warnings)){
@@ -42,4 +55,5 @@ check.mplus <- function(mplus.model){
 #fit.fatal.3 <- readModels(paste0(getwd(),"/Mplus_files_Results/OldAnalyses/cuts_wide_n100_i4_nt60_old.out"))
 #fit.warning.5 <- readModels(paste0(getwd(),"/ML_Mplus_files/mlcuts_m5.out"))
 #fit.warning.6 <- readModels(paste0(getwd(),"/Mplus_files_Results/cuts_trunc_n100_i4_nt5.out"))
+#fit.errors.4 <- readModels(paste0(getwd(),"/Mplus_files_Results/tso_long_n100_i4_nt10.out"))
 
