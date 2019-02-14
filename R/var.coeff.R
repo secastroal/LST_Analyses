@@ -10,7 +10,8 @@ cuts.var.coeff <- function(within.parameters, between.parameters){
   ucon <- (between.parameters$UT.var) / total.variance
   
   out <- data.frame(c(ccon, ucon, tcon, spe, rel))
-  row.names(out) <- paste0(rep(c("ccon", "ucon", "tcon", "spe", "rel"), each = length(within.parameters$loadings)), 1:length(within.parameters$loadings))
+  row.names(out) <- paste0(rep(c("ccon", "ucon", "tcon", "spe", "rel"), each = length(within.parameters$loadings)), 
+                           1:length(within.parameters$loadings))
   names(out) <- "Var.Coeff"
   
   return(out)
@@ -25,7 +26,8 @@ msst.var.coeff <- function(within.parameters, between.parameters){
   spe <- ((within.parameters$loadings ^ 2) * within.parameters$state.var) / total.variance
   
   out <- data.frame(c(con, spe, rel))
-  row.names(out) <- paste0(rep(c("con","spe", "rel"), each = length(within.parameters$loadings)), 1:length(within.parameters$loadings))
+  row.names(out) <- paste0(rep(c("con","spe", "rel"), each = length(within.parameters$loadings)), 
+                           1:length(within.parameters$loadings))
   names(out) <- "Var.Coeff"
   
   return(out)

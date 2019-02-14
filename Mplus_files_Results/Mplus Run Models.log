@@ -1,10 +1,10 @@
-------Begin Mplus Model Run: 13feb2019 16:50:39------
+------Begin Mplus Model Run: 14feb2019 12:11:31------
 Target directory: X:/My Documents/Git/LST_Analyses/Mplus_files_Results
 Run options:
 	Recursive (run models in subdirectories): FALSE
 	Show output on console: FALSE
 	Replace existing outfile: always
 ------
-Currently running model: msst_wide_trunc_n100_i4_nt15_na0.2.inp
+Currently running model: tso_wide_trunc_n100_i4_nt15_na0.2.inp
 
-------End Mplus Model Run: 13feb2019 16:57:07------
+------End Mplus Model Run: 14feb2019 12:11:52------
