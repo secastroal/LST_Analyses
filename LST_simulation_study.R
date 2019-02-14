@@ -372,13 +372,13 @@ caption <- paste("of model", model, "with N =", N,", I =", I, ", nT =", nT,
 
 print(xtable(est.par, type = "latex", caption = paste0("Parameter estimates ", caption)), 
       include.rownames = FALSE, file = paste0(folder, "param_", file.name))
-print(xtable(bias, type = "latex", caption = paste0("Bias ", caption)), 
+print(xtable(bias, type = "latex", caption = paste0("Bias ", caption), digits = 3), 
       include.rownames = FALSE, file = paste0(folder, "bias_", file.name ))
-print(xtable(rmse, type = "latex", caption = paste0("RMSE ", caption)), 
+print(xtable(rmse, type = "latex", caption = paste0("RMSE ", caption), digits = 3), 
       include.rownames = FALSE, file = paste0(folder, "rmse_", file.name))
-print(xtable(se, type = "latex", caption = paste0("Standard errors ", caption)), 
+print(xtable(se, type = "latex", caption = paste0("Standard errors ", caption), digits = 3), 
       include.rownames = FALSE, file = paste0(folder, "se_", file.name))
-print(xtable(var.coeff, type = "latex", caption = paste0("LST variance coefficients ", caption)), 
+print(xtable(var.coeff, type = "latex", caption = paste0("LST variance coefficients ", caption), digits = 3), 
       include.rownames = FALSE, file = paste0(folder, "varcoeff_", file.name))
 
 
@@ -439,7 +439,16 @@ est.par[, 1] <- names(c(unlist(within.parameters), unlist(between.parameters)))
 names(est.par) <- c("par", "true", "long", "wide", "Ltrunc", "Wtrunc")
 
 # Matrix to store rmse and mse
-rmse <- mse <- est.par[, -2]
+se <- rmse <- bias <- est.par[, -2]
+
+# Matrix to store variance coefficients
+
+var.coeff <- data.frame(matrix(NA, I * 3, 6))
+var.coeff[ , 1] <- paste0(rep(c("con_y", "spe_y", "rel_y"), each = I), 1:I)
+var.coeff[ , 2] <- msst.var.coeff(within.parameters = within.parameters, 
+                                  between.parameters = between.parameters)
+names(var.coeff) <- c("coefficient", "true", "long", "wide", "Ltrunc", "Wtrunc" )
+
 
 # Save convergence check
 
@@ -478,10 +487,21 @@ if(check.mplus(long.fit) == "Ok"){
   
   est.par[,3] <- long.fit$parameters$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
                                            (4*I + 2), (6*I +3)),3]
+  se[,2] <- long.fit$parameters$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
+                                                      (4*I + 2), (6*I +3)),4]
   
-  mse[, 2] <- (est.par[ , 3] - est.par[ , 2]) ^ 2 
+  bias[, 2] <- (est.par[ , 3] - est.par[ , 2]) 
   
-  rmse[, 2] <- sqrt((est.par[ , 3] - est.par[ , 2]) ^ 2) 
+  rmse[, 2] <- sqrt((est.par[ , 3] - est.par[ , 2]) ^ 2)
+  
+  within.estimates <- list( loadings = est.par[1:I, 3], state.var = est.par[I+1, 3],
+                            error.var = est.par[(I+2):(2 * I +1), 3])
+  between.estimates <- list( loadings = est.par[(2 * I + 2):(3 * I + 1), 3], 
+                             trait.var = est.par[ 4 * I + 3, 3])
+  var.coeff[ , 3] <- msst.var.coeff(within.parameters = within.estimates,
+                                    between.parameters = between.estimates)
+  rm(within.estimates, between.estimates)
+  
   
 }else{
   status[1] <- check.mplus(long.fit)
@@ -531,9 +551,25 @@ if(check.mplus(wide.fit) == "Ok"){
                                            ((I * nT * 2) + ((nT+1) * nT / 2) + 1), 
                                            ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2)),3]
   
-  mse[, 3] <- (est.par[ , 4] - est.par[ , 2]) ^ 2 
+  se[,3] <- wide.fit$parameters$unstandardized[c(1:I,
+                                                      (I * nT * 3) + ((nT+1) * nT / 2) + 2,
+                                                      ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2),
+                                                      ((I * nT + 1):(I * nT + I)), 
+                                                      ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1),
+                                                      ((I * nT * 2) + ((nT+1) * nT / 2) + 1), 
+                                                      ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2)),4]
+  
+  bias[, 3] <- (est.par[ , 4] - est.par[ , 2]) 
   
   rmse[, 3] <- sqrt((est.par[ , 4] - est.par[ , 2]) ^ 2) 
+  
+  within.estimates <- list( loadings = est.par[1:I, 4], state.var = est.par[I+1, 4],
+                            error.var = est.par[(I+2):(2 * I +1), 4])
+  between.estimates <- list( loadings = est.par[(2 * I + 2):(3 * I + 1), 4], 
+                             trait.var = est.par[ 4 * I + 3, 4])
+  var.coeff[ , 4] <- msst.var.coeff(within.parameters = within.estimates,
+                                    between.parameters = between.estimates)
+  rm(within.estimates, between.estimates)
   
   
 }else{
@@ -576,9 +612,20 @@ if(check.mplus(trunc.fit) == "Ok"){
   est.par[,5] <- trunc.fit$parameters$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
                                             (4*I + 2), (6*I +3)),3]
   
-  mse[, 4] <- (est.par[ , 5] - est.par[ , 2]) ^ 2
+  se[,4] <- trunc.fit$parameters$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
+                                                       (4*I + 2), (6*I +3)),4]
+  
+  bias[, 4] <- (est.par[ , 5] - est.par[ , 2])
   
   rmse[, 4] <- sqrt((est.par[ , 5] - est.par[ , 2]) ^ 2)
+  
+  within.estimates <- list( loadings = est.par[1:I, 5], state.var = est.par[I+1, 5],
+                            error.var = est.par[(I+2):(2 * I +1), 5])
+  between.estimates <- list( loadings = est.par[(2 * I + 2):(3 * I + 1), 5], 
+                             trait.var = est.par[ 4 * I + 3, 5])
+  var.coeff[ , 5] <- msst.var.coeff(within.parameters = within.estimates,
+                                    between.parameters = between.estimates)
+  rm(within.estimates, between.estimates)
   
 }else{
   status[3] <- check.mplus(trunc.fit)
@@ -629,10 +676,25 @@ if(check.mplus(wide.fit) == "Ok"){
                                                       ((I * nT * 2) + ((nT+1) * nT / 2) + 1), 
                                                       ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2)),3]
   
-  mse[, 5] <- (est.par[ , 6] - est.par[ , 2]) ^ 2 
+  se[,5] <- wide.fit$parameters$unstandardized[c(1:I,
+                                                      (I * nT * 3) + ((nT+1) * nT / 2) + 2,
+                                                      ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2),
+                                                      ((I * nT + 1):(I * nT + I)), 
+                                                      ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1),
+                                                      ((I * nT * 2) + ((nT+1) * nT / 2) + 1), 
+                                                      ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2)),4]
+  
+  bias[, 5] <- (est.par[ , 6] - est.par[ , 2]) 
   
   rmse[, 5] <- sqrt((est.par[ , 6] - est.par[ , 2]) ^ 2) 
   
+  within.estimates <- list( loadings = est.par[1:I, 6], state.var = est.par[I+1, 6],
+                            error.var = est.par[(I+2):(2 * I +1), 6])
+  between.estimates <- list( loadings = est.par[(2 * I + 2):(3 * I + 1), 6], 
+                             trait.var = est.par[ 4 * I + 3, 6])
+  var.coeff[ , 6] <- msst.var.coeff(within.parameters = within.estimates,
+                                    between.parameters = between.estimates)
+  rm(within.estimates, between.estimates)
   
 }else{
   status[4] <- check.mplus(wide.fit)
@@ -646,13 +708,25 @@ est.par[dim(est.par)[1] + 1, ] <- c("Status", "NA", status)
 
 est.par <- est.par[c(dim(est.par)[1], 1:(dim(est.par)[1]-1)), ]
 
-print(xtable(est.par, type = "latex"), include.rownames = FALSE, file = paste0(folder, model, "_par_n", N, "_i", I, "_nt", nT, ".txt"))
-print(xtable(mse, type = "latex"), include.rownames = FALSE, file = paste0(folder, model, "_mse_n", N, "_i", I, "_nt", nT, ".txt"))
-print(xtable(rmse, type = "latex"), include.rownames = FALSE, file = paste0(folder, model, "_rmse_n", N, "_i", I, "_nt", nT, ".txt"))
+file.name <- paste0(model, "_n", N, "_i", I, "_nt", nT, "_na", na.prop, ".txt")
+caption <- paste("of model", model, "with N =", N,", I =", I, ", nT =", nT,
+                 ", and missingness proportion =", na.prop, ".", sep = " ")
+
+print(xtable(est.par, type = "latex", caption = paste0("Parameter estimates ", caption)), 
+      include.rownames = FALSE, file = paste0(folder, "param_", file.name))
+print(xtable(bias, type = "latex", caption = paste0("Bias ", caption), digits = 3), 
+      include.rownames = FALSE, file = paste0(folder, "bias_", file.name ))
+print(xtable(rmse, type = "latex", caption = paste0("RMSE ", caption), digits = 3), 
+      include.rownames = FALSE, file = paste0(folder, "rmse_", file.name))
+print(xtable(se, type = "latex", caption = paste0("Standard errors ", caption), digits = 3), 
+      include.rownames = FALSE, file = paste0(folder, "se_", file.name))
+print(xtable(var.coeff, type = "latex", caption = paste0("LST variance coefficients ", caption), digits = 3), 
+      include.rownames = FALSE, file = paste0(folder, "varcoeff_", file.name))
 
 # 2.5 Clean environment ----
 
-rm(within.parameters, between.parameters, msst.data, est.par, model, rmse, mse, status)
+rm(within.parameters, between.parameters, msst.data, est.par, model, rmse, 
+   se, status, var.coeff, file.name, caption, bias)
 
 # 3.0 TSO ----
 
@@ -716,9 +790,17 @@ est.par[, 1] <- c(names(c(unlist(within.parameters), unlist(between.parameters)[
 names(est.par) <- c("par", "true", "long", "wide", "Ltrunc", "Wtrunc")
 
 # Matrix to store rmse
-rmse <- mse <- est.par[, -2] 
+post.sd <- rmse <- bias <- est.par[, -2] 
 
 rm(cov.ind)
+
+# Matrix to store MEAN variance coefficients
+
+var.coeff <- data.frame(matrix(NA, I * 5, 6))
+var.coeff[ , 1] <- paste0(rep(c( "pred_y", "upred_y", "con_y", "spe_y", "rel_y"), each = I), 1:I)
+var.coeff[ , 2] <- apply(tso.var.coeff(I = I, nT = nT, within.parameters = within.parameters, 
+                                  between.parameters = between.parameters), 1, mean)
+names(var.coeff) <- c("coefficient", "true", "long", "wide", "Ltrunc", "Wtrunc" )
 
 # Save convergence check
 
@@ -759,9 +841,21 @@ if(check.mplus(long.fit) == "Ok"){
                                             (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
                                             (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 3]
   
-  mse[, 2] <- (est.par[ , 3] - est.par[ , 2]) ^ 2 
+  post.sd[, 2] <- long.fit$parameters$unstandardized[c(1:(2*I + 2),
+                                                       (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
+                                                       (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 4]
   
-  rmse[, 2] <- sqrt((est.par[ , 3] - est.par[ , 2]) ^ 2) 
+  bias[, 2] <- (est.par[ , 3] - est.par[ , 2]) 
+  
+  rmse[, 2] <- sqrt((est.par[ , 3] - est.par[ , 2]) ^ 2)
+  
+  within.estimates <- list( loadings = est.par[1:I, 3], state.var = est.par[2*I+2, 3],
+                            error.var = est.par[(I+2):(2 * I +1), 3], ar.effect = est.par[I+1,3])
+  between.estimates <- list( trait.ind.var = est.par[(3 * I + 3):(4 * I + 2), 3])
+  var.coeff[ , 3] <- apply(tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                                    between.parameters = between.estimates), 1, mean)
+  rm(within.estimates, between.estimates)
+  
   
 }else{
   status[1] <- check.mplus(long.fit)
@@ -813,10 +907,25 @@ if(check.mplus(wide.fit) == "Ok"){
                                             ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
                                           3]
   
-  mse[, 3] <- (est.par[ , 4] - est.par[ , 2]) ^ 2 
+  post.sd[, 3] <- wide.fit$parameters$unstandardized[c(1:I, #loadings
+                                                       (2 * I * nT + 1), # autoregressive effect
+                                                       ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
+                                                       ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                                                       ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
+                                                       ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
+                                                       ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                                     4]
+  
+  bias[, 3] <- (est.par[ , 4] - est.par[ , 2])
   
   rmse[, 3] <- sqrt((est.par[ , 4] - est.par[ , 2]) ^ 2) 
   
+  within.estimates <- list( loadings = est.par[1:I, 4], state.var = est.par[2*I+2, 4],
+                            error.var = est.par[(I+2):(2 * I +1), 4], ar.effect = est.par[I+1,4])
+  between.estimates <- list( trait.ind.var = est.par[(3 * I + 3):(4 * I + 2), 4])
+  var.coeff[ , 4] <- apply(tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                                         between.parameters = between.estimates), 1, mean)
+  rm(within.estimates, between.estimates)
   
 }else{
   status[2] <- check.mplus(wide.fit)
@@ -859,9 +968,20 @@ if(check.mplus(trunc.fit) == "Ok"){
                                              (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
                                              (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 3]
   
-  mse[, 4] <- (est.par[ , 5] - est.par[ , 2]) ^ 2
+  post.sd[, 4] <- trunc.fit$parameters$unstandardized[c(1:(2*I + 2),
+                                                        (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
+                                                        (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 4]
+  
+  bias[, 4] <- (est.par[ , 5] - est.par[ , 2])
   
   rmse[, 4] <- sqrt((est.par[ , 5] - est.par[ , 2]) ^ 2)
+  
+  within.estimates <- list( loadings = est.par[1:I, 5], state.var = est.par[2*I+2, 5],
+                            error.var = est.par[(I+2):(2 * I +1), 5], ar.effect = est.par[I+1,5])
+  between.estimates <- list( trait.ind.var = est.par[(3 * I + 3):(4 * I + 2), 5])
+  var.coeff[ , 5] <- apply(tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                                         between.parameters = between.estimates), 1, mean)
+  rm(within.estimates, between.estimates)
   
 }else{
   status[3] <- check.mplus(trunc.fit)
@@ -914,10 +1034,25 @@ if(check.mplus(wide.fit) == "Ok"){
                                                        ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
                                                      3]
   
-  mse[, 5] <- (est.par[ , 6] - est.par[ , 2]) ^ 2 
+  post.sd[, 5] <- wide.fit$parameters$unstandardized[c(1:I, #loadings
+                                                       (2 * I * nT + 1), # autoregressive effect
+                                                       ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
+                                                       ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                                                       ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
+                                                       ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
+                                                       ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                                     4]
+  
+  bias[, 5] <- (est.par[ , 6] - est.par[ , 2]) 
   
   rmse[, 5] <- sqrt((est.par[ , 6] - est.par[ , 2]) ^ 2) 
   
+  within.estimates <- list( loadings = est.par[1:I, 6], state.var = est.par[2*I+2, 6],
+                            error.var = est.par[(I+2):(2 * I +1), 6], ar.effect = est.par[I+1,6])
+  between.estimates <- list( trait.ind.var = est.par[(3 * I + 3):(4 * I + 2), 6])
+  var.coeff[ , 6] <- apply(tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                                         between.parameters = between.estimates), 1, mean)
+  rm(within.estimates, between.estimates)
   
 }else{
   status[4] <- check.mplus(wide.fit)
@@ -931,10 +1066,20 @@ est.par[dim(est.par)[1] + 1, ] <- c("Status", "NA", status)
 
 est.par <- est.par[c(dim(est.par)[1], 1:(dim(est.par)[1]-1)), ]
 
-print(xtable(est.par, type = "latex"), include.rownames = FALSE, file = paste0(folder, model, "_par_n", N, "_i", I, "_nt", nT, ".txt"))
-print(xtable(mse, type = "latex"), include.rownames = FALSE, file = paste0(folder, model, "_mse_n", N, "_i", I, "_nt", nT, ".txt"))
-print(xtable(rmse, type = "latex"), include.rownames = FALSE, file = paste0(folder, model, "_rmse_n", N, "_i", I, "_nt", nT, ".txt"))
+file.name <- paste0(model, "_n", N, "_i", I, "_nt", nT, "_na", na.prop, ".txt")
+caption <- paste("of model", model, "with N =", N,", I =", I, ", nT =", nT,
+                 ", and missingness proportion =", na.prop, ".", sep = " ")
 
+print(xtable(est.par, type = "latex", caption = paste0("Parameter estimates ", caption)), 
+      include.rownames = FALSE, file = paste0(folder, "param_", file.name))
+print(xtable(bias, type = "latex", caption = paste0("Bias ", caption), digits = 3), 
+      include.rownames = FALSE, file = paste0(folder, "bias_", file.name ))
+print(xtable(rmse, type = "latex", caption = paste0("RMSE ", caption), digits = 3), 
+      include.rownames = FALSE, file = paste0(folder, "rmse_", file.name))
+print(xtable(post.sd, type = "latex", caption = paste0("Posterior standard deviations ", caption), digits = 3), 
+      include.rownames = FALSE, file = paste0(folder, "postsd_", file.name))
+print(xtable(var.coeff, type = "latex", caption = paste0("LST variance coefficients ", caption), digits = 3), 
+      include.rownames = FALSE, file = paste0(folder, "varcoeff_", file.name))
 # 3.5 Clean environment ----
 
 rm(N, nT, I, seed, within.parameters, between.parameters, tso.data, est.par, model, rmse, mse, status)
