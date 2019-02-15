@@ -29,17 +29,22 @@ source("R/var.coeff.R")
 folder <- "Mplus_files_Results/" #Folder to store results
 
 # 1.0 CUTS ----
+samples <- c(50, 100, 200)
+times <- c(5, 15, 30, 45, 60, 75, 90, 120)
+variables <- c(3, 4, 5)
+missingess <- c(0, 0.2)
 
-times <- c(50, 60, 70, 80, 90, 100)
+Cond <- expand.grid(samples, times, variables, missingess)
+names(Cond) <- c("N", "nT", "I", "na.prop")
 
-for(i in 1:length(times)){
+for(i in 1:72){
 
 # 1.1 Set Conditions and true parameters ----
 
 model <- "cuts"
-N <- 100 # number of persons
-nT <- 15 # number of times // measurement occasions
-I <- 4 # number of variables // items
+N <- 1000 # number of persons
+nT <- 45 # number of times // measurement occasions
+I <- 3 # number of variables // items
 na.prop <- 0.2 #proportion of missingness
 seed <- 123
 
@@ -113,8 +118,8 @@ analysis_syntax <- write.Mplus.options(usevariables = names(cuts.data$data.long)
                                        cluster = names(cuts.data$data.long)[1],
                                        analysis_type = "TWOLEVEL",
                                        estimator = "ML",
-                                       iterations = 500000,
-                                       h1iterations = 500000)
+                                       iterations = 50000,
+                                       h1iterations = 50000)
 
 ml_syntax <- write.mlcuts.to.Mplus(cuts.data$data.long[, -(1:2)])
 
@@ -124,7 +129,7 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, ml_syntax)
 
 # Run modelin Mplus
-runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+runModels_2(paste0(getwd(),"/",folder,file.name,".inp"), timeout = 60)
 
 long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
@@ -166,8 +171,8 @@ prepareMplusData(cuts.data$data.wide, paste0(folder, file.name, ".dat"), inpfile
 analysis_syntax <- write.Mplus.options(usevariables = names(cuts.data$data.wide)[-1],
                                        analysis_type = "GENERAL",
                                        estimator = "ML",
-                                       iterations = 500000,
-                                       h1iterations = 500000)
+                                       iterations = 50000,
+                                       h1iterations = 50000)
 
 
 mplus_syntax <- write.cuts.to.Mplus(cuts.data$data.wide[,-1],  nstate = nT,
@@ -184,7 +189,7 @@ write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, mplus_syntax)
 
 # Run model in Mplus
-runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+runModels_2(paste0(getwd(),"/",folder,file.name,".inp"), timeout = 60)
 
 wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
@@ -241,8 +246,8 @@ analysis_syntax <- write.Mplus.options(usevariables = names(cuts.data$data.l.tru
                                        cluster = names(cuts.data$data.l.trunc)[1],
                                        analysis_type = "TWOLEVEL",
                                        estimator = "ML",
-                                       iterations = 500000,
-                                       h1iterations = 500000)
+                                       iterations = 50000,
+                                       h1iterations = 50000)
 
 ml_syntax <- write.mlcuts.to.Mplus(cuts.data$data.l.trunc[, -(1:2)])
 
@@ -294,8 +299,8 @@ prepareMplusData(cuts.data$data.w.trunc, paste0(folder, file.name, ".dat"), inpf
 analysis_syntax <- write.Mplus.options(usevariables = names(cuts.data$data.w.trunc)[-1],
                                        analysis_type = "GENERAL",
                                        estimator = "ML",
-                                       iterations = 500000,
-                                       h1iterations = 500000)
+                                       iterations = 50000,
+                                       h1iterations = 50000)
 
 
 mplus_syntax <- write.cuts.to.Mplus(cuts.data$data.w.trunc[,-1],  nstate = nT,
@@ -371,15 +376,15 @@ caption <- paste("of model", model, "with N =", N,", I =", I, ", nT =", nT,
                  ", and missingness proportion =", na.prop, ".", sep = " ")
 
 print(xtable(est.par, type = "latex", caption = paste0("Parameter estimates ", caption)), 
-      include.rownames = FALSE, file = paste0(folder, "param_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/param_", file.name))
 print(xtable(bias, type = "latex", caption = paste0("Bias ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "bias_", file.name ))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/bias_", file.name ))
 print(xtable(rmse, type = "latex", caption = paste0("RMSE ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "rmse_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/rmse_", file.name))
 print(xtable(se, type = "latex", caption = paste0("Standard errors ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "se_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/se_", file.name))
 print(xtable(var.coeff, type = "latex", caption = paste0("LST variance coefficients ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "varcoeff_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/varcoeff_", file.name))
 
 
 # 1.5 Clean environment ----
@@ -466,8 +471,8 @@ analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.long)
                                        cluster = names(msst.data$data.long)[1],
                                        analysis_type = "TWOLEVEL",
                                        estimator = "ML",
-                                       iterations = 500000,
-                                       h1iterations = 500000)
+                                       iterations = 50000,
+                                       h1iterations = 50000)
 
 ml_syntax <- write.mlmsst.to.Mplus(msst.data$data.long[, -(1:2)])
 
@@ -590,8 +595,8 @@ analysis_syntax <- write.Mplus.options(usevariables = names(msst.data$data.l.tru
                                        cluster = names(msst.data$data.l.trunc)[1],
                                        analysis_type = "TWOLEVEL",
                                        estimator = "ML",
-                                       iterations = 500000,
-                                       h1iterations = 500000)
+                                       iterations = 50000,
+                                       h1iterations = 50000)
 
 ml_syntax <- write.mlmsst.to.Mplus(msst.data$data.l.trunc[, -(1:2)])
 
@@ -713,15 +718,15 @@ caption <- paste("of model", model, "with N =", N,", I =", I, ", nT =", nT,
                  ", and missingness proportion =", na.prop, ".", sep = " ")
 
 print(xtable(est.par, type = "latex", caption = paste0("Parameter estimates ", caption)), 
-      include.rownames = FALSE, file = paste0(folder, "param_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/param_", file.name))
 print(xtable(bias, type = "latex", caption = paste0("Bias ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "bias_", file.name ))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/bias_", file.name ))
 print(xtable(rmse, type = "latex", caption = paste0("RMSE ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "rmse_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/rmse_", file.name))
 print(xtable(se, type = "latex", caption = paste0("Standard errors ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "se_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/se_", file.name))
 print(xtable(var.coeff, type = "latex", caption = paste0("LST variance coefficients ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "varcoeff_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/varcoeff_", file.name))
 
 # 2.5 Clean environment ----
 
@@ -1071,17 +1076,18 @@ caption <- paste("of model", model, "with N =", N,", I =", I, ", nT =", nT,
                  ", and missingness proportion =", na.prop, ".", sep = " ")
 
 print(xtable(est.par, type = "latex", caption = paste0("Parameter estimates ", caption)), 
-      include.rownames = FALSE, file = paste0(folder, "param_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/param_", file.name))
 print(xtable(bias, type = "latex", caption = paste0("Bias ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "bias_", file.name ))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/bias_", file.name ))
 print(xtable(rmse, type = "latex", caption = paste0("RMSE ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "rmse_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/rmse_", file.name))
 print(xtable(post.sd, type = "latex", caption = paste0("Posterior standard deviations ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "postsd_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/postsd_", file.name))
 print(xtable(var.coeff, type = "latex", caption = paste0("LST variance coefficients ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "varcoeff_", file.name))
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/varcoeff_", file.name))
 # 3.5 Clean environment ----
 
-rm(N, nT, I, seed, within.parameters, between.parameters, tso.data, est.par, model, rmse, mse, status)
+rm(N, nT, I, seed, within.parameters, between.parameters, tso.data, est.par, model, rmse,  
+   bias, post.sd, var.coeff, caption, file.name, na.prop, status)
 
 }
