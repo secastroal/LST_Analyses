@@ -29,23 +29,23 @@ source("R/var.coeff.R")
 folder <- "Mplus_files_Results/" #Folder to store results
 
 # 1.0 CUTS ----
-samples <- c(50, 100, 200)
+samples <- c(50, 100, 500)
 times <- c(5, 15, 30, 45, 60, 75, 90, 120)
 variables <- c(3, 4, 5)
-missingess <- c(0, 0.2)
+missingess <- c(0, 0.1)
 
 Cond <- expand.grid(samples, times, variables, missingess)
 names(Cond) <- c("N", "nT", "I", "na.prop")
 
-for(i in 1:72){
+for(i in 1:81){
 
 # 1.1 Set Conditions and true parameters ----
 
 model <- "cuts"
-N <- 1000 # number of persons
-nT <- 45 # number of times // measurement occasions
-I <- 3 # number of variables // items
-na.prop <- 0.2 #proportion of missingness
+N <- Cond[i,1] # number of persons
+nT <- Cond[i,2] # number of times // measurement occasions
+I <- Cond[i,3] # number of variables // items
+na.prop <- Cond[i,4] #proportion of missingness
 seed <- 123
 
 set.seed(seed)
@@ -129,7 +129,7 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, ml_syntax)
 
 # Run modelin Mplus
-runModels_2(paste0(getwd(),"/",folder,file.name,".inp"), timeout = 60)
+runModels(paste0(getwd(),"/",folder,file.name,".inp"), timeout = 60)
 
 long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
@@ -189,7 +189,7 @@ write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, mplus_syntax)
 
 # Run model in Mplus
-runModels_2(paste0(getwd(),"/",folder,file.name,".inp"), timeout = 60)
+runModels(paste0(getwd(),"/",folder,file.name,".inp"), timeout = 60)
 
 wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 

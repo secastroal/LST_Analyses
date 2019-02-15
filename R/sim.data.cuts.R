@@ -192,3 +192,6 @@ sim.data.cuts.tv <- function(N, nT, I, within.parameters, between.parameters, ti
   
 }
 
+#x <- seq(1, 1+1, by = 0.1);x
+#y <- c(x, rev(x[-c(1, length(x))]));y
+#rep(y, length.out = nT)
