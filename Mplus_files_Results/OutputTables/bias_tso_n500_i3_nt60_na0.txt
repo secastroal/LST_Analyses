@@ -1,0 +1,29 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Fri Feb 15 18:30:03 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.003 & 0.004 & 0.030 & 0.031 \\ 
+  loadings3 & 0.002 & -0.004 & 0.055 & 0.049 \\ 
+  ar.effect & 0.000 & -0.001 & 0.000 & -0.002 \\ 
+  error.var1 & 0.024 & 0.020 & -0.077 & -0.078 \\ 
+  error.var2 & 0.003 & -0.004 & 0.030 & 0.022 \\ 
+  error.var3 & -0.015 & -0.020 & -0.118 & -0.127 \\ 
+  state.var & -0.025 & -0.019 & -0.458 & -0.451 \\ 
+  intercepts1 & -0.015 & -0.092 & -0.325 & -0.381 \\ 
+  intercepts2 & 0.010 & -0.087 & -0.440 & -0.518 \\ 
+  intercepts3 & -0.003 & -0.116 & -0.364 & -0.458 \\ 
+  trait.ind.var1 & 0.284 & 0.056 & -0.252 & -0.424 \\ 
+  trait.ind.var2 & 0.085 & -0.001 & -0.156 & -0.230 \\ 
+  trait.ind.var3 & 0.006 & -0.120 & -0.406 & -0.509 \\ 
+  cov12 & 0.145 & 0.009 & -0.188 & -0.297 \\ 
+  cov13 & 0.161 & -0.035 & -0.229 & -0.383 \\ 
+  cov23 & 0.077 & -0.039 & -0.211 & -0.308 \\ 
+   \hline
+\end{tabular}
+\caption{Bias of model tso with N = 500 , I = 3 , nT = 60 , and missingness proportion = 0 .} 
+\end{table}

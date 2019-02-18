@@ -1,0 +1,34 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 19:39:52 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrlrl}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 &  & 0.000 &  \\ 
+  loadings2 & 0.002 &  & 0.026 &  \\ 
+  loadings3 & 0.003 &  & 0.069 &  \\ 
+  loadings4 & 0.001 &  & 0.068 &  \\ 
+  CS.var & 0.006 &  & 0.434 &  \\ 
+  US.var1 & 0.002 &  & 0.096 &  \\ 
+  US.var2 & 0.002 &  & 0.030 &  \\ 
+  US.var3 & 0.005 &  & 0.107 &  \\ 
+  US.var4 & 0.003 &  & 0.032 &  \\ 
+  loadings1 & 0.000 &  & 0.000 &  \\ 
+  loadings2 & 0.029 &  & 0.064 &  \\ 
+  loadings3 & 0.026 &  & 0.030 &  \\ 
+  loadings4 & 0.019 &  & 0.052 &  \\ 
+  intercepts1 & 0.045 &  & 0.277 &  \\ 
+  intercepts2 & 0.062 &  & 0.367 &  \\ 
+  intercepts3 & 0.087 &  & 0.288 &  \\ 
+  intercepts4 & 0.024 &  & 0.483 &  \\ 
+  CT.var & 0.070 &  & 0.383 &  \\ 
+  UT.var1 & 0.056 &  & 0.146 &  \\ 
+  UT.var2 & 0.032 &  & 0.112 &  \\ 
+  UT.var3 & 0.022 &  & 0.022 &  \\ 
+  UT.var4 & 0.060 &  & 0.119 &  \\ 
+   \hline
+\end{tabular}
+\caption{RMSE of model cuts with N = 500 , I = 4 , nT = 120 , and missingness proportion = 0 .} 
+\end{table}

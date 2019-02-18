@@ -1,0 +1,27 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Fri Feb 15 14:45:12 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.034 & 0.034 & 0.048 & 0.048 \\ 
+  loadings3 & 0.053 & 0.053 & 0.054 & 0.054 \\ 
+  state.var & 0.058 & 0.058 & 0.120 & 0.120 \\ 
+  error.var1 & 0.032 & 0.032 & 0.040 & 0.041 \\ 
+  error.var2 & 0.013 & 0.013 & 0.063 & 0.063 \\ 
+  error.var3 & 0.072 & 0.072 & 0.069 & 0.069 \\ 
+  loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.021 & 0.021 & 0.020 & 0.020 \\ 
+  loadings3 & 0.016 & 0.016 & 0.013 & 0.013 \\ 
+  intercepts1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  intercepts2 & 0.104 & 0.104 & 0.195 & 0.195 \\ 
+  intercepts3 & 0.043 & 0.043 & 0.064 & 0.064 \\ 
+  trait.mean & 0.150 & 0.150 & 0.319 & 0.319 \\ 
+  trait.var & 0.453 & 0.453 & 0.506 & 0.506 \\ 
+   \hline
+\end{tabular}
+\caption{RMSE of model msst with N = 100 , I = 3 , nT = 15 , and missingness proportion = 0 .} 
+\end{table}

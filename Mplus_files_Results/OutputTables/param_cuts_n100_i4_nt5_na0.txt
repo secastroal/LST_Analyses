@@ -1,0 +1,35 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 04:21:00 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllll}
+  \hline
+par & true & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+Status & NA & Ok & Ok & Ok & Ok \\ 
+  loadings1 & 1 & 1 & 1 & 1 & 1 \\ 
+  loadings2 & 0.5 & 0.542 & 0.542 & 0.595 & 0.595 \\ 
+  loadings3 & 1.3 & 1.226 & 1.226 & 1.283 & 1.283 \\ 
+  loadings4 & 0.8 & 0.802 & 0.802 & 0.903 & 0.903 \\ 
+  CS.var & 2 & 2.102 & 2.102 & 1.61 & 1.61 \\ 
+  US.var1 & 1 & 0.942 & 0.942 & 0.829 & 0.829 \\ 
+  US.var2 & 0.5 & 0.602 & 0.602 & 0.662 & 0.662 \\ 
+  US.var3 & 1.5 & 1.455 & 1.455 & 1.39 & 1.39 \\ 
+  US.var4 & 0.8 & 0.772 & 0.772 & 0.829 & 0.829 \\ 
+  loadings1 & 1 & 1 & 1 & 1 & 1 \\ 
+  loadings2 & 0.8 & 0.575 & 0.574 & 0.568 & 0.568 \\ 
+  loadings3 & 1.2 & 1.175 & 1.175 & 1.182 & 1.182 \\ 
+  loadings4 & 0.9 & 0.758 & 0.758 & 0.822 & 0.822 \\ 
+  intercepts1 & 2 & 2.058 & 2.058 & 1.746 & 1.746 \\ 
+  intercepts2 & 2.5 & 2.749 & 2.749 & 2.274 & 2.274 \\ 
+  intercepts3 & 3 & 3.03 & 3.03 & 2.68 & 2.68 \\ 
+  intercepts4 & 3.5 & 3.713 & 3.713 & 3.248 & 3.248 \\ 
+  CT.var & 1.5 & 1.484 & 1.485 & 1.219 & 1.219 \\ 
+  UT.var1 & 0.5 & 0.513 & 0.513 & 0.432 & 0.431 \\ 
+  UT.var2 & 1 & 0.83 & 0.83 & 0.757 & 0.757 \\ 
+  UT.var3 & 0.3 & 0.223 & 0.222 & 0.183 & 0.183 \\ 
+  UT.var4 & 0.8 & 0.868 & 0.868 & 0.8 & 0.8 \\ 
+   \hline
+\end{tabular}
+\caption{Parameter estimates of model cuts with N = 100 , I = 4 , nT = 5 , and missingness proportion = 0 .} 
+\end{table}

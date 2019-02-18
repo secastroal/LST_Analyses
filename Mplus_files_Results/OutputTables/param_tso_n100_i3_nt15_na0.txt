@@ -1,0 +1,30 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Fri Feb 15 14:47:16 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllll}
+  \hline
+par & true & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+Status & NA & Ok & Ok & Ok & Ok \\ 
+  loadings1 & 1 & 1 & 1 & 1 & 1 \\ 
+  loadings2 & 0.5 & 0.525 & 0.527 & 0.562 & 0.564 \\ 
+  loadings3 & 1.3 & 1.288 & 1.293 & 1.368 & 1.377 \\ 
+  ar.effect & 0.5 & 0.46 & 0.468 & 0.45 & 0.457 \\ 
+  error.var1 & 1 & 1.015 & 1.021 & 1.003 & 1.008 \\ 
+  error.var2 & 0.5 & 0.477 & 0.476 & 0.516 & 0.515 \\ 
+  error.var3 & 1.5 & 1.619 & 1.613 & 1.399 & 1.389 \\ 
+  state.var & 2 & 1.997 & 2.006 & 1.515 & 1.519 \\ 
+  intercepts1 & 2 & 1.926 & 1.864 & 1.625 & 1.574 \\ 
+  intercepts2 & 2.5 & 2.397 & 2.362 & 1.965 & 1.935 \\ 
+  intercepts3 & 3 & 3.074 & 2.982 & 2.69 & 2.614 \\ 
+  trait.ind.var1 & 2 & 1.978 & 2.023 & 1.54 & 1.573 \\ 
+  trait.ind.var2 & 1.5 & 1.287 & 1.302 & 1.064 & 1.077 \\ 
+  trait.ind.var3 & 2.5 & 2.478 & 2.492 & 2.164 & 2.169 \\ 
+  cov12 & 1.56 & 1.414 & 1.435 & 1.138 & 1.155 \\ 
+  cov13 & 1.79 & 1.774 & 1.81 & 1.444 & 1.472 \\ 
+  cov23 & 1.74 & 1.611 & 1.624 & 1.359 & 1.371 \\ 
+   \hline
+\end{tabular}
+\caption{Parameter estimates of model tso with N = 100 , I = 3 , nT = 15 , and missingness proportion = 0 .} 
+\end{table}

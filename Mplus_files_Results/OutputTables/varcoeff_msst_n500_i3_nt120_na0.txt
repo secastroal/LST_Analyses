@@ -1,0 +1,21 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 02:12:29 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrlrl}
+  \hline
+coefficient & true & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+con\_y1 & 0.400 & 0.387 &  & 0.379 &  \\ 
+  con\_y2 & 0.561 & 0.545 &  & 0.525 &  \\ 
+  con\_y3 & 0.371 & 0.355 &  & 0.351 &  \\ 
+  spe\_y1 & 0.400 & 0.410 &  & 0.401 &  \\ 
+  spe\_y2 & 0.219 & 0.229 &  & 0.219 &  \\ 
+  spe\_y3 & 0.436 & 0.447 &  & 0.442 &  \\ 
+  rel\_y1 & 0.800 & 0.797 &  & 0.781 &  \\ 
+  rel\_y2 & 0.781 & 0.774 &  & 0.744 &  \\ 
+  rel\_y3 & 0.807 & 0.801 &  & 0.793 &  \\ 
+   \hline
+\end{tabular}
+\caption{LST variance coefficients of model msst with N = 500 , I = 3 , nT = 120 , and missingness proportion = 0 .} 
+\end{table}

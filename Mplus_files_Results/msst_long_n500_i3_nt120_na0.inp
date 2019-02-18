@@ -1,0 +1,61 @@
+TITLE: Your title goes here
+DATA: FILE = "Mplus_files_Results/msst_long_n500_i3_nt120_na0.dat";
+VARIABLE: 
+NAMES = subjn time y1 y2 y3; 
+MISSING=.;
+USEVAR = y1
+y2
+y3 ;
+CLUSTER = subjn ;
+
+ANALYSIS:
+TYPE = TWOLEVEL ;
+ESTIMATOR = ML ;
+ITERATIONS = 50000 ;
+H1ITERATIONS = 50000 ;
+
+
+MODEL:
+
+%WITHIN%
+
+! Latent state residual
+eta BY y1@1
+y2 (las2)
+y3 (las3) ;
+
+! Latent errors and latent state variances
+y1(o_err1) ;
+y2(o_err2) ;
+y3(o_err3) ;
+eta(s_var) ;
+
+%BETWEEN%
+
+! Indicator trait variables
+theta1  BY  y1@1 ;
+theta2  BY  y2@1 ;
+theta3  BY  y3@1 ;
+
+! Latent trait variable
+theta BY theta1@1
+theta2 (lat2)
+theta3 (lat3) ;
+
+! Means and Intercepts
+[y1@0] ;
+[y2@0] ;
+[y3@0] ;
+[theta1@0] ;
+[theta2*] (int2) ;
+[theta3*] (int3) ;
+[theta*] ;
+
+! Fixing level-2 residual variances at 0 and latent trait variance
+y1@0;
+y2@0;
+y3@0;
+theta1@0;
+theta2@0;
+theta3@0;
+theta(t_var) ;

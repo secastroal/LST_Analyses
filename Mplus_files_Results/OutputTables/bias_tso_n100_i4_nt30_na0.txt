@@ -1,0 +1,36 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 04:45:06 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.011 & 0.011 & 0.035 & 0.035 \\ 
+  loadings3 & 0.005 & 0.005 & 0.071 & 0.071 \\ 
+  loadings4 & 0.015 & 0.016 & 0.090 & 0.091 \\ 
+  ar.effect & -0.023 & -0.021 & -0.031 & -0.028 \\ 
+  error.var1 & 0.028 & 0.031 & -0.083 & -0.080 \\ 
+  error.var2 & 0.015 & 0.016 & 0.035 & 0.035 \\ 
+  error.var3 & -0.030 & -0.026 & -0.125 & -0.121 \\ 
+  error.var4 & -0.015 & -0.016 & 0.012 & 0.011 \\ 
+  state.var & -0.022 & -0.011 & -0.477 & -0.470 \\ 
+  intercepts1 & -0.167 & -0.208 & -0.449 & -0.485 \\ 
+  intercepts2 & -0.154 & -0.181 & -0.579 & -0.602 \\ 
+  intercepts3 & -0.053 & -0.054 & -0.407 & -0.407 \\ 
+  intercepts4 & -0.079 & -0.141 & -0.537 & -0.587 \\ 
+  trait.ind.var1 & -0.116 & -0.083 & -0.570 & -0.553 \\ 
+  trait.ind.var2 & -0.234 & -0.215 & -0.459 & -0.446 \\ 
+  trait.ind.var3 & -0.182 & -0.117 & -0.493 & -0.451 \\ 
+  trait.ind.var4 & -0.084 & -0.053 & -0.263 & -0.241 \\ 
+  cov12 & -0.197 & -0.173 & -0.501 & -0.487 \\ 
+  cov13 & -0.214 & -0.164 & -0.525 & -0.494 \\ 
+  cov23 & -0.209 & -0.175 & -0.436 & -0.415 \\ 
+  cov14 & -0.140 & -0.106 & -0.417 & -0.398 \\ 
+  cov24 & -0.146 & -0.127 & -0.309 & -0.297 \\ 
+  cov34 & -0.223 & -0.179 & -0.363 & -0.333 \\ 
+   \hline
+\end{tabular}
+\caption{Bias of model tso with N = 100 , I = 4 , nT = 30 , and missingness proportion = 0 .} 
+\end{table}

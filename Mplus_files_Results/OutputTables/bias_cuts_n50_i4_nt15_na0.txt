@@ -1,0 +1,34 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 04:23:24 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lllrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 &  &  & 0.000 & 0.000 \\ 
+  loadings2 &  &  & -0.020 & -0.020 \\ 
+  loadings3 &  &  & 0.017 & 0.017 \\ 
+  loadings4 &  &  & 0.045 & 0.045 \\ 
+  CS.var &  &  & -0.249 & -0.249 \\ 
+  US.var1 &  &  & -0.182 & -0.182 \\ 
+  US.var2 &  &  & -0.008 & -0.008 \\ 
+  US.var3 &  &  & -0.017 & -0.016 \\ 
+  US.var4 &  &  & 0.009 & 0.009 \\ 
+  loadings1 &  &  & 0.000 & 0.000 \\ 
+  loadings2 &  &  & 0.055 & 0.055 \\ 
+  loadings3 &  &  & 0.257 & 0.257 \\ 
+  loadings4 &  &  & 0.041 & 0.041 \\ 
+  intercepts1 &  &  & -0.107 & -0.107 \\ 
+  intercepts2 &  &  & -0.612 & -0.612 \\ 
+  intercepts3 &  &  & -0.251 & -0.251 \\ 
+  intercepts4 &  &  & -0.403 & -0.403 \\ 
+  CT.var &  &  & -0.580 & -0.580 \\ 
+  UT.var1 &  &  & 0.050 & 0.050 \\ 
+  UT.var2 &  &  & -0.123 & -0.123 \\ 
+  UT.var3 &  &  & -0.293 & -0.293 \\ 
+  UT.var4 &  &  & -0.248 & -0.248 \\ 
+   \hline
+\end{tabular}
+\caption{Bias of model cuts with N = 50 , I = 4 , nT = 15 , and missingness proportion = 0 .} 
+\end{table}

@@ -1,0 +1,32 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 04:23:24 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrllrr}
+  \hline
+coefficient & true & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+ccon\_y1 & 0.300 &  &  & 0.228 & 0.228 \\ 
+  ccon\_y2 & 0.324 &  &  & 0.275 & 0.275 \\ 
+  ccon\_y3 & 0.294 &  &  & 0.301 & 0.301 \\ 
+  ccon\_y4 & 0.297 &  &  & 0.238 & 0.238 \\ 
+  ucon\_y1 & 0.100 &  &  & 0.136 & 0.136 \\ 
+  ucon\_y2 & 0.338 &  &  & 0.359 & 0.359 \\ 
+  ucon\_y3 & 0.041 &  &  & 0.001 & 0.001 \\ 
+  ucon\_y4 & 0.195 &  &  & 0.161 & 0.161 \\ 
+  tcon\_y1 & 0.400 &  &  & 0.364 & 0.364 \\ 
+  tcon\_y2 & 0.662 &  &  & 0.634 & 0.634 \\ 
+  tcon\_y3 & 0.335 &  &  & 0.302 & 0.302 \\ 
+  tcon\_y4 & 0.492 &  &  & 0.399 & 0.399 \\ 
+  spe\_y1 & 0.400 &  &  & 0.434 & 0.434 \\ 
+  spe\_y2 & 0.169 &  &  & 0.165 & 0.165 \\ 
+  spe\_y3 & 0.460 &  &  & 0.469 & 0.469 \\ 
+  spe\_y4 & 0.313 &  &  & 0.365 & 0.365 \\ 
+  rel\_y1 & 0.800 &  &  & 0.797 & 0.797 \\ 
+  rel\_y2 & 0.831 &  &  & 0.799 & 0.799 \\ 
+  rel\_y3 & 0.796 &  &  & 0.771 & 0.771 \\ 
+  rel\_y4 & 0.805 &  &  & 0.764 & 0.764 \\ 
+   \hline
+\end{tabular}
+\caption{LST variance coefficients of model cuts with N = 50 , I = 4 , nT = 15 , and missingness proportion = 0 .} 
+\end{table}

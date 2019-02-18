@@ -1,0 +1,36 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 04:26:00 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.017 & 0.017 & 0.020 & 0.020 \\ 
+  loadings3 & 0.036 & 0.037 & 0.041 & 0.042 \\ 
+  loadings4 & 0.023 & 0.023 & 0.028 & 0.028 \\ 
+  ar.effect & 0.031 & 0.032 & 0.032 & 0.033 \\ 
+  error.var1 & 0.054 & 0.053 & 0.049 & 0.050 \\ 
+  error.var2 & 0.022 & 0.022 & 0.023 & 0.023 \\ 
+  error.var3 & 0.087 & 0.089 & 0.081 & 0.083 \\ 
+  error.var4 & 0.039 & 0.039 & 0.042 & 0.042 \\ 
+  state.var & 0.114 & 0.114 & 0.093 & 0.094 \\ 
+  intercepts1 & 0.099 & 0.166 & 0.089 & 0.147 \\ 
+  intercepts2 & 0.087 & 0.125 & 0.081 & 0.116 \\ 
+  intercepts3 & 0.126 & 0.184 & 0.118 & 0.172 \\ 
+  intercepts4 & 0.093 & 0.152 & 0.092 & 0.146 \\ 
+  trait.ind.var1 & 0.395 & 0.406 & 0.303 & 0.310 \\ 
+  trait.ind.var2 & 0.219 & 0.225 & 0.184 & 0.187 \\ 
+  trait.ind.var3 & 0.513 & 0.538 & 0.437 & 0.461 \\ 
+  trait.ind.var4 & 0.309 & 0.325 & 0.279 & 0.291 \\ 
+  cov12 & 0.274 & 0.283 & 0.219 & 0.225 \\ 
+  cov13 & 0.412 & 0.430 & 0.331 & 0.345 \\ 
+  cov23 & 0.302 & 0.314 & 0.255 & 0.264 \\ 
+  cov14 & 0.327 & 0.341 & 0.272 & 0.282 \\ 
+  cov24 & 0.232 & 0.241 & 0.203 & 0.209 \\ 
+  cov34 & 0.342 & 0.366 & 0.300 & 0.320 \\ 
+   \hline
+\end{tabular}
+\caption{Posterior standard deviations of model tso with N = 100 , I = 4 , nT = 15 , and missingness proportion = 0 .} 
+\end{table}

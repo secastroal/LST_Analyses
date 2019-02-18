@@ -1,0 +1,36 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 04:26:00 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.018 & 0.018 & 0.058 & 0.058 \\ 
+  loadings3 & 0.001 & 0.000 & 0.057 & 0.057 \\ 
+  loadings4 & 0.000 & 0.001 & 0.073 & 0.073 \\ 
+  ar.effect & 0.020 & 0.019 & 0.022 & 0.021 \\ 
+  error.var1 & 0.007 & 0.007 & 0.066 & 0.065 \\ 
+  error.var2 & 0.001 & 0.001 & 0.016 & 0.016 \\ 
+  error.var3 & 0.091 & 0.092 & 0.060 & 0.061 \\ 
+  error.var4 & 0.009 & 0.009 & 0.053 & 0.053 \\ 
+  state.var & 0.029 & 0.059 & 0.424 & 0.403 \\ 
+  intercepts1 & 0.063 & 0.130 & 0.361 & 0.425 \\ 
+  intercepts2 & 0.076 & 0.137 & 0.505 & 0.566 \\ 
+  intercepts3 & 0.070 & 0.035 & 0.294 & 0.335 \\ 
+  intercepts4 & 0.004 & 0.067 & 0.440 & 0.512 \\ 
+  trait.ind.var1 & 0.000 & 0.088 & 0.487 & 0.427 \\ 
+  trait.ind.var2 & 0.236 & 0.206 & 0.455 & 0.432 \\ 
+  trait.ind.var3 & 0.082 & 0.061 & 0.419 & 0.300 \\ 
+  trait.ind.var4 & 0.065 & 0.001 & 0.251 & 0.198 \\ 
+  cov12 & 0.161 & 0.112 & 0.461 & 0.427 \\ 
+  cov13 & 0.038 & 0.068 & 0.394 & 0.314 \\ 
+  cov23 & 0.152 & 0.094 & 0.391 & 0.345 \\ 
+  cov14 & 0.079 & 0.009 & 0.355 & 0.305 \\ 
+  cov24 & 0.188 & 0.141 & 0.334 & 0.297 \\ 
+  cov34 & 0.125 & 0.031 & 0.301 & 0.227 \\ 
+   \hline
+\end{tabular}
+\caption{RMSE of model tso with N = 100 , I = 4 , nT = 15 , and missingness proportion = 0 .} 
+\end{table}

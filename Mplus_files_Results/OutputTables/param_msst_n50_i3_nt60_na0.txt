@@ -1,0 +1,28 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Fri Feb 15 16:22:07 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllll}
+  \hline
+par & true & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+Status & NA & Ok & Ok & Ok & Ok \\ 
+  loadings1 & 1 & 1 & 1 & 1 & 1 \\ 
+  loadings2 & 0.5 & 0.504 & 0.504 & 0.504 & 0.504 \\ 
+  loadings3 & 1.3 & 1.329 & 1.329 & 1.324 & 1.324 \\ 
+  state.var & 2 & 1.989 & 1.989 & 1.901 & 1.901 \\ 
+  error.var1 & 1 & 1.04 & 1.04 & 1.043 & 1.043 \\ 
+  error.var2 & 0.5 & 0.526 & 0.526 & 0.6 & 0.6 \\ 
+  error.var3 & 1.5 & 1.353 & 1.353 & 1.439 & 1.439 \\ 
+  loadings1 & 1 & 1 & 1 & 1 & 1 \\ 
+  loadings2 & 0.8 & 0.793 & 0.793 & 0.802 & 0.802 \\ 
+  loadings3 & 1.2 & 1.161 & 1.161 & 1.163 & 1.163 \\ 
+  intercepts1 & 0 & 0 & 0 & 0 & 0 \\ 
+  intercepts2 & 0.2 & 0.223 & 0.223 & 0.069 & 0.069 \\ 
+  intercepts3 & 0.4 & 0.56 & 0.559 & 0.624 & 0.624 \\ 
+  trait.mean & 4 & 4.064 & 4.064 & 3.592 & 3.592 \\ 
+  trait.var & 2 & 1.59 & 1.59 & 1.502 & 1.502 \\ 
+   \hline
+\end{tabular}
+\caption{Parameter estimates of model msst with N = 50 , I = 3 , nT = 60 , and missingness proportion = 0 .} 
+\end{table}

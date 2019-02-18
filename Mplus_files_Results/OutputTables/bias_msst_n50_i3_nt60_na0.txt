@@ -1,0 +1,27 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Fri Feb 15 16:22:07 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.004 & 0.004 & 0.004 & 0.004 \\ 
+  loadings3 & 0.029 & 0.029 & 0.024 & 0.024 \\ 
+  state.var & -0.011 & -0.011 & -0.099 & -0.099 \\ 
+  error.var1 & 0.040 & 0.040 & 0.043 & 0.043 \\ 
+  error.var2 & 0.026 & 0.026 & 0.100 & 0.100 \\ 
+  error.var3 & -0.147 & -0.147 & -0.061 & -0.061 \\ 
+  loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & -0.007 & -0.007 & 0.002 & 0.002 \\ 
+  loadings3 & -0.039 & -0.039 & -0.037 & -0.037 \\ 
+  intercepts1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  intercepts2 & 0.023 & 0.023 & -0.131 & -0.131 \\ 
+  intercepts3 & 0.160 & 0.159 & 0.224 & 0.224 \\ 
+  trait.mean & 0.064 & 0.064 & -0.408 & -0.408 \\ 
+  trait.var & -0.410 & -0.410 & -0.498 & -0.498 \\ 
+   \hline
+\end{tabular}
+\caption{Bias of model msst with N = 50 , I = 3 , nT = 60 , and missingness proportion = 0 .} 
+\end{table}

@@ -1,0 +1,29 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Fri Feb 15 16:27:14 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.012 & 0.012 & 0.013 & 0.013 \\ 
+  loadings3 & 0.027 & 0.026 & 0.030 & 0.029 \\ 
+  ar.effect & 0.020 & 0.019 & 0.020 & 0.020 \\ 
+  error.var1 & 0.045 & 0.044 & 0.039 & 0.038 \\ 
+  error.var2 & 0.016 & 0.017 & 0.017 & 0.017 \\ 
+  error.var3 & 0.071 & 0.069 & 0.067 & 0.064 \\ 
+  state.var & 0.080 & 0.079 & 0.065 & 0.065 \\ 
+  intercepts1 & 0.118 & 0.206 & 0.105 & 0.190 \\ 
+  intercepts2 & 0.123 & 0.176 & 0.118 & 0.171 \\ 
+  intercepts3 & 0.141 & 0.241 & 0.132 & 0.225 \\ 
+  trait.ind.var1 & 0.492 & 0.511 & 0.389 & 0.401 \\ 
+  trait.ind.var2 & 0.371 & 0.385 & 0.324 & 0.336 \\ 
+  trait.ind.var3 & 0.617 & 0.654 & 0.511 & 0.540 \\ 
+  cov12 & 0.404 & 0.422 & 0.336 & 0.349 \\ 
+  cov13 & 0.498 & 0.529 & 0.402 & 0.426 \\ 
+  cov23 & 0.448 & 0.474 & 0.382 & 0.403 \\ 
+   \hline
+\end{tabular}
+\caption{Posterior standard deviations of model tso with N = 50 , I = 3 , nT = 60 , and missingness proportion = 0 .} 
+\end{table}

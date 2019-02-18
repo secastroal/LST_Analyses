@@ -1,0 +1,34 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 04:21:00 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.042 & 0.042 & 0.095 & 0.095 \\ 
+  loadings3 & 0.074 & 0.074 & 0.017 & 0.017 \\ 
+  loadings4 & 0.002 & 0.002 & 0.103 & 0.103 \\ 
+  CS.var & 0.102 & 0.102 & 0.390 & 0.390 \\ 
+  US.var1 & 0.058 & 0.058 & 0.171 & 0.171 \\ 
+  US.var2 & 0.102 & 0.102 & 0.162 & 0.162 \\ 
+  US.var3 & 0.045 & 0.045 & 0.110 & 0.110 \\ 
+  US.var4 & 0.028 & 0.028 & 0.029 & 0.029 \\ 
+  loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.225 & 0.226 & 0.232 & 0.232 \\ 
+  loadings3 & 0.025 & 0.025 & 0.018 & 0.018 \\ 
+  loadings4 & 0.142 & 0.142 & 0.078 & 0.078 \\ 
+  intercepts1 & 0.058 & 0.058 & 0.254 & 0.254 \\ 
+  intercepts2 & 0.249 & 0.249 & 0.226 & 0.226 \\ 
+  intercepts3 & 0.030 & 0.030 & 0.320 & 0.320 \\ 
+  intercepts4 & 0.213 & 0.213 & 0.252 & 0.252 \\ 
+  CT.var & 0.016 & 0.015 & 0.281 & 0.281 \\ 
+  UT.var1 & 0.013 & 0.013 & 0.068 & 0.069 \\ 
+  UT.var2 & 0.170 & 0.170 & 0.243 & 0.243 \\ 
+  UT.var3 & 0.077 & 0.078 & 0.117 & 0.117 \\ 
+  UT.var4 & 0.068 & 0.068 & 0.000 & 0.000 \\ 
+   \hline
+\end{tabular}
+\caption{RMSE of model cuts with N = 100 , I = 4 , nT = 5 , and missingness proportion = 0 .} 
+\end{table}

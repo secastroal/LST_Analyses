@@ -1,0 +1,37 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 13:06:32 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllll}
+  \hline
+par & true & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+Status & NA & Ok & Ok & Ok & Ok \\ 
+  loadings1 & 1 & 1 & 1 & 1 & 1 \\ 
+  loadings2 & 0.5 & 0.502 & 0.502 & 0.535 & 0.534 \\ 
+  loadings3 & 1.3 & 1.313 & 1.313 & 1.365 & 1.365 \\ 
+  loadings4 & 0.8 & 0.797 & 0.797 & 0.87 & 0.87 \\ 
+  ar.effect & 0.5 & 0.485 & 0.485 & 0.485 & 0.485 \\ 
+  error.var1 & 1 & 1.003 & 1.004 & 0.916 & 0.916 \\ 
+  error.var2 & 0.5 & 0.508 & 0.508 & 0.542 & 0.542 \\ 
+  error.var3 & 1.5 & 1.493 & 1.492 & 1.377 & 1.377 \\ 
+  error.var4 & 0.8 & 0.806 & 0.805 & 0.831 & 0.83 \\ 
+  state.var & 2 & 1.964 & 1.969 & 1.535 & 1.542 \\ 
+  intercepts1 & 2 & 1.936 & 1.97 & 1.657 & 1.679 \\ 
+  intercepts2 & 2.5 & 2.505 & 2.518 & 2.062 & 2.07 \\ 
+  intercepts3 & 3 & 2.71 & 2.766 & 2.4 & 2.421 \\ 
+  intercepts4 & 3.5 & 3.367 & 3.397 & 2.926 & 2.95 \\ 
+  trait.ind.var1 & 2 & 2.159 & 2.211 & 1.668 & 1.712 \\ 
+  trait.ind.var2 & 1.5 & 1.549 & 1.576 & 1.401 & 1.424 \\ 
+  trait.ind.var3 & 2.5 & 2.288 & 2.373 & 1.909 & 1.981 \\ 
+  trait.ind.var4 & 1.75 & 1.756 & 1.798 & 1.615 & 1.656 \\ 
+  cov12 & 1.56 & 1.666 & 1.699 & 1.402 & 1.427 \\ 
+  cov13 & 1.79 & 1.772 & 1.839 & 1.417 & 1.474 \\ 
+  cov23 & 1.55 & 1.391 & 1.431 & 1.202 & 1.241 \\ 
+  cov14 & 1.68 & 1.714 & 1.76 & 1.446 & 1.488 \\ 
+  cov24 & 1.3 & 1.323 & 1.344 & 1.21 & 1.232 \\ 
+  cov34 & 1.46 & 1.428 & 1.467 & 1.246 & 1.286 \\ 
+   \hline
+\end{tabular}
+\caption{Parameter estimates of model tso with N = 50 , I = 4 , nT = 90 , and missingness proportion = 0 .} 
+\end{table}

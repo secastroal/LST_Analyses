@@ -1,0 +1,29 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Fri Feb 15 14:47:26 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.009 & 0.009 & 0.010 & 0.010 \\ 
+  loadings3 & 0.022 & 0.022 & 0.026 & 0.026 \\ 
+  CS.var & 0.054 & 0.054 & 0.045 & 0.045 \\ 
+  US.var1 & 0.031 & 0.031 & 0.028 & 0.028 \\ 
+  US.var2 & 0.011 & 0.011 & 0.011 & 0.011 \\ 
+  US.var3 & 0.050 & 0.050 & 0.050 & 0.050 \\ 
+  loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.050 & 0.050 & 0.053 & 0.053 \\ 
+  loadings3 & 0.054 & 0.054 & 0.058 & 0.058 \\ 
+  intercepts1 & 0.064 & 0.064 & 0.057 & 0.057 \\ 
+  intercepts2 & 0.065 & 0.065 & 0.060 & 0.060 \\ 
+  intercepts3 & 0.073 & 0.073 & 0.068 & 0.068 \\ 
+  CT.var & 0.141 & 0.141 & 0.112 & 0.112 \\ 
+  UT.var1 & 0.064 & 0.063 & 0.052 & 0.052 \\ 
+  UT.var2 & 0.081 & 0.081 & 0.070 & 0.070 \\ 
+  UT.var3 & 0.080 & 0.080 & 0.071 & 0.071 \\ 
+   \hline
+\end{tabular}
+\caption{Standard errors of model cuts with N = 500 , I = 3 , nT = 15 , and missingness proportion = 0 .} 
+\end{table}

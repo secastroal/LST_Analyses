@@ -1,0 +1,144 @@
+TITLE: Your title goes here
+DATA: FILE = "Mplus_files_Results/tso_wide_n50_i3_nt5_na0.dat";
+VARIABLE: 
+NAMES = subjn y11 y21 y31 y12 y22 y32 y13 y23 y33 y14 y24 y34 y15 y25 y35; 
+MISSING=.;
+USEVAR = y11
+y21
+y31
+y12
+y22
+y32
+y13
+y23
+y33
+y14
+y24
+y34
+y15
+y25
+y35 ;
+
+
+ANALYSIS:
+TYPE = GENERAL ;
+ESTIMATOR = BAYES ;
+BITERATIONS = (5000) ;
+
+PROCESSORS = 2 ;
+
+MODEL:
+
+! Latent occasion variables
+occ1 BY y11@1
+y21 (las21)
+y31 (las31) ;
+occ2 BY y12@1
+y22 (las21)
+y32 (las31) ;
+occ3 BY y13@1
+y23 (las21)
+y33 (las31) ;
+occ4 BY y14@1
+y24 (las21)
+y34 (las31) ;
+occ5 BY y15@1
+y25 (las21)
+y35 (las31) ;
+
+! Latent trait variable or trait indicators
+theta1 BY y11@1
+y12@1
+y13@1
+y14@1
+y15@1 ;
+theta2 BY y21@1
+y22@1
+y23@1
+y24@1
+y25@1 ;
+theta3 BY y31@1
+y32@1
+y33@1
+y34@1
+y35@1 ;
+
+! Intercepts and means
+[y11*] (ins11) ;
+[y21*] (ins21) ;
+[y31*] (ins31) ;
+[y12*] (ins11) ;
+[y22*] (ins21) ;
+[y32*] (ins31) ;
+[y13*] (ins11) ;
+[y23*] (ins21) ;
+[y33*] (ins31) ;
+[y14*] (ins11) ;
+[y24*] (ins21) ;
+[y34*] (ins31) ;
+[y15*] (ins11) ;
+[y25*] (ins21) ;
+[y35*] (ins31) ;
+[occ1@0] ;
+[occ2@0] ;
+[occ3@0] ;
+[occ4@0] ;
+[occ5@0] ;
+
+! Set 0 correlations
+occ1 WITH occ2@0
+occ3@0
+occ4@0
+occ5@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ2 WITH occ3@0
+occ4@0
+occ5@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ3 WITH occ4@0
+occ5@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ4 WITH occ5@0
+theta1@0
+theta2@0
+theta3@0 ;
+occ5 WITH theta1@0
+theta2@0
+theta3@0 ;
+
+! autoregressive effects
+occ2 ON occ1 (beta1) ;
+occ3 ON occ2 (beta1) ;
+occ4 ON occ3 (beta1) ;
+occ5 ON occ4 (beta1) ;
+
+! Variance components
+y11 (err11) ;
+y21 (err21) ;
+y31 (err31) ;
+y12 (err11) ;
+y22 (err21) ;
+y32 (err31) ;
+y13 (err11) ;
+y23 (err21) ;
+y33 (err31) ;
+y14 (err11) ;
+y24 (err21) ;
+y34 (err31) ;
+y15 (err11) ;
+y25 (err21) ;
+y35 (err31) ;
+occ1 (oc_var1) ;
+occ2 (oc_var1) ;
+occ3 (oc_var1) ;
+occ4 (oc_var1) ;
+occ5 (oc_var1) ;
+theta1(t_var1) ;
+theta2(t_var2) ;
+theta3(t_var3) ;

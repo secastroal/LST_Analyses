@@ -1,0 +1,35 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 19:39:52 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllll}
+  \hline
+par & true & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+Status & NA & Ok & Non-convergence & Ok & Non-convergence \\ 
+  loadings1 & 1 & 1 &  & 1 &  \\ 
+  loadings2 & 0.5 & 0.502 &  & 0.526 &  \\ 
+  loadings3 & 1.3 & 1.303 &  & 1.369 &  \\ 
+  loadings4 & 0.8 & 0.801 &  & 0.868 &  \\ 
+  CS.var & 2 & 2.006 &  & 1.566 &  \\ 
+  US.var1 & 1 & 1.002 &  & 0.904 &  \\ 
+  US.var2 & 0.5 & 0.502 &  & 0.53 &  \\ 
+  US.var3 & 1.5 & 1.505 &  & 1.393 &  \\ 
+  US.var4 & 0.8 & 0.803 &  & 0.832 &  \\ 
+  loadings1 & 1 & 1 &  & 1 &  \\ 
+  loadings2 & 0.8 & 0.829 &  & 0.864 &  \\ 
+  loadings3 & 1.2 & 1.174 &  & 1.23 &  \\ 
+  loadings4 & 0.9 & 0.881 &  & 0.952 &  \\ 
+  intercepts1 & 2 & 2.045 &  & 1.723 &  \\ 
+  intercepts2 & 2.5 & 2.562 &  & 2.133 &  \\ 
+  intercepts3 & 3 & 3.087 &  & 2.712 &  \\ 
+  intercepts4 & 3.5 & 3.476 &  & 3.017 &  \\ 
+  CT.var & 1.5 & 1.43 &  & 1.117 &  \\ 
+  UT.var1 & 0.5 & 0.444 &  & 0.354 &  \\ 
+  UT.var2 & 1 & 1.032 &  & 0.888 &  \\ 
+  UT.var3 & 0.3 & 0.322 &  & 0.278 &  \\ 
+  UT.var4 & 0.8 & 0.74 &  & 0.681 &  \\ 
+   \hline
+\end{tabular}
+\caption{Parameter estimates of model cuts with N = 500 , I = 4 , nT = 120 , and missingness proportion = 0 .} 
+\end{table}

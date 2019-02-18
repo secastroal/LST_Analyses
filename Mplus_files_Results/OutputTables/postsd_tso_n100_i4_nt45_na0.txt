@@ -1,0 +1,36 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Sat Feb 16 05:28:52 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{llrlr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & Within & 0.000 & Within & 0.000 \\ 
+  loadings2 & Within & 0.009 & Within & 0.010 \\ 
+  loadings3 & Within & 0.019 & Within & 0.021 \\ 
+  loadings4 & Within & 0.013 & Within & 0.015 \\ 
+  ar.effect & Within & 0.015 & Within & 0.016 \\ 
+  error.var1 & Within & 0.030 & Within & 0.026 \\ 
+  error.var2 & Within & 0.013 & Within & 0.013 \\ 
+  error.var3 & Within & 0.047 & Within & 0.044 \\ 
+  error.var4 & Within & 0.023 & Within & 0.023 \\ 
+  state.var & Within & 0.061 & Within & 0.049 \\ 
+  intercepts1 & Between & 0.134 & Between & 0.118 \\ 
+  intercepts2 & Between & 0.107 & Between & 0.098 \\ 
+  intercepts3 & Between & 0.150 & Between & 0.140 \\ 
+  intercepts4 & Between & 0.126 & Between & 0.122 \\ 
+  trait.ind.var1 & Between & 0.313 & Between & 0.237 \\ 
+  trait.ind.var2 & Between & 0.200 & Between & 0.165 \\ 
+  trait.ind.var3 & Between & 0.379 & Between & 0.320 \\ 
+  trait.ind.var4 & Between & 0.274 & Between & 0.249 \\ 
+  cov12 & Between & 0.235 & Between & 0.184 \\ 
+  cov13 & Between & 0.311 & Between & 0.247 \\ 
+  cov23 & Between & 0.247 & Between & 0.206 \\ 
+  cov14 & Between & 0.276 & Between & 0.229 \\ 
+  cov24 & Between & 0.210 & Between & 0.183 \\ 
+  cov34 & Between & 0.278 & Between & 0.244 \\ 
+   \hline
+\end{tabular}
+\caption{Posterior standard deviations of model tso with N = 100 , I = 4 , nT = 45 , and missingness proportion = 0 .} 
+\end{table}

@@ -1,0 +1,29 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Fri Feb 15 15:47:53 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.002 & 0.002 & 0.014 & 0.014 \\ 
+  loadings3 & 0.001 & 0.002 & 0.053 & 0.055 \\ 
+  ar.effect & 0.009 & 0.006 & 0.010 & 0.007 \\ 
+  error.var1 & 0.005 & 0.005 & 0.089 & 0.089 \\ 
+  error.var2 & 0.003 & 0.003 & 0.029 & 0.030 \\ 
+  error.var3 & 0.014 & 0.015 & 0.117 & 0.117 \\ 
+  state.var & 0.002 & 0.007 & 0.421 & 0.418 \\ 
+  intercepts1 & 0.048 & 0.095 & 0.359 & 0.378 \\ 
+  intercepts2 & 0.033 & 0.074 & 0.479 & 0.503 \\ 
+  intercepts3 & 0.046 & 0.090 & 0.425 & 0.435 \\ 
+  trait.ind.var1 & 0.066 & 0.072 & 0.428 & 0.425 \\ 
+  trait.ind.var2 & 0.007 & 0.011 & 0.224 & 0.221 \\ 
+  trait.ind.var3 & 0.109 & 0.104 & 0.482 & 0.486 \\ 
+  cov12 & 0.015 & 0.019 & 0.295 & 0.293 \\ 
+  cov13 & 0.017 & 0.013 & 0.370 & 0.371 \\ 
+  cov23 & 0.034 & 0.028 & 0.299 & 0.297 \\ 
+   \hline
+\end{tabular}
+\caption{RMSE of model tso with N = 500 , I = 3 , nT = 45 , and missingness proportion = 0 .} 
+\end{table}

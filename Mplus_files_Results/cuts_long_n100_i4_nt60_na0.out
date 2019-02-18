@@ -1,0 +1,260 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+02/16/2019   7:10 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "Mplus_files_Results/cuts_long_n100_i4_nt60_na0.dat";
+  VARIABLE:
+  NAMES = subjn time y1 y2 y3 y4;
+  MISSING=.;
+  USEVAR = y1
+  y2
+  y3
+  y4 ;
+  CLUSTER = subjn ;
+
+  ANALYSIS:
+  TYPE = TWOLEVEL ;
+  ESTIMATOR = ML ;
+  ITERATIONS = 50000 ;
+  H1ITERATIONS = 50000 ;
+
+
+  MODEL:
+
+  %WITHIN%
+
+  ! common states
+  CS BY y1@1
+  y2 (lcs2)
+  y3 (lcs3)
+  y4 (lcs4) ;
+
+  %BETWEEN%
+
+  ! common trait
+  CT BY y1@1
+  y2 (lct2)
+  y3 (lct3)
+  y4 (lct4) ;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        6000
+
+Number of dependent variables                                    4
+Number of independent variables                                  0
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Continuous
+   Y1          Y2          Y3          Y4
+
+Continuous latent variables
+   CS          CT
+
+Variables with special functions
+
+  Cluster variable      SUBJN
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                 50000
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                          50000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  Mplus_files_Results/cuts_long_n100_i4_nt60_na0.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             1
+     Number of clusters                        100
+
+     Average cluster size       60.000
+
+     Estimated Intraclass Correlations for the Y Variables
+
+                Intraclass              Intraclass              Intraclass
+     Variable  Correlation   Variable  Correlation   Variable  Correlation
+
+     Y1           0.339      Y2           0.593      Y3           0.292
+     Y4           0.412
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              Y1            Y2            Y3            Y4
+              ________      ________      ________      ________
+ Y1             1.000
+ Y2             1.000         1.000
+ Y3             1.000         1.000         1.000
+ Y4             1.000         1.000         1.000         1.000
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     Y1                    2.030      -0.097      -6.535    0.02%       0.209      1.523      2.064
+            6000.000       4.628      -0.042       9.007    0.02%       2.609      3.842
+     Y2                    2.703       0.176      -2.944    0.02%       1.400      2.287      2.659
+            6000.000       2.416       0.162       9.515    0.02%       3.079      3.956
+     Y3                    3.096      -0.018      -7.710    0.02%       0.925      2.402      3.110
+            6000.000       6.928       0.040      13.462    0.02%       3.773      5.314
+     Y4                    3.690      -0.067      -3.250    0.02%       2.143      3.283      3.731
+            6000.000       3.435      -0.025      11.030    0.02%       4.182      5.231
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       20
+
+Loglikelihood
+
+          H0 Value                      -39559.107
+          H1 Value                      -39558.428
+
+Information Criteria
+
+          Akaike (AIC)                   79158.214
+          Bayesian (BIC)                 79292.204
+          Sample-Size Adjusted BIC       79228.650
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                              1.357
+          Degrees of Freedom                     4
+          P-Value                           0.8517
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.000
+
+CFI/TLI
+
+          CFI                                1.000
+          TLI                                1.001
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                          10863.894
+          Degrees of Freedom                    12
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value for Within                   0.001
+          Value for Between                  0.013
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Within Level
+
+ CS       BY
+    Y1                 1.000      0.000    999.000    999.000
+    Y2                 0.482      0.009     54.861      0.000
+    Y3                 1.280      0.019     66.267      0.000
+    Y4                 0.770      0.012     62.157      0.000
+
+ Variances
+    CS                 2.049      0.057     35.993      0.000
+
+ Residual Variances
+    Y1                 1.010      0.028     36.616      0.000
+    Y2                 0.508      0.011     46.388      0.000
+    Y3                 1.552      0.044     35.501      0.000
+    Y4                 0.804      0.019     41.269      0.000
+
+Between Level
+
+ CT       BY
+    Y1                 1.000      0.000    999.000    999.000
+    Y2                 0.700      0.106      6.585      0.000
+    Y3                 1.263      0.125     10.121      0.000
+    Y4                 0.708      0.107      6.628      0.000
+
+ Intercepts
+    Y1                 2.030      0.127     15.945      0.000
+    Y2                 2.703      0.120     22.455      0.000
+    Y3                 3.096      0.145     21.357      0.000
+    Y4                 3.690      0.120     30.666      0.000
+
+ Variances
+    CT                 1.125      0.233      4.832      0.000
+
+ Residual Variances
+    Y1                 0.444      0.101      4.382      0.000
+    Y2                 0.881      0.136      6.458      0.000
+    Y3                 0.224      0.127      1.756      0.079
+    Y4                 0.850      0.130      6.520      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.346E-03
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  07:10:24
+        Ending Time:  07:10:25
+       Elapsed Time:  00:00:01
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen
