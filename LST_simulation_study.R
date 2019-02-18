@@ -129,7 +129,7 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, ml_syntax)
 
 # Run modelin Mplus
-runModels(paste0(getwd(),"/",folder,file.name,".inp"), timeout = 60)
+runModels(paste0(getwd(),"/",folder,file.name,".inp"))
 
 long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
@@ -189,7 +189,7 @@ write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, mplus_syntax)
 
 # Run model in Mplus
-runModels(paste0(getwd(),"/",folder,file.name,".inp"), timeout = 60)
+runModels(paste0(getwd(),"/",folder,file.name,".inp"))
 
 wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
@@ -759,9 +759,16 @@ intercepts <- seq(2, by = 0.5, length.out = I) # intercepts
 
 var_ind_traits <- c(2, 1.5, 2.5, 1.75, 2.25)[1:I] # variance latent indicator trait variables
 
-R <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
-R[lower.tri(R)] = t(R)[lower.tri(R)]
-diag(R) <- 1
+# Create positive definite correlation matrix
+repeat {
+  R <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
+  R[lower.tri(R)] = t(R)[lower.tri(R)]
+  diag(R) <- 1
+  print(det(R))
+  if (det(R) > 0){
+    break
+  }
+}
 
 between.parameters <- list(intercepts = intercepts, trait.ind.var = var_ind_traits, 
                            cor.matrix = R)
