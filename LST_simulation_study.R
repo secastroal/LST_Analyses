@@ -129,11 +129,13 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, ml_syntax)
 
 # Run modelin Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(long.fit) == "Ok"){
+if(check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[1] <- check.mplus(long.fit)
   
@@ -189,11 +191,13 @@ write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, mplus_syntax)
 
 # Run model in Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(wide.fit) == "Ok"){
+if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[2] <- check.mplus(wide.fit)
   
@@ -257,11 +261,13 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, ml_syntax)
 
 # Run model in Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 trunc.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(trunc.fit) == "Ok"){
+if(check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[3] <- check.mplus(trunc.fit)
   
@@ -317,11 +323,13 @@ write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, mplus_syntax)
 
 # Run model in Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(wide.fit) == "Ok"){
+if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[4] <- check.mplus(wide.fit)
   
@@ -482,11 +490,13 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, ml_syntax)
 
 # Run model in Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/", folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(long.fit) == "Ok"){
+if(check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[1] <- check.mplus(long.fit)
   
@@ -540,11 +550,13 @@ write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, mplus_syntax)
 
 # Run model in Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/", folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(wide.fit) == "Ok"){
+if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[2] <- check.mplus(wide.fit)
   
@@ -606,11 +618,13 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, ml_syntax)
 
 # Run model in Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/", folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 trunc.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(trunc.fit) == "Ok"){
+if(check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[3] <- check.mplus(trunc.fit)
   
@@ -665,11 +679,13 @@ write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, mplus_syntax)
 
 # Run model in Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/", folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(wide.fit) == "Ok"){
+if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[4] <- check.mplus(wide.fit)
   
@@ -810,8 +826,8 @@ rm(cov.ind)
 
 var.coeff <- data.frame(matrix(NA, I * 5, 6))
 var.coeff[ , 1] <- paste0(rep(c( "pred_y", "upred_y", "con_y", "spe_y", "rel_y"), each = I), 1:I)
-var.coeff[ , 2] <- apply(tso.var.coeff(I = I, nT = nT, within.parameters = within.parameters, 
-                                  between.parameters = between.parameters), 1, mean)
+var.coeff[ , 2] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.parameters, 
+                                  between.parameters = between.parameters)[, nT]
 names(var.coeff) <- c("coefficient", "true", "long", "wide", "Ltrunc", "Wtrunc" )
 
 # Save convergence check
@@ -841,11 +857,13 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, ml_syntax)
 
 # Run modelin Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(long.fit) == "Ok"){
+if(check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[1] <- check.mplus(long.fit)
   
@@ -864,8 +882,8 @@ if(check.mplus(long.fit) == "Ok"){
   within.estimates <- list( loadings = est.par[1:I, 3], state.var = est.par[2*I+2, 3],
                             error.var = est.par[(I+2):(2 * I +1), 3], ar.effect = est.par[I+1,3])
   between.estimates <- list( trait.ind.var = est.par[(3 * I + 3):(4 * I + 2), 3])
-  var.coeff[ , 3] <- apply(tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
-                                    between.parameters = between.estimates), 1, mean)
+  var.coeff[ , 3] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                                    between.parameters = between.estimates)[,nT]
   rm(within.estimates, between.estimates)
   
   
@@ -902,11 +920,13 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, ml_syntax)
 
 # Run modelin Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(wide.fit) == "Ok"){
+if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[2] <- check.mplus(wide.fit)
   
@@ -935,8 +955,8 @@ if(check.mplus(wide.fit) == "Ok"){
   within.estimates <- list( loadings = est.par[1:I, 4], state.var = est.par[2*I+2, 4],
                             error.var = est.par[(I+2):(2 * I +1), 4], ar.effect = est.par[I+1,4])
   between.estimates <- list( trait.ind.var = est.par[(3 * I + 3):(4 * I + 2), 4])
-  var.coeff[ , 4] <- apply(tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
-                                         between.parameters = between.estimates), 1, mean)
+  var.coeff[ , 4] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                                         between.parameters = between.estimates)[,nT]
   rm(within.estimates, between.estimates)
   
 }else{
@@ -968,11 +988,13 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, ml_syntax)
 
 # Run modelin Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 trunc.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(trunc.fit) == "Ok"){
+if(check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[3] <- check.mplus(trunc.fit)
   
@@ -991,8 +1013,8 @@ if(check.mplus(trunc.fit) == "Ok"){
   within.estimates <- list( loadings = est.par[1:I, 5], state.var = est.par[2*I+2, 5],
                             error.var = est.par[(I+2):(2 * I +1), 5], ar.effect = est.par[I+1,5])
   between.estimates <- list( trait.ind.var = est.par[(3 * I + 3):(4 * I + 2), 5])
-  var.coeff[ , 5] <- apply(tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
-                                         between.parameters = between.estimates), 1, mean)
+  var.coeff[ , 5] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                                         between.parameters = between.estimates)[,nT]
   rm(within.estimates, between.estimates)
   
 }else{
@@ -1029,11 +1051,13 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 rm(analysis_syntax, ml_syntax)
 
 # Run modelin Mplus
+cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+cat("\n"); print(Sys.time()); cat("\n")
 
 wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(wide.fit) == "Ok"){
+if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   status[4] <- check.mplus(wide.fit)
   
@@ -1062,8 +1086,8 @@ if(check.mplus(wide.fit) == "Ok"){
   within.estimates <- list( loadings = est.par[1:I, 6], state.var = est.par[2*I+2, 6],
                             error.var = est.par[(I+2):(2 * I +1), 6], ar.effect = est.par[I+1,6])
   between.estimates <- list( trait.ind.var = est.par[(3 * I + 3):(4 * I + 2), 6])
-  var.coeff[ , 6] <- apply(tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
-                                         between.parameters = between.estimates), 1, mean)
+  var.coeff[ , 6] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                                         between.parameters = between.estimates)[,nT]
   rm(within.estimates, between.estimates)
   
 }else{
