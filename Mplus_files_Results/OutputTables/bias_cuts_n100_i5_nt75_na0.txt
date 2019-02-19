@@ -1,0 +1,39 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Mon Feb 18 21:41:28 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrlrl}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 &  & 0.000 &  \\ 
+  loadings2 & 0.003 &  & 0.035 &  \\ 
+  loadings3 & -0.006 &  & 0.047 &  \\ 
+  loadings4 & -0.001 &  & 0.069 &  \\ 
+  loadings5 & 0.019 &  & 0.106 &  \\ 
+  CS.var & -0.059 &  & -0.472 &  \\ 
+  US.var1 & 0.001 &  & -0.083 &  \\ 
+  US.var2 & 0.011 &  & 0.051 &  \\ 
+  US.var3 & 0.001 &  & -0.072 &  \\ 
+  US.var4 & -0.001 &  & 0.040 &  \\ 
+  US.var5 & 0.000 &  & 0.019 &  \\ 
+  loadings1 & 0.000 &  & 0.000 &  \\ 
+  loadings2 & -0.112 &  & -0.050 &  \\ 
+  loadings3 & -0.045 &  & 0.011 &  \\ 
+  loadings4 & -0.122 &  & -0.044 &  \\ 
+  loadings5 & 0.028 &  & 0.129 &  \\ 
+  intercepts1 & 0.039 &  & -0.291 &  \\ 
+  intercepts2 & 0.187 &  & -0.280 &  \\ 
+  intercepts3 & 0.109 &  & -0.272 &  \\ 
+  intercepts4 & 0.187 &  & -0.283 &  \\ 
+  intercepts5 & 0.089 &  & -0.370 &  \\ 
+  CT.var & -0.240 &  & -0.525 &  \\ 
+  UT.var1 & -0.094 &  & -0.189 &  \\ 
+  UT.var2 & -0.119 &  & -0.206 &  \\ 
+  UT.var3 & 0.079 &  & 0.031 &  \\ 
+  UT.var4 & -0.059 &  & -0.105 &  \\ 
+  UT.var5 & -0.122 &  & -0.147 &  \\ 
+   \hline
+\end{tabular}
+\caption{Bias of model cuts with N = 100 , I = 5 , nT = 75 , and missingness proportion = 0 .} 
+\end{table}

@@ -1,0 +1,35 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Mon Feb 18 16:47:59 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.039 & 0.039 & 0.030 & 0.030 \\ 
+  loadings3 & 0.051 & 0.051 & 0.069 & 0.069 \\ 
+  loadings4 & 0.003 & 0.003 & 0.005 & 0.005 \\ 
+  loadings5 & 0.001 & 0.001 & 0.011 & 0.011 \\ 
+  state.var & 0.098 & 0.098 & 0.147 & 0.147 \\ 
+  error.var1 & 0.007 & 0.007 & 0.118 & 0.118 \\ 
+  error.var2 & 0.033 & 0.033 & 0.028 & 0.028 \\ 
+  error.var3 & 0.049 & 0.049 & 0.133 & 0.133 \\ 
+  error.var4 & 0.034 & 0.034 & 0.043 & 0.043 \\ 
+  error.var5 & 0.040 & 0.040 & 0.084 & 0.085 \\ 
+  loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.011 & 0.011 & 0.004 & 0.004 \\ 
+  loadings3 & 0.011 & 0.011 & 0.021 & 0.021 \\ 
+  loadings4 & 0.032 & 0.032 & 0.046 & 0.046 \\ 
+  loadings5 & 0.026 & 0.026 & 0.015 & 0.015 \\ 
+  intercepts1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  intercepts2 & 0.026 & 0.026 & 0.091 & 0.091 \\ 
+  intercepts3 & 0.045 & 0.045 & 0.025 & 0.026 \\ 
+  intercepts4 & 0.177 & 0.177 & 0.248 & 0.248 \\ 
+  intercepts5 & 0.065 & 0.065 & 0.070 & 0.070 \\ 
+  trait.mean & 0.169 & 0.169 & 0.322 & 0.322 \\ 
+  trait.var & 0.450 & 0.450 & 0.524 & 0.524 \\ 
+   \hline
+\end{tabular}
+\caption{RMSE of model msst with N = 100 , I = 5 , nT = 5 , and missingness proportion = 0 .} 
+\end{table}

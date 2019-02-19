@@ -1,0 +1,318 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+02/18/2019   4:48 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "Mplus_files_Results/tso_long_trunc_n100_i5_nt5_na0.dat";
+  VARIABLE:
+  NAMES = subjn time y1 y2 y3 y4 y5;
+  MISSING=.;
+  USEVAR = y1
+  y2
+  y3
+  y4
+  y5 ;
+  CLUSTER = subjn ;
+
+  ANALYSIS:
+  TYPE = TWOLEVEL ;
+  ESTIMATOR = BAYES ;
+  BITERATIONS = (5000) ;
+
+  PROCESSORS = 2 ;
+
+  MODEL:
+
+  %WITHIN%
+
+  ! Latent state residual
+  eta BY y1@1
+  y2
+  y3
+  y4
+  y5   (&1) ;
+
+  ! Autoregressive effect on the latent state residual
+  eta ON eta&1 ;
+
+  ! Latent errors and latent state variances
+  y1(o_err1) ;
+  y2(o_err2) ;
+  y3(o_err3) ;
+  y4(o_err4) ;
+  y5(o_err5) ;
+  eta(s_var) ;
+
+  %BETWEEN%
+
+  ! Latent trait-indicator variables
+  theta1 BY y1@1 ;
+  theta2 BY y2@1 ;
+  theta3 BY y3@1 ;
+  theta4 BY y4@1 ;
+  theta5 BY y5@1 ;
+
+  ! Intercepts
+  [y1*] ;
+  [y2*] ;
+  [y3*] ;
+  [y4*] ;
+  [y5*] ;
+
+  ! Fixing means of latent trait-indicator variables at 0
+  [theta1@0] ;
+  [theta2@0] ;
+  [theta3@0] ;
+  [theta4@0] ;
+  [theta5@0] ;
+
+  ! Fixing level-2 variances at 0 and latent trait-indicator variances
+  y1@0.001;
+  y2@0.001;
+  y3@0.001;
+  y4@0.001;
+  y5@0.001;
+  theta1(t_var1) ;
+  theta2(t_var2) ;
+  theta3(t_var3) ;
+  theta4(t_var4) ;
+  theta5(t_var5) ;
+
+
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      Y1          69
+      Y2          98
+      Y3          58
+
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         500
+
+Number of dependent variables                                    5
+Number of independent variables                                  0
+Number of continuous latent variables                            7
+
+Observed dependent variables
+
+  Continuous
+   Y1          Y2          Y3          Y4          Y5
+
+Continuous latent variables
+   ETA         ETA&1       THETA1      THETA2      THETA3      THETA4
+   THETA5
+
+Variables with special functions
+
+  Cluster variable      SUBJN
+
+Estimator                                                    BAYES
+Specifications for Bayesian Estimation
+  Point estimate                                            MEDIAN
+  Number of Markov chain Monte Carlo (MCMC) chains               2
+  Random seed for the first chain                                0
+  Starting value information                           UNPERTURBED
+  Treatment of categorical mediator                         LATENT
+  Algorithm used for Markov chain Monte Carlo           GIBBS(PX1)
+  Convergence criterion                                  0.500D-01
+  Maximum number of iterations                               50000
+  K-th iteration used for thinning                               1
+
+Input data file(s)
+  Mplus_files_Results/tso_long_trunc_n100_i5_nt5_na0.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of clusters                        100
+
+       Size (s)    Cluster ID with Size s
+
+          5        1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21
+                   22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39
+                   40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57
+                   58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75
+                   76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93
+                   94 95 96 97 98 99 100
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+     Number of missing data patterns             1
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              Y1            Y2            Y3            Y4            Y5
+              ________      ________      ________      ________      ________
+ Y1             1.000
+ Y2             1.000         1.000
+ Y3             1.000         1.000         1.000
+ Y4             1.000         1.000         1.000         1.000
+ Y5             1.000         1.000         1.000         1.000         1.000
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     Y1                    1.626       0.304      -5.000    0.20%       0.000      1.000      1.000
+             500.000       4.094       0.207       8.000    0.40%       2.000      3.000
+     Y2                    1.928       0.296      -2.000    0.20%       1.000      2.000      2.000
+             500.000       2.095      -0.372       6.000    1.00%       2.000      3.000
+     Y3                    2.408       0.341      -6.000    0.20%       0.000      1.000      2.000
+             500.000       6.050      -0.050      10.000    0.20%       3.000      5.000
+     Y4                    2.886       0.058      -2.000    0.40%       1.000      2.000      3.000
+             500.000       3.521      -0.534       8.000    0.40%       3.000      5.000
+     Y5                    3.486       0.284      -3.000    0.40%       1.000      3.000      3.000
+             500.000       5.762      -0.168      11.000    0.40%       4.000      6.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     USE THE FBITERATIONS OPTION TO INCREASE THE NUMBER OF ITERATIONS BY A FACTOR
+     OF AT LEAST TWO TO CHECK CONVERGENCE AND THAT THE PSR VALUE DOES NOT INCREASE.
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                              31
+
+Information Criteria
+
+          Deviance (DIC)                         7560.980
+          Estimated Number of Parameters (pD)     710.064
+
+
+
+MODEL RESULTS
+
+                                Posterior  One-Tailed         95% C.I.
+                    Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%  Significance
+
+Within Level
+
+ ETA      BY
+    Y1                 1.000       0.000      0.000       1.000       1.000
+    Y2                 0.572       0.044      0.000       0.489       0.662      *
+    Y3                 1.329       0.077      0.000       1.188       1.492      *
+    Y4                 0.848       0.057      0.000       0.742       0.967      *
+    Y5                 1.233       0.075      0.000       1.094       1.389      *
+
+ ETA        ON
+    ETA&1              0.380       0.084      0.000       0.221       0.548      *
+
+ Residual Variances
+    Y1                 0.850       0.079      0.000       0.709       1.016      *
+    Y2                 0.617       0.049      0.000       0.530       0.722      *
+    Y3                 1.182       0.119      0.000       0.965       1.432      *
+    Y4                 0.843       0.072      0.000       0.714       0.996      *
+    Y5                 1.202       0.114      0.000       0.997       1.442      *
+    ETA                1.506       0.178      0.000       1.196       1.887      *
+
+Between Level
+
+ THETA1   BY
+    Y1                 1.000       0.000      0.000       1.000       1.000
+
+ THETA2   BY
+    Y2                 1.000       0.000      0.000       1.000       1.000
+
+ THETA3   BY
+    Y3                 1.000       0.000      0.000       1.000       1.000
+
+ THETA4   BY
+    Y4                 1.000       0.000      0.000       1.000       1.000
+
+ THETA5   BY
+    Y5                 1.000       0.000      0.000       1.000       1.000
+
+ THETA2   WITH
+    THETA1             1.173       0.283      0.000       0.706       1.816      *
+
+ THETA3   WITH
+    THETA1             1.687       0.473      0.000       0.870       2.726      *
+    THETA2             1.363       0.335      0.000       0.809       2.123      *
+
+ THETA4   WITH
+    THETA1             1.193       0.351      0.000       0.597       1.981      *
+    THETA2             0.928       0.250      0.000       0.516       1.496      *
+    THETA3             1.498       0.426      0.000       0.756       2.444      *
+
+ THETA5   WITH
+    THETA1             1.444       0.452      0.000       0.658       2.439      *
+    THETA2             1.097       0.315      0.000       0.562       1.800      *
+    THETA3             1.856       0.553      0.000       0.881       3.055      *
+    THETA4             1.353       0.413      0.000       0.635       2.260      *
+
+ Means
+    THETA1             0.000       0.000      1.000       0.000       0.000
+    THETA2             0.000       0.000      1.000       0.000       0.000
+    THETA3             0.000       0.000      1.000       0.000       0.000
+    THETA4             0.000       0.000      1.000       0.000       0.000
+    THETA5             0.000       0.000      1.000       0.000       0.000
+
+ Intercepts
+    Y1                 1.679       0.128      0.000       1.400       1.862      *
+    Y2                 1.937       0.109      0.000       1.717       2.151      *
+    Y3                 2.450       0.146      0.000       2.153       2.721      *
+    Y4                 2.929       0.118      0.000       2.692       3.139      *
+    Y5                 3.513       0.144      0.000       3.250       3.799      *
+
+ Variances
+    THETA1             1.787       0.433      0.000       1.049       2.759      *
+    THETA2             1.070       0.225      0.000       0.712       1.588      *
+    THETA3             2.191       0.602      0.000       1.153       3.517      *
+    THETA4             1.691       0.375      0.000       1.069       2.541      *
+    THETA5             2.306       0.595      0.000       1.279       3.618      *
+
+ Residual Variances
+    Y1                 0.001       0.000      0.000       0.001       0.001
+    Y2                 0.001       0.000      0.000       0.001       0.001
+    Y3                 0.001       0.000      0.000       0.001       0.001
+    Y4                 0.001       0.000      0.000       0.001       0.001
+    Y5                 0.001       0.000      0.000       0.001       0.001
+
+
+     Beginning Time:  16:48:43
+        Ending Time:  16:49:22
+       Elapsed Time:  00:00:39
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

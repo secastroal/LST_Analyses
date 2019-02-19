@@ -1,0 +1,36 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Mon Feb 18 16:47:59 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllll}
+  \hline
+par & true & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+Status & NA & Ok & Ok & Ok & Ok \\ 
+  loadings1 & 1 & 1 & 1 & 1 & 1 \\ 
+  loadings2 & 0.5 & 0.539 & 0.539 & 0.53 & 0.53 \\ 
+  loadings3 & 1.3 & 1.249 & 1.249 & 1.231 & 1.231 \\ 
+  loadings4 & 0.8 & 0.803 & 0.803 & 0.795 & 0.795 \\ 
+  loadings5 & 1.1 & 1.101 & 1.101 & 1.089 & 1.089 \\ 
+  state.var & 2 & 1.902 & 1.902 & 1.853 & 1.853 \\ 
+  error.var1 & 1 & 1.007 & 1.007 & 1.118 & 1.118 \\ 
+  error.var2 & 0.5 & 0.467 & 0.467 & 0.528 & 0.528 \\ 
+  error.var3 & 1.5 & 1.549 & 1.549 & 1.633 & 1.633 \\ 
+  error.var4 & 0.8 & 0.766 & 0.766 & 0.843 & 0.843 \\ 
+  error.var5 & 1.2 & 1.24 & 1.24 & 1.284 & 1.285 \\ 
+  loadings1 & 1 & 1 & 1 & 1 & 1 \\ 
+  loadings2 & 0.8 & 0.789 & 0.789 & 0.796 & 0.796 \\ 
+  loadings3 & 1.2 & 1.211 & 1.211 & 1.221 & 1.221 \\ 
+  loadings4 & 0.9 & 0.932 & 0.932 & 0.946 & 0.946 \\ 
+  loadings5 & 1.1 & 1.074 & 1.074 & 1.085 & 1.085 \\ 
+  intercepts1 & 0 & 0 & 0 & 0 & 0 \\ 
+  intercepts2 & 0.2 & 0.226 & 0.226 & 0.109 & 0.109 \\ 
+  intercepts3 & 0.4 & 0.355 & 0.355 & 0.425 & 0.426 \\ 
+  intercepts4 & 0.6 & 0.423 & 0.423 & 0.352 & 0.352 \\ 
+  intercepts5 & 0.8 & 0.865 & 0.865 & 0.87 & 0.87 \\ 
+  trait.mean & 4 & 4.169 & 4.169 & 3.678 & 3.678 \\ 
+  trait.var & 2 & 1.55 & 1.55 & 1.476 & 1.476 \\ 
+   \hline
+\end{tabular}
+\caption{Parameter estimates of model msst with N = 100 , I = 5 , nT = 5 , and missingness proportion = 0 .} 
+\end{table}

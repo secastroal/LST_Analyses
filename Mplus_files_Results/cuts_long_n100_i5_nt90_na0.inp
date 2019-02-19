@@ -1,0 +1,38 @@
+TITLE: Your title goes here
+DATA: FILE = "Mplus_files_Results/cuts_long_n100_i5_nt90_na0.dat";
+VARIABLE: 
+NAMES = subjn time y1 y2 y3 y4 y5; 
+MISSING=.;
+USEVAR = y1
+y2
+y3
+y4
+y5 ;
+CLUSTER = subjn ;
+
+ANALYSIS:
+TYPE = TWOLEVEL ;
+ESTIMATOR = ML ;
+ITERATIONS = 50000 ;
+H1ITERATIONS = 50000 ;
+
+
+MODEL:
+
+%WITHIN%
+
+! common states
+CS BY y1@1
+y2 (lcs2)
+y3 (lcs3)
+y4 (lcs4)
+y5 (lcs5) ;
+
+%BETWEEN%
+
+! common trait
+CT BY y1@1
+y2 (lct2)
+y3 (lct3)
+y4 (lct4)
+y5 (lct5) ;

@@ -137,7 +137,7 @@ long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus 
 
 if(check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[1] <- check.mplus(long.fit)
+  status[1] <- check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[, 3] <- long.fit$parameters$unstandardized[,3]
   
@@ -156,7 +156,7 @@ if(check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   rm(within.estimates, between.estimates)
   
 }else{
-  status[1] <- check.mplus(long.fit)
+  status[1] <- check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 
@@ -199,7 +199,7 @@ wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus 
 
 if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[2] <- check.mplus(wide.fit)
+  status[2] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[, 4] <- wide.fit$parameters$unstandardized[c(1:I,
                                             (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + 1,
@@ -232,7 +232,7 @@ if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   
 }else{
-  status[2] <- check.mplus(wide.fit)
+  status[2] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 
@@ -269,7 +269,7 @@ trunc.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus
 
 if(check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[3] <- check.mplus(trunc.fit)
+  status[3] <- check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[, 5] <- trunc.fit$parameters$unstandardized[,3]
   
@@ -289,7 +289,7 @@ if(check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   
 }else{
-  status[3] <- check.mplus(trunc.fit)
+  status[3] <- check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 rm(file.name, trunc.fit)
@@ -331,7 +331,7 @@ wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus 
 
 if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[4] <- check.mplus(wide.fit)
+  status[4] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[, 6] <- wide.fit$parameters$unstandardized[c(1:I,
                                                        (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + 1,
@@ -366,7 +366,7 @@ if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   
 }else{
-  status[4] <- check.mplus(wide.fit)
+  status[4] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 
@@ -498,7 +498,7 @@ long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus 
 
 if(check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[1] <- check.mplus(long.fit)
+  status[1] <- check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[,3] <- long.fit$parameters$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
                                            (4*I + 2), (6*I +3)),3]
@@ -519,7 +519,7 @@ if(check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   
 }else{
-  status[1] <- check.mplus(long.fit)
+  status[1] <- check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 rm(file.name, long.fit)
@@ -558,7 +558,7 @@ wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus 
 
 if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[2] <- check.mplus(wide.fit)
+  status[2] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[,4] <- wide.fit$parameters$unstandardized[c(1:I,
                                            (I * nT * 3) + ((nT+1) * nT / 2) + 2,
@@ -590,7 +590,7 @@ if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   
 }else{
-  status[2] <- check.mplus(wide.fit)
+  status[2] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 rm(file.name, wide.fit)
@@ -626,7 +626,7 @@ trunc.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus
 
 if(check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[3] <- check.mplus(trunc.fit)
+  status[3] <- check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[,5] <- trunc.fit$parameters$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
                                             (4*I + 2), (6*I +3)),3]
@@ -647,7 +647,7 @@ if(check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   rm(within.estimates, between.estimates)
   
 }else{
-  status[3] <- check.mplus(trunc.fit)
+  status[3] <- check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 
@@ -687,7 +687,7 @@ wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus 
 
 if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[4] <- check.mplus(wide.fit)
+  status[4] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[,6] <- wide.fit$parameters$unstandardized[c(1:I,
                                                       (I * nT * 3) + ((nT+1) * nT / 2) + 2,
@@ -718,7 +718,7 @@ if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   rm(within.estimates, between.estimates)
   
 }else{
-  status[4] <- check.mplus(wide.fit)
+  status[4] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 rm(file.name, wide.fit)
@@ -865,7 +865,7 @@ long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus 
 
 if(check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[1] <- check.mplus(long.fit)
+  status[1] <- check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[, 3] <- long.fit$parameters$unstandardized[c(1:(2*I + 2),
                                             (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
@@ -888,7 +888,7 @@ if(check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
   
 }else{
-  status[1] <- check.mplus(long.fit)
+  status[1] <- check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 rm(file.name, long.fit)
@@ -928,7 +928,7 @@ wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus 
 
 if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[2] <- check.mplus(wide.fit)
+  status[2] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[, 4] <- wide.fit$parameters$unstandardized[c(1:I, #loadings
                                             (2 * I * nT + 1), # autoregressive effect
@@ -960,7 +960,7 @@ if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   rm(within.estimates, between.estimates)
   
 }else{
-  status[2] <- check.mplus(wide.fit)
+  status[2] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 rm(file.name, wide.fit)
@@ -996,7 +996,7 @@ trunc.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus
 
 if(check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[3] <- check.mplus(trunc.fit)
+  status[3] <- check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[, 5] <- trunc.fit$parameters$unstandardized[c(1:(2*I + 2),
                                              (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
@@ -1018,7 +1018,7 @@ if(check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   rm(within.estimates, between.estimates)
   
 }else{
-  status[3] <- check.mplus(trunc.fit)
+  status[3] <- check.mplus(trunc.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 
@@ -1059,7 +1059,7 @@ wide.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus 
 
 if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[4] <- check.mplus(wide.fit)
+  status[4] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
   
   est.par[, 6] <- wide.fit$parameters$unstandardized[c(1:I, #loadings
                                                        (2 * I * nT + 1), # autoregressive effect
@@ -1091,7 +1091,7 @@ if(check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   rm(within.estimates, between.estimates)
   
 }else{
-  status[4] <- check.mplus(wide.fit)
+  status[4] <- check.mplus(wide.fit, paste0(getwd(),"/",folder,file.name,".out"))
 }
 
 rm(file.name, wide.fit)

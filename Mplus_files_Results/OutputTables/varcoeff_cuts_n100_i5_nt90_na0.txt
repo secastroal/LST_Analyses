@@ -1,0 +1,37 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Mon Feb 18 23:38:48 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrlrl}
+  \hline
+coefficient & true & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+ccon\_y1 & 0.300 & 0.261 &  & 0.244 &  \\ 
+  ccon\_y2 & 0.324 & 0.237 &  & 0.230 &  \\ 
+  ccon\_y3 & 0.294 & 0.242 &  & 0.236 &  \\ 
+  ccon\_y4 & 0.297 & 0.202 &  & 0.193 &  \\ 
+  ccon\_y5 & 0.306 & 0.271 &  & 0.264 &  \\ 
+  ucon\_y1 & 0.100 & 0.089 &  & 0.085 &  \\ 
+  ucon\_y2 & 0.338 & 0.357 &  & 0.348 &  \\ 
+  ucon\_y3 & 0.041 & 0.056 &  & 0.055 &  \\ 
+  ucon\_y4 & 0.195 & 0.205 &  & 0.200 &  \\ 
+  ucon\_y5 & 0.084 & 0.072 &  & 0.071 &  \\ 
+  tcon\_y1 & 0.400 & 0.350 &  & 0.329 &  \\ 
+  tcon\_y2 & 0.662 & 0.594 &  & 0.578 &  \\ 
+  tcon\_y3 & 0.335 & 0.298 &  & 0.291 &  \\ 
+  tcon\_y4 & 0.492 & 0.407 &  & 0.393 &  \\ 
+  tcon\_y5 & 0.390 & 0.342 &  & 0.335 &  \\ 
+  spe\_y1 & 0.400 & 0.437 &  & 0.429 &  \\ 
+  spe\_y2 & 0.169 & 0.202 &  & 0.189 &  \\ 
+  spe\_y3 & 0.460 & 0.493 &  & 0.485 &  \\ 
+  spe\_y4 & 0.313 & 0.366 &  & 0.359 &  \\ 
+  spe\_y5 & 0.408 & 0.434 &  & 0.427 &  \\ 
+  rel\_y1 & 0.800 & 0.787 &  & 0.758 &  \\ 
+  rel\_y2 & 0.831 & 0.796 &  & 0.767 &  \\ 
+  rel\_y3 & 0.796 & 0.790 &  & 0.776 &  \\ 
+  rel\_y4 & 0.805 & 0.773 &  & 0.752 &  \\ 
+  rel\_y5 & 0.798 & 0.777 &  & 0.761 &  \\ 
+   \hline
+\end{tabular}
+\caption{LST variance coefficients of model cuts with N = 100 , I = 5 , nT = 90 , and missingness proportion = 0 .} 
+\end{table}

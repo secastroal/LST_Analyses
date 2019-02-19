@@ -1,0 +1,174 @@
+TITLE: Your title goes here
+DATA: FILE = "Mplus_files_Results/msst_wide_n500_i5_nt5_na0.dat";
+VARIABLE: 
+NAMES = subjn y11 y21 y31 y41 y51 y12 y22 y32 y42 y52 y13 y23 y33 y43 y53 y14 y24
+     y34 y44 y54 y15 y25 y35 y45 y55; 
+MISSING=.;
+USEVAR = y11
+y21
+y31
+y41
+y51
+y12
+y22
+y32
+y42
+y52
+y13
+y23
+y33
+y43
+y53
+y14
+y24
+y34
+y44
+y54
+y15
+y25
+y35
+y45
+y55 ;
+
+
+ANALYSIS:
+TYPE = GENERAL ;
+ESTIMATOR = ML ;
+ITERATIONS = 50000 ;
+H1ITERATIONS = 50000 ;
+
+
+MODEL:
+
+! Latent state variables
+eta1 BY y11@1
+y21 (las21)
+y31 (las31)
+y41 (las41)
+y51 (las51) ;
+eta2 BY y12@1
+y22 (las21)
+y32 (las31)
+y42 (las41)
+y52 (las51) ;
+eta3 BY y13@1
+y23 (las21)
+y33 (las31)
+y43 (las41)
+y53 (las51) ;
+eta4 BY y14@1
+y24 (las21)
+y34 (las31)
+y44 (las41)
+y54 (las51) ;
+eta5 BY y15@1
+y25 (las21)
+y35 (las31)
+y45 (las41)
+y55 (las51) ;
+
+! Latent trait variables
+theta1 BY y11@1
+y21 (lat21)
+y31 (lat31)
+y41 (lat41)
+y51 (lat51)
+y12@1
+y22 (lat21)
+y32 (lat31)
+y42 (lat41)
+y52 (lat51)
+y13@1
+y23 (lat21)
+y33 (lat31)
+y43 (lat41)
+y53 (lat51)
+y14@1
+y24 (lat21)
+y34 (lat31)
+y44 (lat41)
+y54 (lat51)
+y15@1
+y25 (lat21)
+y35 (lat31)
+y45 (lat41)
+y55 (lat51) ;
+
+! Intercepts and means
+
+[y11@0] ;
+[y21*] (int21) ;
+[y31*] (int31) ;
+[y41*] (int41) ;
+[y51*] (int51) ;
+[y12@0] ;
+[y22*] (int21) ;
+[y32*] (int31) ;
+[y42*] (int41) ;
+[y52*] (int51) ;
+[y13@0] ;
+[y23*] (int21) ;
+[y33*] (int31) ;
+[y43*] (int41) ;
+[y53*] (int51) ;
+[y14@0] ;
+[y24*] (int21) ;
+[y34*] (int31) ;
+[y44*] (int41) ;
+[y54*] (int51) ;
+[y15@0] ;
+[y25*] (int21) ;
+[y35*] (int31) ;
+[y45*] (int41) ;
+[y55*] (int51) ;
+[theta1*] ;
+
+! Variance components
+y11(o_err11) ;
+y21(o_err21) ;
+y31(o_err31) ;
+y41(o_err41) ;
+y51(o_err51) ;
+y12(o_err11) ;
+y22(o_err21) ;
+y32(o_err31) ;
+y42(o_err41) ;
+y52(o_err51) ;
+y13(o_err11) ;
+y23(o_err21) ;
+y33(o_err31) ;
+y43(o_err41) ;
+y53(o_err51) ;
+y14(o_err11) ;
+y24(o_err21) ;
+y34(o_err31) ;
+y44(o_err41) ;
+y54(o_err51) ;
+y15(o_err11) ;
+y25(o_err21) ;
+y35(o_err31) ;
+y45(o_err41) ;
+y55(o_err51) ;
+eta1(s_var11) ;
+eta2(s_var11) ;
+eta3(s_var11) ;
+eta4(s_var11) ;
+eta5(s_var11) ;
+theta1(t_var1) ;
+
+! Set zero covariances
+eta1 WITH eta2@0
+eta3@0
+eta4@0
+eta5@0
+theta1@0 ;
+eta2 WITH eta3@0
+eta4@0
+eta5@0
+theta1@0 ;
+eta3 WITH eta4@0
+eta5@0
+theta1@0 ;
+eta4 WITH eta5@0
+theta1@0 ;
+eta5 WITH theta1@0 ;

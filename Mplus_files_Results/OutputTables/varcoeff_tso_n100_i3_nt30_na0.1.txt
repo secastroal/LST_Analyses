@@ -1,0 +1,27 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Tue Feb 19 11:48:25 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrr}
+  \hline
+coefficient & true & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+pred\_y1 & 0.355 & 0.342 & 0.338 & 0.324 & 0.321 \\ 
+  pred\_y2 & 0.564 & 0.529 & 0.524 & 0.488 & 0.484 \\ 
+  pred\_y3 & 0.296 & 0.283 & 0.279 & 0.276 & 0.273 \\ 
+  upred\_y1 & 0.113 & 0.097 & 0.100 & 0.095 & 0.097 \\ 
+  upred\_y2 & 0.060 & 0.053 & 0.055 & 0.052 & 0.053 \\ 
+  upred\_y3 & 0.127 & 0.112 & 0.116 & 0.112 & 0.115 \\ 
+  con\_y1 & 0.468 & 0.439 & 0.438 & 0.419 & 0.418 \\ 
+  con\_y2 & 0.624 & 0.582 & 0.579 & 0.540 & 0.538 \\ 
+  con\_y3 & 0.423 & 0.396 & 0.395 & 0.388 & 0.388 \\ 
+  spe\_y1 & 0.355 & 0.372 & 0.373 & 0.364 & 0.365 \\ 
+  spe\_y2 & 0.188 & 0.204 & 0.206 & 0.199 & 0.201 \\ 
+  spe\_y3 & 0.400 & 0.432 & 0.434 & 0.430 & 0.432 \\ 
+  rel\_y1 & 0.823 & 0.811 & 0.811 & 0.784 & 0.783 \\ 
+  rel\_y2 & 0.812 & 0.786 & 0.785 & 0.739 & 0.738 \\ 
+  rel\_y3 & 0.823 & 0.828 & 0.829 & 0.818 & 0.820 \\ 
+   \hline
+\end{tabular}
+\caption{LST variance coefficients of model tso with N = 100 , I = 3 , nT = 30 , and missingness proportion = 0.1 .} 
+\end{table}

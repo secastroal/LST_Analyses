@@ -1,0 +1,460 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+02/19/2019  10:33 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "Mplus_files_Results/msst_wide_trunc_n100_i3_nt5_na0.1.dat";
+  VARIABLE:
+  NAMES = subjn y11 y21 y31 y12 y22 y32 y13 y23 y33 y14 y24 y34 y15 y25 y35;
+  MISSING=.;
+  USEVAR = y11
+  y21
+  y31
+  y12
+  y22
+  y32
+  y13
+  y23
+  y33
+  y14
+  y24
+  y34
+  y15
+  y25
+  y35 ;
+
+
+  ANALYSIS:
+  TYPE = GENERAL ;
+  ESTIMATOR = ML ;
+  ITERATIONS = 50000 ;
+  H1ITERATIONS = 50000 ;
+
+
+  MODEL:
+
+  ! Latent state variables
+  eta1 BY y11@1
+  y21 (las21)
+  y31 (las31) ;
+  eta2 BY y12@1
+  y22 (las21)
+  y32 (las31) ;
+  eta3 BY y13@1
+  y23 (las21)
+  y33 (las31) ;
+  eta4 BY y14@1
+  y24 (las21)
+  y34 (las31) ;
+  eta5 BY y15@1
+  y25 (las21)
+  y35 (las31) ;
+
+  ! Latent trait variables
+  theta1 BY y11@1
+  y21 (lat21)
+  y31 (lat31)
+  y12@1
+  y22 (lat21)
+  y32 (lat31)
+  y13@1
+  y23 (lat21)
+  y33 (lat31)
+  y14@1
+  y24 (lat21)
+  y34 (lat31)
+  y15@1
+  y25 (lat21)
+  y35 (lat31) ;
+
+  ! Intercepts and means
+
+  [y11@0] ;
+  [y21*] (int21) ;
+  [y31*] (int31) ;
+  [y12@0] ;
+  [y22*] (int21) ;
+  [y32*] (int31) ;
+  [y13@0] ;
+  [y23*] (int21) ;
+  [y33*] (int31) ;
+  [y14@0] ;
+  [y24*] (int21) ;
+  [y34*] (int31) ;
+  [y15@0] ;
+  [y25*] (int21) ;
+  [y35*] (int31) ;
+  [theta1*] ;
+
+  ! Variance components
+  y11(o_err11) ;
+  y21(o_err21) ;
+  y31(o_err31) ;
+  y12(o_err11) ;
+  y22(o_err21) ;
+  y32(o_err31) ;
+  y13(o_err11) ;
+  y23(o_err21) ;
+  y33(o_err31) ;
+  y14(o_err11) ;
+  y24(o_err21) ;
+  y34(o_err31) ;
+  y15(o_err11) ;
+  y25(o_err21) ;
+  y35(o_err31) ;
+  eta1(s_var11) ;
+  eta2(s_var11) ;
+  eta3(s_var11) ;
+  eta4(s_var11) ;
+  eta5(s_var11) ;
+  theta1(t_var1) ;
+
+  ! Set zero covariances
+  eta1 WITH eta2@0
+  eta3@0
+  eta4@0
+  eta5@0
+  theta1@0 ;
+  eta2 WITH eta3@0
+  eta4@0
+  eta5@0
+  theta1@0 ;
+  eta3 WITH eta4@0
+  eta5@0
+  theta1@0 ;
+  eta4 WITH eta5@0
+  theta1@0 ;
+  eta5 WITH theta1@0 ;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         100
+
+Number of dependent variables                                   15
+Number of independent variables                                  0
+Number of continuous latent variables                            6
+
+Observed dependent variables
+
+  Continuous
+   Y11         Y21         Y31         Y12         Y22         Y32
+   Y13         Y23         Y33         Y14         Y24         Y34
+   Y15         Y25         Y35
+
+Continuous latent variables
+   ETA1        ETA2        ETA3        ETA4        ETA5        THETA1
+
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                 50000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                          50000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  Mplus_files_Results/msst_wide_trunc_n100_i3_nt5_na0.1.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            49
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              Y11           Y21           Y31           Y12           Y22
+              ________      ________      ________      ________      ________
+ Y11            0.950
+ Y21            0.870         0.910
+ Y31            0.820         0.780         0.860
+ Y12            0.870         0.820         0.770         0.900
+ Y22            0.860         0.820         0.770         0.820         0.900
+ Y32            0.880         0.840         0.800         0.840         0.840
+ Y13            0.900         0.860         0.820         0.860         0.850
+ Y23            0.830         0.790         0.730         0.790         0.800
+ Y33            0.880         0.850         0.800         0.820         0.830
+ Y14            0.860         0.830         0.770         0.820         0.820
+ Y24            0.890         0.850         0.790         0.830         0.840
+ Y34            0.900         0.850         0.810         0.860         0.850
+ Y15            0.900         0.870         0.820         0.860         0.860
+ Y25            0.880         0.840         0.810         0.830         0.830
+ Y35            0.890         0.850         0.800         0.840         0.850
+
+
+           Covariance Coverage
+              Y32           Y13           Y23           Y33           Y14
+              ________      ________      ________      ________      ________
+ Y32            0.930
+ Y13            0.880         0.950
+ Y23            0.810         0.830         0.870
+ Y33            0.860         0.870         0.810         0.920
+ Y14            0.850         0.870         0.790         0.850         0.910
+ Y24            0.850         0.870         0.810         0.850         0.830
+ Y34            0.870         0.900         0.830         0.860         0.860
+ Y15            0.880         0.910         0.840         0.870         0.870
+ Y25            0.860         0.890         0.800         0.850         0.850
+ Y35            0.870         0.890         0.810         0.860         0.850
+
+
+           Covariance Coverage
+              Y24           Y34           Y15           Y25           Y35
+              ________      ________      ________      ________      ________
+ Y24            0.920
+ Y34            0.870         0.940
+ Y15            0.870         0.890         0.950
+ Y25            0.850         0.870         0.880         0.930
+ Y35            0.870         0.880         0.890         0.870         0.940
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     Y11                   3.863      -0.256      -4.000    1.05%       2.000      3.000      4.000
+              95.000       5.065       0.466       9.000    1.05%       4.000      6.000
+     Y21                   3.242       0.075       0.000    3.30%       2.000      3.000      3.000
+              91.000       2.315      -0.444       7.000    1.10%       4.000      5.000
+     Y31                   4.709      -0.226      -4.000    1.16%       2.000      4.000      5.000
+              86.000       7.834       0.188      12.000    1.16%       6.000      7.000
+     Y12                   3.744       0.216       0.000    4.44%       2.000      3.000      3.000
+              90.000       4.346      -0.696       9.000    1.11%       4.000      6.000
+     Y22                   3.044       0.061       0.000    3.33%       2.000      3.000      3.000
+              90.000       2.020      -0.493       6.000    4.44%       3.000      4.000
+     Y32                   5.161       0.029       0.000    2.15%       3.000      5.000      5.000
+              93.000       6.092      -0.532      11.000    1.08%       6.000      7.000
+     Y13                   3.600       0.073       0.000    7.37%       2.000      3.000      4.000
+              95.000       3.777       0.161      10.000    1.05%       4.000      5.000
+     Y23                   3.011      -0.091       1.000   14.94%       2.000      3.000      3.000
+              87.000       1.575      -1.027       5.000   12.64%       3.000      4.000
+     Y33                   4.870      -0.161       0.000    6.52%       3.000      5.000      5.000
+              92.000       6.309      -0.469      10.000    2.17%       5.000      7.000
+     Y14                   3.736       0.401       0.000    4.40%       1.000      3.000      4.000
+              91.000       4.919      -0.264      10.000    1.10%       4.000      6.000
+     Y24                   2.978       0.315       0.000    2.17%       2.000      3.000      3.000
+              92.000       2.000       0.193       7.000    2.17%       3.000      4.000
+     Y34                   5.202       0.014       0.000    3.19%       3.000      5.000      5.000
+              94.000       6.459      -0.494      12.000    1.06%       6.000      7.000
+     Y15                   3.663       0.251      -1.000    1.05%       2.000      3.000      3.000
+              95.000       4.729      -0.241       9.000    2.11%       4.000      6.000
+     Y25                   2.828       0.090       0.000    5.38%       2.000      2.000      3.000
+              93.000       1.906      -0.136       6.000    4.30%       3.000      4.000
+     Y35                   4.777       0.264       0.000    3.19%       2.000      4.000      5.000
+              94.000       5.961       0.209      13.000    1.06%       5.000      6.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       12
+
+Loglikelihood
+
+          H0 Value                       -2442.122
+          H1 Value                       -2383.918
+
+Information Criteria
+
+          Akaike (AIC)                    4908.244
+          Bayesian (BIC)                  4939.506
+          Sample-Size Adjusted BIC        4901.607
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                            116.408
+          Degrees of Freedom                   123
+          P-Value                           0.6500
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.000
+          90 Percent C.I.                    0.000  0.042
+          Probability RMSEA <= .05           0.981
+
+CFI/TLI
+
+          CFI                                1.000
+          TLI                                1.006
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1008.560
+          Degrees of Freedom                   105
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.079
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ ETA1     BY
+    Y11                1.000      0.000    999.000    999.000
+    Y21                0.457      0.041     11.258      0.000
+    Y31                1.131      0.098     11.564      0.000
+
+ ETA2     BY
+    Y12                1.000      0.000    999.000    999.000
+    Y22                0.457      0.041     11.258      0.000
+    Y32                1.131      0.098     11.564      0.000
+
+ ETA3     BY
+    Y13                1.000      0.000    999.000    999.000
+    Y23                0.457      0.041     11.258      0.000
+    Y33                1.131      0.098     11.564      0.000
+
+ ETA4     BY
+    Y14                1.000      0.000    999.000    999.000
+    Y24                0.457      0.041     11.258      0.000
+    Y34                1.131      0.098     11.564      0.000
+
+ ETA5     BY
+    Y15                1.000      0.000    999.000    999.000
+    Y25                0.457      0.041     11.258      0.000
+    Y35                1.131      0.098     11.564      0.000
+
+ THETA1   BY
+    Y11                1.000      0.000    999.000    999.000
+    Y21                0.797      0.050     15.897      0.000
+    Y31                1.183      0.076     15.513      0.000
+    Y12                1.000      0.000    999.000    999.000
+    Y22                0.797      0.050     15.897      0.000
+    Y32                1.183      0.076     15.513      0.000
+    Y13                1.000      0.000    999.000    999.000
+    Y23                0.797      0.050     15.897      0.000
+    Y33                1.183      0.076     15.513      0.000
+    Y14                1.000      0.000    999.000    999.000
+    Y24                0.797      0.050     15.897      0.000
+    Y34                1.183      0.076     15.513      0.000
+    Y15                1.000      0.000    999.000    999.000
+    Y25                0.797      0.050     15.897      0.000
+    Y35                1.183      0.076     15.513      0.000
+
+ ETA1     WITH
+    ETA2               0.000      0.000    999.000    999.000
+    ETA3               0.000      0.000    999.000    999.000
+    ETA4               0.000      0.000    999.000    999.000
+    ETA5               0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+
+ ETA2     WITH
+    ETA3               0.000      0.000    999.000    999.000
+    ETA4               0.000      0.000    999.000    999.000
+    ETA5               0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+
+ ETA3     WITH
+    ETA4               0.000      0.000    999.000    999.000
+    ETA5               0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+
+ ETA4     WITH
+    ETA5               0.000      0.000    999.000    999.000
+    THETA1             0.000      0.000    999.000    999.000
+
+ ETA5     WITH
+    THETA1             0.000      0.000    999.000    999.000
+
+ Means
+    THETA1             3.699      0.146     25.398      0.000
+
+ Intercepts
+    Y11                0.000      0.000    999.000    999.000
+    Y21                0.065      0.194      0.337      0.736
+    Y31                0.540      0.295      1.829      0.067
+    Y12                0.000      0.000    999.000    999.000
+    Y22                0.065      0.194      0.337      0.736
+    Y32                0.540      0.295      1.829      0.067
+    Y13                0.000      0.000    999.000    999.000
+    Y23                0.065      0.194      0.337      0.736
+    Y33                0.540      0.295      1.829      0.067
+    Y14                0.000      0.000    999.000    999.000
+    Y24                0.065      0.194      0.337      0.736
+    Y34                0.540      0.295      1.829      0.067
+    Y15                0.000      0.000    999.000    999.000
+    Y25                0.065      0.194      0.337      0.736
+    Y35                0.540      0.295      1.829      0.067
+
+ Variances
+    ETA1               2.080      0.250      8.322      0.000
+    ETA2               2.080      0.250      8.322      0.000
+    ETA3               2.080      0.250      8.322      0.000
+    ETA4               2.080      0.250      8.322      0.000
+    ETA5               2.080      0.250      8.322      0.000
+    THETA1             1.490      0.296      5.031      0.000
+
+ Residual Variances
+    Y11                0.950      0.153      6.191      0.000
+    Y21                0.586      0.050     11.623      0.000
+    Y31                1.748      0.216      8.085      0.000
+    Y12                0.950      0.153      6.191      0.000
+    Y22                0.586      0.050     11.623      0.000
+    Y32                1.748      0.216      8.085      0.000
+    Y13                0.950      0.153      6.191      0.000
+    Y23                0.586      0.050     11.623      0.000
+    Y33                1.748      0.216      8.085      0.000
+    Y14                0.950      0.153      6.191      0.000
+    Y24                0.586      0.050     11.623      0.000
+    Y34                1.748      0.216      8.085      0.000
+    Y15                0.950      0.153      6.191      0.000
+    Y25                0.586      0.050     11.623      0.000
+    Y35                1.748      0.216      8.085      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.944E-03
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  10:33:38
+        Ending Time:  10:33:39
+       Elapsed Time:  00:00:01
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

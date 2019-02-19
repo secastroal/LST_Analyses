@@ -3,7 +3,7 @@
 
 check.mplus <- function(mplus.model, file.path){
   fit <- mplus.model
-  H1check <- grep(pattern = "INCREASE THE NUMBER OF H1 ITERATIONS.", readLines(file.path))
+  H1check <- grep(pattern = "INCREASE THE NUMBER OF H1 ITERATIONS.", readLines(con = file.path))
   if(length(fit$parameters) == 0){
     return("Non-convergence")
   }else{

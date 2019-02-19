@@ -1,0 +1,35 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Mon Feb 18 17:02:04 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+par & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & 0.000 & 0.000 & 0.010 & 0.010 \\ 
+  loadings3 & -0.011 & -0.011 & 0.010 & 0.010 \\ 
+  loadings4 & 0.001 & 0.001 & 0.018 & 0.018 \\ 
+  loadings5 & 0.023 & 0.022 & 0.043 & 0.043 \\ 
+  state.var & -0.060 & -0.060 & -0.194 & -0.194 \\ 
+  error.var1 & -0.004 & -0.004 & 0.025 & 0.025 \\ 
+  error.var2 & 0.008 & 0.008 & 0.073 & 0.073 \\ 
+  error.var3 & 0.010 & 0.010 & 0.059 & 0.059 \\ 
+  error.var4 & -0.007 & -0.006 & 0.063 & 0.063 \\ 
+  error.var5 & 0.001 & 0.001 & 0.038 & 0.038 \\ 
+  loadings1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  loadings2 & -0.007 & -0.007 & 0.003 & 0.003 \\ 
+  loadings3 & -0.010 & -0.010 & -0.002 & -0.002 \\ 
+  loadings4 & -0.003 & -0.003 & 0.014 & 0.014 \\ 
+  loadings5 & -0.006 & -0.006 & 0.013 & 0.012 \\ 
+  intercepts1 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  intercepts2 & 0.005 & 0.004 & -0.153 & -0.153 \\ 
+  intercepts3 & 0.031 & 0.031 & 0.079 & 0.078 \\ 
+  intercepts4 & 0.002 & 0.002 & -0.124 & -0.125 \\ 
+  intercepts5 & 0.021 & 0.021 & -0.025 & -0.024 \\ 
+  trait.mean & 0.052 & 0.052 & -0.413 & -0.413 \\ 
+  trait.var & -0.100 & -0.099 & -0.212 & -0.212 \\ 
+   \hline
+\end{tabular}
+\caption{Bias of model msst with N = 500 , I = 5 , nT = 15 , and missingness proportion = 0 .} 
+\end{table}

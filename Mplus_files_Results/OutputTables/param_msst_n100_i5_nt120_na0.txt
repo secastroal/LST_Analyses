@@ -1,0 +1,36 @@
+% latex table generated in R 3.5.2 by xtable 1.8-3 package
+% Tue Feb 19 04:01:41 2019
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllll}
+  \hline
+par & true & long & wide & Ltrunc & Wtrunc \\ 
+  \hline
+Status & NA & Ok & Non-convergence & Ok & Non-convergence \\ 
+  loadings1 & 1 & 1 &  & 1 &  \\ 
+  loadings2 & 0.5 & 0.497 &  & 0.504 &  \\ 
+  loadings3 & 1.3 & 1.333 &  & 1.338 &  \\ 
+  loadings4 & 0.8 & 0.827 &  & 0.838 &  \\ 
+  loadings5 & 1.1 & 1.126 &  & 1.139 &  \\ 
+  state.var & 2 & 1.936 &  & 1.841 &  \\ 
+  error.var1 & 1 & 1.025 &  & 1.053 &  \\ 
+  error.var2 & 0.5 & 0.497 &  & 0.567 &  \\ 
+  error.var3 & 1.5 & 1.482 &  & 1.521 &  \\ 
+  error.var4 & 0.8 & 0.823 &  & 0.888 &  \\ 
+  error.var5 & 1.2 & 1.162 &  & 1.209 &  \\ 
+  loadings1 & 1 & 1 &  & 1 &  \\ 
+  loadings2 & 0.8 & 0.802 &  & 0.81 &  \\ 
+  loadings3 & 1.2 & 1.22 &  & 1.232 &  \\ 
+  loadings4 & 0.9 & 0.914 &  & 0.929 &  \\ 
+  loadings5 & 1.1 & 1.096 &  & 1.108 &  \\ 
+  intercepts1 & 0 & 0 &  & 0 &  \\ 
+  intercepts2 & 0.2 & 0.194 &  & 0.053 &  \\ 
+  intercepts3 & 0.4 & 0.343 &  & 0.4 &  \\ 
+  intercepts4 & 0.6 & 0.563 &  & 0.447 &  \\ 
+  intercepts5 & 0.8 & 0.833 &  & 0.813 &  \\ 
+  trait.mean & 4 & 4.117 &  & 3.649 &  \\ 
+  trait.var & 2 & 1.658 &  & 1.569 &  \\ 
+   \hline
+\end{tabular}
+\caption{Parameter estimates of model msst with N = 100 , I = 5 , nT = 120 , and missingness proportion = 0 .} 
+\end{table}

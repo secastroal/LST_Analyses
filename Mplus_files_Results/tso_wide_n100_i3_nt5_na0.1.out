@@ -1,0 +1,498 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+02/19/2019  10:33 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Your title goes here
+  DATA: FILE = "Mplus_files_Results/tso_wide_n100_i3_nt5_na0.1.dat";
+  VARIABLE:
+  NAMES = subjn y11 y21 y31 y12 y22 y32 y13 y23 y33 y14 y24 y34 y15 y25 y35;
+  MISSING=.;
+  USEVAR = y11
+  y21
+  y31
+  y12
+  y22
+  y32
+  y13
+  y23
+  y33
+  y14
+  y24
+  y34
+  y15
+  y25
+  y35 ;
+
+
+  ANALYSIS:
+  TYPE = GENERAL ;
+  ESTIMATOR = BAYES ;
+  BITERATIONS = (5000) ;
+
+  PROCESSORS = 2 ;
+
+  MODEL:
+
+  ! Latent occasion variables
+  occ1 BY y11@1
+  y21 (las21)
+  y31 (las31) ;
+  occ2 BY y12@1
+  y22 (las21)
+  y32 (las31) ;
+  occ3 BY y13@1
+  y23 (las21)
+  y33 (las31) ;
+  occ4 BY y14@1
+  y24 (las21)
+  y34 (las31) ;
+  occ5 BY y15@1
+  y25 (las21)
+  y35 (las31) ;
+
+  ! Latent trait variable or trait indicators
+  theta1 BY y11@1
+  y12@1
+  y13@1
+  y14@1
+  y15@1 ;
+  theta2 BY y21@1
+  y22@1
+  y23@1
+  y24@1
+  y25@1 ;
+  theta3 BY y31@1
+  y32@1
+  y33@1
+  y34@1
+  y35@1 ;
+
+  ! Intercepts and means
+  [y11*] (ins11) ;
+  [y21*] (ins21) ;
+  [y31*] (ins31) ;
+  [y12*] (ins11) ;
+  [y22*] (ins21) ;
+  [y32*] (ins31) ;
+  [y13*] (ins11) ;
+  [y23*] (ins21) ;
+  [y33*] (ins31) ;
+  [y14*] (ins11) ;
+  [y24*] (ins21) ;
+  [y34*] (ins31) ;
+  [y15*] (ins11) ;
+  [y25*] (ins21) ;
+  [y35*] (ins31) ;
+  [occ1@0] ;
+  [occ2@0] ;
+  [occ3@0] ;
+  [occ4@0] ;
+  [occ5@0] ;
+
+  ! Set 0 correlations
+  occ1 WITH occ2@0
+  occ3@0
+  occ4@0
+  occ5@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ2 WITH occ3@0
+  occ4@0
+  occ5@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ3 WITH occ4@0
+  occ5@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ4 WITH occ5@0
+  theta1@0
+  theta2@0
+  theta3@0 ;
+  occ5 WITH theta1@0
+  theta2@0
+  theta3@0 ;
+
+  ! autoregressive effects
+  occ2 ON occ1 (beta1) ;
+  occ3 ON occ2 (beta1) ;
+  occ4 ON occ3 (beta1) ;
+  occ5 ON occ4 (beta1) ;
+
+  ! Variance components
+  y11 (err11) ;
+  y21 (err21) ;
+  y31 (err31) ;
+  y12 (err11) ;
+  y22 (err21) ;
+  y32 (err31) ;
+  y13 (err11) ;
+  y23 (err21) ;
+  y33 (err31) ;
+  y14 (err11) ;
+  y24 (err21) ;
+  y34 (err31) ;
+  y15 (err11) ;
+  y25 (err21) ;
+  y35 (err31) ;
+  occ1 (oc_var1) ;
+  occ2 (oc_var1) ;
+  occ3 (oc_var1) ;
+  occ4 (oc_var1) ;
+  occ5 (oc_var1) ;
+  theta1(t_var1) ;
+  theta2(t_var2) ;
+  theta3(t_var3) ;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+Your title goes here
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         100
+
+Number of dependent variables                                   15
+Number of independent variables                                  0
+Number of continuous latent variables                            8
+
+Observed dependent variables
+
+  Continuous
+   Y11         Y21         Y31         Y12         Y22         Y32
+   Y13         Y23         Y33         Y14         Y24         Y34
+   Y15         Y25         Y35
+
+Continuous latent variables
+   OCC1        OCC2        OCC3        OCC4        OCC5        THETA1
+   THETA2      THETA3
+
+
+Estimator                                                    BAYES
+Specifications for Bayesian Estimation
+  Point estimate                                            MEDIAN
+  Number of Markov chain Monte Carlo (MCMC) chains               2
+  Random seed for the first chain                                0
+  Starting value information                           UNPERTURBED
+  Treatment of categorical mediator                         LATENT
+  Algorithm used for Markov chain Monte Carlo           GIBBS(PX1)
+  Convergence criterion                                  0.500D-01
+  Maximum number of iterations                               50000
+  K-th iteration used for thinning                               1
+
+Input data file(s)
+  Mplus_files_Results/tso_wide_n100_i3_nt5_na0.1.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+     Number of missing data patterns            54
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              Y11           Y21           Y31           Y12           Y22
+              ________      ________      ________      ________      ________
+ Y11            0.910
+ Y21            0.800         0.870
+ Y31            0.780         0.740         0.840
+ Y12            0.810         0.770         0.740         0.890
+ Y22            0.860         0.820         0.800         0.850         0.950
+ Y32            0.780         0.740         0.730         0.750         0.800
+ Y13            0.800         0.750         0.740         0.800         0.840
+ Y23            0.830         0.790         0.760         0.800         0.860
+ Y33            0.830         0.790         0.760         0.820         0.870
+ Y14            0.850         0.810         0.780         0.840         0.880
+ Y24            0.870         0.840         0.800         0.850         0.900
+ Y34            0.820         0.780         0.750         0.810         0.870
+ Y15            0.840         0.810         0.780         0.820         0.880
+ Y25            0.830         0.790         0.780         0.820         0.870
+ Y35            0.820         0.790         0.770         0.790         0.860
+
+
+           Covariance Coverage
+              Y32           Y13           Y23           Y33           Y14
+              ________      ________      ________      ________      ________
+ Y32            0.850
+ Y13            0.760         0.880
+ Y23            0.760         0.810         0.900
+ Y33            0.780         0.800         0.810         0.910
+ Y14            0.790         0.830         0.840         0.860         0.930
+ Y24            0.800         0.840         0.850         0.870         0.890
+ Y34            0.770         0.790         0.820         0.820         0.850
+ Y15            0.790         0.820         0.840         0.840         0.860
+ Y25            0.770         0.810         0.820         0.840         0.860
+ Y35            0.750         0.780         0.800         0.830         0.850
+
+
+           Covariance Coverage
+              Y24           Y34           Y15           Y25           Y35
+              ________      ________      ________      ________      ________
+ Y24            0.950
+ Y34            0.860         0.910
+ Y15            0.880         0.850         0.930
+ Y25            0.870         0.830         0.850         0.920
+ Y35            0.850         0.800         0.830         0.820         0.890
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     Y11                   1.920       0.182      -3.142    1.10%       0.182      1.146      1.494
+              91.000       4.629      -0.660       6.591    1.10%       2.131      4.202
+     Y21                   2.295      -0.070      -0.837    1.15%       1.193      1.804      2.412
+              87.000       2.252      -0.397       6.018    1.15%       2.738      3.506
+     Y31                   2.876       0.253      -1.997    1.19%       0.860      1.645      2.776
+              84.000       6.848      -0.335       9.800    1.19%       3.294      5.209
+     Y12                   1.868      -0.162      -5.302    1.12%      -0.185      1.400      2.400
+              89.000       6.166       0.276       8.901    1.12%       2.790      3.542
+     Y22                   2.460      -0.167      -1.525    1.05%       0.883      2.140      2.349
+              95.000       2.626      -0.421       5.673    1.05%       2.923      3.770
+     Y32                   3.289      -0.386      -5.539    1.18%       1.295      2.581      3.671
+              85.000       9.500       0.792      11.187    1.18%       4.150      5.503
+     Y13                   1.852      -0.093      -3.826    1.14%      -0.336      1.295      2.000
+              88.000       6.203      -0.211       8.304    1.14%       2.275      3.774
+     Y23                   2.342      -0.283      -2.662    1.11%       1.234      1.780      2.291
+              90.000       2.726       0.328       5.649    1.11%       2.683      3.832
+     Y33                   2.882      -0.007      -3.656    1.10%       0.416      1.974      2.803
+              91.000       8.932      -0.346      10.566    1.10%       3.806      5.477
+     Y14                   1.593       0.061      -5.881    1.08%      -0.732      0.816      1.466
+              93.000       6.970       0.063       8.790    1.08%       2.135      4.017
+     Y24                   2.305      -0.737      -3.728    1.05%       0.920      2.087      2.627
+              95.000       2.682       1.031       5.274    1.05%       2.899      3.476
+     Y34                   2.580      -0.364      -7.127    1.10%       0.259      2.080      2.666
+              91.000       7.917       0.566       9.590    1.10%       3.362      4.966
+     Y15                   1.871      -0.033      -3.883    1.08%      -0.085      1.518      2.013
+              93.000       5.743      -0.006       8.532    1.08%       2.583      3.944
+     Y25                   2.425      -0.426      -1.864    1.09%       1.396      2.089      2.638
+              92.000       2.083      -0.004       5.552    1.09%       2.978      3.620
+     Y35                   2.969       0.277      -2.397    1.12%       0.373      2.218      2.963
+              89.000       7.534      -0.214      11.241    1.12%       3.503      5.472
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     USE THE FBITERATIONS OPTION TO INCREASE THE NUMBER OF ITERATIONS BY A FACTOR
+     OF AT LEAST TWO TO CHECK CONVERGENCE AND THAT THE PSR VALUE DOES NOT INCREASE.
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                              16
+
+Bayesian Posterior Predictive Checking using Chi-Square
+
+          95% Confidence Interval for the Difference Between
+          the Observed and the Replicated Chi-Square Values
+
+                                -49.075            29.764
+
+          Posterior Predictive P-Value              0.620
+
+Information Criteria
+
+          Deviance (DIC)                         4904.687
+          Estimated Number of Parameters (pD)      14.749
+          Bayesian (BIC)                         4948.370
+
+
+
+MODEL RESULTS
+
+                                Posterior  One-Tailed         95% C.I.
+                    Estimate       S.D.      P-Value   Lower 2.5%  Upper 2.5%  Significance
+
+ OCC1     BY
+    Y11                1.000       0.000      0.000       1.000       1.000
+    Y21                0.528       0.043      0.000       0.453       0.621      *
+    Y31                1.350       0.090      0.000       1.181       1.541      *
+
+ OCC2     BY
+    Y12                1.000       0.000      0.000       1.000       1.000
+    Y22                0.528       0.043      0.000       0.453       0.621      *
+    Y32                1.350       0.090      0.000       1.181       1.541      *
+
+ OCC3     BY
+    Y13                1.000       0.000      0.000       1.000       1.000
+    Y23                0.528       0.043      0.000       0.453       0.621      *
+    Y33                1.350       0.090      0.000       1.181       1.541      *
+
+ OCC4     BY
+    Y14                1.000       0.000      0.000       1.000       1.000
+    Y24                0.528       0.043      0.000       0.453       0.621      *
+    Y34                1.350       0.090      0.000       1.181       1.541      *
+
+ OCC5     BY
+    Y15                1.000       0.000      0.000       1.000       1.000
+    Y25                0.528       0.043      0.000       0.453       0.621      *
+    Y35                1.350       0.090      0.000       1.181       1.541      *
+
+ THETA1   BY
+    Y11                1.000       0.000      0.000       1.000       1.000
+    Y12                1.000       0.000      0.000       1.000       1.000
+    Y13                1.000       0.000      0.000       1.000       1.000
+    Y14                1.000       0.000      0.000       1.000       1.000
+    Y15                1.000       0.000      0.000       1.000       1.000
+
+ THETA2   BY
+    Y21                1.000       0.000      0.000       1.000       1.000
+    Y22                1.000       0.000      0.000       1.000       1.000
+    Y23                1.000       0.000      0.000       1.000       1.000
+    Y24                1.000       0.000      0.000       1.000       1.000
+    Y25                1.000       0.000      0.000       1.000       1.000
+
+ THETA3   BY
+    Y31                1.000       0.000      0.000       1.000       1.000
+    Y32                1.000       0.000      0.000       1.000       1.000
+    Y33                1.000       0.000      0.000       1.000       1.000
+    Y34                1.000       0.000      0.000       1.000       1.000
+    Y35                1.000       0.000      0.000       1.000       1.000
+
+ OCC2       ON
+    OCC1               0.578       0.077      0.000       0.410       0.710      *
+
+ OCC3       ON
+    OCC2               0.578       0.077      0.000       0.410       0.710      *
+
+ OCC4       ON
+    OCC3               0.578       0.077      0.000       0.410       0.710      *
+
+ OCC5       ON
+    OCC4               0.578       0.077      0.000       0.410       0.710      *
+
+ OCC1     WITH
+    OCC2               0.000       0.000      1.000       0.000       0.000
+    OCC3               0.000       0.000      1.000       0.000       0.000
+    OCC4               0.000       0.000      1.000       0.000       0.000
+    OCC5               0.000       0.000      1.000       0.000       0.000
+    THETA1             0.000       0.000      1.000       0.000       0.000
+    THETA2             0.000       0.000      1.000       0.000       0.000
+    THETA3             0.000       0.000      1.000       0.000       0.000
+
+ OCC2     WITH
+    OCC3               0.000       0.000      1.000       0.000       0.000
+    OCC4               0.000       0.000      1.000       0.000       0.000
+    OCC5               0.000       0.000      1.000       0.000       0.000
+    THETA1             0.000       0.000      1.000       0.000       0.000
+    THETA2             0.000       0.000      1.000       0.000       0.000
+    THETA3             0.000       0.000      1.000       0.000       0.000
+
+ OCC3     WITH
+    OCC4               0.000       0.000      1.000       0.000       0.000
+    OCC5               0.000       0.000      1.000       0.000       0.000
+    THETA1             0.000       0.000      1.000       0.000       0.000
+    THETA2             0.000       0.000      1.000       0.000       0.000
+    THETA3             0.000       0.000      1.000       0.000       0.000
+
+ OCC4     WITH
+    OCC5               0.000       0.000      1.000       0.000       0.000
+    THETA1             0.000       0.000      1.000       0.000       0.000
+    THETA2             0.000       0.000      1.000       0.000       0.000
+    THETA3             0.000       0.000      1.000       0.000       0.000
+
+ OCC5     WITH
+    THETA1             0.000       0.000      1.000       0.000       0.000
+    THETA2             0.000       0.000      1.000       0.000       0.000
+    THETA3             0.000       0.000      1.000       0.000       0.000
+
+ THETA2   WITH
+    THETA1             1.442       0.391      0.000       0.753       2.286      *
+
+ THETA3   WITH
+    THETA1             1.746       0.649      0.001       0.599       3.096      *
+    THETA2             1.434       0.432      0.000       0.644       2.335      *
+
+ Means
+    OCC1               0.000       0.000      1.000       0.000       0.000
+
+ Intercepts
+    Y11                1.772       0.199      0.000       1.431       2.194      *
+    Y21                2.340       0.133      0.000       2.112       2.628      *
+    Y31                2.838       0.224      0.000       2.429       3.320      *
+    Y12                1.772       0.199      0.000       1.431       2.194      *
+    Y22                2.340       0.133      0.000       2.112       2.628      *
+    Y32                2.838       0.224      0.000       2.429       3.320      *
+    Y13                1.772       0.199      0.000       1.431       2.194      *
+    Y23                2.340       0.133      0.000       2.112       2.628      *
+    Y33                2.838       0.224      0.000       2.429       3.320      *
+    Y14                1.772       0.199      0.000       1.431       2.194      *
+    Y24                2.340       0.133      0.000       2.112       2.628      *
+    Y34                2.838       0.224      0.000       2.429       3.320      *
+    Y15                1.772       0.199      0.000       1.431       2.194      *
+    Y25                2.340       0.133      0.000       2.112       2.628      *
+    Y35                2.838       0.224      0.000       2.429       3.320      *
+    OCC2               0.000       0.000      1.000       0.000       0.000
+    OCC3               0.000       0.000      1.000       0.000       0.000
+    OCC4               0.000       0.000      1.000       0.000       0.000
+    OCC5               0.000       0.000      1.000       0.000       0.000
+
+ Variances
+    OCC1               2.020       0.239      0.000       1.584       2.525      *
+    THETA1             2.241       0.633      0.000       1.155       3.625      *
+    THETA2             1.216       0.279      0.000       0.728       1.807      *
+    THETA3             2.025       0.771      0.000       0.690       3.679      *
+
+ Residual Variances
+    Y11                1.072       0.128      0.000       0.831       1.338      *
+    Y21                0.581       0.053      0.000       0.484       0.693      *
+    Y31                1.270       0.216      0.000       0.861       1.741      *
+    Y12                1.072       0.128      0.000       0.831       1.338      *
+    Y22                0.581       0.053      0.000       0.484       0.693      *
+    Y32                1.270       0.216      0.000       0.861       1.741      *
+    Y13                1.072       0.128      0.000       0.831       1.338      *
+    Y23                0.581       0.053      0.000       0.484       0.693      *
+    Y33                1.270       0.216      0.000       0.861       1.741      *
+    Y14                1.072       0.128      0.000       0.831       1.338      *
+    Y24                0.581       0.053      0.000       0.484       0.693      *
+    Y34                1.270       0.216      0.000       0.861       1.741      *
+    Y15                1.072       0.128      0.000       0.831       1.338      *
+    Y25                0.581       0.053      0.000       0.484       0.693      *
+    Y35                1.270       0.216      0.000       0.861       1.741      *
+    OCC2               2.020       0.239      0.000       1.584       2.525      *
+    OCC3               2.020       0.239      0.000       1.584       2.525      *
+    OCC4               2.020       0.239      0.000       1.584       2.525      *
+    OCC5               2.020       0.239      0.000       1.584       2.525      *
+
+
+     Beginning Time:  10:33:55
+        Ending Time:  10:33:58
+       Elapsed Time:  00:00:03
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen
