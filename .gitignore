@@ -12,7 +12,14 @@ appendixrevised.R
 PooledMeanSD.R
 PooledMeanSD.RPooledMeanSD.R
 cacert.pem
-Simulations
-ML-VAR_Examples
 LST_simulations.rar
 ExportLatex.R
+#Folders
+Simulations
+ML-VAR_Examples
+lavaan_files
+ML_Mplus_files
+Mplus_files
+Mplus_files_Results
+Steyer_ComplementC
+FoldersDelete

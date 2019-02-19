@@ -1,5 +1,0 @@
-TITLE: Your title goes here
-DATA: FILE = "ML_Mplus_files/sim_cuts_test.dat";
-VARIABLE: 
-NAMES = subjn time y1 y2 y3 y4; 
-MISSING=.;
