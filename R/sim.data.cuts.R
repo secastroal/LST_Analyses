@@ -72,12 +72,9 @@ sim.data.cuts <- function(N, nT, I, within.parameters, between.parameters,
 # Modified function to allow simulating cuts data with time variant parameters ----
 # This function simulates the data in wide format.
 # To make it simple, the parameters provided are always time invariant parameters. When time.invariant is false,
-#   time variant parameters are generated based on the time invariant parameters provided. Loadings are always 
-#   sampled from the seq(0.5, 1.2, by = 0.1). Intercepts and variances are sampled from an interval centered on
-#   the mean of the respective time invariant parameters, which is half the mean long. For example, given the 
-#   time-invariant intercetps c(2, 3, 4), the new time-variant intercepts are sampled from ten numbers within
-#   the interval c(1.5, 4.5). # Intercepts and variances are sampled in this way because they have a huge 
-#   impact on the final simulated data
+#   time variant parameters are generated based on the time invariant parameters provided. Only variances are
+#   turned time-variant, in such a way that they increase or decrease by 0.1 between the supplied variance and
+#   the supplied variance plus one.
 
 
 
@@ -100,25 +97,29 @@ sim.data.cuts.tv <- function(N, nT, I, within.parameters, between.parameters, ti
   
   if(!time.invariant){
     #within parameters
-    within.parameters$loadings <- matrix(sample(seq(0.5, 1.2, by = 0.1), size = nT * I, replace = TRUE), nrow = nT, 
-                                         ncol = I, byrow = TRUE)
-    within.parameters$loadings[ , 1] <- 1
-    within.parameters$CS.var <- sample(seq(within.parameters$CS.var * (3/4), within.parameters$CS.var * (5/4), 
-                                           length.out = 11), size = nT, replace = TRUE)
-    within.parameters$US.var <- matrix(sample(seq(mean(within.parameters$US.var) * (3/4), mean(within.parameters$US.var) * (5/4), 
-                                                  length.out = 11), size = nT * I, replace = TRUE), nrow = nT, 
-                                       ncol = I, byrow = TRUE)
+    within.parameters$loadings <- matrix(within.parameters$loadings, nrow = nT, ncol = I, byrow = TRUE)
+    
+    var_up <- seq(within.parameters$CS.var, within.parameters$CS.var+1, by = 0.1)
+    var_cycle <- c(var_up, rev(var_up[-c(1, length(var_up))]))
+    within.parameters$CS.var <- rep(var_cycle, length.out = nT)
+    rm(var_up, var_cycle)
+    
+    old.US.var <- within.parameters$US.var
+    
+    within.parameters$US.var <- matrix(NA, nrow = nT, ncol = I)
+    
+    for(i in 1:I){
+      var_up <- seq(old.US.var[i], old.US.var[i]+1, by = 0.1)
+      var_cycle <- c(var_up, rev(var_up[-c(1, length(var_up))]))
+      within.parameters$US.var[,i] <- rep(var_cycle, length.out = nT)
+      rm(var_up, var_cycle)
+    }
+    rm(old.US.var, i)
     
     #between parameters
-    between.parameters$intercepts <- matrix(sample(seq(mean(between.parameters$intercepts) *  (3/4), mean(between.parameters$intercepts) *  (5/4), 
-                                                       length.out = 11), size = nT * I, replace = TRUE), nrow = nT, 
-                                            ncol = I, byrow = TRUE)
-    between.parameters$loadings <- matrix(sample(seq(0.5, 1.2, by = 0.1), size = nT * I, replace = TRUE), nrow = nT, 
-                                          ncol = I, byrow = TRUE)
-    between.parameters$loadings[1,1] <- 1
-    between.parameters$loadings.UT <- matrix(sample(seq(0.5, 1.2, by = 0.1), size = nT * I, replace = TRUE), nrow = nT, 
-                                             ncol = I, byrow = TRUE)
-    between.parameters$loadings.UT[1, ] <- 1
+    between.parameters$intercepts <- matrix(between.parameters$intercepts, nrow = nT, ncol = I, byrow = TRUE)
+    between.parameters$loadings <- matrix(between.parameters$loadings, nrow = nT, ncol = I, byrow = TRUE)
+    between.parameters$loadings.UT <- matrix(1, nrow = nT, ncol = I)
   }
   
   # Compute standard deviations
@@ -192,6 +193,3 @@ sim.data.cuts.tv <- function(N, nT, I, within.parameters, between.parameters, ti
   
 }
 
-#x <- seq(1, 1+1, by = 0.1);x
-#y <- c(x, rev(x[-c(1, length(x))]));y
-#rep(y, length.out = nT)

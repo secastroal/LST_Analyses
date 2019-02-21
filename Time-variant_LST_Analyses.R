@@ -13,6 +13,7 @@ library(lavaan)
 library(lsttheory)
 library(MplusAutomation)
 library(MASS)
+library(xtable)
 source("R/write.Mplus.options.R")
 source("R/write.cuts.to.Mplus.R")
 source("R/write.mlcuts.to.Mplus.R")
@@ -23,14 +24,18 @@ source("R/write.mltso.to.Mplus.R")
 source("R/sim.data.cuts.R")
 source("R/sim.data.msst.R")
 source("R/sim.data.tso.R")
-folder <- "Mplus_files_Results/" #Folder to store results
+source("R/check.Mplus.R")
+source("R/var.coeff.R")
+source("R/var.coeff.tv.R")
+source("R/runModels_2.R")
+folder <- "Mplus_files_TV/" #Folder to store results
 
 # 1.0 CUTS ----
 
 # 1.1 Set Conditions and true parameters ----
 
 model <- "cuts"
-N <- 100 # number of persons
+N <- 200 # number of persons
 nT <- 30 # number of times // measurement occasions
 I <- 4 # number of variables // items
 seed <- 123
@@ -39,10 +44,9 @@ set.seed(seed)
 
 # Within Parameters
 
-state_loadings <- sample(seq(0.5, 1.2, by = 0.1), size = I, replace = TRUE) # loading parameters for the latent common state
-state_loadings[1] <- 1 # fixing first loading at 1
+state_loadings <- c(1, 0.5, 1.3, 0.8, 1.1)[1:I] # loading parameters for the latent common state
 var_CS <- 2 # Variance latent common state
-var_US <- sample(seq(1, 3, by = 0.5), size = I, replace = TRUE) # Variance of latent unique states
+var_US <- c(1, 0.5, 1.5, 0.8, 1.2)[1:I] # Variance of latent unique states
 
 within.parameters <- list(loadings = state_loadings, CS.var = var_CS, US.var = var_US)
 
@@ -50,11 +54,10 @@ rm(state_loadings, var_CS, var_US)
 
 # Between Paramaters
 
-intercepts <- sample(seq(2, 4, by = 0.5), size = I, replace = TRUE) # intercepts
-trait_loadings <- sample(seq(0.5, 1.2, by = 0.1), size = I, replace = TRUE) # loading parametes for the latent common trait
-trait_loadings[1] <- 1 # fixing first loading at 1
+intercepts <- seq(2, by = 0.5, length.out = I) # intercepts
+trait_loadings <- c(1, 0.8, 1.2, 0.9, 1.1)[1:I] # loading parametes for the latent common trait
 var_CT <- 1.5 # variance latent common trait
-var_UT <- sample(seq(0.5, 2, by = 0.5), size = I, replace = TRUE) # variance latent unique traits
+var_UT <- c(0.5, 1, 0.3, 0.8, 0.5)[1:I] # variance latent unique traits
 
 between.parameters <- list(loadings = trait_loadings, intercepts = intercepts, CT.var = var_CT, UT.var = var_UT)
 
@@ -62,47 +65,42 @@ rm(intercepts, trait_loadings, var_CT, var_UT)
 
 # 1.2 Simulate data ----
 
-# Time invariant data
-cuts.data <- sim.data.cuts(N, nT, I, within.parameters = within.parameters, 
-                           between.parameters = between.parameters, seed = seed)
-
-# Truncate time invariant data long
-
-cuts.data$data.trunc <- trunc(cuts.data$data.long)
-
 # Time variant data
-
-cuts.data.tv <- sim.data.cuts.tv(N, nT, I, within.parameters = within.parameters, time.invariant = FALSE, 
+data.tv <- sim.data.cuts.tv(N, nT, I, within.parameters = within.parameters, time.invariant = FALSE, 
                                  between.parameters = between.parameters, seed = seed)
 
-# 1.3 Model estimation ---- 
+rm(within.parameters, between.parameters)
 
-# Matrix to store estimated parameters
+# 1.3 Model estimation ----
 
-est.par <- data.frame(matrix(NA, 5*I + 2, 6))
-est.par[, 2] <- c(unlist(within.parameters), unlist(between.parameters))
-est.par[, 1] <- names(c(unlist(within.parameters), unlist(between.parameters)))
-names(est.par) <- c("par", "true", "long", "wide", "trunc", "tv" )
+# Compute true variance coefficients
 
-# Matrix to store rmse
-rmse <- est.par[, -2] 
+true.var.coeff <- cuts.var.coeff.tv(I, nT, within.parameters = data.tv$within.parameters, 
+                                    between.parameters = data.tv$between.parameters)
+# Matrix to save fit measures
 
-# 1.3.4 ML-cuts time-variant data ----
+fit.measures <- data.frame(matrix(NA, 2, 12))
+names(fit.measures) <- c("Data","LL","Parameters","ChiSqM_Value","ChiSqM_DF","ChiSqM_PValue",      
+                         "CFI","TLI","AIC",                 
+                         "BIC","aBIC","RMSEA_Estimate")
+fit.measures[,1] <- c("Long", "Wide")
 
-file.name <- paste0(model, "_tv_N", N, "_I", I, "_nT", nT)
+# 1.3.1 ML-cuts with time-variant data ----
+
+file.name <- paste0(model, "long_tv_n", N, "_i", I, "_nt", nT)
 
 # Prepare data: Write data in Mplus format and write input file template
-prepareMplusData(cuts.data.tv$data.long, paste0(folder, file.name, ".dat"), inpfile = T)
+prepareMplusData(data.tv$data.long, paste0(folder, file.name, ".dat"), inpfile = T)
 
 # Complete Mplus syntax
-analysis_syntax <- write.Mplus.options(usevariables = names(cuts.data.tv$data.long)[-(1:2)],
-                                       cluster = names(cuts.data.tv$data.long)[1],
+analysis_syntax <- write.Mplus.options(usevariables = names(data.tv$data.long)[-(1:2)],
+                                       cluster = names(data.tv$data.long)[1],
                                        analysis_type = "TWOLEVEL",
                                        estimator = "ML",
                                        iterations = 500000,
                                        h1iterations = 500000)
 
-ml_syntax <- write.mlcuts.to.Mplus(cuts.data.tv$data.long[, -(1:2)])
+ml_syntax <- write.mlcuts.to.Mplus(data.tv$data.long[, -(1:2)])
 
 write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
@@ -112,32 +110,114 @@ rm(analysis_syntax, ml_syntax)
 # Run model in Mplus
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
 
-tv.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
+fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-est.par[, 6] <- tv.fit$unstandardized[,3]
+if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+  estimates <- fit$parameters$unstandardized[,3]
+  
+  est.within <- list(loadings = estimates[1:I], #within loadings
+                     CS.var = estimates[I + 1], #CS.var
+                     US.var = estimates[(I + 2):(2 * I + 1)]) # US.var
+  
+  est.between <- list(loadings = estimates[(2 * I + 2):(3 * I + 1)], #loadings
+                      intercepts = estimates[(3 * I + 2):(4 * I + 1)], # intercepts
+                      CT.var = estimates[(4 * I + 2)], # CT.var
+                      UT.var = estimates[(4 * I + 3):(5 * I + 2)]) # UT.var
+  
+  est.var.coeff.long <- cuts.var.coeff(within.parameters = est.within,
+                                       between.parameters = est.between)
+  
+  fit.measures[1, 2:12] <- fit$summaries[, c(18, 11:14, 20:25)]
+  
+  rm(file.name, fit, estimates, est.between, est.within)
+  
+}else{
+  stop("Model estimation did not converge or there are warning or error messages in the output")
+}
 
-# In this case, the rmse is root mean of the se between the estimated parameter vs the set of 
-# time-variant true parameters. 
+# 1.3.2 cuts data.wide ("Perfect fit") ----
 
-tv.rmse <- rbind((est.par[1:I, 6] - t(cuts.data.tv$within.parameters$loadings)) ^ 2,
-                 (est.par[I + 1, 6] - t(cuts.data.tv$within.parameters$CS.var)) ^ 2,
-                 (est.par[(I + 2):(2 * I + 1), 6] - t(cuts.data.tv$within.parameters$US.var)) ^ 2,
-                 (est.par[(2 * I + 2):(3 * I + 1), 6] - t(cuts.data.tv$between.parameters$loadings)) ^ 2,
-                 (est.par[(3 * I + 2):(4 * I + 1), 6] - t(cuts.data.tv$between.parameters$intercepts)) ^ 2)
+file.name <- paste0(model, "_wide_tv_n", N, "_i", I, "_nt", nT)
 
-rmse[1:(4 * I + 1), 5] <- sqrt(apply(tv.rmse, 1, mean))
-rmse[(4*I + 2):(5*I + 2), 5] <- sqrt((est.par[(4*I + 2):(5*I + 2), 6] - est.par[(4*I + 2):(5*I + 2), 2]) ^ 2)
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(data.tv$data.wide, paste0(folder, file.name, ".dat"), inpfile = T)
 
-rm(file.name, tv.fit, tv.rmse)
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(data.tv$data.wide)[-1],
+                                       analysis_type = "GENERAL",
+                                       estimator = "ML",
+                                       iterations = 50000,
+                                       h1iterations = 50000)
 
-# 1.4 Save output ----
 
-write.table(est.par, paste0(folder, model, "_par_N", N, "_I", I, "_nT", nT, ".dat"))
-write.table(rmse, paste0(folder, model, "_rmse_N", N, "_I", I, "_nT", nT, ".dat"))
+mplus_syntax <- write.cuts.to.Mplus(data.tv$data.wide[,-1],  nstate = nT,
+                                    method.trait = "om",
+                                    scale.invariance = list(int = TRUE, lambda = TRUE),
+                                    state.trait.invariance = FALSE,
+                                    fixed.method.loadings = TRUE,
+                                    homocedasticity.assumption = list(error = FALSE, cs.red = FALSE, ut.red = FALSE))
+
+
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, mplus_syntax)
+
+# Run model in Mplus
+runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+
+fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+
+if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+  estimates <- fit$parameters$unstandardized[ ,3]
+  
+  wloadings <- estimates[1:(I*nT)] # within loadings
+  CS.var <- estimates[((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + 1):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT)] #CS variances
+  US.var <- estimates[((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2 + I):((((nT + I + 1)*(nT + I))/2) + (nT*I*5) + nT + 1 + I)] #US variances
+  bloadings <- estimates[(I*nT + 1):(I*nT*2)] #between loadings CT
+  loadings.UT <- estimates[(I*nT*2 + 1):(I*nT*3)] #between loadings UT
+  intercepts <- estimates[((((nT + I + 1)*(nT + I))/2) + (nT*I*3) + 1):((((nT + I + 1)*(nT + I))/2) + (nT*I*4))] #intercepts
+  CT.var <- estimates[(((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1] # CT variance
+  UT.var <- estimates[((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + I)] #UT variances
+  
+  est.within <- list(loadings = matrix(wloadings, nrow = nT, ncol = I, byrow = TRUE),
+                     CS.var = CS.var,
+                     US.var = matrix(US.var,  nrow = nT, ncol = I, byrow = TRUE))
+  est.between <- list(loadings = matrix(bloadings, nrow = nT, ncol = I, byrow = TRUE),
+                      intercepts = matrix(intercepts, nrow = nT, ncol = I, byrow = TRUE),
+                      loadings.UT = matrix(loadings.UT, nrow = nT, ncol = I),
+                      CT.var = CT.var,
+                      UT.var = UT.var)
+  
+  est.var.coeff.wide <- cuts.var.coeff.tv(I=I, nT= nT, within.parameters = est.within,
+                                          between.parameters = est.between)
+  
+  fit.measures[2, 2:12] <- fit$summaries[, c(18, 11:14, 20:25)]
+  
+  rm(file.name, fit, estimates, est.between, est.within, wloadings, CS.var, US.var, 
+     bloadings, loadings.UT, intercepts, CT.var, UT.var)
+}else{
+  stop("Model estimation did not converge or there are warning or error messages in the output")
+}
+
+# 1.4 Plot variance coefficients and save fit measures ---- 
+
+jpeg(paste0(getwd(), "/", folder, "OutputPlots/varcoeff_", model, "_n", N, "_i", I, "_nt", nT, ".jpg" ))
+matplot(cbind(t(true.var.coeff[seq(1,20, by = I),]), t(est.var.coeff.wide[seq(1,20, by = I),])), type = c("l"), ylim = c(0, 1),
+        col = c("green", "orange", "red", "blue", "black"), xlab = "Time", ylab = "Explained Variance", lty = rep(1:2, each = 5), lwd = 2,
+        main = paste0(model, ": Variance coefficients."))
+abline(h = est.var.coeff.long[seq(1,20, by = I),], col = c("green", "orange", "red", "blue", "black"), lty = 3)
+legend("bottomright", legend = c("CCon", "UCon", "TCon", "Spe", "Rel"), col = c("green", "orange", "red", "blue", "black"),
+       lty = 1, lwd = 2, pch = c(NA,NA,16,16,16), cex = 0.8)
+dev.off()
+
+print(xtable(fit.measures, type = "latex", caption = paste0("Fit measures: multi-level and single-level ", model, " N =", N, ", I = ", I, ", and nT =", nT, ".")), 
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/FitMeasures_", model, "_n", N, "_i", I, "_nt", nT, ".txt"))
+
 
 # 1.5 Clean environment ----
 
-rm(N, nT, I, seed, within.parameters, between.parameters, cuts.data, cuts.data.tv, est.par, model, rmse)
+rm(data.tv, est.var.coeff.long, est.var.coeff.wide, true.var.coeff, fit.measures, model)
 
 
 # 2.0 MSST ----
@@ -145,19 +225,13 @@ rm(N, nT, I, seed, within.parameters, between.parameters, cuts.data, cuts.data.t
 # 2.1 Set Conditions and true parameters ----
 
 model <- "msst" 
-N <- 100 # number of persons
-nT <- 30 # number of times // measurement occasions
-I <- 4 # number of variables // items
-seed <- 123
-
 set.seed(seed)
 
 # Within Parameters
 
-state_loadings <- sample(seq(0.5, 1.2, by = 0.1), size = I, replace = TRUE) # loading parameters for the latent state
-state_loadings[1] <- 1 # fixing first loading at 1
+state_loadings <- c(1, 0.5, 1.3, 0.8, 1.1)[1:I] # loading parameters for the latent state
 var_state <- 2 # Variance latent state residual
-var_m_error <- sample(seq(1, 3, by = 0.5), size = I, replace = TRUE) # Variance of measurement errors
+var_m_error <- c(1, 0.5, 1.5, 0.8, 1.2)[1:I] # Variance of measurement errors
 
 within.parameters <- list(loadings = state_loadings, state.var = var_state, error.var = var_m_error)
 
@@ -165,10 +239,8 @@ rm(state_loadings, var_state, var_m_error)
 
 # Between Paramaters
 
-intercepts <- sample(seq(0, 1, by = 0.2), size = I, replace = TRUE) # intercepts
-intercepts[1] <- 0 # fixing first intercept at 0
-trait_loadings <- sample(seq(0.5, 1.2, by = 0.1), size = I, replace = TRUE) # loading parametes for the latent trait
-trait_loadings[1] <- 1 # fixing first loading at 1
+intercepts <- seq(0, by = 0.2, length.out = I) # intercepts
+trait_loadings <- c(1, 0.8, 1.2, 0.9, 1.1)[1:I] # loading parametes for the latent trait
 
 var_trait <- 2 # variance latent trait variable
 mean_trait <- 4 # mean latent trait variable
@@ -180,47 +252,42 @@ rm(intercepts, trait_loadings, var_trait, mean_trait)
 
 # 2.2 Simulate data ----
 
-#Time invariant data
-msst.data <- sim.data.msst(N, nT, I, within.parameters = within.parameters, 
-                           between.parameters = between.parameters, seed = seed)
-
-# Truncate time invariant data long
-
-msst.data$data.trunc <- trunc(msst.data$data.long)
-
 # Time variant data
 
-msst.data.tv <- sim.data.msst.tv(N, nT, I,  within.parameters = within.parameters, 
+data.tv <- sim.data.msst.tv(N, nT, I,  within.parameters = within.parameters, 
                                  between.parameters = between.parameters, time.invariant = FALSE, seed = seed)
+rm(within.parameters, between.parameters)
 
 # 2.3 Model estimation ----
 
-# Matrix to store estimated parameters
+# Compute true variance coefficients
 
-est.par <- data.frame(matrix(NA, 4*I + 3, 6))
-est.par[, 2] <- c(unlist(within.parameters), unlist(between.parameters))
-est.par[, 1] <- names(c(unlist(within.parameters), unlist(between.parameters)))
-names(est.par) <- c("par", "true", "long", "wide", "trunc", "tv" )
+true.var.coeff <- msst.var.coeff.tv(I, nT, within.parameters = data.tv$within.parameters, 
+                                    between.parameters = data.tv$between.parameters)
+# Matrix to save fit measures
 
-# Matrix to store rmse
-rmse <- est.par[, -2]
+fit.measures <- data.frame(matrix(NA, 2, 12))
+names(fit.measures) <- c("Data","LL","Parameters","ChiSqM_Value","ChiSqM_DF","ChiSqM_PValue",      
+                         "CFI","TLI","AIC",                 
+                         "BIC","aBIC","RMSEA_Estimate")
+fit.measures[,1] <- c("Long", "Wide")
 
-# 2.3.4 ML-msst time-variant data ----
+# 2.3.1 ML-msst time-variant data ----
 
-file.name <- paste0(model, "_tv_N", N, "_I", I, "_nT", nT)
+file.name <- paste0(model, "long_tv_n", N, "_i", I, "_nt", nT)
 
 # Prepare data: Write data in Mplus format and write input file template
-prepareMplusData(msst.data.tv$data.long, paste0(folder,file.name,".dat"), inpfile = T)
+prepareMplusData(data.tv$data.long, paste0(folder,file.name,".dat"), inpfile = T)
 
 # Complete Mplus syntax
-analysis_syntax <- write.Mplus.options(usevariables = names(msst.data.tv$data.long)[-(1:2)],
-                                       cluster = names(msst.data.tv$data.long)[1],
+analysis_syntax <- write.Mplus.options(usevariables = names(data.tv$data.long)[-(1:2)],
+                                       cluster = names(data.tv$data.long)[1],
                                        analysis_type = "TWOLEVEL",
                                        estimator = "ML",
                                        iterations = 500000,
                                        h1iterations = 500000)
 
-ml_syntax <- write.mlmsst.to.Mplus(msst.data.tv$data.long[, -(1:2)])
+ml_syntax <- write.mlmsst.to.Mplus(data.tv$data.long[, -(1:2)])
 
 write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
@@ -230,52 +297,121 @@ rm(analysis_syntax, ml_syntax)
 # Run model in Mplus
 runModels(paste0(getwd(),"/", folder,file.name,".inp"))
 
-tv.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
+fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-est.par[,6] <- tv.fit$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
-                                       (4*I + 2), (6*I +3)),3]
+if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+  estimates <- fit$parameters$unstandardized[,3]
+  
+  est.within <- list(loadings = estimates[1:I], #within loadings
+                     state.var = estimates[I + 1], #state.var
+                     error.var = estimates[(I + 2):(2 * I + 1)]) # error.var
+  
+  est.between <- list(loadings = estimates[((3*I + 2):(4*I + 1))], #loadings
+                      intercepts = estimates[((5*I + 3):(6*I + 2))], # intercepts
+                      trait.mean = estimates[(4 * I + 2)], # trait.mean
+                      trait.var = estimates[(6*I +3)]) # trait.var
+  
+  est.var.coeff.long <- msst.var.coeff(within.parameters = est.within,
+                                       between.parameters = est.between)
+  
+  fit.measures[1, 2:12] <- fit$summaries[, c(18, 11:14, 20:25)]
+  
+  rm(file.name, fit, est.between, est.within, estimates)
+}else{
+  stop("Model estimation did not converge or there are warning or error messages in the output")
+}
 
-# In this case, the rmse is root mean of the se between the estimated parameter vs the set of 
-# time-variant true parameters. 
+# 2.3.2 msst data.wide ("Perfect fit") ----
 
-tv.rmse <- rbind((est.par[1:I, 6] - t(msst.data.tv$within.parameters$loadings)) ^ 2,
-                 (est.par[I + 1, 6] - t(msst.data.tv$within.parameters$state.var)) ^ 2,
-                 (est.par[(I + 2):(2 * I + 1), 6] - t(msst.data.tv$within.parameters$error.var)) ^ 2,
-                 (est.par[(2 * I + 2):(3 * I + 1), 6] - t(msst.data.tv$between.parameters$loadings)) ^ 2,
-                 (est.par[(3 * I + 2):(4 * I + 1), 6] - t(msst.data.tv$between.parameters$intercepts)) ^ 2)
+file.name <- paste0(model, "_wide_tv_n", N, "_i", I, "_nt", nT)
 
-rmse[1:(4 * I + 1), 5] <- sqrt(apply(tv.rmse, 1, mean))
-rmse[(4*I + 2):(4*I + 3), 5] <- sqrt((est.par[(4*I + 2):(4*I + 3), 6] - est.par[(4*I + 2):(4*I + 3), 2]) ^ 2)
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(data.tv$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
 
-rm(file.name, tv.fit, tv.rmse)
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(data.tv$data.wide)[-1],
+                                       analysis_type = "GENERAL",
+                                       estimator = "ML",
+                                       iterations = 50000,
+                                       h1iterations = 50000)
 
-# 2.4 Save output ----
+mplus_syntax <- write.msst.to.Mplus(data.tv$data.wide[,-1], neta = nT, ntheta = 1, 
+                                    equiv.assumption = list(tau = "cong", theta = "cong"),
+                                    scale.invariance = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
+                                    homocedasticity.assumption = list(error = FALSE, state.red = FALSE),
+                                    second.order.trait = FALSE)
 
-write.table(est.par, paste0(folder, model, "_par_N", N, "_I", I, "_nT", nT, ".dat"))
-write.table(rmse, paste0(folder, model, "_rmse_N", N, "_I", I, "_nT", nT, ".dat"))
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, mplus_syntax)
+
+# Run model in Mplus
+runModels(paste0(getwd(),"/", folder,file.name,".inp"))
+
+fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+
+if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+  estimates <- fit$parameters$unstandardized[ ,3]
+  
+  wloadings <- estimates[1:(I*nT)] # within loadings
+  state.var <- estimates[((I * nT * 3) + ((nT+1) * nT / 2) + 2):((I * nT * 3) + ((nT+1) * nT / 2) + nT + 1)] #state variances
+  error.var <- estimates[((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 4) + ((nT+1) * nT / 2) + nT + 2)] #error variances
+  
+  bloadings <- estimates[((I * nT + 1):(I * nT * 2))] #between loadings
+  intercepts <- estimates[((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 3) + ((nT+1) * nT / 2) + 1)] #intercepts
+  trait.mean <- estimates[((I * nT * 2) + ((nT+1) * nT / 2) + 1)] #trait mean
+  trait.var <- estimates[((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2)] # trait variance
+  
+  est.within <- list(loadings = matrix(wloadings, nrow = nT, ncol = I, byrow = TRUE),
+                     state.var = state.var,
+                     error.var = matrix(error.var,  nrow = nT, ncol = I, byrow = TRUE))
+  est.between <- list(loadings = matrix(bloadings, nrow = nT, ncol = I, byrow = TRUE),
+                      intercepts = matrix(intercepts, nrow = nT, ncol = I, byrow = TRUE),
+                      trait.mean = trait.mean,
+                      trait.var = trait.var)
+  
+  est.var.coeff.wide <- msst.var.coeff.tv(I=I, nT= nT, within.parameters = est.within,
+                                          between.parameters = est.between)
+  
+  fit.measures[2, 2:12] <- fit$summaries[, c(18, 11:14, 20:25)]
+  
+  rm(file.name, fit, estimates, est.within, est.between, bloadings, error.var, intercepts, state.var,
+     trait.mean, trait.var, wloadings)
+}else{
+  stop("Model estimation did not converge or there are warning or error messages in the output")
+}
+
+# 2.4 Plot variance coefficients and save fit measures ---- 
+
+jpeg(paste0(getwd(), "/", folder, "OutputPlots/varcoeff_", model, "_n", N, "_i", I, "_nt", nT, ".jpg" ))
+matplot(cbind(t(true.var.coeff[seq(4,12, by = I),]), t(est.var.coeff.wide[seq(4,12, by = I),])), type = c("l"), ylim = c(0, 1),
+        col = c("red", "blue", "black"), xlab = "Time", ylab = "Explained Variance", lty = rep(1:2, each = 3), lwd = 2,
+        main = paste0(model, ": Variance coefficients."))
+abline(h = est.var.coeff.long[seq(4,12, by = I),], col = c("red", "blue", "black"), lty = 3)
+legend("bottomright", legend = c("Con", "Spe", "Rel"), col = c("red", "blue", "black"),
+       lty = 1, lwd = 2, pch = c(16,16,16), cex = 0.8)
+dev.off()
+
+print(xtable(fit.measures, type = "latex", caption = paste0("Fit measures: multi-level and single-level ", model, " N =", N, ", I = ", I, ", and nT =", nT, ".")), 
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/FitMeasures_", model, "_n", N, "_i", I, "_nt", nT, ".txt"))
 
 # 2.5 Clean environment ----
 
-rm(N, nT, I, seed, within.parameters, between.parameters, msst.data, msst.data.tv, est.par, model, rmse)
+rm(data.tv, est.var.coeff.long, est.var.coeff.wide, true.var.coeff, fit.measures, model)
 
 # 3.0 TSO ----
 
 # 3.1 Set Conditions and true parameters ----
 
 model <- "tso" 
-N <- 100 # number of persons
-nT <- 30 # number of times // measurement occasions
-I <- 4 # number of variables // items
-seed <- 123
-
 set.seed(seed)
 
 # Within Parameters
 
-state_loadings <- sample(seq(0.5, 1.2, by = 0.1), size = I, replace = TRUE) # loading parameters for the latent state
-state_loadings[1] <- 1 # fixing first loading at 1
+state_loadings <- c(1, 0.5, 1.3, 0.8, 1.1)[1:I] # loading parameters for the latent state
 var_state <- 2 # Variance latent state residual
-var_error <- sample(seq(1, 3, by = 0.5), size = I, replace = TRUE) # Variance of latent measurement errors
+var_error <- c(1, 0.5, 1.5, 0.8, 1.2)[1:I] # Variance of latent measurement errors
 
 ar_effect <- 0.5 # autoregressive effect on the latent state residuals
 
@@ -286,13 +422,20 @@ rm(state_loadings, var_state, var_error, ar_effect)
 
 # Between Paramaters 
 
-intercepts <- sample(seq(2, 4, by = 0.5), size = I, replace = TRUE) # intercepts
+intercepts <- seq(2, by = 0.5, length.out = I) # intercepts
 
-var_ind_traits <- sample(seq(1.5, 2.5, by = 0.5), size = I, replace = TRUE) # variance latent indicator trait variables
+var_ind_traits <- c(2, 1.5, 2.5, 1.75, 2.25)[1:I] # variance latent indicator trait variables
 
-R <- matrix(sample((6:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
-R[lower.tri(R)] = t(R)[lower.tri(R)]
-diag(R) <- 1
+# Create positive definite correlation matrix
+repeat {
+  R <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
+  R[lower.tri(R)] = t(R)[lower.tri(R)]
+  diag(R) <- 1
+  print(det(R))
+  if (det(R) > 0){
+    break
+  }
+}
 
 between.parameters <- list(intercepts = intercepts, trait.ind.var = var_ind_traits, 
                            cor.matrix = R)
@@ -301,55 +444,40 @@ rm(intercepts, var_ind_traits, R)
 
 # 3.2 Simulate data ----
 
-# Time invariant data
-tso.data <- sim.data.tso(N, nT, I, within.parameters = within.parameters, 
-                         between.parameters = between.parameters, seed = seed)
-
-# Truncate time invariant data long
-
-tso.data$data.trunc <- trunc(tso.data$data.long)
-
 # Time variant data
 
-tso.data.tv <- sim.data.tso.tv(N, nT, I, within.parameters = within.parameters, time.invariant = FALSE,
+data.tv <- sim.data.tso.tv(N, nT, I, within.parameters = within.parameters, time.invariant = FALSE,
                                between.parameters = between.parameters, seed = seed)
+rm(within.parameters, between.parameters)
 
 # 3.3 Model estimation ----
 
-# Matrix to store estimated parameters
+# Compute true variance coefficients
 
-est.par <- data.frame(matrix(NA, 4*I + 2 + (I * (I-1) /2), 6))
-# Get true parameters + lower triangle of the true variance-covariance matrix 
-est.par[, 2] <- round(c(unlist(within.parameters), unlist(between.parameters)[1:(2*I)],
-                        tso.data$between.parameters$Sigma[t(lower.tri(tso.data$between.parameters$Sigma))]),2)
-# Get array indices of the variance-covariance matrix
-cov.ind <- which(t(lower.tri(tso.data$between.parameters$Sigma))==TRUE, arr.ind = TRUE)
-# Define parameter names + covariance names
-est.par[, 1] <- c(names(c(unlist(within.parameters), unlist(between.parameters)[1:(2*I)])),
-                  paste0("cov", cov.ind[,1], cov.ind[,2]))
-names(est.par) <- c("par", "true", "long", "wide", "trunc", "tv" )
+true.var.coeff <- tso.var.coeff.tv(I, nT, within.parameters = data.tv$within.parameters, 
+                                    between.parameters = data.tv$between.parameters)
+# Matrix to save fit measures
+#change to bayesian  fit measures
+fit.measures <- data.frame(matrix(NA, 2, 4))
+names(fit.measures) <- c("Data","Parameters","DIC","pD")
+fit.measures[,1] <- c("Long", "Wide")
 
-# Matrix to store rmse
-rmse <- est.par[, -2] 
+# 3.3.1 ML-tso time-variant data ----
 
-rm(cov.ind)
-
-# 3.3.4 ML-tso time-variant data ----
-
-file.name <- paste0(model, "_tv_N", N, "_I", I, "_nT", nT)
+file.name <- paste0(model, "long_tv_n", N, "_i", I, "_nt", nT)
 
 # Prepare data: Write data in Mplus format and write input file template
-prepareMplusData(tso.data.tv$data.long, paste0(folder,file.name,".dat"), inpfile = T)
+prepareMplusData(data.tv$data.long, paste0(folder,file.name,".dat"), inpfile = T)
 
 # Complete Mplus syntax
-analysis_syntax <- write.Mplus.options(usevariables = names(tso.data.tv$data.long)[-(1:2)],
-                                       cluster = names(tso.data.tv$data.long)[1],
+analysis_syntax <- write.Mplus.options(usevariables = names(data.tv$data.long)[-(1:2)],
+                                       cluster = names(data.tv$data.long)[1],
                                        analysis_type = "TWOLEVEL",
                                        estimator = "BAYES",
                                        iterations = 5000,
                                        processors = 2)
 
-ml_syntax <- write.mltso.to.Mplus(tso.data.tv$data.long[, -c(1, 2)])
+ml_syntax <- write.mltso.to.Mplus(data.tv$data.long[, -c(1, 2)])
 
 write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
@@ -359,32 +487,109 @@ rm(analysis_syntax, ml_syntax)
 # Run modelin Mplus
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
 
-tv.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out"), what = "parameters")$parameters #read Mplus output
+fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-est.par[, 6] <- tv.fit$unstandardized[c(1:(2*I + 2),
-                                        (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
-                                        (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 3]
+if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+  estimates <- fit$parameters$unstandardized[,3]
+  
+  est.within <- list(loadings = estimates[1:I], #within loadings
+                     ar.effect = estimates[I + 1], # autoregresive effect
+                     error.var = estimates[(I + 2):(2 * I + 1)], #error.var
+                     state.var = estimates[(2 * I + 2)]) # state.var
+  
+  est.between <- list(intercepts = estimates[(4 * I + (I * (I - 1) / 2) + 3):(5 * I + (I * (I - 1) / 2) + 2)], # intercepts
+                      trait.ind.var = estimates[(5 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2)]) # trait indicator variances
+  
+  
+  est.var.coeff.long <- tso.var.coeff(I = I, nT = nT, within.parameters = est.within,
+                                      between.parameters = est.between)
+  
+  fit.measures[1, 2:4] <- fit$summaries[, c(11:13)]
+  
+  rm(file.name, fit, est.between, est.within, estimates)
+}else{
+  stop("Model estimation did not converge or there are warning or error messages in the output")
+}
 
-# In this case, the rmse is root mean of the se between the estimated parameter vs the set of 
-# time-variant true parameters. 
+# 3.3.2 tso data.wide ("Perfect fit") ----
 
-tv.rmse <- rbind((est.par[1:I, 6] - t(tso.data.tv$within.parameters$loadings)) ^ 2,
-                 (est.par[I + 1, 6] - t(c(tso.data.tv$within.parameters$ar.effect, NA))) ^ 2, # An NA is added to complete a vector of length nT
-                 (est.par[(I + 2):(2 * I + 1), 6] - t(tso.data.tv$within.parameters$error.var)) ^ 2,
-                 (est.par[(2 * I + 2), 6] - t(tso.data.tv$within.parameters$state.var)) ^ 2,
-                 (est.par[(2 * I + 3):(3 * I + 2), 6] - t(tso.data.tv$between.parameters$intercepts)) ^ 2)
+file.name <- paste0(model, "_wide_tv_n", N, "_i", I, "_nt", nT)
 
-rmse[1:(3 * I + 2), 5] <- sqrt(apply(tv.rmse, 1, mean, na.rm = TRUE))
-rmse[(3*I + 3):(4*I + 2 + (I * (I-1) /2)), 5] <- sqrt((est.par[(3*I + 3):(4*I + 2 + (I * (I-1) /2)), 6] - 
-                                                         est.par[(3*I + 3):(4*I + 2 + (I * (I-1) /2)), 2]) ^ 2)
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(data.tv$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
 
-rm(file.name, tv.fit, tv.rmse)
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(data.tv$data.wide)[-1],
+                                       analysis_type = "GENERAL",
+                                       estimator = "BAYES",
+                                       iterations = 30000,
+                                       processors = 2)
 
-# 3.4 Save output ----
+ml_syntax <- write.tso.to.Mplus(data.tv$data.wide[,-1], nocc = nT, figure = "3b",
+                                equiv.assumption = list(occ = "cong", theta = "equi"),
+                                scale.invariance = list(int = TRUE, lambda = TRUE),
+                                homocedasticity.assumption = list(error = FALSE, occ.red = FALSE),
+                                autoregressive.homogeneity = FALSE)
 
-write.table(est.par, paste0(folder, model, "_par_N", N, "_I", I, "_nT", nT, ".dat"))
-write.table(rmse, paste0(folder, model, "_rmse_N", N, "_I", I, "_nT", nT, ".dat"))
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, ml_syntax)
+
+# Run modelin Mplus
+runModels(paste0(getwd(),"/",folder,file.name,".inp"))
+
+fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+
+if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+  estimates <- fit$parameters$unstandardized[ ,3]
+  
+  wloadings <- estimates[1:(I*nT)] # within loadings
+  ar.effects <- estimates[(2 * I * nT + 1):(2 * I * nT + nT - 1)] #autoregressive effects
+  error.var <- estimates[((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((4 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I)] #error variances
+  state.var <- estimates[c(((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), 
+                           ((4 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((4 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + nT - 1))] #state variances
+  
+  bloadings <- estimates[(I*nT + 1):(I*nT*2)] #between loadings
+  intercepts <- estimates[((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2))] #intercepts
+  trait.ind.var <- estimates[((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I)] # trait indicators variances
+  
+  est.within <- list(loadings = matrix(wloadings, nrow = nT, ncol = I, byrow = TRUE),
+                     ar.effects = ar.effects,
+                     state.var = state.var,
+                     error.var = matrix(error.var,  nrow = nT, ncol = I, byrow = TRUE))
+  est.between <- list(loadings = matrix(bloadings, nrow = nT, ncol = I),
+                      intercepts = matrix(intercepts, nrow = nT, ncol = I, byrow = TRUE),
+                      trait.ind.var = trait.ind.var)
+  
+  est.var.coeff.wide <- tso.var.coeff.tv(I=I, nT= nT, within.parameters = est.within,
+                                         between.parameters = est.between)
+  
+  #fit.measures[2, 2:4] <- fit$summaries[, c(11:13)]
+  
+  
+  rm(file.name, fit, est.between, est.within, ar.effects, bloadings,
+     error.var, estimates, intercepts, state.var, trait.ind.var, wloadings)
+}else{
+  stop("Model estimation did not converge or there are warning or error messages in the output")
+}
+
+# 3.4 Plot variance coefficients and save fit measures ---- 
+
+jpeg(paste0(getwd(), "/", folder, "OutputPlots/varcoeff_", model, "_n", N, "_i", I, "_nt", nT, ".jpg" ))
+matplot(cbind(t(true.var.coeff[seq(4,20, by = I),]), t(est.var.coeff.wide[seq(4,20, by = I),])), type = c("l"), ylim = c(0, 1),
+        col = c("green", "orange", "red", "blue", "black"), xlab = "Time", ylab = "Explained Variance", lty = rep(1:2, each = 5), lwd = 2,
+        main = paste0(model, ": Variance coefficients."))
+abline(h = est.var.coeff.long[seq(4,20, by = I),nT], col = c("green", "orange", "red", "blue", "black"), lty = 3)
+legend("bottomright", legend = c("Pred", "UPred", "Con", "Spe", "Rel"), col = c("green", "orange", "red", "blue", "black"),
+       lty = 1, lwd = 2, pch = c(NA,NA,16,16,16), cex = 0.8)
+dev.off()
+
+#print(xtable(fit.measures, type = "latex", caption = paste0("Fit measures: multi-level and single-level ", model, " N =", N, ", I = ", I, ", and nT =", nT, ".")), 
+ #     include.rownames = FALSE, file = paste0(folder, "OutputTables/FitMeasures_", model, "_n", N, "_i", I, "_nt", nT, ".txt"))
+
 
 # 3.5 Clean environment ----
 
-rm(N, nT, I, seed, within.parameters, between.parameters, tso.data, tso.data.tv, est.par, model, rmse)
+rm(N, nT, I, seed, data.tv, model, est.var.coeff.long, est.var.coeff.wide, fit.measures,
+   true.var.coeff)

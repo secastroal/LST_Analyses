@@ -70,14 +70,13 @@ sim.data.tso <- function(N, nT, I, within.parameters, between.parameters,
                data.wide = wide_sim_data))
 }
 
-# Modified function to allow simulating msst data with time variant parameters ----
+# Modified function to allow simulating cuts data with time variant parameters ----
+# This function simulates the data in wide format.
 # To make it simple, the parameters provided are always time invariant parameters. When time.invariant is false,
-#   time variant parameters are generated based on the time invariant parameters provided. Loadings are always 
-#   sampled from the seq(0.5, 1.2, by = 0.1). Intercepts and variances are sampled from an interval centered on
-#   the mean of the respective time invariant parameters, which is half the mean long. For example, given the 
-#   time-invariant intercetps c(2, 3, 4), the new time-variant intercepts are sampled from ten numbers within
-#   the interval c(1.5, 4.5). # Intercepts and variances are sampled in this way because they have a huge 
-#   impact on the final simulated data
+#   time variant parameters are generated based on the time invariant parameters provided. Variances are
+#   turned time-variant, in such a way that they increase or decrease by 0.1 between the supplied variance and
+#   the supplied variance plus one. The autoregressive effect just increase over time between c(0.2, 0.8).
+#   Loadings and intercetps remain time invariant.
 
 sim.data.tso.tv <- function(N, nT, I, within.parameters, between.parameters, time.invariant = TRUE, 
                          seed = 123){
@@ -97,24 +96,30 @@ sim.data.tso.tv <- function(N, nT, I, within.parameters, between.parameters, tim
   }
   
   if(!time.invariant){
-    #within parameters
-    within.parameters$loadings <- matrix(sample(seq(0.5, 1.2, by = 0.1), size = nT * I, replace = TRUE), nrow = nT, 
-                                         ncol = I, byrow = TRUE)
-    within.parameters$loadings[ , 1] <- 1
-    within.parameters$state.var <- sample(seq(within.parameters$state.var * (3/4), within.parameters$state.var * (5/4), 
-                                              length.out = 11), size = nT, replace = TRUE)
-    within.parameters$error.var <- matrix(sample(seq(mean(within.parameters$error.var) * (3/4), 
-                                                     mean(within.parameters$error.var) * (5/4), length.out = 11), 
-                                                 size = nT * I, replace = TRUE), nrow = nT, ncol = I, byrow = TRUE)
-    within.parameters$ar.effect <- sample(seq(0.1, 0.9, by = 0.1), size = nT-1, replace = TRUE)
+    # within parameters
+    within.parameters$loadings <- matrix(within.parameters$loadings, nrow = nT, ncol = I, byrow = TRUE)
+    within.parameters$ar.effect <- seq(0.2, 0.8, length.out = nT - 1)
     
-    #between parameters
-    between.parameters$intercepts <- matrix(sample(seq(mean(between.parameters$intercepts) *  (3/4), mean(between.parameters$intercepts) *  (5/4), 
-                                                       length.out = 11), size = nT * I, replace = TRUE), nrow = nT, 
-                                            ncol = I, byrow = TRUE)
-    between.parameters$loadings <- matrix(sample(seq(0.5, 1.2, by = 0.1), size = nT * I, replace = TRUE), nrow = nT, 
-                                          ncol = I, byrow = TRUE)
-    between.parameters$loadings[1, ] <- 1
+    var_up <- seq(within.parameters$state.var, within.parameters$state.var+1, by = 0.1)
+    var_cycle <- c(var_up, rev(var_up[-c(1, length(var_up))]))
+    within.parameters$state.var <- rep(var_cycle, length.out = nT)
+    rm(var_up, var_cycle)
+    
+    old.error.var <- within.parameters$error.var
+    
+    within.parameters$error.var <- matrix(NA, nrow = nT, ncol = I)
+    
+    for(i in 1:I){
+      var_up <- seq(old.error.var[i], old.error.var[i]+1, by = 0.1)
+      var_cycle <- c(var_up, rev(var_up[-c(1, length(var_up))]))
+      within.parameters$error.var[,i] <- rep(var_cycle, length.out = nT)
+      rm(var_up, var_cycle)
+    }
+    rm(old.error.var, i)
+    
+    # between parameters
+    between.parameters$intercepts <- matrix(between.parameters$intercepts, nrow = nT, ncol = I, byrow = TRUE)
+    between.parameters$loadings <- matrix(1, nrow = nT, ncol = I, byrow = TRUE)
   }
   
   #Compute standard deviations

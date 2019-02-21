@@ -53,6 +53,9 @@ obs <- names(dt)
 
 o_red <- paste0("o_err", ind_s)
 s_red <- paste0("s_var", ind_t)
+if(!second.order.trait){
+  s_red <- paste0("s_var", 1:neta)
+}
 t_var <- paste0("t_var", 1:ntheta)
 
 # computed parameters labels
