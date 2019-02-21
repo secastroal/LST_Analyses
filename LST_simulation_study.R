@@ -26,6 +26,8 @@ source("R/sim.data.msst.R")
 source("R/sim.data.tso.R")
 source("R/check.Mplus.R")
 source("R/var.coeff.R")
+source("R/var.coeff.tv.R")
+source("R/runModels_2.R")
 folder <- "Mplus_files_Results/" #Folder to store results
 
 # 1.0 CUTS ----
