@@ -32,7 +32,7 @@ folder <- "Mplus_files_Cross/" #Folder to store results
 
 # 1.0 Set Conditions ----
 
-model <- "cuts" # model to simulate data
+model <- "tso" # model to simulate data
 N <- 100 # number of persons
 nT <- 30 # number of times // measurement occasions
 I <- 4 # number of variables // items
@@ -40,6 +40,19 @@ na.prop <- 0 #proportion of missingness
 seed <- 123
 
 set.seed(seed)
+
+# 1.1 Matrices to store output ----
+# Matrix of variance coefficients
+
+var.coeff <- data.frame(matrix(NA, I * 5, 5))
+var.coeff[ , 1] <- paste0(rep(c( "ccon/pred_y", "ucon/upred_y", "tcon/con_y", "spe_y", "rel_y"), each = I), 1:I)
+names(var.coeff) <- c("coefficient", "true", "CUTS", "MSST", "TSO")
+
+
+# Matrix of fit measures
+fit.measures <- data.frame(matrix(NA, 3, 4))
+names(fit.measures) <- c("Data","Parameters","DIC","pD")
+fit.measures[,1] <- c("CUTS", "MSST", "TSO")
 
 # 2.0 Set true paramaters and simulate data given the model ----
 # 2.1 simulate CUTS data ----
@@ -71,6 +84,12 @@ if(model == "cuts"){
   # Time invariant data
   data <- sim.data.cuts(N, nT, I, within.parameters = within.parameters, na.prop = na.prop,
                              between.parameters = between.parameters, seed = seed)
+  
+  # Compute true variance coefficients
+  
+  var.coeff[,2] <- cuts.var.coeff(within.parameters = within.parameters, 
+                                  between.parameters = between.parameters) 
+  
   rm(within.parameters, between.parameters)
 }
 # 2.2 simulate MSST data ----
@@ -103,6 +122,12 @@ if(model == "msst"){
   #Time invariant data
   data <- sim.data.msst(N, nT, I, within.parameters = within.parameters, na.prop = na.prop,
                              between.parameters = between.parameters, seed = seed)
+  # Compute true variance coefficients
+  
+  var.coeff[(2 * I + 1):(5 * I),2] <- msst.var.coeff(within.parameters = within.parameters, 
+                                  between.parameters = between.parameters) 
+  
+  rm(within.parameters, between.parameters)
 }
 # 2.3 simulate TSO data ----
 if(model == "tso"){
@@ -146,14 +171,18 @@ if(model == "tso"){
   # Time invariant data
   data <- sim.data.tso(N, nT, I, within.parameters = within.parameters, na.prop = na.prop, 
                            between.parameters = between.parameters, seed = seed)
+  # Compute true variance coefficients
+  
+  var.coeff[,2] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.parameters, 
+                                  between.parameters = between.parameters)[,nT] 
+  
+  rm(within.parameters, between.parameters)
 }
 
 
-# 3.0 Matrices to store output ----
+# 3.0 Model estimation ----
 
-# 4.0 Model estimation ----
-
-# 4.1 cuts ----
+# 3.1 cuts ----
 file.name <- paste0(model, "dataXcuts_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
@@ -195,18 +224,18 @@ if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   rm(within.estimates, between.estimates)
   
 }else{
-  status[1] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+  stop("Model estimation did not converge or there are warning or error messages in the output")
 }
 
 
-rm(file.name, long.fit)
+rm(file.name, fit, estimates)
 
-# 4.2 msst ----
+# 3.2 msst ----
 
-file.name <- paste0(model, "_long_n", N, "_i", I, "_nt", nT, "_na", na.prop)
+file.name <- paste0(model, "dataXmsst_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
-prepareMplusData(msst.data$data.long, paste0(folder,file.name,".dat"), inpfile = T)
+prepareMplusData(data$data.long, paste0(folder,file.name,".dat"), inpfile = T)
 
 # Complete Mplus syntax
 analysis_syntax <- write.Mplus.options(usevariables = names(data$data.long)[-(1:2)],
@@ -216,7 +245,9 @@ analysis_syntax <- write.Mplus.options(usevariables = names(data$data.long)[-(1:
                                        iterations = 5000,
                                        processors = 2)
 
-ml_syntax <- write.mlmsst.to.Mplus(msst.data$data.long[, -(1:2)])
+ml_syntax <- write.mlmsst.to.Mplus(data$data.long[, -(1:2)])
+
+ml_syntax <- gsub("@0;", "@0.001;", ml_syntax)
 
 write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
@@ -228,41 +259,32 @@ cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/", folder,file.name,".inp"))
 cat("\n"); print(Sys.time()); cat("\n")
 
-long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[1] <- check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out"))
-  
-  est.par[,3] <- long.fit$parameters$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
+  estimates <- fit$parameters$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
                                                       (4*I + 2), (6*I +3)),3]
-  se[,2] <- long.fit$parameters$unstandardized[c(1:(2*I+1), ((3*I + 2):(4*I + 1)), ((5*I + 3):(6*I + 2)),
-                                                 (4*I + 2), (6*I +3)),4]
   
-  bias[, 2] <- (est.par[ , 3] - est.par[ , 2]) 
-  
-  rmse[, 2] <- sqrt((est.par[ , 3] - est.par[ , 2]) ^ 2)
-  
-  within.estimates <- list( loadings = est.par[1:I, 3], state.var = est.par[I+1, 3],
-                            error.var = est.par[(I+2):(2 * I +1), 3])
-  between.estimates <- list( loadings = est.par[(2 * I + 2):(3 * I + 1), 3], 
-                             trait.var = est.par[ 4 * I + 3, 3])
-  var.coeff[ , 3] <- msst.var.coeff(within.parameters = within.estimates,
+  within.estimates <- list( loadings = estimates[1:I], state.var = estimates[I+1],
+                            error.var = estimates[(I+2):(2 * I +1)])
+  between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], 
+                             trait.var = estimates[ 4 * I + 3])
+  var.coeff[(2 * I + 1):(5 * I), 4] <- msst.var.coeff(within.parameters = within.estimates,
                                     between.parameters = between.estimates)
+  fit.measures[2, 2:4] <- fit$summaries[, c(11:13)]
   rm(within.estimates, between.estimates)
-  
-  
 }else{
-  status[1] <- check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out"))
+  stop("Model estimation did not converge or there are warning or error messages in the output")
 }
 
-rm(file.name, long.fit)
+rm(file.name, fit, estimates)
 
-# 4.3 tso ----
-file.name <- paste0(model, "_long_n", N, "_i", I, "_nt", nT, "_na", na.prop)
+# 3.3 tso ----
+file.name <- paste0(model, "dataXtso_n", N, "_i", I, "_nt", nT, "_na", na.prop)
 
 # Prepare data: Write data in Mplus format and write input file template
-prepareMplusData(tso.data$data.long, paste0(folder,file.name,".dat"), inpfile = T)
+prepareMplusData(data$data.long, paste0(folder,file.name,".dat"), inpfile = T)
 
 # Complete Mplus syntax
 analysis_syntax <- write.Mplus.options(usevariables = names(data$data.long)[-(1:2)],
@@ -272,7 +294,7 @@ analysis_syntax <- write.Mplus.options(usevariables = names(data$data.long)[-(1:
                                        iterations = 5000,
                                        processors = 2)
 
-ml_syntax <- write.mltso.to.Mplus(tso.data$data.long[, -c(1, 2)])
+ml_syntax <- write.mltso.to.Mplus(data$data.long[, -c(1, 2)])
 
 write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
 write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
@@ -284,210 +306,47 @@ cat("\n"); print(Sys.time()); cat("\n")
 runModels(paste0(getwd(),"/",folder,file.name,".inp"))
 cat("\n"); print(Sys.time()); cat("\n")
 
-long.fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
 
-if(check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
   
-  status[1] <- check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out"))
-  
-  est.par[, 3] <- long.fit$parameters$unstandardized[c(1:(2*I + 2),
+  estimates <- fit$parameters$unstandardized[c(1:(2*I + 2),
                                                        (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
                                                        (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 3]
   
-  post.sd[, 2] <- long.fit$parameters$unstandardized[c(1:(2*I + 2),
-                                                       (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
-                                                       (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 4]
-  
-  bias[, 2] <- (est.par[ , 3] - est.par[ , 2]) 
-  
-  rmse[, 2] <- sqrt((est.par[ , 3] - est.par[ , 2]) ^ 2)
-  
-  within.estimates <- list( loadings = est.par[1:I, 3], state.var = est.par[2*I+2, 3],
-                            error.var = est.par[(I+2):(2 * I +1), 3], ar.effect = est.par[I+1,3])
-  between.estimates <- list( trait.ind.var = est.par[(3 * I + 3):(4 * I + 2), 3])
-  var.coeff[ , 3] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+  within.estimates <- list( loadings = estimates[1:I], state.var = estimates[2*I+2],
+                            error.var = estimates[(I+2):(2 * I +1)], ar.effect = estimates[I+1])
+  between.estimates <- list( trait.ind.var = estimates[(3 * I + 3):(4 * I + 2)])
+  var.coeff[ , 5] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
                                    between.parameters = between.estimates)[,nT]
+  fit.measures[3, 2:4] <- fit$summaries[, c(11:13)]
   rm(within.estimates, between.estimates)
-  
-  
 }else{
-  status[1] <- check.mplus(long.fit, paste0(getwd(),"/",folder,file.name,".out"))
+  stop("Model estimation did not converge or there are warning or error messages in the output")
 }
 
-rm(file.name, long.fit)
+rm(file.name, fit, estimates)
+
+# 4.0 Plot variance coefficients and save fit measures ----
+
+jpeg(paste0(getwd(), "/", folder, "OutputPlots/varcoeff_", model, "data_n", N, "_i", I, "_nt", nT, ".jpg" ))
+plot(c(seq(1,1.16, by =0.04), seq(2,2.16, by =0.04), seq(3,3.16, by =0.04)), unlist(var.coeff[seq(3,20, by = I), 3:5]), ylim = c(0,1),
+     col = c("green", "orange", "red", "blue", "black"), xlab = "Model", ylab = "Explained Variance", pch = 19, xlim = c(0.75, 3.75), 
+     main = paste0(model, " data: Variance coefficients."),xaxt = 'n')
+abline(h = var.coeff[seq(3,20, by = I),2], col = c("green", "orange", "red", "blue", "black"), lty = 5:1)
+abline(h = 0)
+axis(side = 1, at = 1.1:3.1, labels = c("CUTS", "MSST", "TSO"))
+legend("bottomright", legend = c("CCon/Pred", "UCon/Upred", "TCon/Con", "Spe", "Rel"), col = c("green", "orange", "red", "blue", "black"),
+       pch = 19, cex = 0.8)
+dev.off()
+
+
+print(xtable(fit.measures, type = "latex", caption = paste0("Fit measures: ", model, "data with N =", N, ", I = ", I, ", and nT =", nT, ".")), 
+      include.rownames = FALSE, file = paste0(folder, "OutputTables/FitMeasures_", model, "data_n", N, "_i", I, "_nt", nT, ".txt"))
 
 
 
+# 5.0 Clean environment ----
 
-# 1.3 Model estimation ---- 
-
-# Matrix to store estimated parameters
-
-est.par <- data.frame(matrix(NA, 5*I + 2, 6))
-est.par[, 2] <- c(unlist(within.parameters), unlist(between.parameters))
-est.par[, 1] <- names(c(unlist(within.parameters), unlist(between.parameters)))
-names(est.par) <- c("par", "true", "long", "wide", "Ltrunc", "Wtrunc" )
-
-# Matrix to store rmse and mse
-se <- rmse <- bias <- est.par[, -2] 
-
-# Matrix to store variance coefficients
-
-var.coeff <- data.frame(matrix(NA, I * 5, 6))
-var.coeff[ , 1] <- paste0(rep(c( "ccon_y", "ucon_y", "tcon_y", "spe_y", "rel_y"), each = I), 1:I)
-var.coeff[ , 2] <- cuts.var.coeff(within.parameters = within.parameters, 
-                                between.parameters = between.parameters)
-names(var.coeff) <- c("coefficient", "true", "long", "wide", "Ltrunc", "Wtrunc" )
-
-# Save convergence check
-
-status <- rep(NA, 4)
-
-# 1.3.1 ML-cuts data.long ----
-
-
-# 1.4 Save output ----
-
-est.par[dim(est.par)[1] + 1, ] <- c("Status", "NA", status)
-
-est.par <- est.par[c(dim(est.par)[1], 1:(dim(est.par)[1]-1)), ]
-
-file.name <- paste0(model, "_n", N, "_i", I, "_nt", nT, "_na", na.prop, ".txt")
-caption <- paste("of model", model, "with N =", N,", I =", I, ", nT =", nT,
-                 ", and missingness proportion =", na.prop, ".", sep = " ")
-
-print(xtable(est.par, type = "latex", caption = paste0("Parameter estimates ", caption)), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/param_", file.name))
-print(xtable(bias, type = "latex", caption = paste0("Bias ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/bias_", file.name ))
-print(xtable(rmse, type = "latex", caption = paste0("RMSE ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/rmse_", file.name))
-print(xtable(se, type = "latex", caption = paste0("Standard errors ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/se_", file.name))
-print(xtable(var.coeff, type = "latex", caption = paste0("LST variance coefficients ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/varcoeff_", file.name))
-
-
-# 1.5 Clean environment ----
-
-rm(within.parameters, between.parameters, cuts.data, est.par, model, rmse, 
-   se, status, var.coeff, file.name, caption, bias)
-
-
-
-# 2.3 Model estimation ----
-
-# Matrix to store estimated parameters
-
-est.par <- data.frame(matrix(NA, 4*I + 3, 6))
-est.par[, 2] <- c(unlist(within.parameters), unlist(between.parameters))
-est.par[, 1] <- names(c(unlist(within.parameters), unlist(between.parameters)))
-names(est.par) <- c("par", "true", "long", "wide", "Ltrunc", "Wtrunc")
-
-# Matrix to store rmse and mse
-se <- rmse <- bias <- est.par[, -2]
-
-# Matrix to store variance coefficients
-
-var.coeff <- data.frame(matrix(NA, I * 3, 6))
-var.coeff[ , 1] <- paste0(rep(c("con_y", "spe_y", "rel_y"), each = I), 1:I)
-var.coeff[ , 2] <- msst.var.coeff(within.parameters = within.parameters, 
-                                  between.parameters = between.parameters)
-names(var.coeff) <- c("coefficient", "true", "long", "wide", "Ltrunc", "Wtrunc" )
-
-
-# Save convergence check
-
-status <- rep(NA, 4)
-
-# 2.3.1 ML-msst data.long ----
-
-
-# 2.4 Save output ----
-
-est.par[dim(est.par)[1] + 1, ] <- c("Status", "NA", status)
-
-est.par <- est.par[c(dim(est.par)[1], 1:(dim(est.par)[1]-1)), ]
-
-file.name <- paste0(model, "_n", N, "_i", I, "_nt", nT, "_na", na.prop, ".txt")
-caption <- paste("of model", model, "with N =", N,", I =", I, ", nT =", nT,
-                 ", and missingness proportion =", na.prop, ".", sep = " ")
-
-print(xtable(est.par, type = "latex", caption = paste0("Parameter estimates ", caption)), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/param_", file.name))
-print(xtable(bias, type = "latex", caption = paste0("Bias ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/bias_", file.name ))
-print(xtable(rmse, type = "latex", caption = paste0("RMSE ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/rmse_", file.name))
-print(xtable(se, type = "latex", caption = paste0("Standard errors ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/se_", file.name))
-print(xtable(var.coeff, type = "latex", caption = paste0("LST variance coefficients ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/varcoeff_", file.name))
-
-# 2.5 Clean environment ----
-
-rm(within.parameters, between.parameters, msst.data, est.par, model, rmse, 
-   se, status, var.coeff, file.name, caption, bias)
-
-
-
-# 3.3 Model estimation ----
-
-# Matrix to store estimated parameters
-
-est.par <- data.frame(matrix(NA, 4*I + 2 + (I * (I-1) /2), 6))
-# Get true parameters + lower triangle of the true variance-covariance matrix 
-est.par[, 2] <- round(c(unlist(within.parameters), unlist(between.parameters)[1:(2*I)],
-                  tso.data$between.parameters$Sigma[t(lower.tri(tso.data$between.parameters$Sigma))]),2)
-# Get array indices of the variance-covariance matrix
-cov.ind <- which(t(lower.tri(tso.data$between.parameters$Sigma))==TRUE, arr.ind = TRUE)
-# Define parameter names + covariance names
-est.par[, 1] <- c(names(c(unlist(within.parameters), unlist(between.parameters)[1:(2*I)])),
-                  paste0("cov", cov.ind[,1], cov.ind[,2]))
-names(est.par) <- c("par", "true", "long", "wide", "Ltrunc", "Wtrunc")
-
-# Matrix to store rmse
-post.sd <- rmse <- bias <- est.par[, -2] 
-
-rm(cov.ind)
-
-# Matrix to store MEAN variance coefficients
-
-var.coeff <- data.frame(matrix(NA, I * 5, 6))
-var.coeff[ , 1] <- paste0(rep(c( "pred_y", "upred_y", "con_y", "spe_y", "rel_y"), each = I), 1:I)
-var.coeff[ , 2] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.parameters, 
-                                  between.parameters = between.parameters)[, nT]
-names(var.coeff) <- c("coefficient", "true", "long", "wide", "Ltrunc", "Wtrunc" )
-
-# Save convergence check
-
-status <- rep(NA, 4)
-
-# 3.3.1 ML-tso data.long ----
-
-
-# 3.4 Save output ----
-
-est.par[dim(est.par)[1] + 1, ] <- c("Status", "NA", status)
-
-est.par <- est.par[c(dim(est.par)[1], 1:(dim(est.par)[1]-1)), ]
-
-file.name <- paste0(model, "_n", N, "_i", I, "_nt", nT, "_na", na.prop, ".txt")
-caption <- paste("of model", model, "with N =", N,", I =", I, ", nT =", nT,
-                 ", and missingness proportion =", na.prop, ".", sep = " ")
-
-print(xtable(est.par, type = "latex", caption = paste0("Parameter estimates ", caption)), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/param_", file.name))
-print(xtable(bias, type = "latex", caption = paste0("Bias ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/bias_", file.name ))
-print(xtable(rmse, type = "latex", caption = paste0("RMSE ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/rmse_", file.name))
-print(xtable(post.sd, type = "latex", caption = paste0("Posterior standard deviations ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/postsd_", file.name))
-print(xtable(var.coeff, type = "latex", caption = paste0("LST variance coefficients ", caption), digits = 3), 
-      include.rownames = FALSE, file = paste0(folder, "OutputTables/varcoeff_", file.name))
-# 3.5 Clean environment ----
-
-rm(N, nT, I, seed, within.parameters, between.parameters, tso.data, est.par, model, rmse,  
-   bias, post.sd, var.coeff, caption, file.name, na.prop, status)
+rm(N, nT, I, seed, data, model, fit.measures, var.coeff, na.prop)
 
