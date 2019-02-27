@@ -17,17 +17,19 @@ sim.data.tso <- function(N, nT, I, within.parameters, between.parameters,
   trait_scores <- mvrnorm(N, rep(0, I), Sigma = Sigma) # factor indicator trait scores
   trait_scores_full <- array(trait_scores, dim = c(N,I,nT)) # array with factor trait scores
   
-  # array with latent state residual in occasion n=1 and latent occasion specific residuals in occasion n>1
+  # Matrix with latent state residual in occasion n=1 and latent occasion specific residuals in occasion n>1, and
+  # array with the weighted occasion specific scores.
   
-  state_scores_full <- array(NA, dim = c(N, I, nT)) 
-  state_scores_full[, 1, 1] <- rnorm(N, 0, state.sd)
+  state_scores_full <- matrix(NA, nrow = N, ncol = nT)
+  weighted_state_scores_full <- array(NA, dim = c(N, I, nT))
+  state_scores_full[, 1] <- rnorm(N, 0, state.sd)
   for(i in 2:nT){
-    state_scores_full[, 1, i] <- rnorm(N, 0, state.sd) + within.parameters$ar.effect * state_scores_full[, 1, i-1]
-    state_scores_full[, , i-1] <- state_scores_full[, 1, i-1] %o% within.parameters$loadings
+    state_scores_full[, i] <- rnorm(N, 0, state.sd) + within.parameters$ar.effect * state_scores_full[, i-1]
+    weighted_state_scores_full[, , i-1] <- state_scores_full[, i-1] %o% within.parameters$loadings
   }
   rm(i)
   
-  state_scores_full[, , nT] <- state_scores_full[, 1, nT] %o% within.parameters$loadings
+  weighted_state_scores_full[, , nT] <- state_scores_full[, nT] %o% within.parameters$loadings
   
   # measurement errors
   errors_full <- array(NA,dim = c(N, I , nT))
@@ -39,7 +41,7 @@ sim.data.tso <- function(N, nT, I, within.parameters, between.parameters,
   # Complete data
   sim_data <- array(matrix(between.parameters$intercepts, nrow = N, ncol = I, byrow = TRUE), dim = c(N, I, nT)) + # intercepts
     trait_scores_full + # trait scores
-    state_scores_full + # latent occasion specific residuals scores
+    weighted_state_scores_full + # latent occasion specific residuals scores
     errors_full # errors
   
   sim_data <- aperm(sim_data,c(3,1,2))
@@ -142,18 +144,19 @@ sim.data.tso.tv <- function(N, nT, I, within.parameters, between.parameters, tim
     trait_scores_full[ , , i] <- t(between.parameters$loadings[i, ] * t(trait_scores))
   }
   
-  # array with latent state residual in occasion n=1 and latent occasion specific residuals in occasion n>1
+  # array with latent state residual in occasion n=1 and latent occasion specific residuals in occasion n>1, and
+  # array with the weighted occasion specific scores.
   
-  state_scores_full <- array(NA, dim = c(N, I, nT)) 
-  state_scores_full[, 1, 1] <- rnorm(N, 0, state.sd[1])
+  state_scores_full <- matrix(NA, nrow = N, ncol = nT)
+  weighted_state_scores_full <- array(NA, dim = c(N, I, nT))
+  state_scores_full[, 1] <- rnorm(N, 0, state.sd[1])
   for(i in 2:nT){
-    state_scores_full[, 1, i] <- rnorm(N, 0, state.sd[i]) + within.parameters$ar.effect[i-1] * state_scores_full[ , 1, i-1]
-    state_scores_full[, , i-1] <- state_scores_full[, 1, i-1] %o% within.parameters$loadings[i-1, ]
+    state_scores_full[, i] <- rnorm(N, 0, state.sd[i]) + within.parameters$ar.effect[i-1] * state_scores_full[, i-1]
+    weighted_state_scores_full[, , i-1] <- state_scores_full[, i-1] %o% within.parameters$loadings[i-1, ]
   }
   rm(i)
   
-  state_scores_full[, , nT] <- state_scores_full[, 1, nT] %o% within.parameters$loadings[nT, ]
-  
+  weighted_state_scores_full[, , nT] <- state_scores_full[, nT] %o% within.parameters$loadings[nT, ]
   
   # measurement errors
   errors_full <- array(NA, dim = c(N, I , nT))
@@ -173,7 +176,7 @@ sim.data.tso.tv <- function(N, nT, I, within.parameters, between.parameters, tim
   # Complete data ----
   sim_data <- intercepts_full + # intercepts
     trait_scores_full + # trait scores
-    state_scores_full + # occasion specific scores times occasion specific lambdas
+    weighted_state_scores_full + # occasion specific scores times occasion specific lambdas
     errors_full # errors
   
   sim_data <- aperm(sim_data,c(3,1,2))
@@ -193,8 +196,4 @@ sim.data.tso.tv <- function(N, nT, I, within.parameters, between.parameters, tim
                data.long = sim_data,
                data.wide = wide_sim_data))
 }
-
-
-
-
 
