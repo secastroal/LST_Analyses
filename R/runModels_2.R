@@ -106,7 +106,7 @@ runModels_2 <- function(target=getwd(), recursive=FALSE, filefilter = NULL, show
     if (is.null(logFile)) return(FALSE)
     
     connections <- data.frame(showConnections(all = FALSE))
-    if (length(grep(splitFilePath(logFile)$filename, connections$description, ignore.case=TRUE)) > 0) return(TRUE)
+    if (length(grep(MplusAutomation:::splitFilePath(logFile)$filename, connections$description, ignore.case=TRUE)) > 0) return(TRUE)
     else return(FALSE)
   }
   
@@ -214,7 +214,7 @@ runModels_2 <- function(target=getwd(), recursive=FALSE, filefilter = NULL, show
     
     #split input file into one element per directory (e.g., "dir1/dir2/mytest.inp" becomes a 3-element vector
     #code adapted from R.utils filePath command
-    inputSplit <- splitFilePath(inpfiles[i])
+    inputSplit <- MplusAutomation:::splitFilePath(inpfiles[i])
     if (is.na(inputSplit$directory)) dirtocd <- directory
     else dirtocd <- file.path(directory, inputSplit$directory)
     
@@ -298,33 +298,33 @@ runModels_2 <- function(target=getwd(), recursive=FALSE, filefilter = NULL, show
 #' @keywords internal
 #' @examples
 #' # make me!!!
-splitFilePath <- function(abspath) {
-  if (!is.character(abspath)) stop("Path not a character string")
-  if (nchar(abspath) < 1 || is.na(abspath)) stop("Path is missing or of zero length")
+#splitFilePath <- function(abspath) {
+ # if (!is.character(abspath)) stop("Path not a character string")
+  #if (nchar(abspath) < 1 || is.na(abspath)) stop("Path is missing or of zero length")
   
   #trailing slash screws up file.exists call on Windows: https://bugs.r-project.org/bugzilla/show_bug.cgi?id=14721
-  abspath <- sub("(\\\\|/)?$", "", abspath, perl=TRUE)
+  #abspath <- sub("(\\\\|/)?$", "", abspath, perl=TRUE)
   
-  components <- strsplit(abspath, split="[\\/]")[[1]]
-  lcom <- length(components)
+  #components <- strsplit(abspath, split="[\\/]")[[1]]
+  #lcom <- length(components)
   
-  stopifnot(lcom > 0)
+  #stopifnot(lcom > 0)
   
   #the file is the last element in the list. In the case of length == 1, this will extract the only element.
-  relFilename <- components[lcom]
-  absolute <- FALSE
+  #relFilename <- components[lcom]
+  #absolute <- FALSE
   
-  if (lcom == 1) {
-    dirpart <- NA_character_
-  }
-  else if (lcom > 1) {
+#  if (lcom == 1) {
+ #   dirpart <- NA_character_
+  #}
+  #else if (lcom > 1) {
     #drop the file from the list (the last element)
-    components <- components[-lcom]
-    dirpart <- do.call("file.path", as.list(components))
+   # components <- components[-lcom]
+    #dirpart <- do.call("file.path", as.list(components))
     
     #if path begins with C:, /, ~/, //, or \\, then treat as absolute
-    if (grepl("^([A-Z]{1}:|~/|/|//|\\\\)+.*$", dirpart, perl=TRUE)) absolute <- TRUE
-  }
+    #if (grepl("^([A-Z]{1}:|~/|/|//|\\\\)+.*$", dirpart, perl=TRUE)) absolute <- TRUE
+  #}
   
-  return(list(directory=dirpart, filename=relFilename, absolute=absolute))
-}
+  #return(list(directory=dirpart, filename=relFilename, absolute=absolute))
+#}

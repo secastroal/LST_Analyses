@@ -74,6 +74,7 @@ check.mplus <- function(mplus.model, file.path){
 #fit.fatal.1 <- readModels(paste0(getwd(),"/Mplus_files/Test_analyses/tso6.out"))
 #fit.fatal.2 <- readModels(paste0(getwd(),"/Mplus_files_Results/OldAnalyses/cuts_wide_n100_i4_nt100_old.out"))
 #fit.fatal.3 <- readModels(paste0(getwd(),"/Mplus_files_Results/OldAnalyses/cuts_wide_n100_i4_nt60_old.out"))
+#fit.bayes.1 <- readModels(paste0(getwd(), "/Mplus_files_Results/TryBayes/tso_long_n100_i4_nt60_na0thin100.out"))
 
 
 #check.mplus(fit.ok, paste0(getwd(),"/Mplus_files_Results/OldAnalyses/cuts_long_n100_i4_nt100_old.out"))
@@ -90,4 +91,4 @@ check.mplus <- function(mplus.model, file.path){
 #check.mplus(fit.fatal.1, paste0(getwd(),"/Mplus_files/Test_analyses/tso6.out"))
 #check.mplus(fit.fatal.2, paste0(getwd(),"/Mplus_files_Results/OldAnalyses/cuts_wide_n100_i4_nt100_old.out"))
 #check.mplus(fit.fatal.3, paste0(getwd(),"/Mplus_files_Results/OldAnalyses/cuts_wide_n100_i4_nt60_old.out"))
-
+#check.mplus(fit.bayes.1, paste0(getwd(), "/Mplus_files_Results/TryBayes/tso_long_n100_i4_nt60_na0thin100.out"))
