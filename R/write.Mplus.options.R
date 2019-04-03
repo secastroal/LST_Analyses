@@ -44,7 +44,7 @@ write.Mplus.options <- function(usevariables, cluster = NULL, analysis_type = c(
   }
   
   
-  cat(analysis_syntax)
+  #cat(analysis_syntax)
   return(analysis_syntax)
 }
 

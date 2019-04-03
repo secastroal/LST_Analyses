@@ -6,6 +6,7 @@
 # 1.0 Set up conditions
 # 2.0 Set up output matrices
 # 3.0 Simulation loop
+# 4.0 Save output
 
 # 0.0 Prepare environment ----
 rm(list=ls())
@@ -20,7 +21,43 @@ library(xtable)
 file.sources <- paste0("R/", list.files(paste0(getwd(), "/R")))
 sapply(file.sources,source,.GlobalEnv)
 rm(file.sources)
-folder <- "Mplus_Simulation/" #Folder to store results and all Mplus files
+folder <- "Mplus_Simulation" #Folder to store results and all Mplus files
+
+# Create folders to store output in the working directory ----
+
+if(!dir.exists(paste(getwd(), folder, sep = "/"))){
+  dir.create(paste(getwd(), folder, "Performance", sep = "/"), recursive = TRUE)
+  dir.create(paste(getwd(), folder, "Parameters", sep = "/"), recursive = TRUE)
+  dir.create(paste(getwd(), folder, "SE_PSD", sep = "/"), recursive = TRUE)
+  dir.create(paste(getwd(), folder, "Var_Coeff", sep = "/"), recursive = TRUE)
+  dir.create(paste(getwd(), folder, "Fit_Measures", sep = "/"), recursive = TRUE)
+  dir.create(paste(getwd(), folder, "PSD_Var_Coeff", sep = "/"), recursive = TRUE)
+}else{
+  if(!dir.exists(paste(getwd(), folder, "Performance", sep = "/"))){
+    dir.create(paste(getwd(), folder, "Performance", sep = "/"))
+  }
+  if(!dir.exists(paste(getwd(), folder, "Parameters", sep = "/"))){
+    dir.create(paste(getwd(), folder, "Parameters", sep = "/"))
+  }
+  if(!dir.exists(paste(getwd(), folder, "SE_PSD", sep = "/"))){
+    dir.create(paste(getwd(), folder, "SE_PSD", sep = "/"))
+  }
+  if(!dir.exists(paste(getwd(), folder, "Var_Coeff", sep = "/"))){
+    dir.create(paste(getwd(), folder, "Var_Coeff", sep = "/"))
+  }
+  if(!dir.exists(paste(getwd(), folder, "Fit_Measures", sep = "/"))){
+    dir.create(paste(getwd(), folder, "Fit_Measures", sep = "/"))
+  }
+  if(!dir.exists(paste(getwd(), folder, "PSD_Var_Coeff", sep = "/"))){
+    dir.create(paste(getwd(), folder, "PSD_Var_Coeff", sep = "/"))
+  }
+}
+
+# Remove files in output folder
+unlink(paste(getwd(), folder, "*", sep = "/"))
+
+# add / to folder
+folder <- paste0(folder, "/")
 
 # 1.0 Set up conditions ----
 
@@ -42,7 +79,7 @@ rm(times, missingness, dataModel_to_sim)
 
 # 2.0 Set up output matrices ----
 
-R <- 50 # Number of replicas
+R <- 1 # Number of replicas
 
 # Create labels to name variables in output matrices 
 models <- c("msst", "cuts", "tso")
@@ -50,7 +87,7 @@ data_str <- c("wide", "long")
 estimator <- c("ml", "bayes")
 labels <- expand.grid(data_str, estimator, models)
 labels <- labels[-10, c(3,1,2)]
-labels <- apply(labels, 1, function(vec) paste(vec, collapse = "+"))
+labels <- apply(labels, 1, function(vec) paste(vec, collapse = "_"))
 rm(models, data_str, estimator)
 
 # matrix to store check.mplus output (Non-convergence, Warnings and Errors, and Ok)
@@ -61,28 +98,36 @@ colnames(perf.base) <- labels
 # matrix to store estimated parameters and standard errors/posterior standard deviations
 
 parameters.base <- matrix(NA, 11 * R + 1,  30)
-colnames(parameters.base) <- c(paste0("w_loading", 1:I), "(common)state_var", paste0("unique_state/error_var", 1:I),
-                               "ar_effect", paste0("b_loading", 1:I), paste0("intercept", 1:I), "(common)trait_var",
-                               "trait_mean", paste0("unique/indicator_trait_var", 1:I), paste0("cov", c(12, 13, 23, 14, 24, 34)))
-rownames(parameters.base) <- c("true", paste(rep(labels, times = R), paste0("r", rep(1:R, each = 11)), sep = "+"))
+colnames(parameters.base) <- c(paste0("w_loading", 1:I), "common_state_var", paste0("unique_state_error_var", 1:I),
+                               "ar_effect", paste0("b_loading", 1:I), paste0("intercept", 1:I), "common_trait_var",
+                               "trait_mean", paste0("unique_indicator_trait_var", 1:I), paste0("cov", c(12, 13, 23, 14, 24, 34)))
+rownames(parameters.base) <- c("true", paste(rep(labels, times = R), paste0("r", rep(1:R, each = 11)), sep = "_"))
 
 se_psd.base <- parameters.base[-1, ]
 
 # matrix to store variance coefficients
 var.coeff.base <- matrix(NA, 11 * R + 1,  I * 5)
-colnames(var.coeff.base) <- paste0(rep(c( "ccon/pred_y", "ucon/upred_y", "tcon/con_y", "spe_y", "rel_y"), each = I), 
+colnames(var.coeff.base) <- paste0(rep(c( "ccon_pred_y", "ucon_upred_y", "tcon_con_y", "spe_y", "rel_y"), each = I), 
                               1:I)
-rownames(var.coeff.base) <- c("true", paste(rep(labels, times = R), paste0("r", rep(1:R, each = 11)), sep = "+"))
+rownames(var.coeff.base) <- c("true", paste(rep(labels, times = R), paste0("r", rep(1:R, each = 11)), sep = "_"))
+
+# matrix to store posterior standard deviations of variance coefficients
+psd.var.coeff.base <- matrix(NA, 6 * R,  I * 5)
+colnames(psd.var.coeff.base) <- paste0(rep(c( "ccon_pred_y", "ucon_upred_y", "tcon_con_y", "spe_y", "rel_y"), each = I), 
+                                   1:I)
+rownames(psd.var.coeff.base) <- c(paste(rep(labels[grep(pattern = "bayes", labels)], times = R),
+                                        paste0("r", rep(1:R, each = 6)), sep = "_"))
 
 # matrix to store fit measures
 fit.measures.base <- matrix(NA, 11 * R,  4)
 colnames(fit.measures.base) <- c("AIC", "BIC", "aBIC", "DIC")
-rownames(fit.measures.base) <- c(paste(rep(labels, times = R), paste0("r", rep(1:R, each = 11)), sep = "+"))
+rownames(fit.measures.base) <- c(paste(rep(labels, times = R), paste0("r", rep(1:R, each = 11)), sep = "_"))
 
 rm(labels)
+
 # 3.0 Simulation loop ----
 
-for(cond in 1:18){
+for(cond in 1){
   print(cond) # print condition number to track progress
   
   # Copy table(s) to save results
@@ -91,6 +136,7 @@ for(cond in 1:18){
   se_psd <- se_psd.base
   var.coeff <- var.coeff.base
   fit.measures <- fit.measures.base
+  psd.var.coeff <- psd.var.coeff.base
   
   for(r in 1:R){
     print(r) #print replication number to track progress
@@ -300,6 +346,9 @@ for(cond in 1:18){
       se_psd[(11 * (r-1)) + a, c(1:9, 11:20)] <- stand.errors
       
       # Compute and save variance coefficients
+      
+      
+      
       within.estimates <- list( loadings = estimates[1:I], state.var = estimates[I+1],
                                 error.var = estimates[(I+2):(2 * I +1)])
       between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], 
@@ -315,6 +364,10 @@ for(cond in 1:18){
       
     }else{
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+      parameters[(11 * (r-1)) + a + 1, ] <- -999
+      se_psd[(11 * (r-1)) + a, ] <- -999 
+      var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
+      fit.measures[(11 * (r-1)) + a, ] <- -999 
     }
     
     rm(file.name, fit, a)
@@ -389,6 +442,10 @@ for(cond in 1:18){
       
     }else{
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+      parameters[(11 * (r-1)) + a + 1, ] <- -999
+      se_psd[(11 * (r-1)) + a, ] <- -999 
+      var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
+      fit.measures[(11 * (r-1)) + a, ] <- -999 
     }
     
     rm(file.name, fit, a)
@@ -459,20 +516,40 @@ for(cond in 1:18){
       se_psd[(11 * (r-1)) + a, c(1:9, 11:20)] <- post.sd
       
       # Compute and save variance coefficients
-      within.estimates <- list( loadings = estimates[1:I], state.var = estimates[I+1],
-                                error.var = estimates[(I+2):(2 * I +1)])
-      between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], 
-                                 trait.var = estimates[ 4 * I + 2])
-      var.coeff[(11 * (r-1)) + a + 1, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters = within.estimates,
-                                                                               between.parameters = between.estimates))
+      
+      # Read MCMC draws
+      samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+      
+      # Delete burn-in and indicator for chain and draw
+      samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+      
+      # Create matrix to store variance coefficients draws
+      pdist.var.coeff <- matrix(NA, dim(samples)[1], 12)
+      
+      for(i in 1:dim(samples)[1]){
+        within.estimates <- list( loadings = c(1, t(samples[i, c(4, 6, 8)])), state.var = samples[i, 15],
+                                  error.var = c(t(samples[i, 10:13])))
+        between.estimates <- list( loadings = c(1, t(samples[i, c(5, 7, 9)])), 
+                                   trait.var = samples[i, 16])
+        pdist.var.coeff[i, ] <- t(msst.var.coeff(within.parameters = within.estimates,
+                                                 between.parameters = between.estimates))
+      }
+      
+      var.coeff[(11 * (r-1)) + a + 1, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, median)
+      psd.var.coeff[(6 * (r-1)) + a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
       
       # Save fit measures
       if(!is.null(fit$summaries$DIC)){fit.measures[(11 * (r-1)) + a, 4] <- c(fit$summaries$DIC)}
       
-      rm(within.estimates, between.estimates, estimates, post.sd)
+      rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
     
     }else{
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+      parameters[(11 * (r-1)) + a + 1, ] <- -999
+      se_psd[(11 * (r-1)) + a, ] <- -999 
+      var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
+      fit.measures[(11 * (r-1)) + a, ] <- -999 
+      psd.var.coeff[(6 * (r-1)) + a - 2, ] <- -999
     }
     
     rm(file.name, fit, a)
@@ -504,7 +581,7 @@ for(cond in 1:18){
     write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
     write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
     
-    rm(analysis_syntax, ml_syntax)
+    rm(analysis_syntax, ml_syntax, saveoutput_syntax)
     
     # Run model in Mplus
     cat("\n"); print(Sys.time()); cat("\n")
@@ -538,19 +615,39 @@ for(cond in 1:18){
       se_psd[(11 * (r-1)) + a, c(1:9, 11:20)] <- post.sd
       
       # Compute and save variance coefficients
-      within.estimates <- list( loadings = estimates[1:I], state.var = estimates[I+1],
-                                error.var = estimates[(I+2):(2 * I +1)])
-      between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], 
-                                 trait.var = estimates[ 4 * I + 2])
-      var.coeff[(11 * (r-1)) + a + 1, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters = within.estimates,
-                                                                               between.parameters = between.estimates))
+      
+      # Read MCMC draws
+      samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+      
+      # Delete burn-in and indicator for chain and draw
+      samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+      
+      # Create matrix to store variance coefficients draws
+      pdist.var.coeff <- matrix(NA, dim(samples)[1], 12)
+      
+      for(i in 1:dim(samples)[1]){
+        within.estimates <- list( loadings = c(1, t(samples[i, 1:3])), state.var = samples[i, 8],
+                                  error.var = c(t(samples[i, 4:7])))
+        between.estimates <- list( loadings = c(1, t(samples[i, c(13:15)])), 
+                                   trait.var = samples[i, 16])
+        pdist.var.coeff[i, ] <- t(msst.var.coeff(within.parameters = within.estimates,
+                                                 between.parameters = between.estimates))
+      }
+      
+      var.coeff[(11 * (r-1)) + a + 1, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, median)
+      psd.var.coeff[(6 * (r-1)) + a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
       
       # Save fit measures
       if(!is.null(fit$summaries$DIC)){fit.measures[(11 * (r-1)) + a, 4] <- c(fit$summaries$DIC)}
       
-      rm(within.estimates, between.estimates, estimates, post.sd)
+      rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
     }else{
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+      parameters[(11 * (r-1)) + a + 1, ] <- -999
+      se_psd[(11 * (r-1)) + a, ] <- -999 
+      var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
+      fit.measures[(11 * (r-1)) + a, ] <- -999
+      psd.var.coeff[(6 * (r-1)) + a - 2, ] <- -999
     }
     
     rm(file.name, fit, a)
@@ -624,17 +721,21 @@ for(cond in 1:18){
                                 US.var = estimates[(I+2):(2 * I +1)])
       between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], CT.var = estimates[ 4 * I + 2], 
                                  UT.var = estimates[(4 * I + 3):(5 * I + 2)])
-      var.coeff[(11 * (r-1)) + a + 1, c(1:9, 11:19, 21:24)] <- t(cuts.var.coeff(within.parameters = within.estimates,
+      var.coeff[(11 * (r-1)) + a + 1, ] <- t(cuts.var.coeff(within.parameters = within.estimates,
                                                                                 between.parameters = between.estimates))
       
       # Save fit measures
       fit.measures[(11 * (r-1)) + a, 1:3] <- c(fit$summaries$AIC, fit$summaries$BIC, 
                                                fit$summaries$aBIC)
-      rm(within.estimates, between.estimates)
+      rm(within.estimates, between.estimates, estimates, stand.errors)
       
       
     }else{
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+      parameters[(11 * (r-1)) + a + 1, ] <- -999
+      se_psd[(11 * (r-1)) + a, ] <- -999 
+      var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
+      fit.measures[(11 * (r-1)) + a, ] <- -999 
     }
     
     
@@ -656,7 +757,7 @@ for(cond in 1:18){
                                            estimator = "ML",
                                            iterations = 50000)
     
-    ml_syntax <- write.mlcuts.to.Mplus(cuts.data$data.long[, -(1:2)])
+    ml_syntax <- write.mlcuts.to.Mplus(data$data.long[, -(1:2)])
     
     write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
     write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
@@ -680,7 +781,7 @@ for(cond in 1:18){
       parameters[(11 * (r-1)) + a + 1, c(1:9, 11:19, 21:24)] <- estimates
       
       # Save standard errors
-      stand.errors <- fit$parameters$unstandardized[,3]
+      stand.errors <- fit$parameters$unstandardized[,4]
       
       se_psd[(11 * (r-1)) + a, c(1:9, 11:19, 21:24)] <- stand.errors
       
@@ -689,16 +790,20 @@ for(cond in 1:18){
                                 US.var = estimates[(I+2):(2 * I +1)])
       between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], CT.var = estimates[ 4 * I + 2], 
                                  UT.var = estimates[(4 * I + 3):(5 * I + 2)])
-      var.coeff[(11 * (r-1)) + a + 1, c(1:9, 11:19, 21:24)] <- t(cuts.var.coeff(within.parameters = within.estimates,
+      var.coeff[(11 * (r-1)) + a + 1, ] <- t(cuts.var.coeff(within.parameters = within.estimates,
                                                                                 between.parameters = between.estimates))
       
       # Save fit measures
       fit.measures[(11 * (r-1)) + a, 1:3] <- c(fit$summaries$AIC, fit$summaries$BIC, 
                                                fit$summaries$aBIC)
-      rm(within.estimates, between.estimates)
+      rm(within.estimates, between.estimates, estimates, stand.errors)
       
     }else{
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+      parameters[(11 * (r-1)) + a + 1, ] <- -999
+      se_psd[(11 * (r-1)) + a, ] <- -999 
+      var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
+      fit.measures[(11 * (r-1)) + a, ] <- -999 
     }
     
     
@@ -733,7 +838,7 @@ for(cond in 1:18){
     write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
     write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
     
-    rm(analysis_syntax, mplus_syntax)
+    rm(analysis_syntax, mplus_syntax, saveoutput_syntax)
     
     # Run model in Mplus
     cat("\n"); print(Sys.time()); cat("\n")
@@ -771,21 +876,41 @@ for(cond in 1:18){
       se_psd[(11 * (r-1)) + a, c(1:9, 11:19, 21:24)] <- post.sd
       
       # Compute variance coefficients
-      within.estimates <- list( loadings = estimates[1:I], CS.var = estimates[I+1],
-                                US.var = estimates[(I+2):(2 * I +1)])
-      between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], CT.var = estimates[ 4 * I + 2], 
-                                 UT.var = estimates[(4 * I + 3):(5 * I + 2)])
-      var.coeff[(11 * (r-1)) + a + 1, c(1:9, 11:19, 21:24)] <- t(cuts.var.coeff(within.parameters = within.estimates,
-                                                                                between.parameters = between.estimates))
+      
+      # Read MCMC draws
+      samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+      
+      # Delete burn-in and indicator for chain and draw
+      samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+      
+      # Create matrix to store variance coefficients draws
+      pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
+      
+      for(i in 1:dim(samples)[1]){
+        within.estimates <- list( loadings = c(1, t(samples[i, c(5, 7, 9)])), CS.var = samples[i, 15],
+                                  US.var = c(t(samples[i, 11:14])))
+        between.estimates <- list( loadings = c(1, t(samples[i, c(6, 8, 10)])), CT.var = samples[i, 16], 
+                                   UT.var = c(t(samples[i, 17:20])))
+        pdist.var.coeff[i, ] <- t(cuts.var.coeff(within.parameters = within.estimates,
+                                                 between.parameters = between.estimates))
+      }
+      
+      var.coeff[(11 * (r-1)) + a + 1, ] <- apply(pdist.var.coeff, 2, median)
+      psd.var.coeff[(6 * (r-1)) + a - 4, ] <- apply(pdist.var.coeff, 2, sd)
       
       # Save fit measures
       if(!is.null(fit$summaries$DIC)){fit.measures[(11 * (r-1)) + a, 4] <- c(fit$summaries$DIC)}
       
-      rm(within.estimates, between.estimates, estimates, post.sd)
+      rm(within.estimates, between.estimates, estimates, post.sd, pdist.var.coeff, samples,i)
       
       
     }else{
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+      parameters[(11 * (r-1)) + a + 1, ] <- -999
+      se_psd[(11 * (r-1)) + a, ] <- -999 
+      var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
+      fit.measures[(11 * (r-1)) + a, ] <- -999
+      psd.var.coeff[(6 * (r-1)) + a - 4, ] <- -999
     }
     
     
@@ -815,7 +940,7 @@ for(cond in 1:18){
     write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
     write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
     
-    rm(analysis_syntax, ml_syntax)
+    rm(analysis_syntax, ml_syntax, saveoutput_syntax)
     
     # Run modelin Mplus
     cat("\n"); print(Sys.time()); cat("\n") 
@@ -834,25 +959,45 @@ for(cond in 1:18){
       parameters[(11 * (r-1)) + a + 1, c(1:9, 11:19, 21:24)] <- estimates
       
       # Save posterior standard deviations
-      post.sd <- fit$parameters$unstandardized[,3]
+      post.sd <- fit$parameters$unstandardized[,4]
       
       se_psd[(11 * (r-1)) + a, c(1:9, 11:19, 21:24)] <- post.sd
       
       # Compute variance coefficients
-      within.estimates <- list( loadings = estimates[1:I], CS.var = estimates[I+1],
-                                US.var = estimates[(I+2):(2 * I +1)])
-      between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], CT.var = estimates[ 4 * I + 2], 
-                                 UT.var = estimates[(4 * I + 3):(5 * I + 2)])
-      var.coeff[(11 * (r-1)) + a + 1, c(1:9, 11:19, 21:24)] <- t(cuts.var.coeff(within.parameters = within.estimates,
-                                                                                between.parameters = between.estimates))
+      
+      # Read MCMC draws
+      samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+      
+      # Delete burn-in and indicator for chain and draw
+      samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+      
+      # Create matrix to store variance coefficients draws
+      pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
+      
+      for(i in 1:dim(samples)[1]){
+        within.estimates <- list( loadings = c(1, t(samples[i, 1:3])), CS.var = samples[i, 8],
+                                  US.var = c(t(samples[i, 4:7])))
+        between.estimates <- list( loadings = c(1, t(samples[i, 13:15])), CT.var = samples[i, 20], 
+                                   UT.var = c(t(samples[i, 16:19])))
+        pdist.var.coeff[i, ] <- t(cuts.var.coeff(within.parameters = within.estimates,
+                                                 between.parameters = between.estimates))
+      }
+      
+      var.coeff[(11 * (r-1)) + a + 1, ] <- apply(pdist.var.coeff, 2, median)
+      psd.var.coeff[(6 * (r-1)) + a - 4, ] <- apply(pdist.var.coeff, 2, sd)
       
       # Save fit measures
       if(!is.null(fit$summaries$DIC)){fit.measures[(11 * (r-1)) + a, 4] <- c(fit$summaries$DIC)}
       
-      rm(within.estimates, between.estimates, estimates, post.sd)
+      rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
       
     }else{
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+      parameters[(11 * (r-1)) + a + 1, ] <- -999
+      se_psd[(11 * (r-1)) + a, ] <- -999 
+      var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
+      fit.measures[(11 * (r-1)) + a, ] <- -999
+      psd.var.coeff[(6 * (r-1)) + a - 4, ] <- -999
     }
     
     
@@ -896,42 +1041,49 @@ for(cond in 1:18){
       
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
       
-      est.par[, 4] <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                      (2 * I * nT + 1), # autoregressive effect
-                                                      ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
-                                                      ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
-                                                      ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
-                                                      ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
-                                                      ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
-                                                    3]
+      # Save estimates
+      estimates <- fit$parameters$unstandardized[c(1:I, #loadings
+                                                   ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                                                   ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
+                                                   (2 * I * nT + 1), # autoregressive effect
+                                                   ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
+                                                   ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
+                                                   ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                                 3]
       
-      #post.sd[, 3] <- fit$parameters$unstandardized[c(1:I, #loadings
-      #                                                    (2 * I * nT + 1), # autoregressive effect
-      #                                                   ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
-      #                                                  ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
-      #                                                 ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
-      #                                                ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
-      #                                               ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
-      #                                            4]
+      parameters[(11 * (r-1)) + a + 1, c(1:10, 15:18, 21:30)] <- estimates
       
-      #bias[, 3] <- (est.par[ , 4] - est.par[ , 2])
+      # Save standard errors
+      stand.errors <- fit$parameters$unstandardized[c(1:I, #loadings
+                                                   ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                                                   ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
+                                                   (2 * I * nT + 1), # autoregressive effect
+                                                   ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
+                                                   ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
+                                                   ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                                 4]
       
-      #rmse[, 3] <- sqrt((est.par[ , 4] - est.par[ , 2]) ^ 2) 
+      se_psd[(11 * (r-1)) + a, c(1:10, 15:18, 21:30)] <- stand.errors
       
-      within.estimates <- list( loadings = est.par[1:I, 4], state.var = est.par[2*I+2, 4],
-                                error.var = est.par[(I+2):(2 * I +1), 4], ar.effect = est.par[I+1,4])
-      between.estimates <- list( trait.ind.var = est.par[(3 * I + 3):(4 * I + 2), 4])
-      #var.coeff[ , 4] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
-      #                                between.parameters = between.estimates)[,nT]
+      # Compute and save variance coefficients
+      within.estimates <- list( loadings = estimates[1:I], state.var = estimates[I+1],
+                                error.var = estimates[(I+2):(2 * I +1)], ar.effect = estimates[(2 * I + 2)])
+      between.estimates <- list( trait.ind.var = estimates[(3 * I + 3):(4 * I + 2)])
+      var.coeff[(11 * (r-1)) + a + 1, ] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                                                                              between.parameters = between.estimates)[,nT]
       
       # Save fit measures
       fit.measures[(11 * (r-1)) + a, 1:3] <- c(fit$summaries$AIC, fit$summaries$BIC, 
                                                fit$summaries$aBIC)
       
-      rm(within.estimates, between.estimates)
+      rm(within.estimates, between.estimates, estimates, stand.errors)
       
     }else{
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+      parameters[(11 * (r-1)) + a + 1, ] <- -999
+      se_psd[(11 * (r-1)) + a, ] <- -999 
+      var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
+      fit.measures[(11 * (r-1)) + a, ] <- -999 
     }
     
     rm(file.name, fit, a)
@@ -963,7 +1115,7 @@ for(cond in 1:18){
     write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
     write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
     
-    rm(analysis_syntax, ml_syntax)
+    rm(analysis_syntax, ml_syntax, saveoutput_syntax)
     
     # Run modelin Mplus
     cat("\n"); print(Sys.time()); cat("\n")
@@ -976,40 +1128,64 @@ for(cond in 1:18){
       
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
       
-      est.par[, 4] <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                           (2 * I * nT + 1), # autoregressive effect
-                                                           ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
-                                                           ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
-                                                           ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
-                                                           ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
-                                                           ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
-                                                         3]
+      # Save estimates
+      estimates <- fit$parameters$unstandardized[c(1:I, #loadings
+                                                   ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                                                   ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
+                                                   (2 * I * nT + 1), # autoregressive effect
+                                                   ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
+                                                   ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
+                                                   ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                                 3]
       
-      #post.sd[, 3] <- fit$parameters$unstandardized[c(1:I, #loadings
-       #                                                    (2 * I * nT + 1), # autoregressive effect
-        #                                                   ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
-         #                                                  ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
-          #                                                 ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
-           #                                                ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
-            #                                               ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
-             #                                            4]
+      parameters[(11 * (r-1)) + a + 1, c(1:10, 15:18, 21:30)] <- estimates
       
-      #bias[, 3] <- (est.par[ , 4] - est.par[ , 2])
+      # Save posterior standard deviations
+      post.sd <- fit$parameters$unstandardized[c(1:I, #loadings
+                                                 ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                                                 ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
+                                                 (2 * I * nT + 1), # autoregressive effect
+                                                 ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
+                                                 ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
+                                                 ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                               4]
       
-      #rmse[, 3] <- sqrt((est.par[ , 4] - est.par[ , 2]) ^ 2) 
+      se_psd[(11 * (r-1)) + a, c(1:10, 15:18, 21:30)] <- post.sd
       
-      within.estimates <- list( loadings = est.par[1:I, 4], state.var = est.par[2*I+2, 4],
-                                error.var = est.par[(I+2):(2 * I +1), 4], ar.effect = est.par[I+1,4])
-      between.estimates <- list( trait.ind.var = est.par[(3 * I + 3):(4 * I + 2), 4])
-      #var.coeff[ , 4] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
-       #                                between.parameters = between.estimates)[,nT]
+      # Compute and save variance coefficients
+      
+      # Read MCMC draws
+      samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+      
+      # Delete burn-in and indicator for chain and draw
+      samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+      
+      # Create matrix to store variance coefficients draws
+      pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
+      
+      for(i in 1:dim(samples)[1]){
+        within.estimates <- list( loadings = c(1, t(samples[i, 5:7])), state.var = samples[i, 13],
+                                  error.var = c(t(samples[i, 8:11])), ar.effect = samples[i, 12])
+        between.estimates <- list( trait.ind.var = c(t(samples[i, c(14, 16, 19, 23)])))
+        pdist.var.coeff[i, ] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                                              between.parameters = between.estimates)[,nT]
+      }
+      
+      var.coeff[(11 * (r-1)) + a + 1, ] <- apply(pdist.var.coeff, 2, median)
+      psd.var.coeff[(6 * (r-1)) + a - 5, ] <- apply(pdist.var.coeff, 2, sd)
+      
       # Save fit measures
       if(!is.null(fit$summaries$DIC)){fit.measures[(11 * (r-1)) + a, 4] <- c(fit$summaries$DIC)}
       
-      rm(within.estimates, between.estimates)
+      rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
       
     }else{
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+      parameters[(11 * (r-1)) + a + 1, ] <- -999
+      se_psd[(11 * (r-1)) + a, ] <- -999 
+      var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
+      fit.measures[(11 * (r-1)) + a, ] <- -999
+      psd.var.coeff[(6 * (r-1)) + a - 5, ] <- -999
     }
     
     rm(file.name, fit, a)
@@ -1038,7 +1214,7 @@ for(cond in 1:18){
     write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
     write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
     
-    rm(analysis_syntax, ml_syntax)
+    rm(analysis_syntax, ml_syntax, saveoutput_syntax)
     
     # Run modelin Mplus
     cat("\n"); print(Sys.time()); cat("\n")
@@ -1051,32 +1227,86 @@ for(cond in 1:18){
       
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
       
-      estimates <- fit$parameters$unstandardized[c(1:(2*I + 2),
-                                                   (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2),
-                                                   (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), 3]
+      # Save estimates
+      estimates <- fit$parameters$unstandardized[c(1:I, #loadings
+                                                   (2 * I + 2), # state var
+                                                   ((I + 2):(2 * I + 1)), # error variances
+                                                   (I + 1), # autoregressive effect
+                                                   (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2), # intercepts and indicator trait variances
+                                                   (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), #Covariances 
+                                                 3]
       
-      within.estimates <- list( loadings = estimates[1:I], state.var = estimates[2*I+2],
-                                error.var = estimates[(I+2):(2 * I +1)], ar.effect = estimates[I+1])
-      between.estimates <- list( trait.ind.var = estimates[(3 * I + 3):(4 * I + 2)])
-      #var.coeff[ , 5] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
-       #                                between.parameters = between.estimates)[,nT]
-      #fit.measures[3, 2:4] <- fit$summaries[, c(11:13)]
+      parameters[(11 * (r-1)) + a + 1, c(1:10, 15:18, 21:30)] <- estimates
+      
+      # Save posterior standard deviations
+      post.sd <- fit$parameters$unstandardized[c(1:I, #loadings
+                                                 (2 * I + 2), # state var
+                                                 ((I + 2):(2 * I + 1)), # error variances
+                                                 (I + 1), # autoregressive effect
+                                                 (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2), # intercepts and indicator trait variances
+                                                 (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), #Covariances 
+                                               4]
+      
+      se_psd[(11 * (r-1)) + a, c(1:10, 15:18, 21:30)] <- post.sd
+      
+      # Compute and save variance coefficients
+      
+      # Read MCMC draws
+      samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+      
+      # Delete burn-in and indicator for chain and draw
+      samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+      
+      # Create matrix to store variance coefficients draws
+      pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
+      
+      for(i in 1:dim(samples)[1]){
+        within.estimates <- list( loadings = c(1, t(samples[i, 1:3])), state.var = samples[i, 9],
+                                  error.var = c(t(samples[i, 4:7])), ar.effect = samples[i, 8])
+        between.estimates <- list( trait.ind.var = c(t(samples[i, c(14, 16, 19, 23)])))
+        pdist.var.coeff[i, ] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                                              between.parameters = between.estimates)[,nT]
+      }
+      
+      var.coeff[(11 * (r-1)) + a + 1, ] <- apply(pdist.var.coeff, 2, median)
+      psd.var.coeff[(6 * (r-1)) + a - 5, ] <- apply(pdist.var.coeff, 2, sd)
+      
       # Save fit measures
       if(!is.null(fit$summaries$DIC)){fit.measures[(11 * (r-1)) + a, 4] <- c(fit$summaries$DIC)}
       
-      rm(within.estimates, between.estimates)
+      rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
     }else{
       perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+      parameters[(11 * (r-1)) + a + 1, ] <- -999
+      se_psd[(11 * (r-1)) + a, ] <- -999 
+      var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
+      fit.measures[(11 * (r-1)) + a, ] <- -999
+      psd.var.coeff[(6 * (r-1)) + a - 5, ] <- -999
     }
     
-    rm(file.name, fit, a)
+    rm(file.name, fit, a, data, dataModel, nT, na.prop, seed)
     
-    
-    
-    
-  }
+    # clean directory
+    unlink(paste0(getwd(), "/", folder, "*"))
+    }
+  
+  # 4.0 Save output tables ----
+  
+  write.table(perf, file = paste0(folder, "Performance/", paste("performance", cond, sep = "_"), ".dat"),
+              col.names = TRUE, row.names = FALSE, quote = TRUE)
+  write.table(parameters, file = paste0(folder, "Parameters/", paste("parameters", cond, sep = "_"), ".dat"),
+              col.names = TRUE, row.names = TRUE, quote = FALSE)
+  write.table(se_psd, file = paste0(folder, "SE_PSD/", paste("se_psd", cond, sep = "_"), ".dat"),
+              col.names = TRUE, row.names = TRUE, quote = FALSE)
+  write.table(var.coeff, file = paste0(folder, "Var_Coeff/", paste("var_coeff", cond, sep = "_"), ".dat"),
+              col.names = TRUE, row.names = TRUE, quote = FALSE)
+  write.table(psd.var.coeff, file = paste0(folder, "PSD_Var_Coeff/", paste("psd_var_coeff", cond, sep = "_"), ".dat"),
+              col.names = TRUE, row.names = TRUE, quote = FALSE)
+  write.table(fit.measures, file = paste0(folder, "Fit_Measures/", paste("fit_measures", cond, sep = "_"), ".dat"),
+              col.names = TRUE, row.names = TRUE, quote = FALSE)
+  
+  rm(perf, parameters, se_psd, var.coeff, psd.var.coeff, fit.measures)
 }
 
-
-#read all analysis to check
-#fit <- readModels(paste0(getwd(),"/","Mplus_files_Results/","cuts_long_n100_i4_nt5_na0",".out"))
+rm(Cond, fit.measures.base, parameters.base, perf.base, psd.var.coeff.base, var.coeff.base, 
+   se_psd.base, folder, I, N, timeout, R, cond, r)
