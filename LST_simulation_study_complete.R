@@ -126,6 +126,7 @@ rownames(fit.measures.base) <- c(paste(rep(labels, times = R), paste0("r", rep(1
 rm(labels)
 
 # 3.0 Simulation loop ----
+
 time0 <- proc.time()
 for(cond in 1){
   print(cond) # print condition number to track progress
@@ -1308,7 +1309,6 @@ for(cond in 1){
   rm(perf, parameters, se_psd, var.coeff, psd.var.coeff, fit.measures)
 }
 time <- proc.time() - time0
-
 
 rm(Cond, fit.measures.base, parameters.base, perf.base, psd.var.coeff.base, var.coeff.base, 
    se_psd.base, folder, I, N, timeout, R, cond, r)
