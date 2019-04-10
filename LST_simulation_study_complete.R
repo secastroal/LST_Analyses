@@ -64,7 +64,7 @@ folder <- paste0(folder, "/")
 # Fix conditions
 N <- 100 # Sample size
 I <- 4 # Number of variables
-timeout <- 3600 # Time limit in seconds to force ending an analysis in Mplus
+timeout <- 180 # Time limit in seconds to force ending an analysis in Mplus
 
 # Manipulated conditions
 times <- c(30, 60, 90) # Number of measurement occasions
@@ -79,7 +79,7 @@ rm(times, missingness, dataModel_to_sim)
 
 # 2.0 Set up output matrices ----
 
-R <- 1 # Number of replicas
+R <- 2 # Number of replicas
 
 # Create labels to name variables in output matrices 
 models <- c("msst", "cuts", "tso")
@@ -128,8 +128,8 @@ rm(labels)
 # 3.0 Simulation loop ----
 
 time0 <- proc.time()
-for(cond in 1){
-  print(cond) # print condition number to track progress
+for(cond in 1:18){
+  print(paste("Condition", cond)) # print condition number to track progress
   
   # Copy table(s) to save results
   perf <- perf.base
@@ -140,7 +140,7 @@ for(cond in 1){
   psd.var.coeff <- psd.var.coeff.base
   
   for(r in 1:R){
-    print(r) #print replication number to track progress
+    print(paste("Replication", r)) #print replication number to track progress
     seed <- 1000 * cond + r
     set.seed(seed)
     nT <- Cond[cond, 1]
@@ -1120,7 +1120,7 @@ for(cond in 1){
     
     # Run modelin Mplus
     cat("\n"); print(Sys.time()); cat("\n")
-    runModels_2(paste0(getwd(),"/",folder,file.name,".inp"), timeout = timeout)
+    runModels_2(paste0(getwd(),"/",folder,file.name,".inp"), timeout = 300)
     cat("\n"); print(Sys.time()); cat("\n")
     
     fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
@@ -1219,7 +1219,7 @@ for(cond in 1){
     
     # Run modelin Mplus
     cat("\n"); print(Sys.time()); cat("\n")
-    runModels_2(paste0(getwd(),"/",folder,file.name,".inp"), timeout = timeout) 
+    runModels_2(paste0(getwd(),"/",folder,file.name,".inp"), timeout = 300) 
     cat("\n"); print(Sys.time()); cat("\n")
     
     fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output

@@ -232,7 +232,25 @@ runModels_2 <- function(target=getwd(), recursive=FALSE, filefilter = NULL, show
     #navigate to working directory in DOS using cd command so that Mplus finds the appropriate files (support rel paths)
     #switched over to use relative filename because of problems in Mplus via Wine misinterpreting absolute paths due to forward slashes.
     #25Jul2012: Quote Mplus_command in case it's in a path with spaces.
-    command <- paste("cd \"", dirtocd, "\" && \"", Mplus_command, "\" \"", inputSplit$filename, "\"", sep="")
+    
+    #create batch files to be able to set a time limit
+    #cm file
+    cm.syntax <- paste0("@ECHO OFF\n", paste("\"", Mplus_command, "\" \"", inputSplit$filename, "\"", sep=""), 
+                         "\ntaskkill /im Mplus.exe /f\ntaskkill /im cmd.exe /f\nEXIT")
+    writeLines(cm.syntax, con = "cm.bat")
+    
+    #run file
+    run.syntax <- paste0("@ECHO OFF\ntimeout /t ", timeout, 
+                        "\ntaskkill /im Mplus.exe /f\ntaskkill /im cmd.exe /f\nEXIT")
+    writeLines(run.syntax, con = "run.bat")
+    
+    #process file
+    process.syntax <- "@ECHO OFF \nstart /b cm.bat \nstart cmd.exe /c run.bat \nEXIT"
+    writeLines(process.syntax, con = "process.bat")
+    
+    rm(cm.syntax, run.syntax, process.syntax)
+    
+    command <- paste("cd \"", dirtocd, "\" && \"process.bat\"", sep="")
     
     #allow for divergence if the package is being run in Linux (Mplus via wine)
     if (.Platform$OS.type == "windows") {
@@ -262,7 +280,7 @@ runModels_2 <- function(target=getwd(), recursive=FALSE, filefilter = NULL, show
     
     #unix system command does not have show.output.on.console or invisible parameters
     if (.Platform$OS.type == "windows")	{
-      system(command, show.output.on.console = showOutput, invisible=(!showOutput), wait=TRUE, timeout = timeout)
+      system(command, show.output.on.console = showOutput, invisible=(!showOutput), wait=TRUE)
     } else {
       if(showOutput) stdout.value = ""
       else stdout.value = NULL
@@ -270,7 +288,7 @@ runModels_2 <- function(target=getwd(), recursive=FALSE, filefilter = NULL, show
       oldwd <- getwd()
       setwd(dirtocd)
       if (local_tmpdir) { Sys.setenv(TMPDIR=dirtocd) } #define TMPDIR local to the .inp file to execute
-      exitCode <- system2(Mplus_command, args=c(shQuote(inputSplit$filename)), stdout=stdout.value, wait=TRUE, timeout = timeout)
+      exitCode <- system2(Mplus_command, args=c(shQuote(inputSplit$filename)), stdout=stdout.value, wait=TRUE)
       if (exitCode > 0L) {
         warning("Mplus returned error code: ", exitCode, ", for model: ", inputSplit$filename, "\n")
       }
@@ -287,44 +305,3 @@ runModels_2 <- function(target=getwd(), recursive=FALSE, filefilter = NULL, show
   #exitRun will fire here if all successful.
 }
 
-#' Split File and Path into Separate Parts
-#'
-#' This is a helper function to split path into path and filename.
-#' Code adapted from R.utils filePath command.
-#'
-#' @param abspath A character string of the file path
-#' @return A list with elements for the directory, filename,
-#'   and absolute path.
-#' @keywords internal
-#' @examples
-#' # make me!!!
-#splitFilePath <- function(abspath) {
- # if (!is.character(abspath)) stop("Path not a character string")
-  #if (nchar(abspath) < 1 || is.na(abspath)) stop("Path is missing or of zero length")
-  
-  #trailing slash screws up file.exists call on Windows: https://bugs.r-project.org/bugzilla/show_bug.cgi?id=14721
-  #abspath <- sub("(\\\\|/)?$", "", abspath, perl=TRUE)
-  
-  #components <- strsplit(abspath, split="[\\/]")[[1]]
-  #lcom <- length(components)
-  
-  #stopifnot(lcom > 0)
-  
-  #the file is the last element in the list. In the case of length == 1, this will extract the only element.
-  #relFilename <- components[lcom]
-  #absolute <- FALSE
-  
-#  if (lcom == 1) {
- #   dirpart <- NA_character_
-  #}
-  #else if (lcom > 1) {
-    #drop the file from the list (the last element)
-   # components <- components[-lcom]
-    #dirpart <- do.call("file.path", as.list(components))
-    
-    #if path begins with C:, /, ~/, //, or \\, then treat as absolute
-    #if (grepl("^([A-Z]{1}:|~/|/|//|\\\\)+.*$", dirpart, perl=TRUE)) absolute <- TRUE
-  #}
-  
-  #return(list(directory=dirpart, filename=relFilename, absolute=absolute))
-#}
