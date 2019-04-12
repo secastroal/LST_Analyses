@@ -16,37 +16,37 @@ check.mplus <- function(mplus.model, file.path){
           if(length(fit$warnings)!=0){
             if(paste0(length(fit$warnings)," WARNING(S) FOUND IN THE INPUT INSTRUCTIONS") %in% unlist(fit$warnings)){
               if(length(H1check>0)){
-                return("Errors and Warnings")
+                return("Errors/Warnings")
               }else{
                 return("Ok")
               }
             }else{
-              return("Errors and Warnings")
+              return("Errors/Warnings")
             } 
           }else{
             if(length(H1check>0)){
-              return("Errors and Warnings")
+              return("Errors/Warnings")
             }else{
               return("Ok")
             }
           }
         }else{
-             return("Errors and Warnings")
+             return("Errors/Warnings")
            }
       }else{
         if(length(fit$warnings)!=0){
           if(paste0(length(fit$warnings)," WARNING(S) FOUND IN THE INPUT INSTRUCTIONS") %in% unlist(fit$warnings)){
             if(length(H1check>0)){
-              return("Errors and Warnings")
+              return("Errors/Warnings")
             }else{
               return("Ok")
             }
           }else{
-            return("Errors and Warnings")
+            return("Errors/Warnings")
           } 
         }else{
           if(length(H1check>0)){
-            return("Errors and Warnings")
+            return("Errors/Warnings")
           }else{
             return("Ok")
           }
@@ -58,7 +58,7 @@ check.mplus <- function(mplus.model, file.path){
 }
 
 
-#files with errors and warnings to test
+#files with Errors/Warnings to test
 
 #fit.ok <- readModels(paste0(getwd(),"/Mplus_files_Results/OldAnalyses/cuts_long_n100_i4_nt100_old.out"))
 #fit.warning.1 <- readModels(paste0(getwd(),"/Mplus_files/Test_analyses/cuts10.out"))

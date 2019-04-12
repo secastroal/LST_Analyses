@@ -235,22 +235,24 @@ runModels_2 <- function(target=getwd(), recursive=FALSE, filefilter = NULL, show
     
     #create batch files to be able to set a time limit
     #cm file
-    cm.syntax <- paste0("@ECHO OFF\n", paste("\"", Mplus_command, "\" \"", inputSplit$filename, "\"", sep=""), 
-                         "\ntaskkill /im Mplus.exe /f\ntaskkill /im cmd.exe /f\nEXIT")
-    writeLines(cm.syntax, con = "cm.bat")
+    #cm.syntax <- paste0("@ECHO OFF\n", paste("\"", Mplus_command, "\" \"", inputSplit$filename, "\"", sep=""), 
+     #                    "\ntaskkill /im Mplus.exe /f\ntaskkill /im cmd.exe /f\nEXIT")
+    #writeLines(cm.syntax, con = "cm.bat")
     
     #run file
-    run.syntax <- paste0("@ECHO OFF\ntimeout /t ", timeout, 
-                        "\ntaskkill /im Mplus.exe /f\ntaskkill /im cmd.exe /f\nEXIT")
-    writeLines(run.syntax, con = "run.bat")
+    #run.syntax <- paste0("@ECHO OFF\ntimeout /t ", timeout, 
+     #                   "\ntaskkill /im Mplus.exe /f\ntaskkill /im cmd.exe /f\nEXIT")
+    #writeLines(run.syntax, con = "run.bat")
     
     #process file
-    process.syntax <- "@ECHO OFF \nstart /b cm.bat \nstart cmd.exe /c run.bat \nEXIT"
-    writeLines(process.syntax, con = "process.bat")
+    #process.syntax <- "@ECHO OFF \nstart /b cm.bat \nstart cmd.exe /c run.bat \nEXIT"
+    #writeLines(process.syntax, con = "process.bat")
     
-    rm(cm.syntax, run.syntax, process.syntax)
+    #rm(cm.syntax, run.syntax, process.syntax)
     
-    command <- paste("cd \"", dirtocd, "\" && \"process.bat\"", sep="")
+    #command <- paste("cd \"", dirtocd, "\" && \"process.bat\"", sep="")
+    command <- paste("cd \"", dirtocd, "\" && \"", Mplus_command, 
+                     "\" \"", inputSplit$filename, "\"", sep = "")
     
     #allow for divergence if the package is being run in Linux (Mplus via wine)
     if (.Platform$OS.type == "windows") {
@@ -280,7 +282,7 @@ runModels_2 <- function(target=getwd(), recursive=FALSE, filefilter = NULL, show
     
     #unix system command does not have show.output.on.console or invisible parameters
     if (.Platform$OS.type == "windows")	{
-      system(command, show.output.on.console = showOutput, invisible=(!showOutput), wait=TRUE)
+      system(command, show.output.on.console = showOutput, invisible=(!showOutput), wait=TRUE, timeout = timeout)
     } else {
       if(showOutput) stdout.value = ""
       else stdout.value = NULL
@@ -288,7 +290,7 @@ runModels_2 <- function(target=getwd(), recursive=FALSE, filefilter = NULL, show
       oldwd <- getwd()
       setwd(dirtocd)
       if (local_tmpdir) { Sys.setenv(TMPDIR=dirtocd) } #define TMPDIR local to the .inp file to execute
-      exitCode <- system2(Mplus_command, args=c(shQuote(inputSplit$filename)), stdout=stdout.value, wait=TRUE)
+      exitCode <- system2(Mplus_command, args=c(shQuote(inputSplit$filename)), stdout=stdout.value, wait=TRUE, timeout = timeout)
       if (exitCode > 0L) {
         warning("Mplus returned error code: ", exitCode, ", for model: ", inputSplit$filename, "\n")
       }
