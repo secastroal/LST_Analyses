@@ -68,7 +68,7 @@ folder <- paste0(folder, "/")
 # Fix conditions
 N <- 100 # Sample size
 I <- 4 # Number of variables
-timeout <- 120 # Time limit in seconds to force ending an analysis in Mplus
+timeout <- 3600 # Time limit in seconds to force ending an analysis in Mplus
 
 # Manipulated conditions
 timepoints <- c(30, 60, 90) # Number of measurement occasions
@@ -82,7 +82,7 @@ rm(timepoints, missingness, dataModel_to_sim)
 
 # 2.0 Set up output matrices ----
 
-R <- 1 # Number of replicas
+R <- 50 # Number of replicas
 
 # Create labels to name variables in output matrices 
 models <- c("msst", "cuts", "tso")
@@ -132,7 +132,7 @@ rm(labels)
 # 3.0 Simulation loop ----
 
 time0 <- proc.time()
-for(cond in c(9, 11, 12)){
+for(cond in 13:18){
   print(paste("Condition", cond)) # print condition number to track progress
   
   # Copy table(s) to save results
@@ -251,19 +251,19 @@ for(cond in c(9, 11, 12)){
       
       # Create positive definite correlation matrix
       repeat {
-        R <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
-        R[lower.tri(R)] = t(R)[lower.tri(R)]
-        diag(R) <- 1
-        print(det(R))
-        if (det(R) > 0){
+        Rcor <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
+        Rcor[lower.tri(Rcor)] = t(Rcor)[lower.tri(Rcor)]
+        diag(Rcor) <- 1
+        print(det(Rcor))
+        if (det(Rcor) > 0){
           break
         }
       }
       
       between.parameters <- list(intercepts = intercepts, trait.ind.var = var_ind_traits, 
-                                 cor.matrix = R)
+                                 cor.matrix = Rcor)
       
-      rm(intercepts, var_ind_traits, R)
+      rm(intercepts, var_ind_traits, Rcor)
       
       # Simulate data
       data <- sim.data.tso(N, nT, I, within.parameters = within.parameters, na.prop = na.prop, 
@@ -288,7 +288,7 @@ for(cond in c(9, 11, 12)){
     #give analysis a number
     a <- 1
     
-    if(cond %in% c(5, 6, 11, 12, 17, 18)){
+    if(nT != 30){
       perf[r, a] <- "notrun"
       rm(a)
     }else{
@@ -485,7 +485,7 @@ for(cond in c(9, 11, 12)){
     #give analysis a number
     a <- 3
     
-    if(cond %in% c(3, 6, 9, 12, 15, 18)){
+    if(nT != 30){
       perf[r, a] <- "notrun"
       rm(a)
     }else{
@@ -722,7 +722,7 @@ for(cond in c(9, 11, 12)){
     #give analysis a number
     a <- 5
     
-    if(cond %in% c(5, 6, 11, 12, 17, 18)){
+    if(nT != 30){
       perf[r, a] <- "notrun"
       rm(a)
     }else{
@@ -910,7 +910,7 @@ for(cond in c(9, 11, 12)){
     #give analysis a number
     a <- 7
     
-    if(cond %in% c(3, 6, 9, 12, 15, 18)){
+    if(nT != 30){
       perf[r, a] <- "notrun"
       rm(a)
     }else{
@@ -1138,7 +1138,7 @@ for(cond in c(9, 11, 12)){
     #give analysis a number
     a <- 9
     
-    if(cond %in% c(5, 6, 11, 12, 17, 18)){
+    if(nT != 30){
       perf[r, a] <- "notrun"
       rm(a)
     }else{
@@ -1242,7 +1242,7 @@ for(cond in c(9, 11, 12)){
     #give analysis a number
     a <- 10
     
-    if(cond %in% c(3, 6, 9, 12, 15, 18)){
+    if(nT != 30){
       perf[r, a] <- "notrun"
       rm(a)
     }else{
