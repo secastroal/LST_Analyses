@@ -23,6 +23,12 @@ sapply(file.sources,source,.GlobalEnv)
 rm(file.sources)
 folder <- "Mplus_Simulation" #Folder to store results and all Mplus files
 
+#Linux does stop mplus when timeout is reached
+# then to identify when an analysis timeout we should check and clean the warnings in r
+if(length(warnings())!=0){}else{}
+assign("last.warning", NULL, envir = baseenv())
+
+
 # Create folders to store output in the working directory ----
 
 if(!dir.exists(paste(getwd(), folder, sep = "/"))){

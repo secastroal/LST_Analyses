@@ -1,3 +1,5 @@
+# This script analyze the results of the simulation analysis
+library(plyr)
 
 perf <- read.table(paste(getwd(), "Mplus_Simulation" , "Performance", "performance_1.dat", sep = "/"), header = TRUE)
 times <- read.table(paste(getwd(), "Mplus_Simulation" , "Times", "times_1.dat", sep = "/"), header = TRUE)
@@ -7,33 +9,69 @@ var.coeff <- read.table(paste(getwd(), "Mplus_Simulation", "Var_Coeff", "var_coe
 fit.measures <- read.table(paste(getwd(), "Mplus_Simulation", "Fit_Measures", "fit_measures_1.dat", sep = "/"), header = TRUE)
 psd.var.coeff <- read.table(paste(getwd(), "Mplus_Simulation", "PSD_Var_Coeff", "psd_var_coeff_1.dat", sep = "/"), header = TRUE)
 
-
-files <- paste(getwd(), "Mplus_Simulation" , "Performance", paste0("performance_",  1:6, ".dat"), sep = "/")
+# Performances ----
+files <- paste(getwd(), "Mplus_Simulation" , "Performance", paste0("performance_",  1:15, ".dat"), sep = "/")
 
 performances <- lapply(files, function(x) read.table(file = x, header = TRUE, colClasses = "character"))
 
-files <- paste(getwd(), "Mplus_Simulation" , "Times", paste0("times_",  1:6, ".dat"), sep = "/")
+performances <- ldply(performances, data.frame)
 
-r.times <- lapply(files, function(x) read.table(file = x, header = TRUE))
+rm(files)
 
+apply(performances, 2, function(x) length(which(x == "Ok")))
 
-r.times <- as.data.frame(simplify2array(r.times, higher = FALSE))
+# Running times ----
+files <- paste(getwd(), "Mplus_Simulation" , "Times", paste0("times_",  1:15, ".dat"), sep = "/")
 
-r.performances <- as.data.frame(simplify2array(performances, higher = FALSE))
+running.times <- lapply(files, function(x) read.table(file = x, header = TRUE))
 
+rm(files)
 
-sim.test.results <- cbind(r.performances, r.times)
+running.times <- ldply(running.times, data.frame)
 
-sim.test.results <- sim.test.results[, c(matrix(1:12, 2, 6, byrow = TRUE))]
+# Parameter estimates ----
+files <- paste(getwd(), "Mplus_Simulation" , "Parameters", paste0("parameters_",  1:15, ".dat"), sep = "/")
 
-sim.test.results <- as.matrix(sim.test.results)
+parameters <- lapply(files, function(x) read.table(file = x, header = TRUE))
 
-sim.test.results[which(sim.test.results == "Errors and Warnings")] <- "Errors/Warnings"
+rm(files)
 
-sim.test.results <- matrix(unlist(sim.test.results), 11, 12)
+parameters <- ldply(parameters, data.frame)
 
+# Standard errors and/or posterior sd ----
+files <- paste(getwd(), "Mplus_Simulation" , "SE_PSD", paste0("se_psd_",  1:15, ".dat"), sep = "/")
 
-write.csv(sim.test.results, "Mplus_Simulation/totaltimes.csv")
+se_psd <- lapply(files, function(x) read.table(file = x, header = TRUE))
 
-rm(files, performances, r.times, r.performances, sim.test.results)
-rm(times)
+rm(files)
+
+se_psd <- ldply(se_psd, data.frame)
+
+# Variance coefficients ----
+files <- paste(getwd(), "Mplus_Simulation" , "Var_Coeff", paste0("var_coeff_",  1:15, ".dat"), sep = "/")
+
+var_coeff <- lapply(files, function(x) read.table(file = x, header = TRUE))
+
+rm(files)
+
+var_coeff <- ldply(var_coeff, data.frame)
+
+# Posterior sd of variance coefficients ----
+files <- paste(getwd(), "Mplus_Simulation" , "PSD_Var_Coeff", paste0("psd_var_coeff_",  1:15, ".dat"), sep = "/")
+
+psd_var_coeff <- lapply(files, function(x) read.table(file = x, header = TRUE))
+
+rm(files)
+
+psd_var_coeff <- ldply(psd_var_coeff, data.frame)
+
+# Fit measures ----
+files <- paste(getwd(), "Mplus_Simulation" , "Fit_Measures", paste0("fit_measures_",  1:15, ".dat"), sep = "/")
+
+fit_measures <- lapply(files, function(x) read.table(file = x, header = TRUE))
+
+rm(files)
+
+fit_measures <- ldply(fit_measures, data.frame)
+
+# End ----
