@@ -25,6 +25,8 @@ folder <- "Mplus_Simulation" #Folder to store results and all Mplus files
 
 #Linux does stop mplus when timeout is reached
 # then to identify when an analysis timeout we should check and clean the warnings in r
+
+runModels_2("ex3.1Bayes.inp", Mplus_command = "/home/p280329/mplusdemo/mpdemo")
 if(length(warnings())!=0){}else{}
 assign("last.warning", NULL, envir = baseenv())
 
