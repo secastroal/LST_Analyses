@@ -7,6 +7,7 @@
 # 2.0 Set up output matrices
 # 3.0 Simulation loop
 # 4.0 Save output
+# 5.0 Clean enviroment
 
 # 0.0 Prepare environment ----
 rm(list=ls())
@@ -250,15 +251,16 @@ for(cond in 14:15){
       var_ind_traits <- c(2, 1.5, 2.5, 1.75) # variance latent indicator trait variables
       
       # Create positive definite correlation matrix
-      repeat {
+      #repeat{
+        set.seed(13001)
         Rcor <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
         Rcor[lower.tri(Rcor)] = t(Rcor)[lower.tri(Rcor)]
         diag(Rcor) <- 1
-        print(det(Rcor))
-        if (det(Rcor) > 0){
-          break
-        }
-      }
+        #print(det(Rcor))
+        #if(det(Rcor) > 0){break}
+        set.seed(seed)
+      #}
+      
       
       between.parameters <- list(intercepts = intercepts, trait.ind.var = var_ind_traits, 
                                  cor.matrix = Rcor)
@@ -528,7 +530,7 @@ for(cond in 14:15){
         se_psd[(11 * (r-1)) + a, ] <- -999 
         var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
         fit.measures[(11 * (r-1)) + a, ] <- -999
-        psd.var.coeff[(6 * (r-1)) + a - 5, ] <- -999
+        psd.var.coeff[(6 * (r-1)) + a - 2, ] <- -999
         
         rm(file.name, a, t0, tf)
       }else{
@@ -647,7 +649,7 @@ for(cond in 14:15){
       se_psd[(11 * (r-1)) + a, ] <- -999 
       var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
       fit.measures[(11 * (r-1)) + a, ] <- -999
-      psd.var.coeff[(6 * (r-1)) + a - 5, ] <- -999
+      psd.var.coeff[(6 * (r-1)) + a - 2, ] <- -999
       
       rm(file.name, a, t0, tf)
     }else{
@@ -955,7 +957,7 @@ for(cond in 14:15){
         se_psd[(11 * (r-1)) + a, ] <- -999 
         var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
         fit.measures[(11 * (r-1)) + a, ] <- -999
-        psd.var.coeff[(6 * (r-1)) + a - 5, ] <- -999
+        psd.var.coeff[(6 * (r-1)) + a - 4, ] <- -999
         
         rm(file.name, a, t0, tf)
       }else{
@@ -1072,7 +1074,7 @@ for(cond in 14:15){
       se_psd[(11 * (r-1)) + a, ] <- -999 
       var.coeff[(11 * (r-1)) + a + 1, ] <- -999 
       fit.measures[(11 * (r-1)) + a, ] <- -999
-      psd.var.coeff[(6 * (r-1)) + a - 5, ] <- -999
+      psd.var.coeff[(6 * (r-1)) + a - 4, ] <- -999
       
       rm(file.name, a, t0, tf)
     }else{
