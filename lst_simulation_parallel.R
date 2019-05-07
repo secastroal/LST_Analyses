@@ -80,7 +80,7 @@ folder <- paste0(folder, "/")
 # Fix conditions
 N <- 100 # Sample size
 I <- 4 # Number of variables
-timeout <- 3600 # Time limit in seconds to force ending an analysis in Mplus
+timeout <- 30 # Time limit in seconds to force ending an analysis in Mplus
 
 # Manipulated conditions
 timepoints <- c(30, 60, 90) # Number of measurement occasions
@@ -134,8 +134,8 @@ colnames(fit.measures.base) <- c("AIC", "BIC", "aBIC", "DIC")
 # 3.0 Simulation foreach loops ----
 
 # Setup parallel backend to use 6 parallel tasks between 6 to 24(when bayes) processors (cores):
-cl <- makeCluster(6)
-registerDoParallel(cl, cores = 6)
+cl <- makeCluster(2)
+registerDoParallel(cl, cores = 2)
 
 # Get conditions and replications from the batch file
 args <- commandArgs(trailingOnly=TRUE)
@@ -299,10 +299,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             # Run model in Mplus
             assign("last.warning", NULL, envir = baseenv())
             t0 <- proc.time()
-            runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
             tf <- proc.time() - t0
             
-            if(length(warnings())!=0){
+            if(run == "timeout"){
               
               perf[1, a] <- "timeout"
               times[1, a] <- round(tf[3], 2)
@@ -377,7 +377,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
             if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
             if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name)
+            rm(file.name, run)
             
             # msst + long + maximun likelihood ----
             #give analysis a number
@@ -405,10 +405,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             # Run model in Mplus
             assign("last.warning", NULL, envir = baseenv())
             t0 <- proc.time()
-            runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
             tf <- proc.time() - t0
             
-            if(length(warnings())!=0){
+            if(run == "timeout"){
               
               perf[1, a] <- "timeout"
               times[1, a] <- round(tf[3], 2)
@@ -476,7 +476,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
             if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
             if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name)
+            rm(file.name, run)
             
             # msst + wide + Bayesian ----
             #give analysis a number
@@ -510,10 +510,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             # Run model in Mplus
             assign("last.warning", NULL, envir = baseenv())
             t0 <- proc.time()
-            runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
             tf <- proc.time() - t0
             
-            if(length(warnings())!=0){
+            if(run == "timeout"){
               
               perf[1, a] <- "timeout"
               times[1, a] <- round(tf[3], 2)
@@ -602,7 +602,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
             if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
             if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name)
+            rm(file.name, run)
             
             # msst + long + Bayesian ----
             #give analysis a number
@@ -636,10 +636,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             # Run model in Mplus
             assign("last.warning", NULL, envir = baseenv())
             t0 <- proc.time()
-            runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
             tf <- proc.time() - t0
             
-            if(length(warnings())!=0){
+            if(run == "timeout"){
               
               perf[1, a] <- "timeout"
               times[1, a] <- round(tf[3], 2)
@@ -724,7 +724,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
             if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
             if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name)
+            rm(file.name, run)
             
             # cuts + wide + maximum likelihod ----
             #give analysis a number
@@ -758,10 +758,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             # Run model in Mplus
             assign("last.warning", NULL, envir = baseenv())
             t0 <- proc.time()
-            runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
             tf <- proc.time() - t0
             
-            if(length(warnings()) != 0){
+            if(run == "timeout"){
               
               perf[1, a] <- "timeout"
               times[1, a] <- round(tf[3], 2)
@@ -834,7 +834,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
             if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
             if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name)
+            rm(file.name, run)
             
             # cuts + long + maximun likelihood ----
             #give analysis a number
@@ -862,10 +862,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             # Run modelin Mplus
             assign("last.warning", NULL, envir = baseenv())
             t0 <- proc.time()
-            runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
             tf <- proc.time() - t0
             
-            if(length(warnings()) != 0){
+            if(run == "timeout"){
               
               perf[1, a] <- "timeout"
               times[1, a] <- round(tf[3], 2)
@@ -923,7 +923,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
             if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
             if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name)
+            rm(file.name, run)
             
             # cuts + wide + Bayesian ----
             #give analysis a number
@@ -959,10 +959,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             # Run model in Mplus
             assign("last.warning", NULL, envir = baseenv())
             t0 <- proc.time()
-            runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
             tf <- proc.time() - t0
             
-            if(length(warnings()) != 0){
+            if(run == "timeout"){
               
               perf[1, a] <- "timeout"
               times[1, a] <- round(tf[3], 2)
@@ -1052,7 +1052,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
             if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
             if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name)
+            rm(file.name, run)
           
             # cuts + long + Bayesian ----
             #give analysis a number
@@ -1083,10 +1083,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             # Run modelin Mplus
             assign("last.warning", NULL, envir = baseenv())
             t0 <- proc.time()
-            runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
             tf <- proc.time() - t0
             
-            if(length(warnings()) != 0){
+            if(run == "timeout"){
               
               perf[1, a] <- "timeout"
               times[1, a] <- round(tf[3], 2)
@@ -1162,7 +1162,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
             if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
             if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name)
+            rm(file.name, run)
             
             # tso + wide + maximum likelihood ----
             #give analysis a number
@@ -1194,10 +1194,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             # Run modelin Mplus
             assign("last.warning", NULL, envir = baseenv())
             t0 <- proc.time()
-            runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
             tf <- proc.time() - t0
             
-            if(length(warnings()) != 0){
+            if(run == "timeout"){
               
               perf[1, a] <- "timeout"
               times[1, a] <- round(tf[3], 2)
@@ -1269,7 +1269,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
             if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
             if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name)
+            rm(file.name, run)
             
             # tso + wide + Bayesian ----
             #give analysis a number
@@ -1303,10 +1303,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             # Run modelin Mplus
             assign("last.warning", NULL, envir = baseenv())
             t0 <- proc.time()
-            runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
             tf <- proc.time() - t0
             
-            if(length(warnings()) != 0){
+            if(run == "timeout"){
               
               perf[1, a] <- "timeout"
               times[1, a] <- round(tf[3], 2)
@@ -1394,7 +1394,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
             if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
             if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name)
+            rm(file.name, run)
             
             # tso + long + Bayesian ----
             #give analysis a number
@@ -1425,10 +1425,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             # Run modelin Mplus
             assign("last.warning", NULL, envir = baseenv())
             t0 <- proc.time()
-            runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
             tf <- proc.time() - t0
             
-            if(length(warnings()) != 0){
+            if(run == "timeout"){
               
               perf[1, a] <- "timeout"
               times[1, a] <- round(tf[3], 2)
@@ -1514,7 +1514,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
             if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
             if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name)
+            rm(file.name, run)
             
             # Export output to outer foreach ----
             result <- list(perf, times, parameters, se_psd, var.coeff, psd.var.coeff, fit.measures)

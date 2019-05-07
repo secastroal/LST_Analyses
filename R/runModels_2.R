@@ -292,6 +292,7 @@ runModels_2 <- function(target=getwd(), recursive=FALSE, filefilter = NULL, show
       if (local_tmpdir) { Sys.setenv(TMPDIR=dirtocd) } #define TMPDIR local to the .inp file to execute
       exitCode <- system2(Mplus_command, args=c(shQuote(inputSplit$filename)), stdout=stdout.value, wait=TRUE, timeout = timeout)
       if (exitCode > 0L) {
+        return("timeout")
         warning("Mplus returned error code: ", exitCode, ", for model: ", inputSplit$filename, "\n")
       }
       setwd(oldwd)
