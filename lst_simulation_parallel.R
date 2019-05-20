@@ -80,7 +80,7 @@ folder <- paste0(folder, "/")
 # Fix conditions
 N <- 100 # Sample size
 I <- 4 # Number of variables
-timeout <- 30 # Time limit in seconds to force ending an analysis in Mplus
+timeout <- 3600 # Time limit in seconds to force ending an analysis in Mplus
 
 # Manipulated conditions
 timepoints <- c(30, 60, 90) # Number of measurement occasions
@@ -134,8 +134,8 @@ colnames(fit.measures.base) <- c("AIC", "BIC", "aBIC", "DIC")
 # 3.0 Simulation foreach loops ----
 
 # Setup parallel backend to use 6 parallel tasks between 6 to 24(when bayes) processors (cores):
-cl <- makeCluster(2)
-registerDoParallel(cl, cores = 2)
+cl <- makeCluster(6)
+registerDoParallel(cl, cores = 6)
 
 # Get conditions and replications from the batch file
 args <- commandArgs(trailingOnly=TRUE)
