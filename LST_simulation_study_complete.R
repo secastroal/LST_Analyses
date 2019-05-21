@@ -251,15 +251,18 @@ for(cond in 14:15){
       var_ind_traits <- c(2, 1.5, 2.5, 1.75) # variance latent indicator trait variables
       
       # Create positive definite correlation matrix
-      #repeat{
-        set.seed(13001)
+      set.seed(13017)
+      repeat{
+        
         Rcor <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
         Rcor[lower.tri(Rcor)] = t(Rcor)[lower.tri(Rcor)]
         diag(Rcor) <- 1
-        #print(det(Rcor))
-        #if(det(Rcor) > 0){break}
-        set.seed(seed)
-      #}
+        print(det(Rcor))
+        if(det(Rcor) > 0){
+          print(det(Rcor))
+          print(Rcor)
+          break}
+        }
       
       
       between.parameters <- list(intercepts = intercepts, trait.ind.var = var_ind_traits, 

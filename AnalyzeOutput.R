@@ -1,5 +1,6 @@
 # This script analyze the results of the simulation analysis
 #Prepare environment ----
+rm(list=ls())
 library(plyr)
 library(xtable)
 library(ggplot2)
@@ -11,6 +12,15 @@ rm(file.sources)
 I <- 4
 nT <- 30
 R <- 100
+
+# Create labels for the 11 types of analyses 
+models <- c("msst", "cuts", "tso")
+data_str <- c("wide", "long")
+estimator <- c("ml", "bayes")
+labels <- expand.grid(data_str, estimator, models)
+labels <- labels[-10, c(3,1,2)]
+labels <- apply(labels, 1, function(vec) paste(vec, collapse = "_"))
+rm(models, data_str, estimator)
 
 # matrix to store True parameters
  
@@ -165,12 +175,14 @@ print(xtable(t(var_coeff.true.ex), type = "latex", caption = "True Variance Coef
              label = "tab:Truevar", align = c("l", "c", "c", "c"), digits = c(0,2,2,2)), 
       include.rownames = TRUE, NA.string = "-", caption.placement = "top", file = "Mplus_Simulation/truevarcoeff.txt")
 
+# Repeat true parameters in a matrix to be able to compute bias and other statisitcs easily
 
+parameters.true <- parameters.true[rep(1:3, each = 11 * R * 6),]
 
-
-
+var_coeff.true <- var_coeff.true[rep(1:3, each = 11 * R * 6),]
 
 # Create factor variables for anova analyses ----
+cond <- factor(rep(1:18, each = R * 11))
 b.model <- factor(rep(1:3, each = R * 6 * 11), levels = c("1", "2", "3"), labels = c("b.msst", "b.cuts", "b.tso"))
 NA.prop  <- factor(rep(rep(1:2, 3), each = R * 3 * 11), levels = c("1", "2"), labels = c("0%", "10%"))
 times   <- factor(rep(rep(1:3, 6), each = R * 11), levels = c("1", "2", "3"), labels = c("30", "60", "90"))
@@ -178,8 +190,8 @@ model   <- factor(rep(rep(1:3, each = 4)[1:11], R * 3 * 6), levels = c("1", "2",
 est.method <- factor(rep(c(1,1,2,2,1,1,2,2,1,2,2), R * 3 * 6), levels = c("1", "2"), labels = c("ml", "bayes"))
 format  <- factor(rep(c(1,2,1,2,1,2,1,2,1,1,2), R * 3 * 6), levels = c("1", "2"), labels = c("wide", "long"))
 
-factor.var <- data.frame(b.model, NA.prop, times, model, est.method, format)
-rm(b.model, NA.prop, times, model, est.method, format)
+factor.var <- data.frame(cond, b.model, NA.prop, times, model, est.method, format)
+rm(cond, b.model, NA.prop, times, model, est.method, format)
 
 # Performances ----
 files <- paste(getwd(), "Mplus_Simulation" , "Performance", paste0("performance_",  1:18, ".dat"), sep = "/")
@@ -198,8 +210,177 @@ perf.table <- rbind(apply(performances, 2, function(x) length(which(x == "Ok")))
 perf.prop <- t(round(prop.table(as.table(perf.table), margin = 2)*100, 2))
 dimnames(perf.prop)[[2]] <- c("Ok", "Warnings/Errors", "Non-convergence", "timeout")
 
-print(xtable(perf.prop, type = "latex", caption = "Performance percentanges across all conditions"), 
-include.rownames = TRUE, file = "Mplus_Simulation/performances.txt")
+print(xtable(perf.prop, type = "latex", align = c("l", "c", "c", "c", "c"), label = "tab:perf", 
+             caption = "Percentages of Successes and Failures per Type of Analysis on 1800 Analyses Each"), 
+include.rownames = TRUE, caption.placement = "top", file = "Mplus_Simulation/performances.txt")
+
+perf.cond <- matrix(NA, 18, 11*4)
+colnames(perf.cond) <- c(paste(rep(labels, 4),rep(c("Ok", "WE", "NC", "TOut"), each = 11), 
+                             sep = " "))
+
+for(i in 1:18){
+  perf.subset <- performances[((100 *(i-1))+1):(100*i),]
+  perf.cond[i, ] <- c(apply(perf.subset, 2, function(x) length(which(x == "Ok"))),
+                          apply(perf.subset, 2, function(x) length(which(x == "Errors/Warnings"))),
+                          apply(perf.subset, 2, function(x) length(which(x == "Non-convergence"))),
+                          apply(perf.subset, 2, function(x) length(which(x == "timeout"))))
+}
+rm(i, perf.subset)
+
+pdf("Mplus_Simulation/Okplot.pdf")
+par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,4,6,6),xpd=NA)
+matplot(1:6,perf.cond[1:6,1:4],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[1:6,5:8],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[1:6,9:11],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,1:4],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,5:8],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,9:11],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[13:18,1:4],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+matplot(1:6,perf.cond[13:18,5:8],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+matplot(1:6,perf.cond[13:18,9:11],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+
+legend(1,-40,c("Wide-ml","Long-ml", "Wide-Bayes","Long-Bayes"),col=c("black", "blue", "red", "green"),
+       lty=1,lwd=1,ncol=2,pch=c(1, 3, 4, 5))
+mtext("Number of Successful Analyses per Condition", 3, outer=TRUE, line=2, cex=1.5)
+mtext("Number of Successful Analyses", 2, outer=TRUE, line=2.5)
+mtext("Model", 1, at=3/6,cex=1, outer=TRUE, line=4)
+mtext("MSST", 1, at=1/6,cex=0.75, outer=TRUE, line=2)
+mtext("CUTS", 1, at=3/6,cex=0.75, outer=TRUE, line=2)
+mtext("TSO", 1, at=5/6,cex=0.75, outer=TRUE, line=2)
+mtext("Base Model", 4, at=3/6,cex=1, outer=TRUE, line=1.75)
+mtext("MSST", 4, at=5/6,cex=0.75, outer=TRUE, line=0.5)
+mtext("CUTS", 4, at=3/6,cex=0.75, outer=TRUE, line=0.5)
+mtext("TSO", 4, at=1/6,cex=0.75, outer=TRUE, line=0.5)
+dev.off()
+
+pdf("Mplus_Simulation/warningplot.pdf")
+par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,4,6,6),xpd=NA)
+matplot(1:6,perf.cond[1:6,12:15],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[1:6,16:19],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[1:6,20:22],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,12:15],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,16:19],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,20:22],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[13:18,12:15],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+matplot(1:6,perf.cond[13:18,16:19],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+matplot(1:6,perf.cond[13:18,20:22],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+
+legend(1,-40,c("Wide-ml","Long-ml", "Wide-Bayes","Long-Bayes"),col=c("black", "blue", "red", "green"),
+       lty=1,lwd=1,ncol=2,pch=c(1, 3, 4, 5))
+mtext("Number of Analyses with Warnings or Errors per Condition", 3, outer=TRUE, line=2, cex=1.5)
+mtext("Number of Analyses with Warnings or Errors", 2, outer=TRUE, line=2.5)
+mtext("Model", 1, at=3/6,cex=1, outer=TRUE, line=4)
+mtext("MSST", 1, at=1/6,cex=0.75, outer=TRUE, line=2)
+mtext("CUTS", 1, at=3/6,cex=0.75, outer=TRUE, line=2)
+mtext("TSO", 1, at=5/6,cex=0.75, outer=TRUE, line=2)
+mtext("Base Model", 4, at=3/6,cex=1, outer=TRUE, line=1.75)
+mtext("MSST", 4, at=5/6,cex=0.75, outer=TRUE, line=0.5)
+mtext("CUTS", 4, at=3/6,cex=0.75, outer=TRUE, line=0.5)
+mtext("TSO", 4, at=1/6,cex=0.75, outer=TRUE, line=0.5)
+dev.off()
+
+pdf("Mplus_Simulation/nonconvergenceplot.pdf")
+par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,4,6,6),xpd=NA)
+matplot(1:6,perf.cond[1:6,23:26],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[1:6,27:30],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[1:6,31:33],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,23:26],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,27:30],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,31:33],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[13:18,23:26],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+matplot(1:6,perf.cond[13:18,27:30],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+matplot(1:6,perf.cond[13:18,31:33],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+
+legend(1,-40,c("Wide-ml","Long-ml", "Wide-Bayes","Long-Bayes"),col=c("black", "blue", "red", "green"),
+       lty=1,lwd=1,ncol=2,pch=c(1, 3, 4, 5))
+mtext("Number of Analyses that did not Converge per Condition", 3, outer=TRUE, line=2, cex=1.5)
+mtext("Number of Analyses that did not Converge", 2, outer=TRUE, line=2.5)
+mtext("Model", 1, at=3/6,cex=1, outer=TRUE, line=4)
+mtext("MSST", 1, at=1/6,cex=0.75, outer=TRUE, line=2)
+mtext("CUTS", 1, at=3/6,cex=0.75, outer=TRUE, line=2)
+mtext("TSO", 1, at=5/6,cex=0.75, outer=TRUE, line=2)
+mtext("Base Model", 4, at=3/6,cex=1, outer=TRUE, line=1.75)
+mtext("MSST", 4, at=5/6,cex=0.75, outer=TRUE, line=0.5)
+mtext("CUTS", 4, at=3/6,cex=0.75, outer=TRUE, line=0.5)
+mtext("TSO", 4, at=1/6,cex=0.75, outer=TRUE, line=0.5)
+dev.off()
+
+pdf("Mplus_Simulation/timeoutplot.pdf")
+par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,4,6,6),xpd=NA)
+matplot(1:6,perf.cond[1:6,34:37],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[1:6,38:41],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[1:6,42:44],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,34:37],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,38:41],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[7:12,42:44],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+matplot(1:6,perf.cond[13:18,34:37],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+matplot(1:6,perf.cond[13:18,38:41],type="b",pch=c(1, 3, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "blue", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+matplot(1:6,perf.cond[13:18,42:44],type="b",pch=c(1, 4, 5),xaxt="n",xlab="",ylab="",yaxt="n",
+        xlim=c(0.7,6.2),ylim=c(0,110),lty=1, col=c("black", "red", "green"), cex = 1.5)
+axis(1,at=1:6,labels=c("30-0","60-0","90-0", "30-10","60-10","90-10"))
+
+legend(1,-40,c("Wide-ml","Long-ml", "Wide-Bayes","Long-Bayes"),col=c("black", "blue", "red", "green"),
+       lty=1,lwd=1,ncol=2,pch=c(1, 3, 4, 5))
+mtext("Number of Analyses that Timeout per Condition", 3, outer=TRUE, line=2, cex=1.5)
+mtext("Number of Analyses that Timeout", 2, outer=TRUE, line=2.5)
+mtext("Model", 1, at=3/6,cex=1, outer=TRUE, line=4)
+mtext("MSST", 1, at=1/6,cex=0.75, outer=TRUE, line=2)
+mtext("CUTS", 1, at=3/6,cex=0.75, outer=TRUE, line=2)
+mtext("TSO", 1, at=5/6,cex=0.75, outer=TRUE, line=2)
+mtext("Base Model", 4, at=3/6,cex=1, outer=TRUE, line=1.75)
+mtext("MSST", 4, at=5/6,cex=0.75, outer=TRUE, line=0.5)
+mtext("CUTS", 4, at=3/6,cex=0.75, outer=TRUE, line=0.5)
+mtext("TSO", 4, at=1/6,cex=0.75, outer=TRUE, line=0.5)
+dev.off()
+
+
+
 
 # Running times ----
 files <- paste(getwd(), "Mplus_Simulation" , "Times", paste0("times_",  1:18, ".dat"), sep = "/")
