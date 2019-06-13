@@ -365,7 +365,7 @@ tso_long_bayes_r33 NA NA NA 32018.294
 msst_wide_ml_r34 -999 -999 -999 -999
 msst_long_ml_r34 38837.15 38933.252 38882.414 NA
 msst_wide_bayes_r34 -999 -999 -999 -999
-msst_long_bayes_r34 NA NA NA NA
+msst_long_bayes_r34 -999 -999 -999 -999
 cuts_wide_ml_r34 -999 -999 -999 -999
 cuts_long_ml_r34 36076.068 36196.195 36132.647 NA
 cuts_wide_bayes_r34 NA NA NA NA

@@ -32,7 +32,7 @@
 "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok"
 "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok"
 "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok"
-"timeout" "Ok" "Non-convergence" "Ok" "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok"
+"timeout" "Ok" "Non-convergence" "Non-convergence" "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok"
 "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok"
 "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok" "Ok" "Errors/Warnings" "Ok" "Ok"
 "Ok" "Ok" "Ok" "Ok" "Ok" "Ok" "Ok" "Ok" "Ok" "Ok" "Ok"

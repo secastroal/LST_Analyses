@@ -139,10 +139,11 @@ registerDoParallel(cl, cores = 2)
 
 # Get conditions and replications from the batch file
 args <- commandArgs(trailingOnly=TRUE)
+args <- as.numeric(args)
+cond <- args[1]
 
 time0 <- proc.time()
-outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombine=TRUE) %:%
-  foreach(r=args[3]:args[4], .combine='comb', .multicombine=TRUE, 
+outcome.simulation <- foreach(r=args[2]:args[3], .combine='comb', .multicombine=TRUE, 
           .packages=c("MplusAutomation", "MASS")) %dopar% {
             
             # Copy table(s) to save results
@@ -1526,43 +1527,41 @@ time <- proc.time() - time0
 
 # 4.0 Save output tables ----
 
-for(i in args[1]:args[2]){
-  tmp           <- outcome.simulation[[i - as.numeric(args[1]) + 1]][[1]]
-  write.table(tmp, file = paste0(folder, "Performance/", paste("performance", i, sep = "_"), ".dat"),
+  tmp           <- outcome.simulation[[1]]
+  write.table(tmp, file = paste0(folder, "Performance/", paste("performance", cond, sep = "_"), ".dat"),
               col.names = TRUE, row.names = FALSE, quote = TRUE)
   rm(tmp)
   
-  tmp           <- outcome.simulation[[i - as.numeric(args[1]) + 1]][[2]]
-  write.table(tmp, file = paste0(folder, "Times/", paste("times", i, sep = "_"), ".dat"),
+  tmp           <- outcome.simulation[[2]]
+  write.table(tmp, file = paste0(folder, "Times/", paste("times", cond, sep = "_"), ".dat"),
               col.names = TRUE, row.names = FALSE, quote = FALSE)
   rm(tmp)
   
-  tmp           <- outcome.simulation[[i - as.numeric(args[1]) + 1]][[3]]
-  write.table(tmp, file = paste0(folder, "Parameters/", paste("parameters", i, sep = "_"), ".dat"),
+  tmp           <- outcome.simulation[[3]]
+  write.table(tmp, file = paste0(folder, "Parameters/", paste("parameters", cond, sep = "_"), ".dat"),
               col.names = TRUE, row.names = TRUE, quote = FALSE)
   rm(tmp)
   
-  tmp           <- outcome.simulation[[i - as.numeric(args[1]) + 1]][[4]]
-  write.table(tmp, file = paste0(folder, "SE_PSD/", paste("se_psd", i, sep = "_"), ".dat"),
+  tmp           <- outcome.simulation[[4]]
+  write.table(tmp, file = paste0(folder, "SE_PSD/", paste("se_psd", cond, sep = "_"), ".dat"),
               col.names = TRUE, row.names = TRUE, quote = FALSE)
   rm(tmp)
   
-  tmp           <- outcome.simulation[[i - as.numeric(args[1]) + 1]][[5]]
-  write.table(tmp, file = paste0(folder, "Var_Coeff/", paste("var_coeff", i, sep = "_"), ".dat"),
+  tmp           <- outcome.simulation[[5]]
+  write.table(tmp, file = paste0(folder, "Var_Coeff/", paste("var_coeff", cond, sep = "_"), ".dat"),
               col.names = TRUE, row.names = TRUE, quote = FALSE)
   rm(tmp)
   
-  tmp           <- outcome.simulation[[i - as.numeric(args[1]) + 1]][[6]]
-  write.table(tmp, file = paste0(folder, "PSD_Var_Coeff/", paste("psd_var_coeff", i, sep = "_"), ".dat"),
+  tmp           <- outcome.simulation[[6]]
+  write.table(tmp, file = paste0(folder, "PSD_Var_Coeff/", paste("psd_var_coeff", cond, sep = "_"), ".dat"),
               col.names = TRUE, row.names = TRUE, quote = FALSE)
   rm(tmp)
   
-  tmp           <- outcome.simulation[[i - as.numeric(args[1]) + 1]][[7]]
-  write.table(tmp, file = paste0(folder, "Fit_Measures/", paste("fit_measures", i, sep = "_"), ".dat"),
+  tmp           <- outcome.simulation[[7]]
+  write.table(tmp, file = paste0(folder, "Fit_Measures/", paste("fit_measures", cond, sep = "_"), ".dat"),
               col.names = TRUE, row.names = TRUE, quote = FALSE)
   rm(tmp)
   
-}
 
 # 5.0 Stop cluster and clean enviroment ----
 stopCluster(cl)
