@@ -243,36 +243,36 @@ include.rownames = FALSE, caption.placement = "top", file = "Mplus_Simulation/pe
 # Plot: Successful analysis ----
 pdf("Mplus_Simulation/Okplot.pdf")
 par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
-matplot(1:6,perf.cond[1:6,1:4],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110), cex = 1.5, lwd = c(1,2,1,2), las = 1)
+matplot(1:6,perf.cond[1:6,1:4],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+        xlim=c(0.7,6.2),ylim=c(0,110), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[1:6,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[1:6,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
-matplot(1:6,perf.cond[7:12,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/6),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
+matplot(1:6,perf.cond[7:12,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[7:12,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[7:12,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 matplot(1:6,perf.cond[13:18,1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,perf.cond[13:18,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,perf.cond[13:18,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 
-legend(-1,-40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty=1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+legend(-2,-40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+       lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1.1)
 mtext("Number of Successful Analyses", 2, outer=TRUE, line=2.5)
 mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
 mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -290,36 +290,36 @@ dev.off()
 # Plot: Analyses with warnings and error messages ----
 pdf("Mplus_Simulation/warningplot.pdf")
 par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
-matplot(1:6,perf.cond[1:6,12:15],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110), cex = 1.5, lwd = c(1,2,1,2), las = 1)
+matplot(1:6,perf.cond[1:6,12:15],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+        xlim=c(0.7,6.2),ylim=c(0,110), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[1:6,16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[1:6,20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 matplot(1:6,perf.cond[7:12,12:15],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[7:12,16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[7:12,20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 matplot(1:6,perf.cond[13:18,12:15],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,perf.cond[13:18,16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,perf.cond[13:18,20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 
-legend(-1,-40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty=1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+legend(-2,-40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+       lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1.1)
 mtext("Number of Analyses with Warnings or Errors", 2, outer=TRUE, line=2.5)
 mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
 mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -337,36 +337,36 @@ dev.off()
 # Plot: Analyses that did not converge ----
 pdf("Mplus_Simulation/nonconvergenceplot.pdf")
 par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
-matplot(1:6,perf.cond[1:6,23:26],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110), cex = 1.5, lwd = c(1,2,1,2), las = 1)
+matplot(1:6,perf.cond[1:6,23:26],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+        xlim=c(0.7,6.2),ylim=c(0,110), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[1:6,27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[1:6,31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 matplot(1:6,perf.cond[7:12,23:26],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[7:12,27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[7:12,31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 matplot(1:6,perf.cond[13:18,23:26],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,perf.cond[13:18,27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,perf.cond[13:18,31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 
-legend(-1,-40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty=1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+legend(-2,-40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+       lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1.1)
 mtext("Number of Analyses that did not Converge", 2, outer=TRUE, line=2.5)
 mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
 mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -384,36 +384,36 @@ dev.off()
 # Plot: Analyses that time out ----
 pdf("Mplus_Simulation/timeoutplot.pdf")
 par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
-matplot(1:6,perf.cond[1:6,34:37],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110), cex = 1.5, lwd = c(1,2,1,2), las = 1)
+matplot(1:6,perf.cond[1:6,34:37],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+        xlim=c(0.7,6.2),ylim=c(0,110), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[1:6,38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[1:6,42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 matplot(1:6,perf.cond[7:12,34:37],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[7:12,38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 matplot(1:6,perf.cond[7:12,42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 matplot(1:6,perf.cond[13:18,34:37],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,perf.cond[13:18,38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,perf.cond[13:18,42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,6.2),ylim=c(0,110),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]-6,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 
-legend(-1,-40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty=1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+legend(-2,-40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+       lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1.1)
 mtext("Number of Analyses that Timeout", 2, outer=TRUE, line=2.5)
 mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
 mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -476,45 +476,45 @@ for(j in 2:9){
   
   pdf(paste0("Mplus_Simulation/biasparameter", j, "plot.pdf"))
   par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
-  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]), cex = 1.5, lwd = c(1,2,1,2), las = 1)
+  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[13:18,1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-1]*xlabel.factor[j-1],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-1]*xlabel.factor[j-1],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-1]*xlabel.factor[j-1],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   
-  legend(-1,ylimits.down[j-1]*legend.factor[j-1],c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-         lty=1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+  legend(-2,ylimits.down[j-1]*legend.factor[j-1],c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1.1)
   mtext(ylabel[j-1], 2, outer=TRUE, line=3.5)
   mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
   mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -556,45 +556,45 @@ for(j in 2:9){
   
   pdf(paste0("Mplus_Simulation/abbiasparameter", j, "plot.pdf"))
   par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
-  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]), cex = 1.5, lwd = c(1,2,1,2), las = 1)
+  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[13:18,1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]-ylimits[j-1]*0.05,
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]-ylimits[j-1]*0.05,
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]-ylimits[j-1]*0.05,
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   
-  legend(-1,-ylimits[j-1]*0.40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-         lty=1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+  legend(-2,-ylimits[j-1]*0.40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1.1)
   mtext(ylabel[j-1], 2, outer=TRUE, line=3.5)
   mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
   mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -636,45 +636,45 @@ for(j in 2:9){
   
   pdf(paste0("Mplus_Simulation/RMSEparameter", j, "plot.pdf"))
   par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
-  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]), cex = 1.5, lwd = c(1,2,1,2), las = 1)
+  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[13:18,1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]-ylimits[j-1]*0.05,
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]-ylimits[j-1]*0.05,
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]-ylimits[j-1]*0.05,
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   
-  legend(-1,-ylimits[j-1]*0.40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-         lty=1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+  legend(-2,-ylimits[j-1]*0.40,c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1.1)
   mtext(ylabel[j-1], 2, outer=TRUE, line=3.5)
   mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
   mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -730,45 +730,45 @@ for(j in 2:9){
   
   pdf(paste0("Mplus_Simulation/mean.se.psd.par", j, "plot.pdf"))
   par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
-  matplot(1:6,se.psd.cond[1:6,1:4],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]), cex = 1.5, lwd = c(1,2,1,2), las = 1)
+  matplot(1:6,se.psd.cond[1:6,1:4],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,se.psd.cond[1:6,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,se.psd.cond[1:6,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,se.psd.cond[7:12,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,se.psd.cond[7:12,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,se.psd.cond[7:12,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,se.psd.cond[13:18,1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-1]*xlabel.factor[j-1],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,se.psd.cond[13:18,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-1]*xlabel.factor[j-1],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,se.psd.cond[13:18,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-1]*xlabel.factor[j-1],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   
-  legend(-1,ylimits.down[j-1]*legend.factor[j-1],c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-         lty=1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+  legend(-2,ylimits.down[j-1]*legend.factor[j-1],c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1.1)
   mtext(ylabel[j-1], 2, outer=TRUE, line=3.5)
   mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
   mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -817,45 +817,45 @@ for(j in 9:20){
   
   pdf(paste0("Mplus_Simulation/", gsub("[[:space:]]", "", ylabel[j-8]), "plot.pdf"))
   par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
-  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]), cex = 1.5, lwd = c(1,2,1,2), las = 1)
+  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[13:18,1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-8]*xlabel.factor[j-8],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-8]*xlabel.factor[j-8],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-8]*xlabel.factor[j-8],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   
-  legend(-1,ylimits.down[j-8]*legend.factor[j-8],c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-         lty=1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+  legend(-2,ylimits.down[j-8]*legend.factor[j-8],c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1.1)
   mtext(ylabel[j-8], 2, outer=TRUE, line=3.5)
   mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
   mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -893,45 +893,45 @@ for(j in 9:20){
   
   pdf(paste0("Mplus_Simulation/", gsub("[[:space:]]", "", ylabel[j-8]), "plot.pdf"))
   par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
-  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]), cex = 1.5, lwd = c(1,2,1,2), las = 1)
+  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[13:18,1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-8]*xlabel.factor[j-8],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-8]*xlabel.factor[j-8],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-8]*xlabel.factor[j-8],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   
-  legend(-1,ylimits.down[j-8]*legend.factor[j-8],c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-         lty=1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+  legend(-2,ylimits.down[j-8]*legend.factor[j-8],c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1.1)
   mtext(ylabel[j-8], 2, outer=TRUE, line=3.5)
   mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
   mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -969,45 +969,45 @@ for(j in 9:20){
   
   pdf(paste0("Mplus_Simulation/", gsub("[[:space:]]", "", ylabel[j-8]), "plot.pdf"))
   par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
-  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]), cex = 1.5, lwd = c(1,2,1,2), las = 1)
+  matplot(1:6,bias.cond[1:6,1:4],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[1:6,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[7:12,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   matplot(1:6,bias.cond[13:18,1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-8]*xlabel.factor[j-8],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=1:4, cex = 1.5, lwd = c(1,2,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-8]*xlabel.factor[j-8],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   matplot(1:6,bias.cond[13:18,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty=c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+          xlim=c(0.7,6.2),ylim=c(ylimits.down[j-8],ylimits.up[j-8]),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   axis(1, at=1:6, labels=FALSE)
   text(x=1:6, y=par()$usr[3]+ylimits.down[j-8]*xlabel.factor[j-8],
        labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
   
-  legend(-1,ylimits.down[j-8]*legend.factor[j-8],c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-         lty=1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+  legend(-2,ylimits.down[j-8]*legend.factor[j-8],c("Wide-ML","Long-ML", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1.1)
   mtext(ylabel[j-8], 2, outer=TRUE, line=3.5)
   mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
   mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -1045,27 +1045,27 @@ ylabel <- "Unique Consistency Estimate"
 ylimits.down <- -0.0125
 ylimits.up <- 0.0125
 xlabel.factor <- 0.1
-legend.factor <- 1.55
+legend.factor <- 1.54
 
 pdf(paste0("Mplus_Simulation/Ucon_msst_plot.pdf"))
 par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(8,6,2,2),xpd=NA)
-matplot(1:6,Ucon.cond[1:6,],type="l",lty = 2:4,xaxt="n",xlab="",ylab="", col = gray((2:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(2,1,2), las = 1)
+matplot(1:6,Ucon.cond[1:6,],type="l",lty = c(5,2,6),xaxt="n",xlab="",ylab="", col = gray((2:4)/8),
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(4.5,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Ucon.cond[7:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((2:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = 2:4, cex = 1.5, lwd = c(2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,2,6), cex = 1.5, lwd = c(4.5,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Ucon.cond[13:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((2:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = 2:4, cex = 1.5, lwd = c(2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,2,6), cex = 1.5, lwd = c(4.5,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,Ucon.cond[19:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((2:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = 2:4, cex = 1.5, lwd = c(2,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,2,6), cex = 1.5, lwd = c(4.5,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
@@ -1073,7 +1073,7 @@ text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 
 legend(1.5,ylimits.down*legend.factor,c("Long-ml", "Wide-Bayes","Long-Bayes"), col = gray((2:4)/8),
-       lty=2:4,lwd = c(2,1,2),ncol=1, seg.len = 4)
+       lty = c(5,2,6),lwd = c(4.5,3,4),ncol=1, seg.len = 5, cex = 1)
 mtext(ylabel, 2, outer=TRUE, line=4)
 mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
 mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -1107,23 +1107,23 @@ legend.factor <- 8
 
 pdf(paste0("Mplus_Simulation/Ucon_tso_plot.pdf"))
 par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(8,6,2,2),xpd=NA)
-matplot(1:6,Ucon.cond[1:6,],type="l",lty = 3:4,xaxt="n",xlab="",ylab="", col = gray((3:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(1,2), las = 1)
+matplot(1:6,Ucon.cond[1:6,],type="l",lty = c(2,6),xaxt="n",xlab="",ylab="", col = gray((3:4)/8),
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Ucon.cond[7:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = 3:4, cex = 1.5, lwd = c(1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Ucon.cond[13:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((3:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = 3:4, cex = 1.5, lwd = c(1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,Ucon.cond[19:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = 3:4, cex = 1.5, lwd = c(1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
@@ -1131,7 +1131,7 @@ text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 
 legend(1.5,ylimits.down*legend.factor,c("Wide-Bayes","Long-Bayes"), col = gray((3:4)/8),
-       lty=3:4,lwd = c(1,2),ncol=1, seg.len = 4)
+       lty = c(2,6),lwd = c(3,4),ncol=1, seg.len = 5, cex = 1)
 mtext(ylabel, 2, outer=TRUE, line=4)
 mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
 mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -1165,23 +1165,23 @@ legend.factor <- 4.5
 
 pdf(paste0("Mplus_Simulation/Upred_msst_plot.pdf"))
 par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(8,6,2,2),xpd=NA)
-matplot(1:6,Upred.cond[1:6,],type="l",lty =3:4,xaxt="n",xlab="",ylab="", col = gray((3:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(1,2), las = 1)
+matplot(1:6,Upred.cond[1:6,],type="l",lty = c(2,6),xaxt="n",xlab="",ylab="", col = gray((3:4)/8),
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Upred.cond[7:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty =3:4, cex = 1.5, lwd = c(1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Upred.cond[13:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((3:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty =3:4, cex = 1.5, lwd = c(1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,Upred.cond[19:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty =3:4, cex = 1.5, lwd = c(1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
@@ -1189,7 +1189,7 @@ text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 
 legend(1.5,ylimits.down*legend.factor,c("Wide-Bayes","Long-Bayes"), col = gray((3:4)/8),
-       lty=3:4,lwd = c(2,1,2),ncol=1, seg.len = 4)
+       lty = c(2,6),lwd = c(3,4),ncol=1, seg.len = 5, cex = 1)
 mtext(ylabel, 2, outer=TRUE, line=4)
 mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
 mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -1219,27 +1219,27 @@ ylabel <- "Trait Unpredictability Estimate"
 ylimits.down <- -0.000125
 ylimits.up <- 0.00125
 xlabel.factor <- 0.55
-legend.factor <- 4
+legend.factor <- 3.9
 
 pdf(paste0("Mplus_Simulation/Upred_cuts_plot.pdf"))
 par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(8,6,2,2),xpd=NA)
-matplot(1:6,Upred.cond[1:6,],type="l",lty = c(1,3,4),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(1,1,2), las = 1)
+matplot(1:6,Upred.cond[1:6,],type="l",lty = c(1,2,6),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(3,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Upred.cond[7:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Upred.cond[13:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((c(1,3,4))/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,Upred.cond[19:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
@@ -1247,7 +1247,7 @@ text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 
 legend(1.5,ylimits.down*legend.factor,c("Wide-ml", "Wide-Bayes","Long-Bayes"), col = gray((c(1,3,4))/8),
-       lty = c(1,3,4),lwd = c(1,1,2),ncol=1, seg.len = 4)
+       lty = c(1,2,6),lwd = c(3,3,4),ncol=1, seg.len = 5, cex = 1)
 mtext(ylabel, 2, outer=TRUE, line=4)
 mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
 mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
@@ -1281,35 +1281,35 @@ legend.factor <- 1.625
 
 pdf(paste0("Mplus_Simulation/Ucon_bias_plot.pdf"))
 par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(8,6,2,2),xpd=NA)
-matplot(1:6,Ucon.cond[1:6,],type="l",lty = 1:4,xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(1,2,1,2), las =1)
+matplot(1:6,Ucon.cond[1:6,],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(3,4.5,3,4), las =1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Ucon.cond[7:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = 1:4, cex = 1.5, lwd = c(1,2,1,2), las =1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las =1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Ucon.cond[13:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = 1:4, cex = 1.5, lwd = c(1,2,1,2), las =1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las =1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,Ucon.cond[19:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = 1:4, cex = 1.5, lwd = c(1,2,1,2), las =1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,2,6), cex = 1.5, lwd = c(3,4.5,3,4), las =1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 
-legend(-0.1,ylimits.down*legend.factor,c("Wide-ml","Long-ml","Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty = 1:4,lwd = c(1,2,1,2),ncol=2, seg.len = 4)
+legend(-0.3,ylimits.down*legend.factor,c("Wide-ml","Long-ml","Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+       lty = c(1,5,2,6),lwd = c(3,4.5,3,4),ncol=2, seg.len = 5, cex = 1)
 mtext(ylabel, 2, outer=TRUE, line=4)
-mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
-mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
-mtext("Percentage of Missingness", 1, at=1/4, outer=TRUE, line=6, cex=0.8)
+mtext("Number of Measurement Times", 1, at=1/5, outer=TRUE, line=4, cex=0.8)
+mtext(expression(""%*%""), 1, at=1/5, outer=TRUE, line=5, cex=0.8)
+mtext("Percentage of Missingness", 1, at=1/5, outer=TRUE, line=6, cex=0.8)
 dev.off()
 
 rm(Ucon.cond,legend.factor,xlabel.factor,ylabel, ylimits.down, ylimits.up)
@@ -1339,23 +1339,23 @@ legend.factor <- 1.525
 
 pdf(paste0("Mplus_Simulation/Upred_bias_plot.pdf"))
 par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(8,6,2,2),xpd=NA)
-matplot(1:6,Upred.cond[1:6,],type="l",lty = c(1,3,4),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(1,1,2), las = 1)
+matplot(1:6,Upred.cond[1:6,],type="l",lty = c(1,2,6),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex = 1.5, lwd = c(3,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Upred.cond[7:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
 matplot(1:6,Upred.cond[13:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((c(1,3,4))/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
 text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 matplot(1:6,Upred.cond[19:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,3,4), cex = 1.5, lwd = c(1,1,2), las = 1)
+        xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,2,6), cex = 1.5, lwd = c(3,3,4), las = 1)
 abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
 mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
 axis(1, at=1:6, labels=FALSE)
@@ -1363,7 +1363,7 @@ text(x=1:6, y=par()$usr[3]+ylimits.down*xlabel.factor,
      labels=c("30-0%","60-0%","90-0%", "30-10%","60-10%","90-10%"), srt=45, adj=1)
 
 legend(1.5,ylimits.down*legend.factor,c("Wide-ml", "Wide-Bayes","Long-Bayes"), col = gray((c(1,3,4))/8),
-       lty = c(1,3,4),lwd = c(1,1,2),ncol=1, seg.len = 4)
+       lty = c(1,2,6),lwd = c(3,3,4),ncol=1, seg.len = 5, cex = 1.1)
 mtext(ylabel, 2, outer=TRUE, line=4)
 mtext("Number of Measurement Times", 1, at=1/4, outer=TRUE, line=4, cex=0.8)
 mtext(expression(""%*%""), 1, at=1/4, outer=TRUE, line=5, cex=0.8)
