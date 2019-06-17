@@ -725,7 +725,7 @@ for(j in 2:9){
   rm(i, bias.subset)
   bias.cond[which(perf.cond[,1:11] < 10, arr.ind = TRUE)] <- NA
   
-  pdf(paste0("Mplus_Simulation/biasparameter10_", j, "plot.pdf"))
+  pdf(paste0("Mplus_Simulation/biasparameter", j, "plot10.pdf"))
   par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
   matplot(1:3,bias.cond[4:6,1:4],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
           xlim=c(0.7,3.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
@@ -873,7 +873,7 @@ for(j in 2:9){
   rm(i, bias.subset)
   bias.cond[which(perf.cond[,1:11] < 10, arr.ind = TRUE)] <- NA
   
-  pdf(paste0("Mplus_Simulation/abbiasparameter10_", j, "plot.pdf"))
+  pdf(paste0("Mplus_Simulation/abbiasparameter", j, "plot10.pdf"))
   par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
   matplot(1:3,bias.cond[4:6,1:4],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
           xlim=c(0.7,3.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
@@ -1021,7 +1021,7 @@ for(j in 2:9){
   rm(i, bias.subset)
   bias.cond[which(perf.cond[,1:11] < 10, arr.ind = TRUE)] <- NA
   
-  pdf(paste0("Mplus_Simulation/RMSEparameter10_", j, "plot.pdf"))
+  pdf(paste0("Mplus_Simulation/RMSEparameter", j, "plot10.pdf"))
   par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(8,6,4,6),xpd=NA)
   matplot(1:3,bias.cond[4:6,1:4],type="l",lty = c(1,5,2,6),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
           xlim=c(0.7,3.2),ylim=c(-ylimits[j-1]*0.05,ylimits[j-1]), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
