@@ -119,6 +119,7 @@ SDS <- cbind(apply(HND_data_filtered_65_w[,seq(9,545, by = 6)], 1, function(x) s
 CON <- c(0.41, 0.39, 0.40, 0.35, 0.39, 0.39)
 SPE <- c(0.27, 0.28, 0.40, 0.35, 0.45, 0.40)
 
+# plot interindividual means and interindividual standard deviations histograms
 pdf(file = "HND/Histograms.pdf", height = 5)
 means <- apply(HND_data_filtered_65_w[,seq(9,545, by = 6)], 1, function(x) mean(x, na.rm = TRUE))
 hist(means, xlab = "Content Means", xlim = c(0, 100), ylim = c(0, 0.05),
@@ -232,9 +233,6 @@ plot(SPE, apply(SDS, 2, function(x) mean(x)), ylab = "Mean Intraindividual SD", 
 abline(lm(apply(SDS, 2, function(x) mean(x)) ~ SPE))
 
 dev.off()
-
-
-
 
 # Fit the MSST ----
 
