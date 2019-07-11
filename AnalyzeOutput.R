@@ -163,21 +163,23 @@ print(xtable(t(parameters.true.ex), type = "latex", caption = "True Parameters U
       include.rownames = TRUE, NA.string = "-", caption.placement = "top", file = "Mplus_Simulation/trueparameters.txt")
 
 
-var_coeff.true.ex <- var_coeff.true[, c(1:8, 1:8, 9:20)]
-var_coeff.true.ex[2, 9:16] <- NA
-var_coeff.true.ex[3, 1:8] <- NA
-colnames(var_coeff.true.ex) <- paste0(rep(c( "Common consistency Y", 
-                                             "Unique consistency Y", 
-                                             "Trait predictability Y", 
-                                          "Trait unpredictability Y", 
-                                          "(Total) Consistency Y", 
-                                          "Occasion Specificity Y", 
-                                          "Reliability Y"), each = I), 
+var_coeff.true.ex <- var_coeff.true[, c(17:20, 9:12, 1:8, 1:8, 13:16)]
+var_coeff.true.ex[2, 17:24] <- NA
+var_coeff.true.ex[3, 9:16] <- NA
+colnames(var_coeff.true.ex) <- paste0(rep(c( "Reliability Y",
+                                             "\\hspace{0.75cm}(Total) Consistency Y",
+                                             "\\hspace{1.5cm}Common Consistency Y", 
+                                             "\\hspace{1.5cm}Unique Consistency Y", 
+                                             "\\hspace{1.5cm}Predictability by Trait Y", 
+                                             "\\hspace{1.5cm}Unpredictability by Trait Y", 
+                                             "\\hspace{0.75cm}Occasion Specificity Y" 
+                                          ), each = I), 
                                    1:I)
 
 print(xtable(t(var_coeff.true.ex), type = "latex", caption = "True Variance Coefficient Components",
              label = "tab:Truevar", align = c("l", "c", "c", "c"), digits = c(0,2,2,2)), 
-      include.rownames = TRUE, NA.string = "-", caption.placement = "top", file = "Mplus_Simulation/truevarcoeff.txt")
+      include.rownames = TRUE, NA.string = "-", sanitize.text.function = function(x){x}, 
+      caption.placement = "top", file = "Mplus_Simulation/truevarcoeff.txt")
 rm(var_coeff.true.ex, parameters.true.ex)
 
 # Repeat true parameters in a matrix with 19800 rows ----
