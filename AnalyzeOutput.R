@@ -214,7 +214,6 @@ perf.table <- rbind(apply(performances, 2, function(x) length(which(x == "Ok")))
       apply(performances, 2, function(x) length(which(x == "timeout"))))
 
 perf.prop <- t(round(prop.table(as.table(perf.table), margin = 2)*100, 2))
-dimnames(perf.prop)[[2]] <- c("Ok", "Warnings/Errors", "Non-convergence", "timeout")
 
 perf.table <- cbind(c("MSST", "ML-MSST", "MSST", "ML-MSST", "CUTS", "ML-CUTS", "CUTS", "ML-CUTS",
                       "TSO", "ML-TSO", "ML-TSO"), 
@@ -222,7 +221,12 @@ perf.table <- cbind(c("MSST", "ML-MSST", "MSST", "ML-MSST", "CUTS", "ML-CUTS", "
                     t(perf.table))
 dimnames(perf.table)[[2]] <- c("Model", "Est.Method", "Successful", "Warnings/Errors", "Non-convergence", "Timeout")
 
+perf.prop <- cbind(c("MSST", "ML-MSST", "MSST", "ML-MSST", "CUTS", "ML-CUTS", "CUTS", "ML-CUTS",
+                      "TSO", "ML-TSO", "ML-TSO"), 
+                    c("ML", "ML", "Bayes", "Bayes", "ML", "ML", "Bayes", "Bayes", "ML", "Bayes", "Bayes"), 
+                    perf.prop)
 
+dimnames(perf.prop)[[2]] <- c("Model", "Est.Method", "Successful", "Warnings/Errors", "Non-convergence", "Timeout")
 
 perf.cond <- matrix(NA, 18, 11*4)
 colnames(perf.cond) <- c(paste(rep(labels, 4),rep(c("Ok", "WE", "NC", "TOut"), each = 11), 
@@ -239,8 +243,13 @@ rm(i, perf.subset)
 
 # Table: Performance ----
 print(xtable(perf.table, type = "latex", align = c("l", "l", "l", "c", "c", "c", "c"), label = "tab:perf", 
+             caption = "Number of Successes and Failures per Type of Analysis on 1800 Analyses Each"), 
+include.rownames = FALSE, caption.placement = "top", file = "Mplus_Simulation/performancesnumbers.txt")
+
+print(xtable(perf.prop, type = "latex", align = c("l", "l", "l", "c", "c", "c", "c"), label = "tab:perf", 
              caption = "Percentages of Successes and Failures per Type of Analysis on 1800 Analyses Each"), 
-include.rownames = FALSE, caption.placement = "top", file = "Mplus_Simulation/performances.txt")
+      include.rownames = FALSE, caption.placement = "top", file = "Mplus_Simulation/performancespercentages.txt")
+
 
 # Plot: Successful analysis ----
 pdf("Mplus_Simulation/Okplot.pdf")
@@ -1399,21 +1408,39 @@ fit_measures[which(fit_measures == -999, arr.ind = TRUE)] <- NA
 fit.AIC <- matrix(fit_measures[,1], R * 18, 11, byrow = TRUE) 
 fit.AIC <- fit.AIC[,c(1,2,5,6,9)]
 AIC.select <- unlist(apply(fit.AIC, 1, function(x) which(x == min(x, na.rm = TRUE))[1]))
-AIC.select <- factor(AIC.select, levels = 1:5, labels = c("MSST", "MSST", "CUTS", "CUTS", "TSO"))
+AIC.select <- factor(AIC.select, levels = 1:5, labels = c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO"))
 
 fit.BIC <- matrix(fit_measures[,2], R * 18, 11, byrow = TRUE) 
 fit.BIC <- fit.BIC[,c(1,2,5,6,9)]
 BIC.select <- unlist(apply(fit.BIC, 1, function(x) which(x == min(x, na.rm = TRUE))[1]))
-BIC.select <- factor(BIC.select, levels = 1:5, labels = c("MSST", "MSST", "CUTS", "CUTS", "TSO"))
+BIC.select <- factor(BIC.select, levels = 1:5, labels = c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO"))
 
 fit.aBIC <- matrix(fit_measures[,2], R * 18, 11, byrow = TRUE) 
 fit.aBIC <- fit.aBIC[,c(1,2,5,6,9)]
 aBIC.select <- unlist(apply(fit.aBIC, 1, function(x) which(x == min(x, na.rm = TRUE))[1]))
-aBIC.select <- factor(aBIC.select, levels = 1:5, labels = c("MSST", "MSST", "CUTS", "CUTS", "TSO"))
+aBIC.select <- factor(aBIC.select, levels = 1:5, labels = c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO"))
 
 fit.DIC <- matrix(fit_measures[,4], R * 18, 11, byrow = TRUE) 
 fit.DIC <- fit.DIC[,c(4,8,11)]
 DIC.select <- unlist(apply(fit.DIC, 1, function(x) which(x == min(x, na.rm = TRUE))))
-DIC.select <- factor(DIC.select, levels = 1:3, labels = c("MSST", "CUTS", "TSO"))
+DIC.select <- factor(DIC.select, levels = 1:3, labels = c("ML-MSST", "ML-CUTS", "ML-TSO"))
+
+AIC.select <- matrix(AIC.select, 100, 18, byrow = FALSE)
+X <- apply(AIC.select, 2, function(x) summary(as.factor(x)))
+
+
+mle.models <- sort(c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO"))
+AIC.cond <- matrix(NA, 18, 5)
+colnames(AIC.cond) <- mle.models
+
+for(i in 1:18){
+  AIC.cond[i, which(mle.models%in%names(X[[i]]))]<-X[[i]]
+}
+
+matplot(AIC.cond, type = "b", pch = 20, lty = 1)
+
+AIC.delta <- matrix(apply(fit.AIC, 1, function(x) max(x, na.rm = TRUE)[1] - min(x, na.rm = TRUE)[1]), 100, 18, byrow = FALSE)
+
+
 
 # End ----
