@@ -402,4 +402,19 @@ print(xtable(varcoeffA, type = "latex", caption = "Variance Coefficients Positiv
       include.rownames = TRUE, NA.string = "-", caption.placement = "top", sanitize.text.function = function(x){x},
       file = "Mplus_Simulation/varcoeffA.txt")
 
+# Cross lagged TSO model
+
+WSigma <- matrix(c(108.020, 97.266,97.266,143.410),2, byrow = TRUE)
+
+WR <- solve(diag(sqrt(diag(WSigma))))%*%WSigma%*%solve(diag(sqrt(diag(WSigma))))
+
+BSigma <- matrix(c(125.928, 120.722, 121.035, 98.008, 99.874, 107.330,
+                   120.722, 158.245, 119.039, 112.649, 124.776, 132.517,
+                   121.035, 119.039, 140.108, 95.981, 95.997, 105.164,
+                   98.008, 112.649, 95.981, 146.502, 132.299, 128.355,
+                   99.874, 124.776, 95.997, 132.299, 150.499, 139.758,
+                   107.330, 132.517, 105.164, 128.355, 139.758, 153.634), 6, byrow = TRUE)
+BR <- solve(diag(sqrt(diag(BSigma))))%*%BSigma%*%solve(diag(sqrt(diag(BSigma))))
+
+
 # End ----

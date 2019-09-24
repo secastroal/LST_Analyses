@@ -166,15 +166,15 @@ print(xtable(t(parameters.true.ex), type = "latex", caption = "True Parameters U
 var_coeff.true.ex <- var_coeff.true[, c(17:20, 9:12, 1:8, 1:8, 13:16)]
 var_coeff.true.ex[2, 17:24] <- NA
 var_coeff.true.ex[3, 9:16] <- NA
-colnames(var_coeff.true.ex) <- paste0(rep(c( "Reliability Y",
-                                             "\\hspace{0.75cm}(Total) Consistency Y",
-                                             "\\hspace{1.5cm}Common Consistency Y", 
-                                             "\\hspace{1.5cm}Unique Consistency Y", 
-                                             "\\hspace{1.5cm}Predictability by Trait Y", 
-                                             "\\hspace{1.5cm}Unpredictability by Trait Y", 
-                                             "\\hspace{0.75cm}Occasion Specificity Y" 
+colnames(var_coeff.true.ex) <- paste0(rep(c( "Reliability $Y_",
+                                             "\\hspace{0.5cm}(Total) Consistency $Y_",
+                                             "\\hspace{1cm}Common Consistency $Y_", 
+                                             "\\hspace{1cm}Unique Consistency $Y_", 
+                                             "\\hspace{1cm}Predictability by Trait $Y_", 
+                                             "\\hspace{1cm}Unpredictability by Trait $Y_", 
+                                             "\\hspace{0.5cm}Occasion Specificity $Y_" 
                                           ), each = I), 
-                                   1:I)
+                                   1:I, "$")
 
 print(xtable(t(var_coeff.true.ex), type = "latex", caption = "True Variance Coefficient Components",
              label = "tab:Truevar", align = c("l", "c", "c", "c"), digits = c(0,2,2,2)), 
@@ -216,14 +216,14 @@ perf.table <- rbind(apply(performances, 2, function(x) length(which(x == "Ok")))
 perf.prop <- t(round(prop.table(as.table(perf.table), margin = 2)*100, 2))
 
 perf.table <- cbind(c("MSST", "ML-MSST", "MSST", "ML-MSST", "CUTS", "ML-CUTS", "CUTS", "ML-CUTS",
-                      "TSO", "ML-TSO", "ML-TSO"), 
-                    c("ML", "ML", "Bayes", "Bayes", "ML", "ML", "Bayes", "Bayes", "ML", "Bayes", "Bayes"), 
+                      "TSO", "TSO", "ML-TSO"), 
+                    c("MLE", "MLE", "Bayes", "Bayes", "MLE", "MLE", "Bayes", "Bayes", "MLE", "Bayes", "Bayes"), 
                     t(perf.table))
 dimnames(perf.table)[[2]] <- c("Model", "Est.Method", "Successful", "Warnings/Errors", "Non-convergence", "Timeout")
 
 perf.prop <- cbind(c("MSST", "ML-MSST", "MSST", "ML-MSST", "CUTS", "ML-CUTS", "CUTS", "ML-CUTS",
-                      "TSO", "ML-TSO", "ML-TSO"), 
-                    c("ML", "ML", "Bayes", "Bayes", "ML", "ML", "Bayes", "Bayes", "ML", "Bayes", "Bayes"), 
+                      "TSO", "TSO", "ML-TSO"), 
+                    c("MLE", "MLE", "Bayes", "Bayes", "MLE", "MLE", "Bayes", "Bayes", "MLE", "Bayes", "Bayes"), 
                     perf.prop)
 
 dimnames(perf.prop)[[2]] <- c("Model", "Est.Method", "Successful", "Warnings/Errors", "Non-convergence", "Timeout")
@@ -1425,22 +1425,73 @@ fit.DIC <- fit.DIC[,c(4,8,11)]
 DIC.select <- unlist(apply(fit.DIC, 1, function(x) which(x == min(x, na.rm = TRUE))))
 DIC.select <- factor(DIC.select, levels = 1:3, labels = c("ML-MSST", "ML-CUTS", "ML-TSO"))
 
-AIC.select <- matrix(AIC.select, 100, 18, byrow = FALSE)
+mle.models <- sort(c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO"))
+
+AIC.select <- matrix(AIC.select, 600, 3, byrow = FALSE)
 X <- apply(AIC.select, 2, function(x) summary(as.factor(x)))
 
-
-mle.models <- sort(c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO"))
-AIC.cond <- matrix(NA, 18, 5)
+AIC.cond <- matrix(0, 3, 5)
 colnames(AIC.cond) <- mle.models
 
-for(i in 1:18){
+for(i in 1:3){
   AIC.cond[i, which(mle.models%in%names(X[[i]]))]<-X[[i]]
 }
+rm(X)
 
-matplot(AIC.cond, type = "b", pch = 20, lty = 1)
+BIC.select <- matrix(BIC.select, 600, 3, byrow = FALSE)
+X <- apply(BIC.select, 2, function(x) summary(as.factor(x)))
+
+BIC.cond <- matrix(0, 3, 5)
+colnames(BIC.cond) <- mle.models
+
+for(i in 1:3){
+  BIC.cond[i, which(mle.models%in%names(X[[i]]))]<-X[[i]]
+}
+rm(X)
+
+aBIC.select <- matrix(aBIC.select, 600, 3, byrow = FALSE)
+X <- apply(aBIC.select, 2, function(x) summary(as.factor(x)))
+
+aBIC.cond <- matrix(0, 3, 5)
+colnames(aBIC.cond) <- mle.models
+
+for(i in 1:3){
+  aBIC.cond[i, which(mle.models%in%names(X[[i]]))]<-X[[i]]
+}
+rm(X)
+
+mcmc.models <- sort(c("ML-MSST", "ML-CUTS", "ML-TSO"))
+
+DIC.select <- matrix(DIC.select, 600, 3, byrow = FALSE)
+X <- apply(DIC.select, 2, function(x) summary(as.factor(x)))
+
+DIC.cond <- matrix(0, 3, 3)
+colnames(DIC.cond) <- mcmc.models
+
+DIC.cond[,3] <- X
+rm(X)
+
+AIC.cond <- AIC.cond[, c(4,3,1,2,5)]
+BIC.cond <- BIC.cond[, c(4,3,1,2,5)]
+aBIC.cond <- aBIC.cond[, c(4,3,1,2,5)]
+
+DIC.cond <- DIC.cond[, c(2,1,3)]
+
+mle.ic <- rbind(AIC.cond, BIC.cond, aBIC.cond)
+mle.ic <- round(prop.table(mle.ic, 1)*100, 1) 
+mle.ic <- mle.ic[c(1,4,7,2,5,8,3,6,9),]
+mle.ic <- cbind(rep(c("MSST", "CUTS", "TSO"), each = 3),
+                rep(c("AIC", "BIC", "aBIC"), times = 3),
+                mle.ic)
+colnames(mle.ic)[1:2]<- c("Base Model", "Information Criterion")
+
+print(xtable(mle.ic, type = "latex", align = c("l", "l", "l", "c", "c", "c", "c", "c"), label = "tab:fitmle", 
+             caption = "Percentage of Times a Model was Selected as Best Model According to the Information Criteria Indices Available with Maximum Likelihood Estimation"), 
+      include.rownames = FALSE, caption.placement = "top", file = "Mplus_Simulation/fitmle.txt")
+
 
 AIC.delta <- matrix(apply(fit.AIC, 1, function(x) max(x, na.rm = TRUE)[1] - min(x, na.rm = TRUE)[1]), 100, 18, byrow = FALSE)
 
-
+apply(AIC.delta, 2, mean)
 
 # End ----
