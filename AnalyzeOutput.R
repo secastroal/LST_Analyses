@@ -1494,6 +1494,6 @@ AIC.delta <- matrix(apply(fit.AIC, 1, function(x) max(x, na.rm = TRUE)[1] - min(
 
 apply(AIC.delta, 2, mean)
 
-# Resync test 2
+# Resync test 2 personal laptop
 
 # End ----
