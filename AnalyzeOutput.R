@@ -1494,4 +1494,6 @@ AIC.delta <- matrix(apply(fit.AIC, 1, function(x) max(x, na.rm = TRUE)[1] - min(
 
 apply(AIC.delta, 2, mean)
 
+#Hello world! test
+
 # End ----
