@@ -1,0 +1,287 @@
+---
+title: "Appendix"
+author: "Sebastian Castro-Alvarez"
+header-includes:
+  - \usepackage{amsmath}
+output:   
+  bookdown::html_document2:
+    toc: true
+    toc_float:
+      collapsed: false
+    toc_depth: 2
+    fig_caption: true
+    number_sections: true
+    theme: cosmo        
+    highlight: kate
+    df_print: kable
+    code_folding: show
+  pdf_document:
+    toc: yes
+---
+
+
+
+```{r, echo = FALSE}
+if(!require(MplusAutomation)) {install.packages("MplusAutomation"); require(installr)} 
+if(!require(RCurl)) {install.packages("RCurl"); require(installr)} 
+```
+
+
+```{r}
+rfiles <- c("sim.data.cuts.R", "sim.data.msst.R", "sim.data.tso.R", "var.coeff.R", 
+            "write.cuts.to.Mplus.R", "write.mlcuts.to.Mplus.R", "write.msst.to.Mplus.R",
+            "write.mlmsst.to.Mplus.R", "write.tso.to.Mplus.R", "write.mltso.to.Mplus.R", 
+            "write.Mplus.options.R")
+for( i in 1:length(rfiles)){
+  eval(parse(text = getURL(paste0("https://raw.githubusercontent.com/secastroal/LST_Analyses/master/R/",
+                                  rfiles[i]), ssl.verifypeer = FALSE))) 
+}
+rm(i, rfiles)
+```
+
+
+```{r}
+```
+
+```{r}
+N <- 100 # Sample size
+I <- 4 # Number of variables
+timeout <- 3600 # Time limit in seconds to force ending an analysis in Mplus
+```
+# Multistate-singletrait model (MSST)
+
+```{r}
+state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
+      var_state <- 2 # Variance latent state residual
+      var_m_error <- c(1, 0.5, 1.5, 0.8) # Variance of measurement errors
+      
+      within.parameters <- list(loadings = state_loadings, state.var = var_state, error.var = var_m_error)
+      
+      # Between Paramaters
+      
+      intercepts <- seq(0, by = 0.2, length.out = I) # intercepts
+      trait_loadings <- c(1, 0.8, 1.2, 0.9) # loading parametes for the latent trait
+      
+      var_trait <- 2 # variance latent trait variable
+      mean_trait <- 4 # mean latent trait variable
+      
+      between.parameters <- list(loadings = trait_loadings, intercepts = intercepts, trait.mean = mean_trait,
+                                 trait.var = var_trait)
+      
+      # Save True parameters to parameters matrix
+      parameters[1, c(1:9, 11:20)] <- c(state_loadings, var_state, var_m_error, trait_loadings,
+                                        intercepts, var_trait, mean_trait) 
+      
+      rm(state_loadings, var_state, var_m_error, intercepts, trait_loadings, var_trait, 
+         mean_trait)
+      
+      # Simulate data
+      data <- sim.data.msst(N, nT, I, within.parameters = within.parameters, na.prop = na.prop,
+                            between.parameters = between.parameters, seed = seed)
+      
+      # Compute true variance coefficients
+      var.coeff[1, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters = within.parameters, 
+                                                         between.parameters = between.parameters)) 
+      
+      rm(within.parameters, between.parameters)
+```
+
+```{r}
+file.name <- paste("msst", "wide", "bayes", cond, r,sep = "_")
+      
+      # Prepare data: Write data in Mplus format and write input file template
+      prepareMplusData(data$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
+      
+      # Complete Mplus syntax
+      analysis_syntax <- write.Mplus.options(usevariables = names(data$data.wide)[-1],
+                                             analysis_type = "GENERAL",
+                                             estimator = "BAYES",
+                                             iterations = 5000)
+      
+      mplus_syntax <- write.msst.to.Mplus(data$data.wide[,-1], neta = nT, ntheta = 1, 
+                                          equiv.assumption = list(tau = "cong", theta = "cong"),
+                                          scale.invariance = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
+                                          homocedasticity.assumption = list(error = TRUE, state.red = TRUE),
+                                          second.order.trait = FALSE)
+      saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", paste0("samples_", file.name, ".dat"),
+                                  ";", "\nOUTPUT: TECH8;")
+      
+      write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+      write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
+      write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
+      
+      rm(analysis_syntax, mplus_syntax, saveoutput_syntax)
+      
+      # Run model in Mplus
+      cat("\n"); print(Sys.time()); cat("\n"); t0 <- proc.time()
+      runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
+      cat("\n"); print(Sys.time()); cat("\n"); tf <- proc.time() - t0
+      
+      fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+        
+
+          
+          perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+          times[r, a] <- round(tf[3], 2)
+          
+          # Save estimates
+          estimates <- fit$parameters$unstandardized[c(1:I, #loadings
+                                                       (I * nT * 3) + ((nT+1) * nT / 2) + 2, # state var 
+                                                       ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2), #error variances
+                                                       ((I * nT + 1):(I * nT + I)), #trait loadings
+                                                       ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1), #intercepts
+                                                       ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2), #trait variance
+                                                       ((I * nT * 2) + ((nT+1) * nT / 2) + 1)), #trait mean
+                                                     3]
+          
+          parameters[(11 * (r-1)) + a + 1, c(1:9, 11:20)] <- estimates
+          
+          # Save posterior standard deviations
+          post.sd <- fit$parameters$unstandardized[c(1:I, #loadings
+                                                     (I * nT * 3) + ((nT+1) * nT / 2) + 2, # state var 
+                                                     ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2), #error variances
+                                                     ((I * nT + 1):(I * nT + I)), #trait loadings
+                                                     ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1), #intercepts
+                                                     ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2), #trait variance
+                                                     ((I * nT * 2) + ((nT+1) * nT / 2) + 1)), #trait mean
+                                                   4]
+          
+          se_psd[(11 * (r-1)) + a, c(1:9, 11:20)] <- post.sd
+          
+          # Compute and save variance coefficients
+          
+          # Read MCMC draws
+          samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+          
+          # Delete burn-in and indicator for chain and draw
+          samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+          
+          # Create matrix to store variance coefficients draws
+          pdist.var.coeff <- matrix(NA, dim(samples)[1], 12)
+          
+          for(i in 1:dim(samples)[1]){
+            within.estimates <- list( loadings = c(1, t(samples[i, c(4, 6, 8)])), state.var = samples[i, 15],
+                                      error.var = c(t(samples[i, 10:13])))
+            between.estimates <- list( loadings = c(1, t(samples[i, c(5, 7, 9)])), 
+                                       trait.var = samples[i, 16])
+            pdist.var.coeff[i, ] <- t(msst.var.coeff(within.parameters = within.estimates,
+                                                     between.parameters = between.estimates))
+          }
+          
+          var.coeff[(11 * (r-1)) + a + 1, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, median)
+          psd.var.coeff[(6 * (r-1)) + a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
+          
+          # Save fit measures
+          if(!is.null(fit$summaries$DIC)){fit.measures[(11 * (r-1)) + a, 4] <- c(fit$summaries$DIC)}
+          
+          rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
+      
+```
+
+```{r}
+```
+
+# Common and unique trait state model (CUTS)
+```{r}
+ # Within Parameters
+      
+      state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent common state
+      var_CS <- 2 # Variance latent common state
+      var_US <- c(1, 0.5, 1.5, 0.8) # Variance of latent unique states
+      
+      within.parameters <- list(loadings = state_loadings, CS.var = var_CS, US.var = var_US)
+      
+      # Between Paramaters
+      
+      intercepts <- seq(2, by = 0.5, length.out = I) # intercepts
+      trait_loadings <- c(1, 0.8, 1.2, 0.9) # loading parametes for the latent common trait
+      var_CT <- 1.5 # variance latent common trait
+      var_UT <- c(0.5, 1, 0.3, 0.8) # variance latent unique traits
+      
+      between.parameters <- list(loadings = trait_loadings, intercepts = intercepts, CT.var = var_CT, UT.var = var_UT)
+      
+      # Save True parameters to parameters matrix
+      parameters[1, c(1:9, 11:19, 21:24)] <- c(state_loadings, var_CS, var_US, trait_loadings,
+                                        intercepts, var_CT, var_UT) 
+      
+      rm(state_loadings, var_CS, var_US, intercepts, trait_loadings, var_CT, var_UT)
+      
+      # Simulate data
+      data <- sim.data.cuts(N, nT, I, within.parameters = within.parameters, na.prop = na.prop,
+                            between.parameters = between.parameters, seed = seed)
+      
+      # Compute true variance coefficients
+      
+      var.coeff[1, ] <- t(cuts.var.coeff(within.parameters = within.parameters, 
+                                      between.parameters = between.parameters)) 
+      
+      rm(within.parameters, between.parameters)
+```
+
+```{r}
+```
+
+```{r}
+```
+
+# Trait-state-occasion model (TSO)
+```{r}
+state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
+      var_state <- 2 # Variance latent state residual
+      var_error <- c(1, 0.5, 1.5, 0.8) # Variance of latent measurement errors
+      
+      ar_effect <- 0.5 # autoregressive effect on the latent state residuals
+      
+      within.parameters <- list(loadings = state_loadings, ar.effect = ar_effect, error.var = var_error,
+                                state.var = var_state)
+      
+      rm(state_loadings, var_state, var_error, ar_effect)
+      
+      # Between Paramaters 
+      
+      intercepts <- seq(2, by = 0.5, length.out = I) # intercepts
+      
+      var_ind_traits <- c(2, 1.5, 2.5, 1.75) # variance latent indicator trait variables
+      
+      # Create positive definite correlation matrix
+      set.seed(13017)
+      repeat{
+        
+        Rcor <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
+        Rcor[lower.tri(Rcor)] = t(Rcor)[lower.tri(Rcor)]
+        diag(Rcor) <- 1
+        print(det(Rcor))
+        if(det(Rcor) > 0){
+          print(det(Rcor))
+          print(Rcor)
+          break}
+        }
+      
+      
+      between.parameters <- list(intercepts = intercepts, trait.ind.var = var_ind_traits, 
+                                 cor.matrix = Rcor)
+      
+      rm(intercepts, var_ind_traits, Rcor)
+      
+      # Simulate data
+      data <- sim.data.tso(N, nT, I, within.parameters = within.parameters, na.prop = na.prop, 
+                           between.parameters = between.parameters, seed = seed)
+      
+      # Save True parameters to parameters matrix
+      parameters[1, c(1:10, 15:18, 21:30)] <- c(within.parameters$loadings, within.parameters$state.var,
+                                                within.parameters$error.var, within.parameters$ar.effect,
+                                                between.parameters$intercepts, between.parameters$trait.ind.var,
+                                                round(data$between.parameters$Sigma[t(lower.tri(data$between.parameters$Sigma))], 2))
+      
+      # Compute true variance coefficients
+      var.coeff[1, ] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.parameters, 
+                                     between.parameters = between.parameters)[,nT] 
+      
+      rm(within.parameters, between.parameters)
+```
+
+```{r}
+```
+
+```{r}
+```

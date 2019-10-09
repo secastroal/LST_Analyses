@@ -11,14 +11,15 @@ if(!require(RCurl)) {install.packages("RCurl"); require(installr)}
 # Source the three functions to write the Mplus syntax of the msst model, the 
 # tso model or the cuts model.
 
-eval(parse(text = getURL("https://raw.githubusercontent.com/secastroal/LST_Analyses/master/msst_to_Mplus.R", 
+eval(parse(text = getURL("https://raw.githubusercontent.com/secastroal/LST_Analyses/master/R/write.msst.to.Mplus.R", 
                          ssl.verifypeer = FALSE)))
 
-eval(parse(text = getURL("https://raw.githubusercontent.com/secastroal/LST_Analyses/master/tso_to_Mplus.R", 
+eval(parse(text = getURL("https://raw.githubusercontent.com/secastroal/LST_Analyses/master/R/write.cuts.to.Mplus.R", 
                          ssl.verifypeer = FALSE)))
 
-eval(parse(text = getURL("https://raw.githubusercontent.com/secastroal/LST_Analyses/master/cuts_to_Mplus.R", 
+eval(parse(text = getURL("https://raw.githubusercontent.com/secastroal/LST_Analyses/master/R/write.tso.to.Mplus.R", 
                          ssl.verifypeer = FALSE)))
+
 
 ## Data ----
 # To perform the analyses, the data has to be in wide format (each repeated 
