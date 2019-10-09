@@ -416,5 +416,33 @@ BSigma <- matrix(c(125.928, 120.722, 121.035, 98.008, 99.874, 107.330,
                    107.330, 132.517, 105.164, 128.355, 139.758, 153.634), 6, byrow = TRUE)
 BR <- solve(diag(sqrt(diag(BSigma))))%*%BSigma%*%solve(diag(sqrt(diag(BSigma))))
 
+# Try out TSO with MLE ----
+
+lagged.PA <- rbind(NA, HND_data_filtered_65[1:((dim(HND_data_filtered_65)[1])-1),7:12])
+names(lagged.PA) <- paste0("L_PA", 1:6)
+
+lagged.PA[which(HND_data_filtered_65$time == 1),] <- NA
+
+HND_data_lagged <- data.frame(HND_data_filtered_65, lagged.PA)
+
+file.name <- paste("hnd", "tso", "mle",sep = "_")
+
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(HND_data_lagged[,c(1:2, 7:18)], paste0(folder,file.name,".dat"), inpfile = T)
+
+# Complete Mplus syntax
+analysis_syntax <- write.Mplus.options(usevariables = names(HND_data_lagged)[7:18],
+                                       cluster = names(HND_data_lagged)[1],
+                                       analysis_type = "TWOLEVEL",
+                                       estimator = "ML",
+                                       iterations = 50000)
+
+ml_syntax <- write.mltso.to.Mplus(HND_data_lagged[, 7:18])
+
+write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
+write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
+
+rm(analysis_syntax, ml_syntax)
+
 
 # End ----
