@@ -1,6 +1,10 @@
 ---
-title: "Appendix"
-author: "Sebastian Castro-Alvarez"
+title: "Supplemental Material"
+author: 
+  - "Sebastian Castro-Alvarez"
+  - "Jorge N. Tendeiro"
+  - "Rob R. Meijer"
+  - "Laura F. Bringmann"
 header-includes:
   - \usepackage{amsmath}
 output:   
@@ -19,269 +23,884 @@ output:
     toc: yes
 ---
 
+This document is part of the supplementary material of the article titled "Using Structural Equation Modeling to Study Traits and States in Intensive Longitudinal Data". Here, we intend to show how to easily analyze data with the MSST, CUTS, and TSO models in [Mplus](https://www.statmodel.com/) from within the [R](https://www.r-project.org) environment. Clearly, both [Mplus](https://www.statmodel.com/) and [R](https://www.r-project.org) should be installed. We also suggest to install [RStudio](https://www.rstudio.com).
+
+This material includes the following sections: 
+
+- Prepare enviroment, which mentions which R packages are needed for the analyses and how to load the functions stored in the [git repository](https://github.com/secastroal/LST_Analyses) associated to this article.
+- Multistate-singletrait model (MSST).
+- Common-unique trait-state model (CUTS).
+- Trait-state-occasion model (TSO).
+
+Moreover, the sections of each model include three subsections: Generating data, fitting the single level model, and fitting the multilevel model. The subsection generating data shows how to simulate data based on each model. This subsections can be skipped, as their main purpose is to generate data to use in the following subsections. Own data should be load into R through the function `read.table` or similar functions from the [foreign package](https://cran.r-project.org/web/packages/foreign/index.html). Moreover, the function `reshape` can be used to change the data from wide to long format or vice versa. Finally, the subsections fitting the single level model and fitting the multilevel model show how to fit both versions of each model to the data by means of bayesian estimation in Mplus.
 
 
-```{r, echo = FALSE}
+# Prepare environment
+
+To prepare the environment for the next analyses three packages have to be load: 
+
+- [RCurl](https://cran.r-project.org/web/packages/RCurl/index.html), which is needed to load the functions from the git repository. 
+- [MASS](https://cran.r-project.org/web/packages/MASS/index.html), which is needed for some of the written functions.
+- [MplusAutomation](https://cran.r-project.org/web/packages/MplusAutomation/index.html), which allows using Mplus within R.
+
+```{r, echo = FALSE, message = FALSE}
+if(!require(RCurl)) {install.packages("RCurl"); require(installr)}
+if(!require(MASS)) {install.packages("MASS"); require(installr)}
 if(!require(MplusAutomation)) {install.packages("MplusAutomation"); require(installr)} 
-if(!require(RCurl)) {install.packages("RCurl"); require(installr)} 
 ```
 
+Next, the functions developed within this study have to be load into R. These functions allow generating data  and writing the Mplus syntaxes based on each model. There are two ways to load these functions. Firstly, you can download the files in your working directory and use the `source` function to load them in R. Alternatively, you can run the next code, which loads all the functions directly from the git repository without saving the files in your hard drive:   
 
 ```{r}
-rfiles <- c("sim.data.cuts.R", "sim.data.msst.R", "sim.data.tso.R", "var.coeff.R", 
-            "write.cuts.to.Mplus.R", "write.mlcuts.to.Mplus.R", "write.msst.to.Mplus.R",
-            "write.mlmsst.to.Mplus.R", "write.tso.to.Mplus.R", "write.mltso.to.Mplus.R", 
+rfiles <- c("sim.data.cuts.R", 
+            "sim.data.msst.R", 
+            "sim.data.tso.R", 
+            "var.coeff.R", 
+            "write.cuts.to.Mplus.R", 
+            "write.mlcuts.to.Mplus.R", 
+            "write.msst.to.Mplus.R",
+            "write.mlmsst.to.Mplus.R", 
+            "write.tso.to.Mplus.R", 
+            "write.mltso.to.Mplus.R", 
             "write.Mplus.options.R")
 for( i in 1:length(rfiles)){
   eval(parse(text = getURL(paste0("https://raw.githubusercontent.com/secastroal/LST_Analyses/master/R/",
-                                  rfiles[i]), ssl.verifypeer = FALSE))) 
+       rfiles[i]), ssl.verifypeer = FALSE))) 
 }
 rm(i, rfiles)
 ```
 
 
-```{r}
-```
-
-```{r}
-N <- 100 # Sample size
-I <- 4 # Number of variables
-timeout <- 3600 # Time limit in seconds to force ending an analysis in Mplus
-```
 # Multistate-singletrait model (MSST)
+```{r, ref.label="genmsst", echo = FALSE}
+```
 
-```{r}
-state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
-      var_state <- 2 # Variance latent state residual
-      var_m_error <- c(1, 0.5, 1.5, 0.8) # Variance of measurement errors
-      
-      within.parameters <- list(loadings = state_loadings, state.var = var_state, error.var = var_m_error)
-      
-      # Between Paramaters
-      
-      intercepts <- seq(0, by = 0.2, length.out = I) # intercepts
-      trait_loadings <- c(1, 0.8, 1.2, 0.9) # loading parametes for the latent trait
-      
-      var_trait <- 2 # variance latent trait variable
-      mean_trait <- 4 # mean latent trait variable
-      
-      between.parameters <- list(loadings = trait_loadings, intercepts = intercepts, trait.mean = mean_trait,
-                                 trait.var = var_trait)
-      
-      # Save True parameters to parameters matrix
-      parameters[1, c(1:9, 11:20)] <- c(state_loadings, var_state, var_m_error, trait_loadings,
-                                        intercepts, var_trait, mean_trait) 
-      
-      rm(state_loadings, var_state, var_m_error, intercepts, trait_loadings, var_trait, 
-         mean_trait)
-      
-      # Simulate data
-      data <- sim.data.msst(N, nT, I, within.parameters = within.parameters, na.prop = na.prop,
-                            between.parameters = between.parameters, seed = seed)
-      
-      # Compute true variance coefficients
-      var.coeff[1, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters = within.parameters, 
-                                                         between.parameters = between.parameters)) 
-      
-      rm(within.parameters, between.parameters)
+We will be generating data from the MSST model for `r N` individuals, `r I` items, and `r nT` measurement occasions. Two graphical representations of the model are shown in Figures \@ref(fig:msst) and \@ref(fig:mlmsst) for the single level MSST and the multilevel MSST, respectively.  
+
+```{r msst, out.width='75%', fig.align='center', fig.cap='Single level MSST', echo = FALSE}
+knitr::include_graphics("Images/msst.png")
+```
+
+```{r mlmsst, out.width='75%', fig.align='center', fig.cap='Multilevel MSST', echo = FALSE}
+knitr::include_graphics("Images/mlmsst.png")
+```
+
+## Generating MSST data {#sec::genmsst}
+
+To generate data based on the MSST, use the function `sim.data.msst`. This function requires the number of persons, the number of items, the number of measurement occasions, and two lists that contain the within and the between parameters. Let us define these parameters as follows:
+
+```{r "genmsst"}
+N  <- 100 # Number of persons
+I  <- 3   # Number of items
+nT <- 3   # Number of measurement occasions
+
+# Within Parameters
+
+loadings.state <- c(1, 0.5, 1.3) # Loading parameters for the latent state variables.
+error.var      <- c(1, 0.5, 1.5) # Variance of measurement errors for each item.
+state.var      <- 2              # Variance of the latent state residual.
+
+within.parameters <- list(loadings  = loadings.state, 
+                          state.var = state.var, 
+                          error.var = error.var)
+
+# Between Paramaters
+
+loadings.trait <- c(1, 0.8, 1.2) # Loading parametes for the latent trait variable.
+intercepts     <- rep(0, I)      # Intercepts.
+trait.var      <- 2              # variance of the latent trait variable.
+trait.mean     <- 4              # Mean of the latent trait variable.
+
+between.parameters <- list(loadings   = loadings.trait, 
+                           intercepts = intercepts, 
+                           trait.mean = trait.mean,
+                           trait.var  = trait.mean)
+```
+
+```{r, echo = FALSE}
+rm(loadings.state, state.var, error.var, intercepts, loadings.trait, trait.var, 
+   trait.mean)
+```
+
+Next, once all the parameters are defined, we can simulate data based on the model: 
+
+```{r msstdata}
+data <- sim.data.msst(N, nT, I, 
+                      within.parameters  = within.parameters,
+                      between.parameters = between.parameters)
+```
+```{r, echo = FALSE}
+rm(within.parameters, between.parameters)
+```
+
+The last code will store the simulated data in the object `data`. This object returns a list that includes the within and the between parameters, and the simulated data in wide and long format. These are the first five rows of the simulated data in wide and long format:
+
+```{r, echo = FALSE}
+head(data$data.wide, 5)
+
+head(data$data.long, 5)
+```
+
+## Fitting the single level MSST model
+
+To fit the different models, we will follow basically the same procedure with small differences. Firstly, we will write the whole syntax of the model in R and export it to Mplus. Secondly, we will run the model in Mplus by using the function `runModels` and we will read the output file in R with the function `readModels`. Finally, we will take the output in R to extract the estimated parameters to be able to compute the variance coefficients.
+
+To create the syntax in R for the single level MSST model the next functions are needed:
+
+- `prepareMplusData`, which exports the data to be compatible with Mplus and creates a basic input file.
+- `write.Mplus.options`, which allows specifying additional options for the analysis such as the estimation method and the number of iterations. This function does not include all the options available in Mplus.
+- `write.msst.to.Mplus`, which creates a basic syntax to fit the single level MSST model in Mplus.
+
+### Prepare the data and the syntax files for Mplus
+Here we export the data to Mplus in the file **slmsst.dat** and create the syntax file **slmsst.inp**:
+```{r, message = FALSE, warning = FALSE}
+# Write data in Mplus format and write input file template to the working directory:
+prepareMplusData(data$data.wide, paste0(getwd(), "/slmsst.dat"), inpfile = TRUE)
+
+# Write additional options:
+options_syntax <- write.Mplus.options(usevariables  = names(data$data.wide)[-1],
+                                      analysis_type = "GENERAL",
+                                      estimator     = "BAYES",
+                                      iterations    = 5000)
+
+# Write Mplus syntax of the single level MSST:
+analysis_syntax <- write.msst.to.Mplus(data$data.wide[, -1], 
+                                       neta                       = nT, 
+                                       ntheta                     = 1, 
+                                       equiv.assumption           = list(tau = "cong", theta = "cong"),
+                                       scale.invariance           = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
+                                       homocedasticity.assumption = list(error = TRUE, state.red = TRUE),
+                                       second.order.trait         = FALSE)
+
+# Additional options important for Bayesian analyses to save MCMC samples and Rhat statistics:
+output_syntax <- "\nSAVEDATA: BPARAMETERS = samples_slmsst.dat;\nOUTPUT: TECH8;"
+
+# Overwrite the basic syntax file to include additional options and the syntax of the model:
+write(options_syntax,  paste0(getwd(), "/slmsst.inp"), append = TRUE)
+write(analysis_syntax, paste0(getwd(), "/slmsst.inp"), append = TRUE)
+write(output_syntax,   paste0(getwd(), "/slmsst.inp"), append = TRUE)
+```
+
+```{r, echo = FALSE}
+rm(analysis_syntax, options_syntax, output_syntax)
+```
+
+### Run the analysis in Mplus and import the results in R
+Next, we can run the analysis in Mplus with the following code:
+
+```{r, results = "hide"}
+runModels(paste0(getwd(), "/slmsst.inp"))
+```
+
+This can take a while, especially is the estimation method is "BAYES". By default, the function `write.Mplus.options` uses 4 processors, 4 chains, and 10 thinning.
+
+Once the analysis is done, the results, which are in the file **slmsst.out**, can be read in R as follows:
+```{r, results = "hide"}
+fit <- readModels(paste0(getwd(), "/slmsst.out"))
+```
+
+This object (`fit`) is a list that stores all the information available in the output file from Mplus. To access the estimated parameters you can type:
+```{r, results = "hide"}
+fit$parameters$unstandardized
+```
+
+This is a data frame that includes the estimated parameters, the posterior standard deviations, and the credibility intervals. The first five rows will look like this: 
+```{r, echo =  FALSE}
+head(fit$parameters$unstandardized, 5)
+```
+
+### Compute variance coefficients
+
+The variance coefficients defined in the LST theory are the most important output of these models because they provide the information about the psychometric properties of the items. To estimate the variance coefficients of the MSST model, we will use the function `msst.var.coeff`. For this function, we need the within and the between estimated parameters in lists as it was done in Section \@ref(sec::genmsst). Doing this requires some little coding, but once this coding is done, the variance coefficients can be compute like this:
+
+```{r, echo = FALSE, results = "hide"}
+# Save estimates
+estimates <- fit$parameters$unstandardized[c(1:I, #loadings
+                                             (I * nT * 3) + ((nT + 1) * nT / 2) + 2, # state var 
+                                             ((I * nT * 3) + ((nT + 1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT + 1) * nT / 2) + nT + I + 2), #error variances
+                                             ((I * nT + 1):(I * nT + I)), #trait loadings
+                                             ((I * nT * 2) + ((nT + 1) * nT / 2) + 2):((I * nT * 2) + ((nT + 1) * nT / 2) + I + 1), #intercepts
+                                             ((I * nT * 3) + ((nT + 1) * nT / 2) + nT + 2), #trait variance
+                                             ((I * nT * 2) + ((nT + 1) * nT / 2) + 1)), #trait mean
+                                           3]
+
+# Compute and save variance coefficients
+
+# Read MCMC draws
+samples <- read.table(paste0(getwd(), "/samples_slmsst.dat"))
+
+# Delete burn-in and indicator for chain and draw
+samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+
+# Create matrix to store variance coefficients draws
+pdist.var.coeff <- matrix(NA, dim(samples)[1], 3 * I)
+
+for (i in 1:dim(samples)[1]) {
+  within.estimates  <- list(loadings  = c(1, t(samples[i, seq(I, by = 2, length.out = I - 1)])), 
+                            state.var = samples[i, (4 * I - 1)],
+                            error.var = c(t(samples[i, (3 * I - 2): (4 * I - 3)])))
+  between.estimates <- list(loadings  = c(1, t(samples[i, seq(I + 1, by = 2, length.out = I - 1)])), 
+                            trait.var = samples[i, 4 * I])
+  pdist.var.coeff[i, ] <- t(msst.var.coeff(within.parameters  = within.estimates,
+                                           between.parameters = between.estimates))
+}
+
+within.estimates  <- list(loadings  = estimates[1:I], 
+                          state.var = estimates[I+1],
+                          error.var = estimates[(I+2):(2 * I +1)])
+between.estimates <- list(loadings  = estimates[(2 * I + 2):(3 * I + 1)], 
+                          trait.var = estimates[ 4 * I + 2])
 ```
 
 ```{r}
-file.name <- paste("msst", "wide", "bayes", cond, r,sep = "_")
-      
-      # Prepare data: Write data in Mplus format and write input file template
-      prepareMplusData(data$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
-      
-      # Complete Mplus syntax
-      analysis_syntax <- write.Mplus.options(usevariables = names(data$data.wide)[-1],
-                                             analysis_type = "GENERAL",
-                                             estimator = "BAYES",
-                                             iterations = 5000)
-      
-      mplus_syntax <- write.msst.to.Mplus(data$data.wide[,-1], neta = nT, ntheta = 1, 
-                                          equiv.assumption = list(tau = "cong", theta = "cong"),
-                                          scale.invariance = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
-                                          homocedasticity.assumption = list(error = TRUE, state.red = TRUE),
-                                          second.order.trait = FALSE)
-      saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", paste0("samples_", file.name, ".dat"),
-                                  ";", "\nOUTPUT: TECH8;")
-      
-      write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-      write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
-      write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
-      
-      rm(analysis_syntax, mplus_syntax, saveoutput_syntax)
-      
-      # Run model in Mplus
-      cat("\n"); print(Sys.time()); cat("\n"); t0 <- proc.time()
-      runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-      cat("\n"); print(Sys.time()); cat("\n"); tf <- proc.time() - t0
-      
-      fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+msst.var.coeff(within.parameters  = within.estimates,
+               between.parameters = between.estimates)
+```
+
+## Fitting the multilevel MSST model
+
+### Prepare the data and the syntax files for Mplus
+To fit the multilevel MSST model, we will use the function `write.mlmsst.to.Mplus` instead of `write.mlmsst.to.Mplus`. In the following code, we export the data to Mplus in the file **mlmsst.dat** and we create the syntax file **mlmsst.inp**:
+```{r, message = FALSE, warning = FALSE}
+# Write data in Mplus format and write input file template to the working directory:
+prepareMplusData(data$data.long, paste0(getwd(), "/mlmsst.dat"), inpfile = TRUE)
+
+# Write additional options:
+options_syntax <- write.Mplus.options(usevariables  = names(data$data.long)[-(1:2)],
+                                      cluster       = names(data$data.long)[1],
+                                      analysis_type = "TWOLEVEL",
+                                      estimator     = "BAYES",
+                                      iterations    = 5000)
+
+# Write Mplus syntax of the multilevel MSST:
+analysis_syntax <- write.mlmsst.to.Mplus(data$data.long[, -(1:2)])
+
+# The previous syntax has some variances constrained to 0, which is undesirable when
+# doing bayesian estimation. Hence, those constraints are changed to 0.001. 
+analysis_syntax <- gsub("@0;", "@0.001;", analysis_syntax) 
+    
+
+# Additional options important for Bayesian analyses to save MCMC samples and Rhat statistics:
+output_syntax <- "\nSAVEDATA: BPARAMETERS = samples_mlmsst.dat;\nOUTPUT: TECH8;"
+
+# Overwrite the basic syntax file to include additional options and the syntax of the model:
+write(options_syntax,  paste0(getwd(), "/mlmsst.inp"), append = TRUE)
+write(analysis_syntax, paste0(getwd(), "/mlmsst.inp"), append = TRUE)
+write(output_syntax,   paste0(getwd(), "/mlmsst.inp"), append = TRUE)
+```
+
+```{r, echo = FALSE}
+rm(analysis_syntax, options_syntax, output_syntax)
+```
+
+### Run the analysis in Mplus and import the results in R
+The analysis is run in Mplus with the following code:
+
+```{r, results = "hide"}
+runModels(paste0(getwd(), "/mlmsst.inp"))
+```
+
+Once the analysis is done, we import the results in R from the file **mlmsst.out** as follows:
+```{r, results = "hide"}
+fit <- readModels(paste0(getwd(), "/mlmsst.out"))
+```
+
+The estimates can be found in: 
+```{r, results = "hide"}
+fit$parameters$unstandardized
+```
+
+The first five rows of this data frame look like this:
+```{r, echo =  FALSE}
+head(fit$parameters$unstandardized, 5)
+```
+
+### Compute variance coefficients
+
+To estimate the variance coefficients of the multilevel MSST model, we need the same function `msst.var.coeff`. Hence, we will need to extract the estimates from `fit` and store them in two lists. When this is ready, the variance coefficients van be computed like this:
+
+```{r, echo = FALSE, results = "hide"}
+# Save estimates
+estimates <- fit$parameters$unstandardized[c(1:(2 * I + 1), #loadings, state var, error variances
+                                             ((3 * I + 2):(4 * I + 1)), #loadings 
+                                             ((5 * I + 3):(6 * I + 2)), #intercepts
+                                             (6 * I + 3), # trait var
+                                             (4 * I + 2)), # trait mean
+                                           3]
         
+# Compute and save variance coefficients
 
-          
-          perf[r, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-          times[r, a] <- round(tf[3], 2)
-          
-          # Save estimates
-          estimates <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                       (I * nT * 3) + ((nT+1) * nT / 2) + 2, # state var 
-                                                       ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2), #error variances
-                                                       ((I * nT + 1):(I * nT + I)), #trait loadings
-                                                       ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1), #intercepts
-                                                       ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2), #trait variance
-                                                       ((I * nT * 2) + ((nT+1) * nT / 2) + 1)), #trait mean
-                                                     3]
-          
-          parameters[(11 * (r-1)) + a + 1, c(1:9, 11:20)] <- estimates
-          
-          # Save posterior standard deviations
-          post.sd <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                     (I * nT * 3) + ((nT+1) * nT / 2) + 2, # state var 
-                                                     ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2), #error variances
-                                                     ((I * nT + 1):(I * nT + I)), #trait loadings
-                                                     ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1), #intercepts
-                                                     ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2), #trait variance
-                                                     ((I * nT * 2) + ((nT+1) * nT / 2) + 1)), #trait mean
-                                                   4]
-          
-          se_psd[(11 * (r-1)) + a, c(1:9, 11:20)] <- post.sd
-          
-          # Compute and save variance coefficients
-          
-          # Read MCMC draws
-          samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
-          
-          # Delete burn-in and indicator for chain and draw
-          samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
-          
-          # Create matrix to store variance coefficients draws
-          pdist.var.coeff <- matrix(NA, dim(samples)[1], 12)
-          
-          for(i in 1:dim(samples)[1]){
-            within.estimates <- list( loadings = c(1, t(samples[i, c(4, 6, 8)])), state.var = samples[i, 15],
-                                      error.var = c(t(samples[i, 10:13])))
-            between.estimates <- list( loadings = c(1, t(samples[i, c(5, 7, 9)])), 
-                                       trait.var = samples[i, 16])
-            pdist.var.coeff[i, ] <- t(msst.var.coeff(within.parameters = within.estimates,
-                                                     between.parameters = between.estimates))
-          }
-          
-          var.coeff[(11 * (r-1)) + a + 1, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, median)
-          psd.var.coeff[(6 * (r-1)) + a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
-          
-          # Save fit measures
-          if(!is.null(fit$summaries$DIC)){fit.measures[(11 * (r-1)) + a, 4] <- c(fit$summaries$DIC)}
-          
-          rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
-      
+# Read MCMC draws
+samples <- read.table(paste0(getwd(), "/samples_mlmsst.dat"))
+
+# Delete burn-in and indicator for chain and draw
+samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+
+# Create matrix to store variance coefficients draws
+pdist.var.coeff <- matrix(NA, dim(samples)[1], 3 * I)
+
+for (i in 1:dim(samples)[1]) {
+  within.estimates  <- list(loadings  = c(1, t(samples[i, 1 : (I - 1)])), 
+                            state.var = samples[i, 2 * I],
+                            error.var = c(t(samples[i, I : (2 * I - 1)])))
+  between.estimates <- list(loadings  = c(1, t(samples[i, (3 * I + 1) : (4 * I - 1)])), 
+                            trait.var = samples[i, 4 * I])
+  pdist.var.coeff[i, ] <- t(msst.var.coeff(within.parameters  = within.estimates,
+                                           between.parameters = between.estimates))
+}
+
+within.estimates  <- list(loadings  = estimates[1:I], 
+                          state.var = estimates[I + 1],
+                          error.var = estimates[(I + 2):(2 * I + 1)])
+between.estimates <- list(loadings  = estimates[(2 * I + 2):(3 * I + 1)], 
+                          trait.var = estimates[ 4 * I + 2])
 ```
 
 ```{r}
+msst.var.coeff(within.parameters  = within.estimates,
+               between.parameters = between.estimates)
 ```
 
-# Common and unique trait state model (CUTS)
+# Common-unique trait-state (CUTS)
+```{r, ref.label="gencuts", echo = FALSE}
+```
+
+We will generate data from the CUTS model for `r N` individuals, `r I` items, and `r nT` measurement occasions. The graphical representations of the single level CUTS and multilevel CUTS are shown in Figures \@ref(fig:cuts) and \@ref(fig:mlcuts), respectively.  
+
+```{r cuts, out.width='75%', fig.align='center', fig.cap='Single level CUTS', echo = FALSE}
+knitr::include_graphics("Images/cuts.png")
+```
+
+```{r mlcuts, out.width='75%', fig.align='center', fig.cap='Multilevel CUTS', echo = FALSE}
+knitr::include_graphics("Images/mlcuts.png")
+```
+
+## Generating CUTS data {#sec::gencuts}
+
+To generate data based on the CUTS, we need the function `sim.data.cuts`. Let us define the parameters to simulate the data as follows:
+
+```{r "gencuts"}
+N  <- 100 # Number of persons
+I  <- 3   # Number of items
+nT <- 3   # Number of measurement occasions
+
+# Within Parameters
+
+loadings.state <- c(1, 0.5, 1.3) # Loading parameters for the latent common state.
+US.var         <- c(1, 0.5, 1.5) # Variance of the latent unique states.
+CS.var         <- 2              # Variance of the latent common state.
+      
+within.parameters <- list(loadings = loadings.state, 
+                          CS.var   = CS.var, 
+                          US.var   = US.var)
+
+# Between Paramaters
+
+loadings.trait <- c(1, 0.8, 1.2) # Loading parametes for the latent common trait.
+intercepts     <- rep(0,I)       # Intercepts.
+UT.var         <- c(0.5, 1, 0.3) # Variance of the latent unique traits.
+CT.var         <- 1.5            # Variance of the latent common trait.
+      
+between.parameters <- list(loadings   = loadings.trait, 
+                           intercepts = intercepts, 
+                           CT.var     = CT.var, 
+                           UT.var     = UT.var)
+
+```
+
+```{r, echo = FALSE}
+rm(loadings.state, US.var, CS.var, intercepts, loadings.trait, UT.var, 
+   CT.var)
+```
+
+Next, we can simulate data based on the model like this: 
+
+```{r cutsdata}
+data <- sim.data.cuts(N, nT, I, 
+                      within.parameters  = within.parameters,
+                      between.parameters = between.parameters)
+```
+```{r, echo = FALSE}
+rm(within.parameters, between.parameters)
+```
+
+This function returns the simulated data in both wide and long format. These are the first five rows of these data:
+
+```{r, echo = FALSE}
+head(data$data.wide, 5)
+
+head(data$data.long, 5)
+```
+
+## Fitting the single level CUTS model
+
+### Prepare the data and the syntax files for Mplus
+To fit the single level CUTS model to the data, we will create the syntax for this model with the function `write.cuts.to.Mplus`. Through the next code we export the data to Mplus in the file **slmsst.dat** and create the syntax file **slmsst.inp**:
+```{r, message = FALSE, warning = FALSE}
+# Write data in Mplus format and write input file template to the working directory:
+prepareMplusData(data$data.wide, paste0(getwd(), "/slcuts.dat"), inpfile = TRUE)
+
+# Write additional options:
+options_syntax <- write.Mplus.options(usevariables  = names(data$data.wide)[-1],
+                                      analysis_type = "GENERAL",
+                                      estimator     = "BAYES",
+                                      iterations    = 5000)
+
+# Write Mplus syntax of the single level MSST:
+analysis_syntax <- write.cuts.to.Mplus(data$data.wide[,-1],  
+                                       nstate                     = nT,
+                                       method.trait               = "om",
+                                       scale.invariance           = list(int = TRUE, lambda = TRUE),
+                                       state.trait.invariance     = FALSE,
+                                       fixed.method.loadings      = TRUE,
+                                       homocedasticity.assumption = list(error = TRUE, cs.red = TRUE, ut.red = FALSE))
+      
+
+# Additional options important for Bayesian analyses to save MCMC samples and Rhat statistics:
+output_syntax <- "\nSAVEDATA: BPARAMETERS = samples_slcuts.dat;\nOUTPUT: TECH8;"
+
+# Overwrite the basic syntax file to include additional options and the syntax of the model:
+write(options_syntax,  paste0(getwd(), "/slcuts.inp"), append = TRUE)
+write(analysis_syntax, paste0(getwd(), "/slcuts.inp"), append = TRUE)
+write(output_syntax,   paste0(getwd(), "/slcuts.inp"), append = TRUE)
+```
+
+```{r, echo = FALSE}
+rm(analysis_syntax, options_syntax, output_syntax)
+```
+
+### Run the analysis in Mplus and import the results in R
+Next, run the analysis in Mplus:
+
+```{r, results = "hide"}
+runModels(paste0(getwd(), "/slcuts.inp"))
+```
+
+The results from this analysis are stored in the file **slcuts.out**, which can be read in R as follows:
+```{r, results = "hide"}
+fit <- readModels(paste0(getwd(), "/slcuts.out"))
+```
+
+To access the estimated parameters, type: 
+```{r, results = "hide"}
+fit$parameters$unstandardized
+```
+From which the first five rows look like this:
+```{r, echo =  FALSE}
+head(fit$parameters$unstandardized, 5)
+```
+
+### Compute variance coefficients
+
+For the singel level and multilevel CUTS model, we will use the function `cuts.var.coeff` to compute the variance coefficients as follows:
+
+```{r, echo = FALSE, results = "hide"}
+# Save estimates
+estimates <- fit$parameters$unstandardized[c(1:I, # CS loadings
+                                             (((nT + I + 1)*(nT + I)) / 2) + (nT * I * 4) + 1, #CS var
+                                             ((((nT + I + 1)*(nT + I)) / 2) + (nT * I * 4) + nT + 2 + I):((((nT + I + 1) * (nT + I))/2) + (nT * I * 4) + nT + 1 + 2 * I), #UT variances
+                                             (I * nT + 1):(I * nT + I), # CT loadings
+                                             ((((nT + I + 1)*(nT + I)) / 2) + (nT * I * 3) + 1):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 3) + I), #intercepts
+                                             (((nT + I + 1)*(nT + I)) / 2) + (nT * I * 4) + nT + 1, #CT var
+                                             ((((nT + I + 1)*(nT + I)) / 2) + (nT * I * 4) + nT + 2):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1 + I)), # UT var
+                                           3]
+
+# Compute and save variance coefficients
+
+# Read MCMC draws
+samples <- read.table(paste0(getwd(), "/samples_slcuts.dat"))
+
+# Delete burn-in and indicator for chain and draw
+samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+
+# Create matrix to store variance coefficients draws
+pdist.var.coeff <- matrix(NA, dim(samples)[1], 5 * I)
+
+for(i in 1:dim(samples)[1]){
+  within.estimates  <- list(loadings = c(1, t(samples[i, seq(I + 1, by = 2, length.out = I - 1)])), 
+                            CS.var   = samples[i, (4 * I - 1)],
+                            US.var   = c(t(samples[i, (3 * I - 1):(4 * I - 2)])))
+  between.estimates <- list(loadings = c(1, t(samples[i, seq(I + 2, by = 2, length.out = I - 1)])), 
+                            CT.var   = samples[i, 4 * I], 
+                            UT.var   = c(t(samples[i, (4 * I + 1):(5 * I)])))
+  pdist.var.coeff[i, ] <- t(cuts.var.coeff(within.parameters  = within.estimates,
+                                           between.parameters = between.estimates))
+}
+
+within.estimates  <- list(loadings = estimates[1:I], 
+                          CS.var   = estimates[I + 1],
+                          US.var   = estimates[(I + 2):(2 * I + 1)])
+between.estimates <- list(loadings = estimates[(2 * I + 2):(3 * I + 1)], 
+                          CT.var   = estimates[ 4 * I + 2], 
+                          UT.var   = estimates[(4 * I + 3):(5 * I + 2)])
+```
+
 ```{r}
- # Within Parameters
-      
-      state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent common state
-      var_CS <- 2 # Variance latent common state
-      var_US <- c(1, 0.5, 1.5, 0.8) # Variance of latent unique states
-      
-      within.parameters <- list(loadings = state_loadings, CS.var = var_CS, US.var = var_US)
-      
-      # Between Paramaters
-      
-      intercepts <- seq(2, by = 0.5, length.out = I) # intercepts
-      trait_loadings <- c(1, 0.8, 1.2, 0.9) # loading parametes for the latent common trait
-      var_CT <- 1.5 # variance latent common trait
-      var_UT <- c(0.5, 1, 0.3, 0.8) # variance latent unique traits
-      
-      between.parameters <- list(loadings = trait_loadings, intercepts = intercepts, CT.var = var_CT, UT.var = var_UT)
-      
-      # Save True parameters to parameters matrix
-      parameters[1, c(1:9, 11:19, 21:24)] <- c(state_loadings, var_CS, var_US, trait_loadings,
-                                        intercepts, var_CT, var_UT) 
-      
-      rm(state_loadings, var_CS, var_US, intercepts, trait_loadings, var_CT, var_UT)
-      
-      # Simulate data
-      data <- sim.data.cuts(N, nT, I, within.parameters = within.parameters, na.prop = na.prop,
-                            between.parameters = between.parameters, seed = seed)
-      
-      # Compute true variance coefficients
-      
-      var.coeff[1, ] <- t(cuts.var.coeff(within.parameters = within.parameters, 
-                                      between.parameters = between.parameters)) 
-      
-      rm(within.parameters, between.parameters)
+cuts.var.coeff(within.parameters  = within.estimates,
+               between.parameters = between.estimates)
+```
+
+## Fitting the multilevel CUTS model
+
+### Prepare the data and the syntax files for Mplus
+To fit the multilevel CUTS model, use the function `write.mlcuts.to.Mplus`. The next code exports the data to Mplus in the file **mlcuts.dat** and creates the syntax file **mlcuts.inp**:
+```{r, message = FALSE, warning = FALSE}
+# Write data in Mplus format and write input file template to the working directory:
+prepareMplusData(data$data.long, paste0(getwd(), "/mlcuts.dat"), inpfile = TRUE)
+
+# Write additional options:
+options_syntax <- write.Mplus.options(usevariables  = names(data$data.long)[-(1:2)],
+                                      cluster       = names(data$data.long)[1],
+                                      analysis_type = "TWOLEVEL",
+                                      estimator     = "BAYES",
+                                      iterations    = 5000)
+
+# Write Mplus syntax of the multilevel MSST:
+analysis_syntax <- write.mlcuts.to.Mplus(data$data.long[, -(1:2)])
+
+# Additional options important for Bayesian analyses to save MCMC samples and Rhat statistics:
+output_syntax <- "\nSAVEDATA: BPARAMETERS = samples_mlcuts.dat;\nOUTPUT: TECH8;"
+
+# Overwrite the basic syntax file to include additional options and the syntax of the model:
+write(options_syntax,  paste0(getwd(), "/mlcuts.inp"), append = TRUE)
+write(analysis_syntax, paste0(getwd(), "/mlcuts.inp"), append = TRUE)
+write(output_syntax,   paste0(getwd(), "/mlcuts.inp"), append = TRUE)
+```
+
+```{r, echo = FALSE}
+rm(analysis_syntax, options_syntax, output_syntax)
+```
+
+### Run the analysis in Mplus and import the results in R
+Next, run the analysis in Mplus:
+
+```{r, results = "hide"}
+runModels(paste0(getwd(), "/mlcuts.inp"))
+```
+
+Finally, read the output file **mlcuts.out** in R as follows:
+```{r, results = "hide"}
+fit <- readModels(paste0(getwd(), "/mlcuts.out"))
+```
+
+Look at the first five estimated as follows:
+```{r, echo =  TRUE}
+head(fit$parameters$unstandardized, 5)
+```
+
+### Compute variance coefficients
+
+Now, the function `cuts.var.coeff` is used to compute the variance coefficients:
+
+```{r, echo = FALSE, results = "hide"}
+# Save estimates
+estimates <- fit$parameters$unstandardized[,3]
+        
+# Compute and save variance coefficients
+
+# Read MCMC draws
+samples <- read.table(paste0(getwd(), "/samples_mlcuts.dat"))
+
+# Delete burn-in and indicator for chain and draw
+samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+
+# Create matrix to store variance coefficients draws
+pdist.var.coeff <- matrix(NA, dim(samples)[1], 5 * I)
+
+for(i in 1:dim(samples)[1]){
+  within.estimates  <- list(loadings = c(1, t(samples[i, 1 : (I - 1)])), 
+                            CS.var   = samples[i, 2 * I],
+                            US.var   = c(t(samples[i, I:(2 * I - 1)])))
+  between.estimates <- list(loadings = c(1, t(samples[i, (3 * I + 1):(4 * I - 1)])), 
+                            CT.var   = samples[i, 5 * I], 
+                            UT.var   = c(t(samples[i, (4 * I):(5 * I - 1)])))
+  pdist.var.coeff[i, ] <- t(cuts.var.coeff(within.parameters  = within.estimates,
+                                           between.parameters = between.estimates))
+}
+
+within.estimates  <- list(loadings = estimates[1:I], 
+                          CS.var   = estimates[I + 1],
+                          US.var   = estimates[(I + 2):(2 * I + 1)])
+between.estimates <- list(loadings = estimates[(2 * I + 2):(3 * I + 1)], 
+                          CT.var   = estimates[ 4 * I + 2], 
+                          UT.var   = estimates[(4 * I + 3):(5 * I + 2)])
 ```
 
 ```{r}
+cuts.var.coeff(within.parameters  = within.estimates,
+               between.parameters = between.estimates)
 ```
-
-```{r}
-```
-
 # Trait-state-occasion model (TSO)
+```{r, ref.label="gentso", echo = FALSE}
+```
+Finally, we will generate data from the TSO model for `r N` individuals, `r I` items, and `r nT` measurement occasions. The graphical representations of the single level and multilevel TSO model are shown in Figures \@ref(fig:tso) and \@ref(fig:mltso).  
+
+```{r tso, out.width='75%', fig.align='center', fig.cap='Single level TSO', echo = FALSE}
+knitr::include_graphics("Images/tso.png")
+```
+
+```{r mltso, out.width='75%', fig.align='center', fig.cap='Multilevel TSO', echo = FALSE}
+knitr::include_graphics("Images/mltso.png")
+```
+
+## Generating TSO data {#sec::gentso}
+
+Here, we define the parameters to simulate data based on the TSO model:  
+
+```{r "gentso"}
+N  <- 100 # Number of persons
+I  <- 3   # Number of items
+nT <- 3   # Number of measurement occasions
+
+# Wihtin Parameters
+
+loadings.state <- c(1, 0.5, 1.3) # Loading parameters for the latent occasion specific variable.
+error.var      <- c(1, 0.5, 1.5) # Variance of the latent measurement errors.
+state.var      <- 2              # Variance of the latent state residual variable.
+ar.effect      <- 0.5            # Autoregressive effect.
+
+within.parameters <- list(loadings  = loadings.state, 
+                          ar.effect = ar.effect, 
+                          error.var = error.var,
+                          state.var = state.var)
+
+
+# Between Paramaters
+
+trait.ind.var <- c(2, 1.5, 2.5)              # Variance of the latent indicator trait variables.
+intercepts    <- rep(0, I)                   # Intercepts.
+cor.matrix    <- matrix(c(1.0, 0.7, 0.6, 
+                          0.7, 1.0, 0.8, 
+                          0.6, 0.8, 1.0), 3) # Correlation matrix of the latent indicator trait variables.
+
+
+between.parameters <- list(intercepts    = intercepts, 
+                           trait.ind.var = trait.ind.var, 
+                           cor.matrix    = cor.matrix)
+```
+
+```{r, echo = FALSE}
+rm(loadings.state, state.var, error.var, ar.effect, intercepts, trait.ind.var, 
+   cor.matrix)
+```
+
+Next, the function `sim.data.tso` is used to generate the data:
+
+```{r tsodata}
+data <- sim.data.tso(N, nT, I, 
+                     within.parameters  = within.parameters,
+                     between.parameters = between.parameters)
+```
+```{r, echo = FALSE}
+rm(within.parameters, between.parameters)
+```
+
+This function also returns the data in both wide and long format. The first five rows are like this:
+```{r, echo = FALSE}
+head(data$data.wide, 5)
+
+head(data$data.long, 5)
+```
+
+## Fitting the single level TSO model
+
+### Prepare the data and the syntax files for Mplus
+
+To prepare the files to fit the single level TSO model, we will use the function `write.tso.to.Mplus`. The following code will export the data to Mplus in the file **sltso.dat** and create the syntax file **sltso.inp**:
+```{r, message = FALSE, warning = FALSE}
+# Write data in Mplus format and write input file template to the working directory:
+prepareMplusData(data$data.wide, paste0(getwd(), "/sltso.dat"), inpfile = TRUE)
+
+# Write additional options:
+options_syntax <- write.Mplus.options(usevariables  = names(data$data.wide)[-1],
+                                      analysis_type = "GENERAL",
+                                      estimator     = "BAYES",
+                                      iterations    = 5000)
+
+# Write Mplus syntax of the single level MSST:
+analysis_syntax <- write.tso.to.Mplus(data$data.wide[,-1], 
+                                      nocc                       = nT, 
+                                      figure                     = "3b",
+                                      equiv.assumption           = list(occ = "cong", theta = "equi"),
+                                      scale.invariance           = list(int = TRUE, lambda = TRUE),
+                                      homocedasticity.assumption = list(error = TRUE, occ.red = TRUE),
+                                      autoregressive.homogeneity = TRUE)
+
+# Additional options important for Bayesian analyses to save MCMC samples and Rhat statistics:
+output_syntax <- "\nSAVEDATA: BPARAMETERS = samples_sltso.dat;\nOUTPUT: TECH8;"
+
+# Overwrite the basic syntax file to include additional options and the syntax of the model:
+write(options_syntax,  paste0(getwd(), "/sltso.inp"), append = TRUE)
+write(analysis_syntax, paste0(getwd(), "/sltso.inp"), append = TRUE)
+write(output_syntax,   paste0(getwd(), "/sltso.inp"), append = TRUE)
+```
+
+```{r, echo = FALSE}
+rm(analysis_syntax, options_syntax, output_syntax)
+```
+
+### Run the analysis in Mplus and import the results in R
+Run the analysis in Mplus:
+
+```{r, results = "hide"}
+runModels(paste0(getwd(), "/sltso.inp"))
+```
+
+Read the results from the outfile **sltso.out** in R as follows:
+```{r, results = "hide"}
+fit <- readModels(paste0(getwd(), "/sltso.out"))
+```
+
+We can access the first five rows of the estimated parameters like this:
+```{r, echo =  FALSE}
+head(fit$parameters$unstandardized, 5)
+```
+
+### Compute variance coefficients
+
+Now, compute the variance coefficients of the TSO model by using the function `tso.var.coeff`. In the case of the TSO, these variance coefficients will vary over time due to the autoregressive effect. The function `tso.var.coeff` computes these variance coefficients for each occasion like this:
+```{r, echo = FALSE, results = "hide"}
+# Save estimates
+estimates <- fit$parameters$unstandardized[c(1:I, #loadings
+                                             ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                                             ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
+                                             (2 * I * nT + 1), # autoregressive effect
+                                             ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
+                                             ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
+                                             ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances
+                                           3]
+
+# Compute and save variance coefficients
+
+# Read MCMC draws
+samples <- read.table(paste0(getwd(), "/samples_sltso.dat"))
+
+# Delete burn-in and indicator for chain and draw
+samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+
+# Create matrix to store variance coefficients draws
+pdist.var.coeff <- matrix(NA, dim(samples)[1], 5 * I)
+
+for(i in 1:dim(samples)[1]){
+  within.estimates  <- list(loadings  = c(1, t(samples[i, (I + 1):(2*I - 1)])), 
+                            state.var = samples[i, I * 3 + 1],
+                            error.var = c(t(samples[i, (2 * I):(3 * I - 1)])), 
+                            ar.effect = samples[i, 3 * I])
+  between.estimates <- list(trait.ind.var = c(t(samples[i, cumsum(1:I) + (3 * I + 1)])))
+  pdist.var.coeff[i, ] <- tso.var.coeff(I = I, nT = nT, 
+                                        within.parameters = within.estimates,
+                                        between.parameters = between.estimates)[,nT]
+          
+}
+
+within.estimates  <- list(loadings  = estimates[1:I], 
+                          state.var = estimates[I + 1],
+                          error.var = estimates[(I + 2):(2 * I + 1)], 
+                          ar.effect = estimates[(2 * I + 2)])
+between.estimates <- list(trait.ind.var = estimates[(3 * I + 3):(4 * I + 2)])
+```
+
 ```{r}
-state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
-      var_state <- 2 # Variance latent state residual
-      var_error <- c(1, 0.5, 1.5, 0.8) # Variance of latent measurement errors
-      
-      ar_effect <- 0.5 # autoregressive effect on the latent state residuals
-      
-      within.parameters <- list(loadings = state_loadings, ar.effect = ar_effect, error.var = var_error,
-                                state.var = var_state)
-      
-      rm(state_loadings, var_state, var_error, ar_effect)
-      
-      # Between Paramaters 
-      
-      intercepts <- seq(2, by = 0.5, length.out = I) # intercepts
-      
-      var_ind_traits <- c(2, 1.5, 2.5, 1.75) # variance latent indicator trait variables
-      
-      # Create positive definite correlation matrix
-      set.seed(13017)
-      repeat{
+tso.var.coeff(I = I, nT = nT, 
+              within.parameters = within.estimates,
+              between.parameters = between.estimates)
+```
+
+## Fitting the multilevel TSO model
+
+### Prepare the data and the syntax files for Mplus
+
+To finish, we will write the syntax of the multilevel TSO model with the function `write.mltso.to.Mplus`. The following code exports the data to Mplus in the file **mltso.dat** and creates the syntax file **mltso.inp**:
+```{r, message = FALSE, warning = FALSE}
+# Write data in Mplus format and write input file template to the working directory:
+prepareMplusData(data$data.long, paste0(getwd(), "/mltso.dat"), inpfile = TRUE)
+
+# Write additional options:
+options_syntax <- write.Mplus.options(usevariables  = names(data$data.long)[-(1:2)],
+                                      cluster       = names(data$data.long)[1],
+                                      analysis_type = "TWOLEVEL",
+                                      estimator     = "BAYES",
+                                      iterations    = 5000)
+
+# Write Mplus syntax of the multilevel MSST:
+analysis_syntax <- write.mltso.to.Mplus(data$data.long[, -(1:2)])
+
+# Additional options important for Bayesian analyses to save MCMC samples and Rhat statistics:
+output_syntax <- "\nSAVEDATA: BPARAMETERS = samples_mltso.dat;\nOUTPUT: TECH8;"
+
+# Overwrite the basic syntax file to include additional options and the syntax of the model:
+write(options_syntax,  paste0(getwd(), "/mltso.inp"), append = TRUE)
+write(analysis_syntax, paste0(getwd(), "/mltso.inp"), append = TRUE)
+write(output_syntax,   paste0(getwd(), "/mltso.inp"), append = TRUE)
+```
+
+```{r, echo = FALSE}
+rm(analysis_syntax, options_syntax, output_syntax)
+```
+
+### Run the analysis in Mplus and import the results in R
+Run the analysis in Mplus:
+
+```{r, results = "hide"}
+runModels(paste0(getwd(), "/mltso.inp"))
+```
+
+Read the output file **mltso.out** in R:
+```{r, results = "hide"}
+fit <- readModels(paste0(getwd(), "/mltso.out"))
+```
+
+In R, the first five rows of the estimated parameters look like this:
+```{r, echo =  FALSE}
+head(fit$parameters$unstandardized, 5)
+```
+
+### Compute variance coefficients
+
+The variance coefficients for the multilevel TSO model are also computed with the function `tso.var.coeff`. This function retrieve these coefficients for each measurement occasion like this: 
+```{r, echo = FALSE, results = "hide"}
+# Save estimates
+estimates <- fit$parameters$unstandardized[c(1:I, #loadings
+                                             (2 * I + 2), # state var
+                                             ((I + 2):(2 * I + 1)), # error variances
+                                             (I + 1), # autoregressive effect
+                                             (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2), # intercepts and indicator trait variances
+                                              (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), #Covariances
+                                           3]
         
-        Rcor <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
-        Rcor[lower.tri(Rcor)] = t(Rcor)[lower.tri(Rcor)]
-        diag(Rcor) <- 1
-        print(det(Rcor))
-        if(det(Rcor) > 0){
-          print(det(Rcor))
-          print(Rcor)
-          break}
-        }
-      
-      
-      between.parameters <- list(intercepts = intercepts, trait.ind.var = var_ind_traits, 
-                                 cor.matrix = Rcor)
-      
-      rm(intercepts, var_ind_traits, Rcor)
-      
-      # Simulate data
-      data <- sim.data.tso(N, nT, I, within.parameters = within.parameters, na.prop = na.prop, 
-                           between.parameters = between.parameters, seed = seed)
-      
-      # Save True parameters to parameters matrix
-      parameters[1, c(1:10, 15:18, 21:30)] <- c(within.parameters$loadings, within.parameters$state.var,
-                                                within.parameters$error.var, within.parameters$ar.effect,
-                                                between.parameters$intercepts, between.parameters$trait.ind.var,
-                                                round(data$between.parameters$Sigma[t(lower.tri(data$between.parameters$Sigma))], 2))
-      
-      # Compute true variance coefficients
-      var.coeff[1, ] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.parameters, 
-                                     between.parameters = between.parameters)[,nT] 
-      
-      rm(within.parameters, between.parameters)
+# Compute and save variance coefficients
+
+# Read MCMC draws
+samples <- read.table(paste0(getwd(), "/samples_mltso.dat"))
+
+# Delete burn-in and indicator for chain and draw
+samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+
+# Create matrix to store variance coefficients draws
+pdist.var.coeff <- matrix(NA, dim(samples)[1], 5 * I)
+
+for(i in 1:dim(samples)[1]){
+  within.estimates  <- list(loadings  = c(1, t(samples[i, 1:(I - 1)])), 
+                            state.var = samples[i, 2 * I + 1],
+                            error.var = c(t(samples[i, I:(2 * I - 1)])), 
+                            ar.effect = samples[i, 2 * I])
+  between.estimates <- list(trait.ind.var = c(t(samples[i, cumsum(1:I) + (3 * I + 1)])))
+  pdist.var.coeff[i, ] <- tso.var.coeff(I = I, nT = nT, 
+                                        within.parameters  = within.estimates,
+                                        between.parameters = between.estimates)[,nT]
+    
+}
+
+within.estimates  <- list(loadings  = estimates[1:I], 
+                          state.var = estimates[I + 1],
+                          error.var = estimates[(I + 2):(2 * I + 1)], 
+                          ar.effect = estimates[(2 * I + 2)])
+between.estimates <- list(trait.ind.var = estimates[(3 * I + 3):(4 * I + 2)])
 ```
 
 ```{r}
-```
-
-```{r}
+tso.var.coeff(I = I, 
+              nT = nT, 
+              within.parameters = within.estimates,
+              between.parameters = between.estimates)
 ```
