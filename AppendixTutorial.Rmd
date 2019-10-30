@@ -37,7 +37,7 @@ Moreover, the sections of each model include three subsections: Generating data,
 
 # Prepare environment
 
-To prepare the environment for the next analyses three packages have to be load: 
+To prepare the environment for the next analyses three packages have to be loaded: 
 
 - [RCurl](https://cran.r-project.org/web/packages/RCurl/index.html), which is needed to load the functions from the git repository. 
 - [MASS](https://cran.r-project.org/web/packages/MASS/index.html), which is needed for some of the written functions.
@@ -49,7 +49,7 @@ if(!require(MASS)) {install.packages("MASS"); require(installr)}
 if(!require(MplusAutomation)) {install.packages("MplusAutomation"); require(installr)} 
 ```
 
-Next, the functions developed within this study have to be load into R. These functions allow generating data  and writing the Mplus syntaxes based on each model. There are two ways to load these functions. Firstly, you can download the files in your working directory and use the `source` function to load them in R. Alternatively, you can run the next code, which loads all the functions directly from the git repository without saving the files in your hard drive:   
+Next, the functions developed within this study have to be loaded into R. These functions allow generating data  and writing the Mplus syntaxes based on each model. There are two ways to load these functions. Firstly, you can download the files in your working directory and use the `source` function to load them in R. Alternatively, you can run the next code, which loads all the functions directly from the git repository without saving the files in your hard drive:   
 
 ```{r}
 rfiles <- c("sim.data.cuts.R", 
@@ -192,7 +192,7 @@ Next, we can run the analysis in Mplus with the following code:
 runModels(paste0(getwd(), "/slmsst.inp"))
 ```
 
-This can take a while, especially is the estimation method is "BAYES". By default, the function `write.Mplus.options` uses 4 processors, 4 chains, and 10 thinning.
+This can take a while, especially if the estimation method is "BAYES". By default, the function `write.Mplus.options` uses 4 processors, 4 chains, and 10 thinning.
 
 Once the analysis is done, the results, which are in the file **slmsst.out**, can be read in R as follows:
 ```{r, results = "hide"}
@@ -211,7 +211,7 @@ head(fit$parameters$unstandardized, 5)
 
 ### Compute variance coefficients
 
-The variance coefficients defined in the LST theory are the most important output of these models because they provide the information about the psychometric properties of the items. To estimate the variance coefficients of the MSST model, we will use the function `msst.var.coeff`. For this function, we need the within and the between estimated parameters in lists as it was done in Section \@ref(sec::genmsst). Doing this requires some little coding, but once this coding is done, the variance coefficients can be compute like this:
+The variance coefficients defined in the LST theory are the most important output of these models because they provide the information about the psychometric properties of the items. To estimate the variance coefficients of the MSST model, we will use the function `msst.var.coeff`. For this function, we need the within and the between estimated parameters in lists as it was done in Section \@ref(sec::genmsst). Doing this requires some little coding, but once this coding is done, the variance coefficients can be computed like this:
 
 ```{r, echo = FALSE, results = "hide"}
 # Save estimates
