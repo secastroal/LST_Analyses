@@ -18,6 +18,7 @@ ExportLatex.R
 Henk MCMC.Rmd
 Henk-MCMC.html
 MET-2019 sup 2.html
+EAM_analyses.R
 #Folders
 Simulations
 ML-VAR_Examples
@@ -33,4 +34,5 @@ Peregrine
 Results-Backup
 HND
 Images
+PlosOne-EMA
 #Mplus_Simulation/Windows_50replicates
