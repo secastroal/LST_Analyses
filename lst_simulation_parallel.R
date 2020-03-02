@@ -78,36 +78,37 @@ folder <- paste0(folder, "/")
 # 1.0 Set up conditions ----
 
 # Fix conditions
-N <- 100 # Sample size
-I <- 4 # Number of variables
-timeout <- 30 # Time limit in seconds to force ending an analysis in Mplus
+N       <- 100   # Sample size
+I       <- 4     # Number of variables
+timeout <- 3600  # Time limit in seconds to force ending an analysis in Mplus
 
 # Manipulated conditions
-timepoints <- c(30, 60, 90) # Number of measurement occasions
-missingness <- c(0, 0.1) # Proportion of NAs
-dataModel_to_sim <- c("msst", "cuts", "tso") # Model to simulate the data
+timepoints       <- c(10, 15, 20, 30, 40, 50, 60, 90) # Number of measurement occasions
+missingness      <- c(0.0, 0.1, 0.2)                  # Proportion of NAs
+dataModel_to_sim <- c("msst", "cuts", "tso")          # Model to simulate the data
+var_ratio        <- c("1:3", "1:1", "3:1")            # Ratio between consistency and occasion-specificity
 
-Cond <- expand.grid(timepoints, missingness, dataModel_to_sim)
-names(Cond) <- c("nT", "na.prop", "dataModel")
+Cond        <- expand.grid(timepoints, missingness, dataModel_to_sim, var_ratio)
+names(Cond) <- c("nT", "na.prop", "dataModel", "ratio")
 
-rm(timepoints, missingness, dataModel_to_sim)
+rm(timepoints, missingness, dataModel_to_sim, var_ratio)
 
 # 2.0 Set up output matrices and vectors ----
 
 # Create labels to name variables in output matrices 
-models <- c("msst", "cuts", "tso")
-data_str <- c("wide", "long")
+models    <- c("msst", "cuts", "tso")
+data_str  <- c("wide", "long")
 estimator <- c("ml", "bayes")
-labels <- expand.grid(data_str, estimator, models)
-labels <- labels[-10, c(3,1,2)]
-labels <- apply(labels, 1, function(vec) paste(vec, collapse = "_"))
+labels    <- expand.grid(data_str, estimator, models)
+labels    <- labels[-10, c(3,1,2)]
+labels    <- apply(labels, 1, function(vec) paste(vec, collapse = "_"))
 rm(models, data_str, estimator)
 
 # vector to store check.mplus output (Non-convergence, Warnings and Errors, and Ok)
 # parameters, se, variance coefficients, and fit measures are saved if check.mplus output is Ok. 
-perf.base <- matrix(NA, 1, 11)
+perf.base           <- matrix(NA, 1, 11)
 colnames(perf.base) <- labels
-times.base <- perf.base
+times.base          <- perf.base
 
 # matrix to store estimated parameters and standard errors/posterior standard deviations
 
