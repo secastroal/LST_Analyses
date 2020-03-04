@@ -21,12 +21,12 @@ sapply(file.sources,source,.GlobalEnv)
 rm(file.sources)
 folder <- "Mplus_Simulation" #Folder to store results and all Mplus files
 
-#Linux does stop mplus when timeout is reached
-# then to identify when an analysis timeout we should check and clean the warnings in r
-
-#runModels_2("ex3.1Bayes.inp", Mplus_command = "/home/p280329/mplusdemo/mpdemo")
-#if(length(warnings())!=0){}else{}
-#assign("last.warning", NULL, envir = baseenv())
+# Linux does stop mplus when timeout is reached
+#  then to identify when an analysis timeout we should check and clean the warnings in r
+# For example:
+# runModels_2("ex3.1Bayes.inp", Mplus_command = "/home/p280329/mplusdemo/mpdemo")
+# if(length(warnings())!=0){}else{}
+# assign("last.warning", NULL, envir = baseenv())
 
 
 # Create folders to store output in the working directory ----
@@ -104,33 +104,36 @@ labels    <- labels[-10, c(3,1,2)]
 labels    <- apply(labels, 1, function(vec) paste(vec, collapse = "_"))
 rm(models, data_str, estimator)
 
-# vector to store check.mplus output (Non-convergence, Warnings and Errors, and Ok)
-# parameters, se, variance coefficients, and fit measures are saved if check.mplus output is Ok. 
+# Vector to store check.mplus output (Non-convergence, Warnings and Errors, Ok, and timeouts)
+# Parameters, se, variance coefficients, and fit measures are saved if check.mplus output is Ok.
+# The running time of each analisis is also saved.
 perf.base           <- matrix(NA, 1, 11)
 colnames(perf.base) <- labels
 times.base          <- perf.base
 
-# matrix to store estimated parameters and standard errors/posterior standard deviations
-
+# Matrix to store estimated parameters and standard errors/posterior standard deviations
 parameters.base <- matrix(NA, 11,  30)
 colnames(parameters.base) <- c(paste0("w_loading", 1:I), "common_state_var", paste0("unique_state_error_var", 1:I),
                                "ar_effect", paste0("b_loading", 1:I), paste0("intercept", 1:I), "common_trait_var",
                                "trait_mean", paste0("unique_indicator_trait_var", 1:I), paste0("cov", c(12, 13, 23, 14, 24, 34)))
 se_psd.base <- parameters.base
 
-# matrix to store variance coefficients
+# Matrix to store variance coefficients
 var.coeff.base <- matrix(NA, 11,  I * 5)
 colnames(var.coeff.base) <- paste0(rep(c( "ccon_pred_y", "ucon_upred_y", "tcon_con_y", "spe_y", "rel_y"), each = I), 
                               1:I)
 
-# matrix to store posterior standard deviations of variance coefficients
+# Matrix to store posterior standard deviations of variance coefficients
 psd.var.coeff.base <- matrix(NA, 6,  I * 5)
 colnames(psd.var.coeff.base) <- paste0(rep(c( "ccon_pred_y", "ucon_upred_y", "tcon_con_y", "spe_y", "rel_y"), each = I), 
                                    1:I)
 
-# matrix to store fit measures
-fit.measures.base <- matrix(NA, 11,  4)
-colnames(fit.measures.base) <- c("AIC", "BIC", "aBIC", "DIC")
+# Matrix to store fit measures. When estimation is MLE, number of parameters, df, CFI, TLI, RMSEA, AIC,
+# BIC, and adjusted BIC are saved if available. When estimation is Bayesian, number of parameters, DIC, 
+# estimated number of parameters(pD), and the posterior predictive p-value (ppp) are saved if available.
+fit.measures.base <- matrix(NA, 11,  11)
+colnames(fit.measures.base) <- c("\\# Parameters", "df", "CFI", "TLI", "RMSEA", "AIC", "BIC", "aBIC", 
+                                 "DIC", "pD", "ppp")
 
 # 3.0 Simulation foreach loops ----
 
@@ -164,42 +167,121 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
                                                     paste0("r", r), sep = "_"))
             
             # Define seed and conditions to be use
-            nT <- Cond[cond, 1]
-            na.prop <- Cond[cond, 2]
+            nT        <- Cond[cond, 1]
+            na.prop   <- Cond[cond, 2]
             dataModel <- Cond[cond, 3]
-            seed <- 1000 * cond + r
+            ratio     <- Cond[cond, 4]
+            seed      <- 1000 * cond + r
             set.seed(seed)
             
-            # Data simulation base on dataModel ----
+            # Data simulation given dataModel and ratio ----
             
-            if(dataModel == "msst"){
-              # Within Parameters
+            if (dataModel == "msst") {
               
-              state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
-              var_state <- 2 # Variance latent state residual
-              var_m_error <- c(1, 0.5, 1.5, 0.8) # Variance of measurement errors
+              if (ratio == "1:3") {
+                # Within Parameters
+                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
+                var_state      <- 3                   # Variance latent state residual
+                var_m_error    <- rep(1, I)           # Variance of measurement errors
+                
+                within.parameters <- list(loadings  = state_loadings, 
+                                          state.var = var_state, 
+                                          error.var = var_m_error)
+                
+                # Between Paramaters
+                
+                intercepts     <- seq(0, by = 0.2, length.out = I) # intercepts
+                trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent trait
+                var_trait      <- 1                                # variance latent trait variable
+                mean_trait     <- 4                                # mean latent trait variable
+                
+                between.parameters <- list(loadings   = trait_loadings, 
+                                           intercepts = intercepts, 
+                                           trait.mean = mean_trait,
+                                           trait.var  = var_trait)
+                
+                rm(state_loadings, var_state, var_m_error, intercepts, trait_loadings, var_trait, 
+                   mean_trait)
+                
+                # Simulate data
+                data <- sim.data.msst(N, nT, I, 
+                                      within.parameters  = within.parameters, 
+                                      between.parameters = between.parameters, 
+                                      na.prop            = na.prop,
+                                      seed               = seed)
+                
+                rm(within.parameters, between.parameters)
+              }
               
-              within.parameters <- list(loadings = state_loadings, state.var = var_state, error.var = var_m_error)
+              if (ratio == "1:1") {
+                # Within Parameters
+                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
+                var_state      <- 2                   # Variance latent state residual
+                var_m_error    <- rep(1, I)           # Variance of measurement errors
+                
+                within.parameters <- list(loadings  = state_loadings, 
+                                          state.var = var_state, 
+                                          error.var = var_m_error)
+                
+                # Between Paramaters
+                
+                intercepts     <- seq(0, by = 0.2, length.out = I) # intercepts
+                trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent trait
+                var_trait      <- 2                                # variance latent trait variable
+                mean_trait     <- 4                                # mean latent trait variable
+                
+                between.parameters <- list(loadings   = trait_loadings, 
+                                           intercepts = intercepts, 
+                                           trait.mean = mean_trait,
+                                           trait.var  = var_trait)
+                
+                rm(state_loadings, var_state, var_m_error, intercepts, trait_loadings, var_trait, 
+                   mean_trait)
+                
+                # Simulate data
+                data <- sim.data.msst(N, nT, I, 
+                                      within.parameters  = within.parameters, 
+                                      between.parameters = between.parameters, 
+                                      na.prop            = na.prop,
+                                      seed               = seed)
+                
+                rm(within.parameters, between.parameters)
+              }
               
-              # Between Paramaters
-              
-              intercepts <- seq(0, by = 0.2, length.out = I) # intercepts
-              trait_loadings <- c(1, 0.8, 1.2, 0.9) # loading parametes for the latent trait
-              
-              var_trait <- 2 # variance latent trait variable
-              mean_trait <- 4 # mean latent trait variable
-              
-              between.parameters <- list(loadings = trait_loadings, intercepts = intercepts, trait.mean = mean_trait,
-                                         trait.var = var_trait)
-              
-              rm(state_loadings, var_state, var_m_error, intercepts, trait_loadings, var_trait, 
-                 mean_trait)
-              
-              # Simulate data
-              data <- sim.data.msst(N, nT, I, within.parameters = within.parameters, na.prop = na.prop,
-                                    between.parameters = between.parameters, seed = seed)
-              
-              rm(within.parameters, between.parameters)
+              if (ratio == "3:1") {
+                # Within Parameters
+                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
+                var_state      <- 1                   # Variance latent state residual
+                var_m_error    <- rep(1, I)           # Variance of measurement errors
+                
+                within.parameters <- list(loadings  = state_loadings, 
+                                          state.var = var_state, 
+                                          error.var = var_m_error)
+                
+                # Between Paramaters
+                
+                intercepts     <- seq(0, by = 0.2, length.out = I) # intercepts
+                trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent trait
+                var_trait      <- 3                                # variance latent trait variable
+                mean_trait     <- 4                                # mean latent trait variable
+                
+                between.parameters <- list(loadings   = trait_loadings, 
+                                           intercepts = intercepts, 
+                                           trait.mean = mean_trait,
+                                           trait.var  = var_trait)
+                
+                rm(state_loadings, var_state, var_m_error, intercepts, trait_loadings, var_trait, 
+                   mean_trait)
+                
+                # Simulate data
+                data <- sim.data.msst(N, nT, I, 
+                                      within.parameters  = within.parameters, 
+                                      between.parameters = between.parameters, 
+                                      na.prop            = na.prop,
+                                      seed               = seed)
+                
+                rm(within.parameters, between.parameters)
+              }
             }
             
             if(dataModel == "cuts"){
