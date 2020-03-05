@@ -31,7 +31,7 @@ folder <- "Mplus_Simulation" #Folder to store results and all Mplus files
 
 # Create folders to store output in the working directory ----
 
-if(!dir.exists(paste(getwd(), folder, sep = "/"))){
+if (!dir.exists(paste(getwd(), folder, sep = "/"))) {
   dir.create(paste(getwd(), folder, "Performance", sep = "/"), recursive = TRUE)
   dir.create(paste(getwd(), folder, "Times", sep = "/"), recursive = TRUE)
   dir.create(paste(getwd(), folder, "Parameters", sep = "/"), recursive = TRUE)
@@ -39,26 +39,26 @@ if(!dir.exists(paste(getwd(), folder, sep = "/"))){
   dir.create(paste(getwd(), folder, "Var_Coeff", sep = "/"), recursive = TRUE)
   dir.create(paste(getwd(), folder, "Fit_Measures", sep = "/"), recursive = TRUE)
   dir.create(paste(getwd(), folder, "PSD_Var_Coeff", sep = "/"), recursive = TRUE)
-}else{
-  if(!dir.exists(paste(getwd(), folder, "Performance", sep = "/"))){
+} else {
+  if (!dir.exists(paste(getwd(), folder, "Performance", sep = "/"))) {
     dir.create(paste(getwd(), folder, "Performance", sep = "/"))
   }
-  if(!dir.exists(paste(getwd(), folder, "Times", sep = "/"))){
+  if (!dir.exists(paste(getwd(), folder, "Times", sep = "/"))) {
     dir.create(paste(getwd(), folder, "Times", sep = "/"))
   }
-  if(!dir.exists(paste(getwd(), folder, "Parameters", sep = "/"))){
+  if (!dir.exists(paste(getwd(), folder, "Parameters", sep = "/"))) {
     dir.create(paste(getwd(), folder, "Parameters", sep = "/"))
   }
-  if(!dir.exists(paste(getwd(), folder, "SE_PSD", sep = "/"))){
+  if (!dir.exists(paste(getwd(), folder, "SE_PSD", sep = "/"))) {
     dir.create(paste(getwd(), folder, "SE_PSD", sep = "/"))
   }
-  if(!dir.exists(paste(getwd(), folder, "Var_Coeff", sep = "/"))){
+  if (!dir.exists(paste(getwd(), folder, "Var_Coeff", sep = "/"))) {
     dir.create(paste(getwd(), folder, "Var_Coeff", sep = "/"))
   }
-  if(!dir.exists(paste(getwd(), folder, "Fit_Measures", sep = "/"))){
+  if (!dir.exists(paste(getwd(), folder, "Fit_Measures", sep = "/"))) {
     dir.create(paste(getwd(), folder, "Fit_Measures", sep = "/"))
   }
-  if(!dir.exists(paste(getwd(), folder, "PSD_Var_Coeff", sep = "/"))){
+  if (!dir.exists(paste(getwd(), folder, "PSD_Var_Coeff", sep = "/"))) {
     dir.create(paste(getwd(), folder, "PSD_Var_Coeff", sep = "/"))
   }
 }
@@ -131,8 +131,9 @@ colnames(psd.var.coeff.base) <- paste0(rep(c( "ccon_pred_y", "ucon_upred_y", "tc
 # Matrix to store fit measures. When estimation is MLE, number of parameters, df, CFI, TLI, RMSEA, AIC,
 # BIC, and adjusted BIC are saved if available. When estimation is Bayesian, number of parameters, DIC, 
 # estimated number of parameters(pD), and the posterior predictive p-value (ppp) are saved if available.
-fit.measures.base <- matrix(NA, 11,  11)
-colnames(fit.measures.base) <- c("\\# Parameters", "df", "CFI", "TLI", "RMSEA", "AIC", "BIC", "aBIC", 
+fit.measures.base <- matrix(NA, 11,  13)
+colnames(fit.measures.base) <- c("\\# Parameters", "Chitest", "df", "Chipval", 
+                                 "CFI", "TLI", "RMSEA", "AIC", "BIC", "aBIC", 
                                  "DIC", "pD", "ppp")
 
 # 3.0 Simulation foreach loops ----
@@ -142,27 +143,27 @@ cl <- makeCluster(2)
 registerDoParallel(cl, cores = 2)
 
 # Get conditions and replications from the batch file
-args <- commandArgs(trailingOnly=TRUE)
+args <- commandArgs(trailingOnly = TRUE)
 
 time0 <- proc.time()
-outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombine=TRUE) %:%
-  foreach(r=args[3]:args[4], .combine='comb', .multicombine=TRUE, 
-          .packages=c("MplusAutomation", "MASS")) %dopar% {
+outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multicombine = TRUE) %:%
+  foreach(r = args[3]:args[4], .combine = 'comb', .multicombine = TRUE, 
+          .packages = c("MplusAutomation", "MASS")) %dopar% {
             
             # Copy table(s) to save results
-            perf <- perf.base
-            times <- times.base
-            parameters <- parameters.base
-            se_psd <- se_psd.base
-            var.coeff <- var.coeff.base
-            fit.measures <- fit.measures.base
+            perf          <- perf.base
+            times         <- times.base
+            parameters    <- parameters.base
+            se_psd        <- se_psd.base
+            var.coeff     <- var.coeff.base
+            fit.measures  <- fit.measures.base
             psd.var.coeff <- psd.var.coeff.base
             
             # Define rownames of output tables
-            rownames(parameters) <- c(paste(labels, paste0("r", r), sep = "_"))
-            rownames(se_psd) <- c(paste(labels, paste0("r", r), sep = "_"))
-            rownames(var.coeff) <- c(paste(labels, paste0("r", r), sep = "_"))
-            rownames(fit.measures) <- c(paste(labels, paste0("r", r), sep = "_"))
+            rownames(parameters)    <- c(paste(labels, paste0("r", r), sep = "_"))
+            rownames(se_psd)        <- c(paste(labels, paste0("r", r), sep = "_"))
+            rownames(var.coeff)     <- c(paste(labels, paste0("r", r), sep = "_"))
+            rownames(fit.measures)  <- c(paste(labels, paste0("r", r), sep = "_"))
             rownames(psd.var.coeff) <- c(paste(labels[grep(pattern = "bayes", labels)],
                                                     paste0("r", r), sep = "_"))
             
@@ -182,7 +183,7 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
                 # Within Parameters
                 state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
                 var_state      <- 3                   # Variance latent state residual
-                var_m_error    <- rep(1, I)           # Variance of measurement errors
+                var_m_error    <- c(1, 0.5, 1.3, 0.8)           # Variance of measurement errors
                 
                 within.parameters <- list(loadings  = state_loadings, 
                                           state.var = var_state, 
@@ -510,619 +511,755 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             }
             
             # Fitting the models to the simulated data ----
+            # Next, the different models are fitted to the data in both wide and long 
+            # format and in both MLE and bayesian estimation. In total, the simulated
+            # dataset is analyzed 11 times because the TSO in long format with MLE
+            # is not possible.
             
             # msst + wide + maximum likelihod ----
-            #give analysis a number
+            # Give analysis a number
             a <- 1
             
-            file.name <- paste("msst", "wide", "ml", cond, r,sep = "_")
+            file.name <- paste("msst", "wide", "ml", cond, r, sep = "_")
             
             # Prepare data: Write data in Mplus format and write input file template
             prepareMplusData(data$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
             
             # Complete Mplus syntax
-            analysis_syntax <- write.Mplus.options(usevariables = names(data$data.wide)[-1],
+            analysis_syntax <- write.Mplus.options(usevariables  = names(data$data.wide)[-1],
                                                    analysis_type = "GENERAL",
-                                                   estimator = "ML",
-                                                   iterations = 50000)
+                                                   estimator     = "ML",
+                                                   iterations    = 50000)
             
-            mplus_syntax <- write.msst.to.Mplus(data$data.wide[,-1], neta = nT, ntheta = 1, 
-                                                equiv.assumption = list(tau = "cong", theta = "cong"),
-                                                scale.invariance = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
+            mplus_syntax <- write.msst.to.Mplus(data$data.wide[,-1], 
+                                                neta               = nT, 
+                                                ntheta             = 1, 
+                                                equiv.assumption   = list(tau = "cong", theta = "cong"),
+                                                scale.invariance   = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
                                                 homocedasticity.assumption = list(error = TRUE, state.red = TRUE),
                                                 second.order.trait = FALSE)
             
-            write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-            write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
+            # Write analysis specifications in input file
+            write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T) 
+            write(mplus_syntax, paste0(folder, file.name, ".inp"), append = T)
             
             rm(analysis_syntax, mplus_syntax)
             
             # Run model in Mplus
             assign("last.warning", NULL, envir = baseenv())
-            t0 <- proc.time()
-            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-            tf <- proc.time() - t0
+            t0  <- proc.time()
+            run <- runModels_2(paste0(getwd(), "/", folder, file.name, ".inp"), timeout = timeout)
+            tf  <- proc.time() - t0
             
-            if(run == "timeout"){
+            if (run == "timeout") {
               
-              perf[1, a] <- "timeout"
-              times[1, a] <- round(tf[3], 2)
-              parameters[a, ] <- -999
-              se_psd[a, ] <- -999 
-              var.coeff[a, ] <- -999 
+              perf[1, a]        <- "timeout"
+              times[1, a]       <- round(tf[3], 2)
+              parameters[a, ]   <- -999
+              se_psd[a, ]       <- -999 
+              var.coeff[a, ]    <- -999 
               fit.measures[a, ] <- -999
               assign("last.warning", NULL, envir = baseenv())
               
               rm(a, t0, tf)
-            }else{
-              fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+            } else {
+              fit <- readModels(paste0(getwd(), "/", folder, file.name, ".out")) #read Mplus output
               
-              if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+              if (check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out")) == "Ok") {
                 
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+                perf[1, a]  <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
                 times[1, a] <- round(tf[3], 2)
                 
                 # Save estimates
                 estimates <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                             (I * nT * 3) + ((nT+1) * nT / 2) + 2, # state var 
-                                                             ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2), #error variances
-                                                             ((I * nT + 1):(I * nT + I)), #trait loadings
-                                                             ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1), #intercepts
-                                                             ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2), #trait variance
-                                                             ((I * nT * 2) + ((nT+1) * nT / 2) + 1)), #trait mean
+                                                             (I * nT * 3) + ((nT + 1) * nT / 2) + 2,                                                          # state var 
+                                                             ((I * nT * 3) + ((nT + 1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT + 1) * nT / 2) + nT + I + 2), # error variances
+                                                             ((I * nT + 1):(I * nT + I)),                                                                     # trait loadings
+                                                             ((I * nT * 2) + ((nT + 1) * nT / 2) + 2):((I * nT * 2) + ((nT + 1) * nT / 2) + I + 1),           # intercepts
+                                                             ((I * nT * 3) + ((nT + 1) * nT / 2) + nT + 2),                                                   # trait variance
+                                                             ((I * nT * 2) + ((nT + 1) * nT / 2) + 1)),                                                       # trait mean
                                                            3]
                 
                 parameters[a, c(1:9, 11:20)] <- estimates
                 
                 # Save standard errors
-                stand.errors <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                                (I * nT * 3) + ((nT+1) * nT / 2) + 2, # state var 
-                                                                ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2), #error variances
-                                                                ((I * nT + 1):(I * nT + I)), #trait loadings
-                                                                ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1), #intercepts
-                                                                ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2), #trait variance
-                                                                ((I * nT * 2) + ((nT+1) * nT / 2) + 1)), #trait mean
+                stand.errors <- fit$parameters$unstandardized[c(1:I,                                                                                             # loadings
+                                                                (I * nT * 3) + ((nT + 1) * nT / 2) + 2,                                                          # state var 
+                                                                ((I * nT * 3) + ((nT + 1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT + 1) * nT / 2) + nT + I + 2), # error variances
+                                                                ((I * nT + 1):(I * nT + I)),                                                                     # trait loadings
+                                                                ((I * nT * 2) + ((nT + 1) * nT / 2) + 2):((I * nT * 2) + ((nT + 1) * nT / 2) + I + 1),           # intercepts
+                                                                ((I * nT * 3) + ((nT + 1) * nT / 2) + nT + 2),                                                   # trait variance
+                                                                ((I * nT * 2) + ((nT + 1) * nT / 2) + 1)),                                                       # trait mean
                                                               4]
                 
                 se_psd[a, c(1:9, 11:20)] <- stand.errors
                 
                 # Compute and save variance coefficients
                 
-                within.estimates <- list( loadings = estimates[1:I], state.var = estimates[I+1],
-                                          error.var = estimates[(I+2):(2 * I +1)])
-                between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], 
-                                           trait.var = estimates[ 4 * I + 2])
-                var.coeff[a, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters = within.estimates,
-                                                                                         between.parameters = between.estimates))
-                
-                # Save fit measures
-                fit.measures[a, 1:3] <- c(fit$summaries$AIC, fit$summaries$BIC, 
-                                                         fit$summaries$aBIC)
-                
-                rm(within.estimates, between.estimates, estimates, stand.errors)
-                
-              }else{
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                parameters[a, ] <- -999
-                se_psd[a, ] <- -999 
-                var.coeff[a, ] <- -999 
-                fit.measures[a, ] <- -999 
-              }
-              
-              rm(fit, a, t0, tf)
-            }
-            
-            # Remove Mplus files of previous analysis 
-            if(file.exists(paste0(folder,file.name,".dat"))){unlink(paste0(folder,file.name,".dat"))}
-            if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
-            if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
-            if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name, run)
-            
-            # msst + long + maximun likelihood ----
-            #give analysis a number
-            a <- 2
-            
-            file.name <- paste("msst", "long", "ml", cond, r,sep = "_")
-            
-            # Prepare data: Write data in Mplus format and write input file template
-            prepareMplusData(data$data.long, paste0(folder,file.name,".dat"), inpfile = T)
-            
-            # Complete Mplus syntax
-            analysis_syntax <- write.Mplus.options(usevariables = names(data$data.long)[-(1:2)],
-                                                   cluster = names(data$data.long)[1],
-                                                   analysis_type = "TWOLEVEL",
-                                                   estimator = "ML",
-                                                   iterations = 50000)
-            
-            ml_syntax <- write.mlmsst.to.Mplus(data$data.long[, -(1:2)])
-            
-            write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-            write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
-            
-            rm(analysis_syntax, ml_syntax)
-            
-            # Run model in Mplus
-            assign("last.warning", NULL, envir = baseenv())
-            t0 <- proc.time()
-            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-            tf <- proc.time() - t0
-            
-            if(run == "timeout"){
-              
-              perf[1, a] <- "timeout"
-              times[1, a] <- round(tf[3], 2)
-              parameters[a, ] <- -999
-              se_psd[a, ] <- -999 
-              var.coeff[a, ] <- -999 
-              fit.measures[a, ] <- -999
-              assign("last.warning", NULL, envir = baseenv())
-              
-              rm(a, t0, tf)
-            }else{
-              fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
-              
-              if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
-                
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                
-                # Save estimates
-                estimates <- fit$parameters$unstandardized[c(1:(2*I+1), #loadings, state var, error variances 
-                                                             ((3*I + 2):(4*I + 1)), #loadings 
-                                                             ((5*I + 3):(6*I + 2)), #intercepts
-                                                             (6*I +3), # trait var
-                                                             (4*I + 2)), # trait mean
-                                                           3]
-                
-                parameters[a, c(1:9, 11:20)] <- estimates
-                
-                # Save standard errors
-                stand.errors <- fit$parameters$unstandardized[c(1:(2*I+1), #loadings, state var, error variances 
-                                                                ((3*I + 2):(4*I + 1)), #loadings 
-                                                                ((5*I + 3):(6*I + 2)), #intercepts
-                                                                (6*I +3), # trait var
-                                                                (4*I + 2)), # trait mean
-                                                              4]
-                
-                se_psd[a, c(1:9, 11:20)] <- stand.errors
-                
-                # Compute and save variance coefficients
-                within.estimates <- list( loadings = estimates[1:I], state.var = estimates[I+1],
-                                          error.var = estimates[(I+2):(2 * I +1)])
-                between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], 
-                                           trait.var = estimates[ 4 * I + 2])
-                var.coeff[a, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters = within.estimates,
-                                                                                         between.parameters = between.estimates))
-                
-                # Save fit measures
-                fit.measures[a, 1:3] <- c(fit$summaries$AIC, fit$summaries$BIC, 
-                                                         fit$summaries$aBIC)
-                rm(within.estimates, between.estimates, estimates, stand.errors)
-              }else{
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                parameters[a, ] <- -999
-                se_psd[a, ] <- -999 
-                var.coeff[a, ] <- -999 
-                fit.measures[a, ] <- -999 
-              }
-              
-              rm(fit, a, t0, tf)
-            }
-            
-            # Remove Mplus files of previous analysis 
-            if(file.exists(paste0(folder,file.name,".dat"))){unlink(paste0(folder,file.name,".dat"))}
-            if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
-            if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
-            if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name, run)
-            
-            # msst + wide + Bayesian ----
-            #give analysis a number
-            a <- 3
-            
-            file.name <- paste("msst", "wide", "bayes", cond, r,sep = "_")
-            
-            # Prepare data: Write data in Mplus format and write input file template
-            prepareMplusData(data$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
-            
-            # Complete Mplus syntax
-            analysis_syntax <- write.Mplus.options(usevariables = names(data$data.wide)[-1],
-                                                   analysis_type = "GENERAL",
-                                                   estimator = "BAYES",
-                                                   iterations = 5000)
-            
-            mplus_syntax <- write.msst.to.Mplus(data$data.wide[,-1], neta = nT, ntheta = 1, 
-                                                equiv.assumption = list(tau = "cong", theta = "cong"),
-                                                scale.invariance = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
-                                                homocedasticity.assumption = list(error = TRUE, state.red = TRUE),
-                                                second.order.trait = FALSE)
-            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", paste0("samples_", file.name, ".dat"),
-                                        ";", "\nOUTPUT: TECH8;")
-            
-            write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-            write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
-            write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
-            
-            rm(analysis_syntax, mplus_syntax, saveoutput_syntax)
-            
-            # Run model in Mplus
-            assign("last.warning", NULL, envir = baseenv())
-            t0 <- proc.time()
-            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-            tf <- proc.time() - t0
-            
-            if(run == "timeout"){
-              
-              perf[1, a] <- "timeout"
-              times[1, a] <- round(tf[3], 2)
-              parameters[a, ] <- -999
-              se_psd[a, ] <- -999 
-              var.coeff[a, ] <- -999 
-              fit.measures[a, ] <- -999
-              psd.var.coeff[a - 2, ] <- -999
-              assign("last.warning", NULL, envir = baseenv())
-              
-              rm(a, t0, tf)
-            }else{
-              fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
-              
-              if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
-                
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                
-                # Save estimates
-                estimates <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                             (I * nT * 3) + ((nT+1) * nT / 2) + 2, # state var 
-                                                             ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2), #error variances
-                                                             ((I * nT + 1):(I * nT + I)), #trait loadings
-                                                             ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1), #intercepts
-                                                             ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2), #trait variance
-                                                             ((I * nT * 2) + ((nT+1) * nT / 2) + 1)), #trait mean
-                                                           3]
-                
-                parameters[a, c(1:9, 11:20)] <- estimates
-                
-                # Save posterior standard deviations
-                post.sd <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                           (I * nT * 3) + ((nT+1) * nT / 2) + 2, # state var 
-                                                           ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT+1) * nT / 2) + nT + I + 2), #error variances
-                                                           ((I * nT + 1):(I * nT + I)), #trait loadings
-                                                           ((I * nT * 2) + ((nT+1) * nT / 2) + 2):((I * nT * 2) + ((nT+1) * nT / 2) + I + 1), #intercepts
-                                                           ((I * nT * 3) + ((nT+1) * nT / 2) + nT + 2), #trait variance
-                                                           ((I * nT * 2) + ((nT+1) * nT / 2) + 1)), #trait mean
-                                                         4]
-                
-                se_psd[a, c(1:9, 11:20)] <- post.sd
-                
-                # Compute and save variance coefficients
-                
-                # Read MCMC draws
-                samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
-                
-                # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
-                
-                # Create matrix to store variance coefficients draws
-                pdist.var.coeff <- matrix(NA, dim(samples)[1], 12)
-                
-                for(i in 1:dim(samples)[1]){
-                  within.estimates <- list( loadings = c(1, t(samples[i, c(4, 6, 8)])), state.var = samples[i, 15],
-                                            error.var = c(t(samples[i, 10:13])))
-                  between.estimates <- list( loadings = c(1, t(samples[i, c(5, 7, 9)])), 
-                                             trait.var = samples[i, 16])
-                  pdist.var.coeff[i, ] <- t(msst.var.coeff(within.parameters = within.estimates,
-                                                           between.parameters = between.estimates))
-                }
-                
-                var.coeff[a, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, median)
-                psd.var.coeff[a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
-                
-                # Save fit measures
-                if(!is.null(fit$summaries$DIC)){fit.measures[a, 4] <- c(fit$summaries$DIC)}
-                
-                rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
-                
-              }else{
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                parameters[a, ] <- -999
-                se_psd[a, ] <- -999 
-                var.coeff[a, ] <- -999 
-                fit.measures[a, ] <- -999 
-                psd.var.coeff[a - 2, ] <- -999
-              }
-              rm(fit, a, t0, tf)
-            }
-            
-            # Remove Mplus files of previous analysis 
-            if(file.exists(paste0(folder,file.name,".dat"))){unlink(paste0(folder,file.name,".dat"))}
-            if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
-            if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
-            if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name, run)
-            
-            # msst + long + Bayesian ----
-            #give analysis a number
-            a <- 4
-            
-            file.name <- paste("msst", "long", "bayes", cond, r,sep = "_")
-            
-            # Prepare data: Write data in Mplus format and write input file template
-            prepareMplusData(data$data.long, paste0(folder,file.name,".dat"), inpfile = T)
-            
-            # Complete Mplus syntax
-            analysis_syntax <- write.Mplus.options(usevariables = names(data$data.long)[-(1:2)],
-                                                   cluster = names(data$data.long)[1],
-                                                   analysis_type = "TWOLEVEL",
-                                                   estimator = "BAYES",
-                                                   iterations = 5000)
-            
-            ml_syntax <- write.mlmsst.to.Mplus(data$data.long[, -(1:2)])
-            
-            ml_syntax <- gsub("@0;", "@0.001;", ml_syntax) # replace 0 constraints to 0.001
-            
-            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", paste0("samples_", file.name, ".dat"),
-                                        ";", "\nOUTPUT: TECH8;")
-            
-            write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-            write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
-            write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
-            
-            rm(analysis_syntax, ml_syntax, saveoutput_syntax)
-            
-            # Run model in Mplus
-            assign("last.warning", NULL, envir = baseenv())
-            t0 <- proc.time()
-            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-            tf <- proc.time() - t0
-            
-            if(run == "timeout"){
-              
-              perf[1, a] <- "timeout"
-              times[1, a] <- round(tf[3], 2)
-              parameters[a, ] <- -999
-              se_psd[a, ] <- -999 
-              var.coeff[a, ] <- -999 
-              fit.measures[a, ] <- -999
-              psd.var.coeff[a - 2, ] <- -999
-              assign("last.warning", NULL, envir = baseenv())
-              
-              rm(a, t0, tf)
-            }else{
-              fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
-              
-              if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
-                
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                
-                # Save estimates
-                estimates <- fit$parameters$unstandardized[c(1:(2*I+1), #loadings, state var, error variances 
-                                                             ((3*I + 2):(4*I + 1)), #loadings 
-                                                             ((5*I + 3):(6*I + 2)), #intercepts
-                                                             (6*I +3), # trait var
-                                                             (4*I + 2)), # trait mean
-                                                           3]
-                
-                parameters[a, c(1:9, 11:20)] <- estimates
-                
-                # Save posterior standard deviations
-                post.sd <- fit$parameters$unstandardized[c(1:(2*I+1), #loadings, state var, error variances 
-                                                           ((3*I + 2):(4*I + 1)), #loadings 
-                                                           ((5*I + 3):(6*I + 2)), #intercepts
-                                                           (6*I +3), # trait var
-                                                           (4*I + 2)), # trait mean
-                                                         4]
-                
-                se_psd[a, c(1:9, 11:20)] <- post.sd
-                
-                # Compute and save variance coefficients
-                
-                # Read MCMC draws
-                samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
-                
-                # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
-                
-                # Create matrix to store variance coefficients draws
-                pdist.var.coeff <- matrix(NA, dim(samples)[1], 12)
-                
-                for(i in 1:dim(samples)[1]){
-                  within.estimates <- list( loadings = c(1, t(samples[i, 1:3])), state.var = samples[i, 8],
-                                            error.var = c(t(samples[i, 4:7])))
-                  between.estimates <- list( loadings = c(1, t(samples[i, c(13:15)])), 
-                                             trait.var = samples[i, 16])
-                  pdist.var.coeff[i, ] <- t(msst.var.coeff(within.parameters = within.estimates,
-                                                           between.parameters = between.estimates))
-                }
-                
-                var.coeff[a, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, median)
-                psd.var.coeff[a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
-                
-                # Save fit measures
-                if(!is.null(fit$summaries$DIC)){fit.measures[a, 4] <- c(fit$summaries$DIC)}
-                
-                rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
-              }else{
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                parameters[a, ] <- -999
-                se_psd[a, ] <- -999 
-                var.coeff[a, ] <- -999 
-                fit.measures[a, ] <- -999
-                psd.var.coeff[a - 2, ] <- -999
-              }
-              
-              rm(fit, a, t0, tf)
-            }
-            
-            # Remove Mplus files of previous analysis 
-            if(file.exists(paste0(folder,file.name,".dat"))){unlink(paste0(folder,file.name,".dat"))}
-            if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
-            if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
-            if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
-            rm(file.name, run)
-            
-            # cuts + wide + maximum likelihod ----
-            #give analysis a number
-            a <- 5
-            
-            file.name <- paste("cuts", "wide", "ml", cond, r,sep = "_")
-            
-            # Prepare data: Write data in Mplus format and write input file template
-            prepareMplusData(data$data.wide, paste0(folder, file.name, ".dat"), inpfile = T)
-            
-            # Complete Mplus syntax
-            analysis_syntax <- write.Mplus.options(usevariables = names(data$data.wide)[-1],
-                                                   analysis_type = "GENERAL",
-                                                   estimator = "ML",
-                                                   iterations = 50000)
-            
-            
-            mplus_syntax <- write.cuts.to.Mplus(data$data.wide[,-1],  nstate = nT,
-                                                method.trait = "om",
-                                                scale.invariance = list(int = TRUE, lambda = TRUE),
-                                                state.trait.invariance = FALSE,
-                                                fixed.method.loadings = TRUE,
-                                                homocedasticity.assumption = list(error = TRUE, cs.red = TRUE, ut.red = FALSE))
-            
-            
-            write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-            write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
-            
-            rm(analysis_syntax, mplus_syntax)
-            
-            # Run model in Mplus
-            assign("last.warning", NULL, envir = baseenv())
-            t0 <- proc.time()
-            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-            tf <- proc.time() - t0
-            
-            if(run == "timeout"){
-              
-              perf[1, a] <- "timeout"
-              times[1, a] <- round(tf[3], 2)
-              parameters[a, ] <- -999
-              se_psd[a, ] <- -999 
-              var.coeff[a, ] <- -999 
-              fit.measures[a, ] <- -999
-              assign("last.warning", NULL, envir = baseenv())
-              
-              rm(a, t0, tf)
-            }else{
-              fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
-              
-              if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
-                
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                
-                # Save estimates
-                estimates <- fit$parameters$unstandardized[c(1:I, # CS loadings
-                                                             (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + 1, #CS var
-                                                             ((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2 + I):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + 2*I), #UT variances
-                                                             (I*nT + 1):(I*nT + I), # CT loadings
-                                                             ((((nT + I + 1)*(nT + I))/2) + (nT*I*3) + 1):((((nT + I + 1)*(nT + I))/2) + (nT*I*3) + I), #intercepts
-                                                             (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1, #CT var
-                                                             ((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + I)), # UT var
-                                                           3]
-                
-                parameters[a, c(1:9, 11:19, 21:24)] <- estimates
-                
-                # Save standard errors
-                stand.errors <- fit$parameters$unstandardized[c(1:I, # CS loadings
-                                                                (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + 1, #CS var
-                                                                ((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2 + I):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + 2*I), #UT variances
-                                                                (I*nT + 1):(I*nT + I), # CT loadings
-                                                                ((((nT + I + 1)*(nT + I))/2) + (nT*I*3) + 1):((((nT + I + 1)*(nT + I))/2) + (nT*I*3) + I), #intercepts
-                                                                (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1, #CT var
-                                                                ((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + I)), # UT var
-                                                              4]
-                
-                se_psd[a, c(1:9, 11:19, 21:24)] <- stand.errors
-                
-                # Compute variance coefficients
-                within.estimates <- list( loadings = estimates[1:I], CS.var = estimates[I+1],
-                                          US.var = estimates[(I+2):(2 * I +1)])
-                between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], CT.var = estimates[ 4 * I + 2], 
-                                           UT.var = estimates[(4 * I + 3):(5 * I + 2)])
-                var.coeff[a, ] <- t(cuts.var.coeff(within.parameters = within.estimates,
+                within.estimates  <- list(loadings  = estimates[1:I], 
+                                          state.var = estimates[I + 1],
+                                          error.var = estimates[(I + 2):(2 * I + 1)])
+                between.estimates <- list(loadings  = estimates[(2 * I + 2):(3 * I + 1)], 
+                                          trait.var = estimates[ 4 * I + 2])
+                var.coeff[a, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters  = within.estimates,
                                                                       between.parameters = between.estimates))
                 
                 # Save fit measures
-                fit.measures[a, 1:3] <- c(fit$summaries$AIC, fit$summaries$BIC, 
-                                                         fit$summaries$aBIC)
+                if (!is.null(fit$summaries$Parameters)) {
+                  fit.measures[a, 1] <- c(fit$summaries$Parameters)
+                }
+                if (!is.null(fit$summaries$ChiSqM_Value)) {
+                  fit.measures[a, 2] <- c(fit$summaries$ChiSqM_Value)
+                }
+                if (!is.null(fit$summaries$ChiSqM_DF)) {
+                  fit.measures[a, 3] <- c(fit$summaries$ChiSqM_DF)
+                }
+                if (!is.null(fit$summaries$ChiSqM_PValue)) {
+                  fit.measures[a, 4] <- c(fit$summaries$ChiSqM_PValue)
+                }
+                if (!is.null(fit$summaries$CFI)) {
+                  fit.measures[a, 5] <- c(fit$summaries$CFI)
+                  }
+                if (!is.null(fit$summaries$TLI)) {
+                  fit.measures[a, 6] <- c(fit$summaries$TLI)
+                  }
+                if (!is.null(fit$summaries$RMSEA_Estimate)) {
+                  fit.measures[a, 7] <- c(fit$summaries$RMSEA_Estimate)
+                  }
+                if (!is.null(fit$summaries$AIC)) {
+                  fit.measures[a, 8] <- c(fit$summaries$AIC)
+                  }
+                if (!is.null(fit$summaries$BIC)) {
+                  fit.measures[a, 9] <- c(fit$summaries$BIC)
+                  }
+                if (!is.null(fit$summaries$aBIC)) {
+                  fit.measures[a, 10] <- c(fit$summaries$aBIC)
+                  }
+                
                 rm(within.estimates, between.estimates, estimates, stand.errors)
                 
-                
-              }else{
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                parameters[a, ] <- -999
-                se_psd[a, ] <- -999 
-                var.coeff[a, ] <- -999 
+              } else {
+                perf[1, a]        <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a]       <- round(tf[3], 2)
+                parameters[a, ]   <- -999
+                se_psd[a, ]       <- -999 
+                var.coeff[a, ]    <- -999 
                 fit.measures[a, ] <- -999 
               }
+              
               rm(fit, a, t0, tf)
             }
             
             # Remove Mplus files of previous analysis 
-            if(file.exists(paste0(folder,file.name,".dat"))){unlink(paste0(folder,file.name,".dat"))}
-            if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
-            if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
-            if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
+            if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
-            # cuts + long + maximun likelihood ----
-            #give analysis a number
-            a <- 6
+            # msst + long + maximun likelihood ----
+            # Give analysis a number
+            a <- 2
             
-            file.name <- paste("cuts", "long", "ml", cond, r,sep = "_")
+            file.name <- paste("msst", "long", "ml", cond, r, sep = "_")
             
             # Prepare data: Write data in Mplus format and write input file template
             prepareMplusData(data$data.long, paste0(folder, file.name, ".dat"), inpfile = T)
             
             # Complete Mplus syntax
-            analysis_syntax <- write.Mplus.options(usevariables = names(data$data.long)[-(1:2)],
-                                                   cluster = names(data$data.long)[1],
+            analysis_syntax <- write.Mplus.options(usevariables  = names(data$data.long)[-(1:2)],
+                                                   cluster       = names(data$data.long)[1],
                                                    analysis_type = "TWOLEVEL",
-                                                   estimator = "ML",
-                                                   iterations = 50000)
+                                                   estimator     = "ML",
+                                                   iterations    = 50000)
+            
+            ml_syntax <- write.mlmsst.to.Mplus(data$data.long[, -(1:2)])
+            
+            # Write analysis specifications in input file
+            write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(ml_syntax, paste0(folder, file.name, ".inp"), append = T)
+            
+            rm(analysis_syntax, ml_syntax)
+            
+            # Run model in Mplus
+            assign("last.warning", NULL, envir = baseenv())
+            t0  <- proc.time()
+            run <- runModels_2(paste0(getwd(), "/", folder, file.name, ".inp"), timeout = timeout)
+            tf  <- proc.time() - t0
+            
+            if (run == "timeout") {
+              
+              perf[1, a]        <- "timeout"
+              times[1, a]       <- round(tf[3], 2)
+              parameters[a, ]   <- -999
+              se_psd[a, ]       <- -999 
+              var.coeff[a, ]    <- -999 
+              fit.measures[a, ] <- -999
+              assign("last.warning", NULL, envir = baseenv())
+              
+              rm(a, t0, tf)
+            } else {
+              fit <- readModels(paste0(getwd(), "/", folder, file.name, ".out")) #read Mplus output
+              
+              if (check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out")) == "Ok") {
+                
+                perf[1, a]  <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a] <- round(tf[3], 2)
+                
+                # Save estimates
+                estimates <- fit$parameters$unstandardized[c(1:(2 * I + 1),             # loadings, state var, error variances 
+                                                             ((3 * I + 2):(4 * I + 1)), # loadings 
+                                                             ((5 * I + 3):(6 * I + 2)), # intercepts
+                                                             (6 * I + 3),               # trait var
+                                                             (4 * I + 2)),              # trait mean
+                                                           3]
+                
+                parameters[a, c(1:9, 11:20)] <- estimates
+                
+                # Save standard errors
+                stand.errors <- fit$parameters$unstandardized[c(1:(2 * I + 1),             # loadings, state var, error variances 
+                                                                ((3 * I + 2):(4 * I + 1)), # loadings 
+                                                                ((5 * I + 3):(6 * I + 2)), # intercepts
+                                                                (6 * I + 3),               # trait var
+                                                                (4 * I + 2)),              # trait mean
+                                                              4]
+                
+                se_psd[a, c(1:9, 11:20)] <- stand.errors
+                
+                # Compute and save variance coefficients
+                within.estimates  <- list(loadings  = estimates[1:I], 
+                                          state.var = estimates[I + 1],
+                                          error.var = estimates[(I + 2):(2 * I + 1)])
+                between.estimates <- list(loadings  = estimates[(2 * I + 2):(3 * I + 1)], 
+                                          trait.var = estimates[ 4 * I + 2])
+                var.coeff[a, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters  = within.estimates,
+                                                                      between.parameters = between.estimates))
+                
+                # Save fit measures
+                if (!is.null(fit$summaries$Parameters)) {
+                  fit.measures[a, 1] <- c(fit$summaries$Parameters)
+                }
+                if (!is.null(fit$summaries$ChiSqM_Value)) {
+                  fit.measures[a, 2] <- c(fit$summaries$ChiSqM_Value)
+                }
+                if (!is.null(fit$summaries$ChiSqM_DF)) {
+                  fit.measures[a, 3] <- c(fit$summaries$ChiSqM_DF)
+                }
+                if (!is.null(fit$summaries$ChiSqM_PValue)) {
+                  fit.measures[a, 4] <- c(fit$summaries$ChiSqM_PValue)
+                }
+                if (!is.null(fit$summaries$CFI)) {
+                  fit.measures[a, 5] <- c(fit$summaries$CFI)
+                }
+                if (!is.null(fit$summaries$TLI)) {
+                  fit.measures[a, 6] <- c(fit$summaries$TLI)
+                }
+                if (!is.null(fit$summaries$RMSEA_Estimate)) {
+                  fit.measures[a, 7] <- c(fit$summaries$RMSEA_Estimate)
+                }
+                if (!is.null(fit$summaries$AIC)) {
+                  fit.measures[a, 8] <- c(fit$summaries$AIC)
+                }
+                if (!is.null(fit$summaries$BIC)) {
+                  fit.measures[a, 9] <- c(fit$summaries$BIC)
+                }
+                if (!is.null(fit$summaries$aBIC)) {
+                  fit.measures[a, 10] <- c(fit$summaries$aBIC)
+                }
+                
+                rm(within.estimates, between.estimates, estimates, stand.errors)
+                
+              } else {
+                perf[1, a]        <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a]       <- round(tf[3], 2)
+                parameters[a, ]   <- -999
+                se_psd[a, ]       <- -999 
+                var.coeff[a, ]    <- -999 
+                fit.measures[a, ] <- -999 
+              }
+              
+              rm(fit, a, t0, tf)
+            }
+            
+            # Remove Mplus files of previous analysis 
+            if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
+            if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
+            rm(file.name, run)
+            
+            # msst + wide + Bayesian ----
+            # Give analysis a number
+            a <- 3
+            
+            file.name <- paste("msst", "wide", "bayes", cond, r, sep = "_")
+            
+            # Prepare data: Write data in Mplus format and write input file template
+            prepareMplusData(data$data.wide, paste0(folder, file.name, ".dat"), inpfile = T)
+            
+            # Complete Mplus syntax
+            analysis_syntax <- write.Mplus.options(usevariables  = names(data$data.wide)[-1],
+                                                   analysis_type = "GENERAL",
+                                                   estimator     = "BAYES",
+                                                   iterations    = 5000)
+            
+            mplus_syntax <- write.msst.to.Mplus(data$data.wide[,-1], 
+                                                neta               = nT, 
+                                                ntheta             = 1, 
+                                                equiv.assumption   = list(tau = "cong", theta = "cong"),
+                                                scale.invariance   = list(lait0 = TRUE, lait1 = TRUE, lat0 = TRUE, lat1 = TRUE),
+                                                homocedasticity.assumption = list(error = TRUE, state.red = TRUE),
+                                                second.order.trait = FALSE)
+            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", 
+                                        "samples_", 
+                                        file.name, 
+                                        ".dat;", 
+                                        "\nOUTPUT: TECH8;")
+            
+            # Write analysis specifications in input file
+            write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(mplus_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(saveoutput_syntax, paste0(folder, file.name, ".inp"), append = T)
+            
+            rm(analysis_syntax, mplus_syntax, saveoutput_syntax)
+            
+            # Run model in Mplus
+            assign("last.warning", NULL, envir = baseenv())
+            t0  <- proc.time()
+            run <- runModels_2(paste0(getwd(), "/", folder, file.name, ".inp"), timeout = timeout)
+            tf  <- proc.time() - t0
+            
+            if (run == "timeout") {
+              
+              perf[1, a]             <- "timeout"
+              times[1, a]            <- round(tf[3], 2)
+              parameters[a, ]        <- -999
+              se_psd[a, ]            <- -999 
+              var.coeff[a, ]         <- -999 
+              fit.measures[a, ]      <- -999
+              psd.var.coeff[a - 2, ] <- -999
+              assign("last.warning", NULL, envir = baseenv())
+              
+              rm(a, t0, tf)
+            } else {
+              fit <- readModels(paste0(getwd(), "/", folder, file.name, ".out")) #read Mplus output
+              
+              if (check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out")) == "Ok") {
+                
+                perf[1, a]  <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a] <- round(tf[3], 2)
+                
+                # Save estimates
+                estimates <- fit$parameters$unstandardized[c(1:I,                                                                                             # loadings
+                                                             (I * nT * 3) + ((nT + 1) * nT / 2) + 2,                                                          # state var 
+                                                             ((I * nT * 3) + ((nT + 1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT + 1) * nT / 2) + nT + I + 2), # error variances
+                                                             ((I * nT + 1):(I * nT + I)),                                                                     # trait loadings
+                                                             ((I * nT * 2) + ((nT + 1) * nT / 2) + 2):((I * nT * 2) + ((nT + 1) * nT / 2) + I + 1),           # intercepts
+                                                             ((I * nT * 3) + ((nT + 1) * nT / 2) + nT + 2),                                                   # trait variance
+                                                             ((I * nT * 2) + ((nT + 1) * nT / 2) + 1)),                                                       # trait mean
+                                                           3]
+                
+                parameters[a, c(1:9, 11:20)] <- estimates
+                
+                # Save posterior standard deviations
+                post.sd <- fit$parameters$unstandardized[c(1:I,                                                                                             # loadings
+                                                           (I * nT * 3) + ((nT + 1) * nT / 2) + 2,                                                          # state var 
+                                                           ((I * nT * 3) + ((nT + 1) * nT / 2) + nT + 3):((I * nT * 3) + ((nT + 1) * nT / 2) + nT + I + 2), # error variances
+                                                           ((I * nT + 1):(I * nT + I)),                                                                     # trait loadings
+                                                           ((I * nT * 2) + ((nT + 1) * nT / 2) + 2):((I * nT * 2) + ((nT + 1) * nT / 2) + I + 1),           # intercepts
+                                                           ((I * nT * 3) + ((nT + 1) * nT / 2) + nT + 2),                                                   # trait variance
+                                                           ((I * nT * 2) + ((nT + 1) * nT / 2) + 1)),                                                       # trait mean
+                                                         4]
+                
+                se_psd[a, c(1:9, 11:20)] <- post.sd
+                
+                # Compute and save variance coefficients
+                
+                # Read MCMC draws
+                samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+                
+                # Delete burn-in and indicator for chain and draw
+                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+                
+                # Create matrix to store variance coefficients draws
+                pdist.var.coeff <- matrix(NA, dim(samples)[1], 12)
+                
+                for (i in 1:dim(samples)[1]) {
+                  within.estimates  <- list(loadings  = c(1, t(samples[i, c(4, 6, 8)])), 
+                                            state.var = samples[i, 15],
+                                            error.var = c(t(samples[i, 10:13])))
+                  between.estimates <- list(loadings  = c(1, t(samples[i, c(5, 7, 9)])), 
+                                            trait.var = samples[i, 16])
+                  pdist.var.coeff[i, ] <- t(msst.var.coeff(within.parameters  = within.estimates,
+                                                           between.parameters = between.estimates))
+                }
+                
+                var.coeff[a, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, median)
+                psd.var.coeff[a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
+                
+                # Save fit measures
+                if (!is.null(fit$summaries$Parameters)) {
+                  fit.measures[a, 1] <- c(fit$summaries$Parameters)
+                }
+                if (!is.null(fit$summaries$DIC)) {
+                  fit.measures[a, 11] <- c(fit$summaries$DIC)
+                }
+                if (!is.null(fit$summaries$pD)) {
+                  fit.measures[a, 12] <- c(fit$summaries$pD)
+                }
+                if (!is.null(fit$summaries$PostPred_PValue)) {
+                  fit.measures[a, 13] <- c(fit$summaries$PostPred_PValue)
+                }
+                
+                rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
+                
+              } else {
+                perf[1, a]             <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a]            <- round(tf[3], 2)
+                parameters[a, ]        <- -999
+                se_psd[a, ]            <- -999 
+                var.coeff[a, ]         <- -999 
+                fit.measures[a, ]      <- -999 
+                psd.var.coeff[a - 2, ] <- -999
+              }
+              rm(fit, a, t0, tf)
+            }
+            
+            # Remove Mplus files of previous analysis 
+            if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
+            if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
+            rm(file.name, run)
+            
+            # msst + long + Bayesian ----
+            # Give analysis a number
+            a <- 4
+            
+            file.name <- paste("msst", "long", "bayes", cond, r, sep = "_")
+            
+            # Prepare data: Write data in Mplus format and write input file template
+            prepareMplusData(data$data.long, paste0(folder, file.name, ".dat"), inpfile = T)
+            
+            # Complete Mplus syntax
+            analysis_syntax <- write.Mplus.options(usevariables  = names(data$data.long)[-(1:2)],
+                                                   cluster       = names(data$data.long)[1],
+                                                   analysis_type = "TWOLEVEL",
+                                                   estimator     = "BAYES",
+                                                   iterations    = 5000)
+            
+            ml_syntax <- write.mlmsst.to.Mplus(data$data.long[, -(1:2)])
+            
+            ml_syntax <- gsub("@0;", "@0.001;", ml_syntax) # replace 0 constraints to 0.001
+            
+            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", 
+                                        "samples_", 
+                                        file.name, 
+                                        ".dat;", 
+                                        "\nOUTPUT: TECH8;")
+            
+            # Write analysis specifications in input file
+            write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(ml_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(saveoutput_syntax, paste0(folder, file.name, ".inp"), append = T)
+            
+            rm(analysis_syntax, ml_syntax, saveoutput_syntax)
+            
+            # Run model in Mplus
+            assign("last.warning", NULL, envir = baseenv())
+            t0  <- proc.time()
+            run <- runModels_2(paste0(getwd(), "/", folder, file.name, ".inp"), timeout = timeout)
+            tf  <- proc.time() - t0
+            
+            if (run == "timeout") {
+              
+              perf[1, a]             <- "timeout"
+              times[1, a]            <- round(tf[3], 2)
+              parameters[a, ]        <- -999
+              se_psd[a, ]            <- -999 
+              var.coeff[a, ]         <- -999 
+              fit.measures[a, ]      <- -999
+              psd.var.coeff[a - 2, ] <- -999
+              assign("last.warning", NULL, envir = baseenv())
+              
+              rm(a, t0, tf)
+            } else {
+              fit <- readModels(paste0(getwd(), "/", folder, file.name, ".out")) #read Mplus output
+              
+              if (check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out")) == "Ok") {
+                
+                perf[1, a]  <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a] <- round(tf[3], 2)
+                
+                # Save estimates
+                estimates <- fit$parameters$unstandardized[c(1:(2 * I + 1),             # loadings, state var, error variances 
+                                                             ((3 * I + 2):(4 * I + 1)), # loadings 
+                                                             ((5 * I + 3):(6 * I + 2)), # intercepts
+                                                             (6 * I + 3),               # trait var
+                                                             (4 * I + 2)),              # trait mean
+                                                           3]
+                
+                parameters[a, c(1:9, 11:20)] <- estimates
+                
+                # Save posterior standard deviations
+                post.sd <- fit$parameters$unstandardized[c(1:(2 * I + 1),             # loadings, state var, error variances 
+                                                           ((3 * I + 2):(4 * I + 1)), # loadings 
+                                                           ((5 * I + 3):(6 * I + 2)), # intercepts
+                                                           (6 * I + 3),               # trait var
+                                                           (4 * I + 2)),              # trait mean
+                                                         4]
+                
+                se_psd[a, c(1:9, 11:20)] <- post.sd
+                
+                # Compute and save variance coefficients
+                
+                # Read MCMC draws
+                samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+                
+                # Delete burn-in and indicator for chain and draw
+                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+                
+                # Create matrix to store variance coefficients draws
+                pdist.var.coeff <- matrix(NA, dim(samples)[1], 12)
+                
+                for (i in 1:dim(samples)[1]) {
+                  within.estimates  <- list(loadings  = c(1, t(samples[i, 1:3])), 
+                                            state.var = samples[i, 8],
+                                            error.var = c(t(samples[i, 4:7])))
+                  between.estimates <- list(loadings  = c(1, t(samples[i, c(13:15)])), 
+                                            trait.var = samples[i, 16])
+                  pdist.var.coeff[i, ] <- t(msst.var.coeff(within.parameters  = within.estimates,
+                                                           between.parameters = between.estimates))
+                }
+                
+                var.coeff[a, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, median)
+                psd.var.coeff[a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
+                
+                # Save fit measures
+                if (!is.null(fit$summaries$Parameters)) {
+                  fit.measures[a, 1] <- c(fit$summaries$Parameters)
+                }
+                if (!is.null(fit$summaries$DIC)) {
+                  fit.measures[a, 11] <- c(fit$summaries$DIC)
+                }
+                if (!is.null(fit$summaries$pD)) {
+                  fit.measures[a, 12] <- c(fit$summaries$pD)
+                }
+                if (!is.null(fit$summaries$PostPred_PValue)) {
+                  fit.measures[a, 13] <- c(fit$summaries$PostPred_PValue)
+                }
+                
+                rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
+                
+              } else {
+                perf[1, a]             <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a]            <- round(tf[3], 2)
+                parameters[a, ]        <- -999
+                se_psd[a, ]            <- -999 
+                var.coeff[a, ]         <- -999 
+                fit.measures[a, ]      <- -999
+                psd.var.coeff[a - 2, ] <- -999
+              }
+              
+              rm(fit, a, t0, tf)
+            }
+            
+            # Remove Mplus files of previous analysis 
+            if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
+            if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
+            rm(file.name, run)
+            
+            # cuts + wide + maximum likelihod ----
+            # Give analysis a number
+            a <- 5
+            
+            file.name <- paste("cuts", "wide", "ml", cond, r, sep = "_")
+            
+            # Prepare data: Write data in Mplus format and write input file template
+            prepareMplusData(data$data.wide, paste0(folder, file.name, ".dat"), inpfile = T)
+            
+            # Complete Mplus syntax
+            analysis_syntax <- write.Mplus.options(usevariables  = names(data$data.wide)[-1],
+                                                   analysis_type = "GENERAL",
+                                                   estimator     = "ML",
+                                                   iterations    = 50000)
+            
+            
+            mplus_syntax <- write.cuts.to.Mplus(data$data.wide[,-1],  
+                                                nstate                 = nT,
+                                                method.trait           = "om",
+                                                scale.invariance       = list(int = TRUE, lambda = TRUE),
+                                                state.trait.invariance = FALSE,
+                                                fixed.method.loadings  = TRUE,
+                                                homocedasticity.assumption = list(error = TRUE, cs.red = TRUE, ut.red = FALSE))
+            
+            # Write analysis specifications in input file
+            write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(mplus_syntax, paste0(folder, file.name, ".inp"), append = T)
+            
+            rm(analysis_syntax, mplus_syntax)
+            
+            # Run model in Mplus
+            assign("last.warning", NULL, envir = baseenv())
+            t0  <- proc.time()
+            run <- runModels_2(paste0(getwd(), "/", folder, file.name, ".inp"), timeout = timeout)
+            tf  <- proc.time() - t0
+            
+            if (run == "timeout") {
+              
+              perf[1, a]        <- "timeout"
+              times[1, a]       <- round(tf[3], 2)
+              parameters[a, ]   <- -999
+              se_psd[a, ]       <- -999 
+              var.coeff[a, ]    <- -999 
+              fit.measures[a, ] <- -999
+              assign("last.warning", NULL, envir = baseenv())
+              
+              rm(a, t0, tf)
+            } else {
+              fit <- readModels(paste0(getwd(), "/", folder, file.name, ".out")) #read Mplus output
+              
+              if (check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out")) == "Ok") {
+                
+                perf[1, a]  <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a] <- round(tf[3], 2)
+                
+                # Save estimates
+                estimates <- fit$parameters$unstandardized[c(1:I,                                                                                                                             # CS loadings
+                                                             (((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + 1,                                                                              # CS var
+                                                             ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 2 + I):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1 + 2 * I), # UT variances
+                                                             (I * nT + 1):(I * nT + I),                                                                                                       # CT loadings
+                                                             ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 3) + 1):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 3) + I),                       # intercepts
+                                                             (((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1,                                                                         # CT var
+                                                             ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 2):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1 + I)),        # UT var
+                                                           3]
+                
+                parameters[a, c(1:9, 11:19, 21:24)] <- estimates
+                
+                # Save standard errors
+                stand.errors <- fit$parameters$unstandardized[c(1:I,                                                                                                                             # CS loadings
+                                                                (((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + 1,                                                                              # CS var
+                                                                ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 2 + I):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1 + 2 * I), # UT variances
+                                                                (I * nT + 1):(I * nT + I),                                                                                                       # CT loadings
+                                                                ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 3) + 1):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 3) + I),                       # intercepts
+                                                                (((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1,                                                                         # CT var
+                                                                ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 2):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1 + I)),        # UT var
+                                                              4]
+                
+                se_psd[a, c(1:9, 11:19, 21:24)] <- stand.errors
+                
+                # Compute variance coefficients
+                within.estimates  <- list(loadings = estimates[1:I], 
+                                          CS.var   = estimates[I + 1],
+                                          US.var   = estimates[(I + 2):(2 * I + 1)])
+                between.estimates <- list(loadings = estimates[(2 * I + 2):(3 * I + 1)], 
+                                          CT.var   = estimates[4 * I + 2], 
+                                          UT.var   = estimates[(4 * I + 3):(5 * I + 2)])
+                var.coeff[a, ] <- t(cuts.var.coeff(within.parameters  = within.estimates,
+                                                   between.parameters = between.estimates))
+                
+                # Save fit measures
+                if (!is.null(fit$summaries$Parameters)) {
+                  fit.measures[a, 1] <- c(fit$summaries$Parameters)
+                }
+                if (!is.null(fit$summaries$ChiSqM_Value)) {
+                  fit.measures[a, 2] <- c(fit$summaries$ChiSqM_Value)
+                }
+                if (!is.null(fit$summaries$ChiSqM_DF)) {
+                  fit.measures[a, 3] <- c(fit$summaries$ChiSqM_DF)
+                }
+                if (!is.null(fit$summaries$ChiSqM_PValue)) {
+                  fit.measures[a, 4] <- c(fit$summaries$ChiSqM_PValue)
+                }
+                if (!is.null(fit$summaries$CFI)) {
+                  fit.measures[a, 5] <- c(fit$summaries$CFI)
+                }
+                if (!is.null(fit$summaries$TLI)) {
+                  fit.measures[a, 6] <- c(fit$summaries$TLI)
+                }
+                if (!is.null(fit$summaries$RMSEA_Estimate)) {
+                  fit.measures[a, 7] <- c(fit$summaries$RMSEA_Estimate)
+                }
+                if (!is.null(fit$summaries$AIC)) {
+                  fit.measures[a, 8] <- c(fit$summaries$AIC)
+                }
+                if (!is.null(fit$summaries$BIC)) {
+                  fit.measures[a, 9] <- c(fit$summaries$BIC)
+                }
+                if (!is.null(fit$summaries$aBIC)) {
+                  fit.measures[a, 10] <- c(fit$summaries$aBIC)
+                }
+                
+                rm(within.estimates, between.estimates, estimates, stand.errors)
+                
+                
+              } else {
+                perf[1, a]        <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+                times[1, a]       <- round(tf[3], 2)
+                parameters[a, ]   <- -999
+                se_psd[a, ]       <- -999 
+                var.coeff[a, ]    <- -999 
+                fit.measures[a, ] <- -999 
+              }
+              rm(fit, a, t0, tf)
+            }
+            
+            # Remove Mplus files of previous analysis 
+            if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
+            if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
+            rm(file.name, run)
+            
+            # cuts + long + maximun likelihood ----
+            # Give analysis a number
+            a <- 6
+            
+            file.name <- paste("cuts", "long", "ml", cond, r, sep = "_")
+            
+            # Prepare data: Write data in Mplus format and write input file template
+            prepareMplusData(data$data.long, paste0(folder, file.name, ".dat"), inpfile = T)
+            
+            # Complete Mplus syntax
+            analysis_syntax <- write.Mplus.options(usevariables  = names(data$data.long)[-(1:2)],
+                                                   cluster       = names(data$data.long)[1],
+                                                   analysis_type = "TWOLEVEL",
+                                                   estimator     = "ML",
+                                                   iterations    = 50000)
             
             ml_syntax <- write.mlcuts.to.Mplus(data$data.long[, -(1:2)])
             
-            write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-            write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
+            # Write analysis specifications in input file
+            write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(ml_syntax, paste0(folder, file.name, ".inp"), append = T)
             
             rm(analysis_syntax, ml_syntax)
             
             # Run modelin Mplus
             assign("last.warning", NULL, envir = baseenv())
-            t0 <- proc.time()
-            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-            tf <- proc.time() - t0
+            t0  <- proc.time()
+            run <- runModels_2(paste0(getwd(), "/", folder, file.name, ".inp"), timeout = timeout)
+            tf  <- proc.time() - t0
             
-            if(run == "timeout"){
+            if (run == "timeout") {
               
-              perf[1, a] <- "timeout"
-              times[1, a] <- round(tf[3], 2)
-              parameters[a, ] <- -999
-              se_psd[a, ] <- -999 
-              var.coeff[a, ] <- -999 
+              perf[1, a]        <- "timeout"
+              times[1, a]       <- round(tf[3], 2)
+              parameters[a, ]   <- -999
+              se_psd[a, ]       <- -999 
+              var.coeff[a, ]    <- -999 
               fit.measures[a, ] <- -999
               assign("last.warning", NULL, envir = baseenv())
               
               rm(a, t0, tf)
-            }else{
-              fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+            } else {
+              fit <- readModels(paste0(getwd(), "/", folder, file.name, ".out")) #read Mplus output
               
-              if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+              if (check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out")) == "Ok") {
                 
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+                perf[1, a]  <- check.mplus(fit, paste0(getwd(), "/", folder, file.name,".out"))
                 times[1, a] <- round(tf[3], 2)
                 
                 # Save estimates
@@ -1136,113 +1273,149 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
                 se_psd[a, c(1:9, 11:19, 21:24)] <- stand.errors
                 
                 # Compute variance coefficients
-                within.estimates <- list( loadings = estimates[1:I], CS.var = estimates[I+1],
-                                          US.var = estimates[(I+2):(2 * I +1)])
-                between.estimates <- list( loadings = estimates[(2 * I + 2):(3 * I + 1)], CT.var = estimates[ 4 * I + 2], 
-                                           UT.var = estimates[(4 * I + 3):(5 * I + 2)])
-                var.coeff[a, ] <- t(cuts.var.coeff(within.parameters = within.estimates,
-                                                                      between.parameters = between.estimates))
+                within.estimates  <- list(loadings = estimates[1:I], 
+                                          CS.var   = estimates[I + 1],
+                                          US.var   = estimates[(I + 2):(2 * I + 1)])
+                between.estimates <- list(loadings = estimates[(2 * I + 2):(3 * I + 1)], 
+                                          CT.var   = estimates[4 * I + 2], 
+                                          UT.var   = estimates[(4 * I + 3):(5 * I + 2)])
+                var.coeff[a, ] <- t(cuts.var.coeff(within.parameters  = within.estimates,
+                                                   between.parameters = between.estimates))
                 
                 # Save fit measures
-                fit.measures[a, 1:3] <- c(fit$summaries$AIC, fit$summaries$BIC, 
-                                                         fit$summaries$aBIC)
+                if (!is.null(fit$summaries$Parameters)) {
+                  fit.measures[a, 1] <- c(fit$summaries$Parameters)
+                }
+                if (!is.null(fit$summaries$ChiSqM_Value)) {
+                  fit.measures[a, 2] <- c(fit$summaries$ChiSqM_Value)
+                }
+                if (!is.null(fit$summaries$ChiSqM_DF)) {
+                  fit.measures[a, 3] <- c(fit$summaries$ChiSqM_DF)
+                }
+                if (!is.null(fit$summaries$ChiSqM_PValue)) {
+                  fit.measures[a, 4] <- c(fit$summaries$ChiSqM_PValue)
+                }
+                if (!is.null(fit$summaries$CFI)) {
+                  fit.measures[a, 5] <- c(fit$summaries$CFI)
+                }
+                if (!is.null(fit$summaries$TLI)) {
+                  fit.measures[a, 6] <- c(fit$summaries$TLI)
+                }
+                if (!is.null(fit$summaries$RMSEA_Estimate)) {
+                  fit.measures[a, 7] <- c(fit$summaries$RMSEA_Estimate)
+                }
+                if (!is.null(fit$summaries$AIC)) {
+                  fit.measures[a, 8] <- c(fit$summaries$AIC)
+                }
+                if (!is.null(fit$summaries$BIC)) {
+                  fit.measures[a, 9] <- c(fit$summaries$BIC)
+                }
+                if (!is.null(fit$summaries$aBIC)) {
+                  fit.measures[a, 10] <- c(fit$summaries$aBIC)
+                }
+                
                 rm(within.estimates, between.estimates, estimates, stand.errors)
                 
-              }else{
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                parameters[a, ] <- -999
-                se_psd[a, ] <- -999 
-                var.coeff[a, ] <- -999 
+              } else {
+                perf[1, a]        <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a]       <- round(tf[3], 2)
+                parameters[a, ]   <- -999
+                se_psd[a, ]       <- -999 
+                var.coeff[a, ]    <- -999 
                 fit.measures[a, ] <- -999 
               }
               rm(fit, a, t0, tf)
             }
             
             # Remove Mplus files of previous analysis 
-            if(file.exists(paste0(folder,file.name,".dat"))){unlink(paste0(folder,file.name,".dat"))}
-            if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
-            if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
-            if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
+            if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
             # cuts + wide + Bayesian ----
-            #give analysis a number
+            # Give analysis a number
             a <- 7
             
-            file.name <- paste("cuts", "wide", "bayes", cond, r,sep = "_")
+            file.name <- paste("cuts", "wide", "bayes", cond, r, sep = "_")
             
             # Prepare data: Write data in Mplus format and write input file template
             prepareMplusData(data$data.wide, paste0(folder, file.name, ".dat"), inpfile = T)
             
             # Complete Mplus syntax
-            analysis_syntax <- write.Mplus.options(usevariables = names(data$data.wide)[-1],
+            analysis_syntax <- write.Mplus.options(usevariables  = names(data$data.wide)[-1],
                                                    analysis_type = "GENERAL",
-                                                   estimator = "BAYES",
-                                                   iterations = 5000)
+                                                   estimator     = "BAYES",
+                                                   iterations    = 5000)
             
             
-            mplus_syntax <- write.cuts.to.Mplus(data$data.wide[,-1],  nstate = nT,
-                                                method.trait = "om",
-                                                scale.invariance = list(int = TRUE, lambda = TRUE),
+            mplus_syntax <- write.cuts.to.Mplus(data$data.wide[,-1],  
+                                                nstate                 = nT,
+                                                method.trait           = "om",
+                                                scale.invariance       = list(int = TRUE, lambda = TRUE),
                                                 state.trait.invariance = FALSE,
-                                                fixed.method.loadings = TRUE,
+                                                fixed.method.loadings  = TRUE,
                                                 homocedasticity.assumption = list(error = TRUE, cs.red = TRUE, ut.red = FALSE))
-            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", paste0("samples_", file.name, ".dat"),
-                                        ";", "\nOUTPUT: TECH8;")
+            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", 
+                                        "samples_", 
+                                        file.name, 
+                                        ".dat;", 
+                                        "\nOUTPUT: TECH8;")
             
-            write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-            write(mplus_syntax, paste0(folder,file.name,".inp"), append = T)
-            write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
+            # Write analysis specifications in input file
+            write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(mplus_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(saveoutput_syntax, paste0(folder, file.name, ".inp"), append = T)
             
             rm(analysis_syntax, mplus_syntax, saveoutput_syntax)
             
             # Run model in Mplus
             assign("last.warning", NULL, envir = baseenv())
-            t0 <- proc.time()
-            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-            tf <- proc.time() - t0
+            t0  <- proc.time()
+            run <- runModels_2(paste0(getwd(), "/", folder, file.name, ".inp"), timeout = timeout)
+            tf  <- proc.time() - t0
             
-            if(run == "timeout"){
+            if (run == "timeout") {
               
-              perf[1, a] <- "timeout"
-              times[1, a] <- round(tf[3], 2)
-              parameters[a, ] <- -999
-              se_psd[a, ] <- -999 
-              var.coeff[a, ] <- -999 
-              fit.measures[a, ] <- -999
+              perf[1, a]             <- "timeout"
+              times[1, a]            <- round(tf[3], 2)
+              parameters[a, ]        <- -999
+              se_psd[a, ]            <- -999 
+              var.coeff[a, ]         <- -999 
+              fit.measures[a, ]      <- -999
               psd.var.coeff[a - 4, ] <- -999
               assign("last.warning", NULL, envir = baseenv())
               
               rm(a, t0, tf)
-            }else{
-              fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+            } else {
+              fit <- readModels(paste0(getwd(), "/", folder, file.name, ".out")) #read Mplus output
               
-              if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+              if (check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out")) == "Ok") {
                 
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+                perf[1, a]  <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
                 times[1, a] <- round(tf[3], 2)
                 
                 # Save estimates
-                estimates <- fit$parameters$unstandardized[c(1:I, # CS loadings
-                                                             (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + 1, #CS var
-                                                             ((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2 + I):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + 2*I), #UT variances
-                                                             (I*nT + 1):(I*nT + I), # CT loadings
-                                                             ((((nT + I + 1)*(nT + I))/2) + (nT*I*3) + 1):((((nT + I + 1)*(nT + I))/2) + (nT*I*3) + I), #intercepts
-                                                             (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1, #CT var
-                                                             ((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + I)), # UT var
+                estimates <- fit$parameters$unstandardized[c(1:I,                                                                                                                             # CS loadings
+                                                             (((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + 1,                                                                              # CS var
+                                                             ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 2 + I):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1 + 2 * I), # UT variances
+                                                             (I * nT + 1):(I * nT + I),                                                                                                       # CT loadings
+                                                             ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 3) + 1):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 3) + I),                       # intercepts
+                                                             (((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1,                                                                         # CT var
+                                                             ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 2):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1 + I)),        # UT var
                                                            3]
                 
                 parameters[a, c(1:9, 11:19, 21:24)] <- estimates
                 
                 # Save posterior standard deviations
-                post.sd <- fit$parameters$unstandardized[c(1:I, # CS loadings
-                                                           (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + 1, #CS var
-                                                           ((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2 + I):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + 2*I), #UT variances
-                                                           (I*nT + 1):(I*nT + I), # CT loadings
-                                                           ((((nT + I + 1)*(nT + I))/2) + (nT*I*3) + 1):((((nT + I + 1)*(nT + I))/2) + (nT*I*3) + I), #intercepts
-                                                           (((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1, #CT var
-                                                           ((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 2):((((nT + I + 1)*(nT + I))/2) + (nT*I*4) + nT + 1 + I)), # UT var
+                post.sd <- fit$parameters$unstandardized[c(1:I,                                                                                                                             # CS loadings
+                                                           (((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + 1,                                                                              # CS var
+                                                           ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 2 + I):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1 + 2 * I), # UT variances
+                                                           (I * nT + 1):(I * nT + I),                                                                                                       # CT loadings
+                                                           ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 3) + 1):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 3) + I),                       # intercepts
+                                                           (((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1,                                                                         # CT var
+                                                           ((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 2):((((nT + I + 1) * (nT + I)) / 2) + (nT * I * 4) + nT + 1 + I)),        # UT var
                                                          4]
                 
                 se_psd[a, c(1:9, 11:19, 21:24)] <- post.sd
@@ -1253,17 +1426,19 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
                 samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
                 
                 # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
                 
                 # Create matrix to store variance coefficients draws
                 pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
                 
                 for(i in 1:dim(samples)[1]){
-                  within.estimates <- list( loadings = c(1, t(samples[i, c(5, 7, 9)])), CS.var = samples[i, 15],
-                                            US.var = c(t(samples[i, 11:14])))
-                  between.estimates <- list( loadings = c(1, t(samples[i, c(6, 8, 10)])), CT.var = samples[i, 16], 
-                                             UT.var = c(t(samples[i, 17:20])))
-                  pdist.var.coeff[i, ] <- t(cuts.var.coeff(within.parameters = within.estimates,
+                  within.estimates  <- list(loadings = c(1, t(samples[i, c(5, 7, 9)])), 
+                                            CS.var   = samples[i, 15],
+                                            US.var   = c(t(samples[i, 11:14])))
+                  between.estimates <- list(loadings = c(1, t(samples[i, c(6, 8, 10)])), 
+                                            CT.var   = samples[i, 16], 
+                                            UT.var   = c(t(samples[i, 17:20])))
+                  pdist.var.coeff[i, ] <- t(cuts.var.coeff(within.parameters  = within.estimates,
                                                            between.parameters = between.estimates))
                 }
                 
@@ -1271,80 +1446,94 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
                 psd.var.coeff[a - 4, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save fit measures
-                if(!is.null(fit$summaries$DIC)){fit.measures[a, 4] <- c(fit$summaries$DIC)}
+                if (!is.null(fit$summaries$Parameters)) {
+                  fit.measures[a, 1] <- c(fit$summaries$Parameters)
+                }
+                if (!is.null(fit$summaries$DIC)) {
+                  fit.measures[a, 11] <- c(fit$summaries$DIC)
+                }
+                if (!is.null(fit$summaries$pD)) {
+                  fit.measures[a, 12] <- c(fit$summaries$pD)
+                }
+                if (!is.null(fit$summaries$PostPred_PValue)) {
+                  fit.measures[a, 13] <- c(fit$summaries$PostPred_PValue)
+                }
                 
                 rm(within.estimates, between.estimates, estimates, post.sd, pdist.var.coeff, samples,i)
                 
-                
-              }else{
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                parameters[a, ] <- -999
-                se_psd[a, ] <- -999 
-                var.coeff[a, ] <- -999 
-                fit.measures[a, ] <- -999
+              } else {
+                perf[1, a]             <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a]            <- round(tf[3], 2)
+                parameters[a, ]        <- -999
+                se_psd[a, ]            <- -999 
+                var.coeff[a, ]         <- -999 
+                fit.measures[a, ]      <- -999
                 psd.var.coeff[a - 4, ] <- -999
               }
               rm(fit, a, t0, tf)
             }
             
             # Remove Mplus files of previous analysis 
-            if(file.exists(paste0(folder,file.name,".dat"))){unlink(paste0(folder,file.name,".dat"))}
-            if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
-            if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
-            if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
+            if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
-          
+            
             # cuts + long + Bayesian ----
-            #give analysis a number
+            # Give analysis a number
             a <- 8
             
-            file.name <- paste("cuts", "long", "bayes", cond, r,sep = "_")
+            file.name <- paste("cuts", "long", "bayes", cond, r, sep = "_")
             
             # Prepare data: Write data in Mplus format and write input file template
             prepareMplusData(data$data.long, paste0(folder, file.name, ".dat"), inpfile = T)
             
             # Complete Mplus syntax
-            analysis_syntax <- write.Mplus.options(usevariables = names(data$data.long)[-(1:2)],
-                                                   cluster = names(data$data.long)[1],
+            analysis_syntax <- write.Mplus.options(usevariables  = names(data$data.long)[-(1:2)],
+                                                   cluster       = names(data$data.long)[1],
                                                    analysis_type = "TWOLEVEL",
-                                                   estimator = "BAYES",
-                                                   iterations = 5000)
+                                                   estimator     = "BAYES",
+                                                   iterations    = 5000)
             
             ml_syntax <- write.mlcuts.to.Mplus(data$data.long[, -(1:2)])
-            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", paste0("samples_", file.name, ".dat"),
-                                        ";", "\nOUTPUT: TECH8;")
+            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", 
+                                        "samples_", 
+                                        file.name, 
+                                        ".dat;", 
+                                        "\nOUTPUT: TECH8;")
             
-            write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-            write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
-            write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
+            # Write analysis specifications in input file
+            write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(ml_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(saveoutput_syntax, paste0(folder, file.name, ".inp"), append = T)
             
             rm(analysis_syntax, ml_syntax, saveoutput_syntax)
             
             # Run modelin Mplus
             assign("last.warning", NULL, envir = baseenv())
-            t0 <- proc.time()
-            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-            tf <- proc.time() - t0
+            t0  <- proc.time()
+            run <- runModels_2(paste0(getwd(), "/", folder, file.name, ".inp"), timeout = timeout)
+            tf  <- proc.time() - t0
             
-            if(run == "timeout"){
+            if (run == "timeout") {
               
-              perf[1, a] <- "timeout"
-              times[1, a] <- round(tf[3], 2)
-              parameters[a, ] <- -999
-              se_psd[a, ] <- -999 
-              var.coeff[a, ] <- -999 
-              fit.measures[a, ] <- -999
+              perf[1, a]             <- "timeout"
+              times[1, a]            <- round(tf[3], 2)
+              parameters[a, ]        <- -999
+              se_psd[a, ]            <- -999 
+              var.coeff[a, ]         <- -999 
+              fit.measures[a, ]      <- -999
               psd.var.coeff[a - 4, ] <- -999
               assign("last.warning", NULL, envir = baseenv())
               
               rm(a, t0, tf)
-            }else{
-              fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+            } else {
+              fit <- readModels(paste0(getwd(), "/", folder, file.name, ".out")) #read Mplus output
               
-              if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+              if (check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out")) == "Ok") {
                 
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+                perf[1, a]  <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
                 times[1, a] <- round(tf[3], 2)
                 
                 # Save estimates
@@ -1363,17 +1552,19 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
                 samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
                 
                 # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
                 
                 # Create matrix to store variance coefficients draws
                 pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
                 
                 for(i in 1:dim(samples)[1]){
-                  within.estimates <- list( loadings = c(1, t(samples[i, 1:3])), CS.var = samples[i, 8],
-                                            US.var = c(t(samples[i, 4:7])))
-                  between.estimates <- list( loadings = c(1, t(samples[i, 13:15])), CT.var = samples[i, 20], 
-                                             UT.var = c(t(samples[i, 16:19])))
-                  pdist.var.coeff[i, ] <- t(cuts.var.coeff(within.parameters = within.estimates,
+                  within.estimates  <- list(loadings = c(1, t(samples[i, 1:3])), 
+                                            CS.var   = samples[i, 8],
+                                            US.var   = c(t(samples[i, 4:7])))
+                  between.estimates <- list(loadings = c(1, t(samples[i, 13:15])), 
+                                            CT.var   = samples[i, 20], 
+                                            UT.var   = c(t(samples[i, 16:19])))
+                  pdist.var.coeff[i, ] <- t(cuts.var.coeff(within.parameters  = within.estimates,
                                                            between.parameters = between.estimates))
                 }
                 
@@ -1381,17 +1572,28 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
                 psd.var.coeff[a - 4, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save fit measures
-                if(!is.null(fit$summaries$DIC)){fit.measures[a, 4] <- c(fit$summaries$DIC)}
+                if (!is.null(fit$summaries$Parameters)) {
+                  fit.measures[a, 1] <- c(fit$summaries$Parameters)
+                }
+                if (!is.null(fit$summaries$DIC)) {
+                  fit.measures[a, 11] <- c(fit$summaries$DIC)
+                }
+                if (!is.null(fit$summaries$pD)) {
+                  fit.measures[a, 12] <- c(fit$summaries$pD)
+                }
+                if (!is.null(fit$summaries$PostPred_PValue)) {
+                  fit.measures[a, 13] <- c(fit$summaries$PostPred_PValue)
+                }
                 
                 rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
                 
-              }else{
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                parameters[a, ] <- -999
-                se_psd[a, ] <- -999 
-                var.coeff[a, ] <- -999 
-                fit.measures[a, ] <- -999
+              } else {
+                perf[1, a]             <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a]            <- round(tf[3], 2)
+                parameters[a, ]        <- -999
+                se_psd[a, ]            <- -999 
+                var.coeff[a, ]         <- -999 
+                fit.measures[a, ]      <- -999
                 psd.var.coeff[a - 4, ] <- -999
               }
               
@@ -1399,194 +1601,233 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             }
             
             # Remove Mplus files of previous analysis 
-            if(file.exists(paste0(folder,file.name,".dat"))){unlink(paste0(folder,file.name,".dat"))}
-            if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
-            if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
-            if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
+            if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
             # tso + wide + maximum likelihood ----
-            #give analysis a number
+            # Give analysis a number
             a <- 9
             
-            file.name <- paste("tso", "wide", "ml", cond, r,sep = "_")
+            file.name <- paste("tso", "wide", "ml", cond, r, sep = "_")
             
             # Prepare data: Write data in Mplus format and write input file template
-            prepareMplusData(data$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
+            prepareMplusData(data$data.wide, paste0(folder, file.name, ".dat"), inpfile = T)
             
             # Complete Mplus syntax
-            analysis_syntax <- write.Mplus.options(usevariables = names(data$data.wide)[-1],
+            analysis_syntax <- write.Mplus.options(usevariables  = names(data$data.wide)[-1],
                                                    analysis_type = "GENERAL",
-                                                   estimator = "ML",
-                                                   iterations = 50000)
+                                                   estimator     = "ML",
+                                                   iterations    = 50000)
             
-            ml_syntax <- write.tso.to.Mplus(data$data.wide[,-1], nocc = nT, figure = "3b",
+            ml_syntax <- write.tso.to.Mplus(data$data.wide[,-1], 
+                                            nocc             = nT, 
+                                            figure           = "3b",
                                             equiv.assumption = list(occ = "cong", theta = "equi"),
                                             scale.invariance = list(int = TRUE, lambda = TRUE),
                                             homocedasticity.assumption = list(error = TRUE, occ.red = TRUE),
                                             autoregressive.homogeneity = TRUE)
             
-            
-            write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-            write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
+            # Write analysis specifications in input file
+            write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(ml_syntax, paste0(folder, file.name, ".inp"), append = T)
             
             rm(analysis_syntax, ml_syntax)
             
             # Run modelin Mplus
             assign("last.warning", NULL, envir = baseenv())
-            t0 <- proc.time()
-            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-            tf <- proc.time() - t0
+            t0  <- proc.time()
+            run <- runModels_2(paste0(getwd(), "/", folder, file.name, ".inp"), timeout = timeout)
+            tf  <- proc.time() - t0
             
-            if(run == "timeout"){
+            if (run == "timeout") {
               
-              perf[1, a] <- "timeout"
-              times[1, a] <- round(tf[3], 2)
-              parameters[a, ] <- -999
-              se_psd[a, ] <- -999 
-              var.coeff[a, ] <- -999 
+              perf[1, a]        <- "timeout"
+              times[1, a]       <- round(tf[3], 2)
+              parameters[a, ]   <- -999
+              se_psd[a, ]       <- -999 
+              var.coeff[a, ]    <- -999 
               fit.measures[a, ] <- -999
               assign("last.warning", NULL, envir = baseenv())
               
               rm(a, t0, tf)
-            }else{
-              fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+            } else {
+              fit <- readModels(paste0(getwd(), "/", folder, file.name, ".out")) #read Mplus output
               
-              if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+              if (check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out")) == "Ok") {
                 
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+                perf[1, a]  <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
                 times[1, a] <- round(tf[3], 2)
                 
                 # Save estimates
-                estimates <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                             ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                estimates <- fit$parameters$unstandardized[c(1:I,                                                                                                                             # loadings
+                                                             ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)),                                                                         # occasion variance
                                                              ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
-                                                             (2 * I * nT + 1), # autoregressive effect
-                                                             ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
-                                                             ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
-                                                             ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                                             (2 * I * nT + 1),                                                                                                                # autoregressive effect
+                                                             ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I),                 # Intercepts
+                                                             ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I),         # trait indicator variances
+                                                             ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)),    # trait indicator covariances 
                                                            3]
                 
                 parameters[a, c(1:10, 15:18, 21:30)] <- estimates
                 
                 # Save standard errors
-                stand.errors <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                                ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                stand.errors <- fit$parameters$unstandardized[c(1:I,                                                                                                                             # loadings
+                                                                ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)),                                                                         # occasion variance
                                                                 ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
-                                                                (2 * I * nT + 1), # autoregressive effect
-                                                                ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
-                                                                ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
-                                                                ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                                                (2 * I * nT + 1),                                                                                                                # autoregressive effect
+                                                                ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I),                 # Intercepts
+                                                                ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I),         # trait indicator variances
+                                                                ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)),    # trait indicator covariances 
                                                               4]
                 
                 se_psd[a, c(1:10, 15:18, 21:30)] <- stand.errors
                 
                 # Compute and save variance coefficients
-                within.estimates <- list( loadings = estimates[1:I], state.var = estimates[I+1],
-                                          error.var = estimates[(I+2):(2 * I +1)], ar.effect = estimates[(2 * I + 2)])
-                between.estimates <- list( trait.ind.var = estimates[(3 * I + 3):(4 * I + 2)])
-                var.coeff[a, ] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
-                                                                   between.parameters = between.estimates)[,nT]
+                within.estimates  <- list(loadings      = estimates[1:I], 
+                                          state.var     = estimates[I+1],
+                                          error.var     = estimates[(I+2):(2 * I +1)], 
+                                          ar.effect     = estimates[(2 * I + 2)])
+                between.estimates <- list(trait.ind.var = estimates[(3 * I + 3):(4 * I + 2)])
+                var.coeff[a, ] <- tso.var.coeff(I = I, nT = nT, 
+                                                within.parameters  = within.estimates,
+                                                between.parameters = between.estimates)[,nT]
                 
                 # Save fit measures
-                fit.measures[a, 1:3] <- c(fit$summaries$AIC, fit$summaries$BIC, 
-                                                         fit$summaries$aBIC)
+                if (!is.null(fit$summaries$Parameters)) {
+                  fit.measures[a, 1] <- c(fit$summaries$Parameters)
+                }
+                if (!is.null(fit$summaries$ChiSqM_Value)) {
+                  fit.measures[a, 2] <- c(fit$summaries$ChiSqM_Value)
+                }
+                if (!is.null(fit$summaries$ChiSqM_DF)) {
+                  fit.measures[a, 3] <- c(fit$summaries$ChiSqM_DF)
+                }
+                if (!is.null(fit$summaries$ChiSqM_PValue)) {
+                  fit.measures[a, 4] <- c(fit$summaries$ChiSqM_PValue)
+                }
+                if (!is.null(fit$summaries$CFI)) {
+                  fit.measures[a, 5] <- c(fit$summaries$CFI)
+                }
+                if (!is.null(fit$summaries$TLI)) {
+                  fit.measures[a, 6] <- c(fit$summaries$TLI)
+                }
+                if (!is.null(fit$summaries$RMSEA_Estimate)) {
+                  fit.measures[a, 7] <- c(fit$summaries$RMSEA_Estimate)
+                }
+                if (!is.null(fit$summaries$AIC)) {
+                  fit.measures[a, 8] <- c(fit$summaries$AIC)
+                }
+                if (!is.null(fit$summaries$BIC)) {
+                  fit.measures[a, 9] <- c(fit$summaries$BIC)
+                }
+                if (!is.null(fit$summaries$aBIC)) {
+                  fit.measures[a, 10] <- c(fit$summaries$aBIC)
+                }
                 
                 rm(within.estimates, between.estimates, estimates, stand.errors)
                 
-              }else{
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                parameters[a, ] <- -999
-                se_psd[a, ] <- -999 
-                var.coeff[a, ] <- -999 
+              } else {
+                perf[1, a]        <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a]       <- round(tf[3], 2)
+                parameters[a, ]   <- -999
+                se_psd[a, ]       <- -999 
+                var.coeff[a, ]    <- -999 
                 fit.measures[a, ] <- -999 
               }
               rm(fit, a, t0, tf)
             }
             
             # Remove Mplus files of previous analysis 
-            if(file.exists(paste0(folder,file.name,".dat"))){unlink(paste0(folder,file.name,".dat"))}
-            if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
-            if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
-            if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
+            if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
             # tso + wide + Bayesian ----
-            #give analysis a number
+            # Give analysis a number
             a <- 10
             
-            file.name <- paste("tso", "wide", "bayes", cond, r,sep = "_")
+            file.name <- paste("tso", "wide", "bayes", cond, r, sep = "_")
             
             # Prepare data: Write data in Mplus format and write input file template
-            prepareMplusData(data$data.wide, paste0(folder,file.name,".dat"), inpfile = T)
+            prepareMplusData(data$data.wide, paste0(folder, file.name, ".dat"), inpfile = T)
             
             # Complete Mplus syntax
-            analysis_syntax <- write.Mplus.options(usevariables = names(data$data.wide)[-1],
+            analysis_syntax <- write.Mplus.options(usevariables  = names(data$data.wide)[-1],
                                                    analysis_type = "GENERAL",
-                                                   estimator = "BAYES",
-                                                   iterations = 5000)
+                                                   estimator     = "BAYES",
+                                                   iterations    = 5000)
             
-            ml_syntax <- write.tso.to.Mplus(data$data.wide[,-1], nocc = nT, figure = "3b",
+            ml_syntax <- write.tso.to.Mplus(data$data.wide[,-1], 
+                                            nocc             = nT, 
+                                            figure           = "3b",
                                             equiv.assumption = list(occ = "cong", theta = "equi"),
                                             scale.invariance = list(int = TRUE, lambda = TRUE),
                                             homocedasticity.assumption = list(error = TRUE, occ.red = TRUE),
                                             autoregressive.homogeneity = TRUE)
-            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", paste0("samples_", file.name, ".dat"),
-                                        ";", "\nOUTPUT: TECH8;")
+            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", 
+                                        "samples_", 
+                                        file.name, 
+                                        ".dat;", 
+                                        "\nOUTPUT: TECH8;")
             
-            write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-            write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
-            write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
+            # Write analysis specifications in input file
+            write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(ml_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(saveoutput_syntax, paste0(folder, file.name, ".inp"), append = T)
             
             rm(analysis_syntax, ml_syntax, saveoutput_syntax)
             
             # Run modelin Mplus
             assign("last.warning", NULL, envir = baseenv())
-            t0 <- proc.time()
-            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-            tf <- proc.time() - t0
+            t0  <- proc.time()
+            run <- runModels_2(paste0(getwd(), "/", folder, file.name, ".inp"), timeout = timeout)
+            tf  <- proc.time() - t0
             
-            if(run == "timeout"){
+            if (run == "timeout") {
               
-              perf[1, a] <- "timeout"
-              times[1, a] <- round(tf[3], 2)
-              parameters[a, ] <- -999
-              se_psd[a, ] <- -999 
-              var.coeff[a, ] <- -999 
-              fit.measures[a, ] <- -999
+              perf[1, a]             <- "timeout"
+              times[1, a]            <- round(tf[3], 2)
+              parameters[a, ]        <- -999
+              se_psd[a, ]            <- -999 
+              var.coeff[a, ]         <- -999 
+              fit.measures[a, ]      <- -999
               psd.var.coeff[a - 5, ] <- -999
               assign("last.warning", NULL, envir = baseenv())
               
               rm(a, t0, tf)
-            }else{
-              fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+            } else {
+              fit <- readModels(paste0(getwd(), "/", folder, file.name, ".out")) #read Mplus output
               
-              if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+              if (check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out")) == "Ok") {
                 
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+                perf[1, a]  <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
                 times[1, a] <- round(tf[3], 2)
                 
                 # Save estimates
-                estimates <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                             ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                estimates <- fit$parameters$unstandardized[c(1:I,                                                                                                                             # loadings
+                                                             ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)),                                                                         # occasion variance
                                                              ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
-                                                             (2 * I * nT + 1), # autoregressive effect
-                                                             ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
-                                                             ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
-                                                             ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                                             (2 * I * nT + 1),                                                                                                                # autoregressive effect
+                                                             ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I),                 # Intercepts
+                                                             ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I),         # trait indicator variances
+                                                             ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)),    # trait indicator covariances 
                                                            3]
                 
                 parameters[a, c(1:10, 15:18, 21:30)] <- estimates
                 
                 # Save posterior standard deviations
-                post.sd <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                           ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)), # occasion variance
+                post.sd <- fit$parameters$unstandardized[c(1:I,                                                                                                                             # loadings
+                                                           ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2)),                                                                         # occasion variance
                                                            ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 2 * I), # Error variances
-                                                           (2 * I * nT + 1), # autoregressive effect
-                                                           ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I), # Intercepts
-                                                           ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I), # trait indicator variances
-                                                           ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)), # trait indicator covariances 
+                                                           (2 * I * nT + 1),                                                                                                                # autoregressive effect
+                                                           ((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) + I),                 # Intercepts
+                                                           ((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + 1):((3 * I * nT + 2 * nT) + ((nT + I) * (nT + I - 1) / 2) + I),         # trait indicator variances
+                                                           ((2 * I * nT + nT) + (((nT + I) * (nT + I - 1) - I * (I - 1)) / 2)):((2 * I * nT + nT) + ((nT + I) * (nT + I - 1) / 2) - 1)),    # trait indicator covariances 
                                                          4]
                 
                 se_psd[a, c(1:10, 15:18, 21:30)] <- post.sd
@@ -1597,16 +1838,19 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
                 samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
                 
                 # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
                 
                 # Create matrix to store variance coefficients draws
                 pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
                 
                 for(i in 1:dim(samples)[1]){
-                  within.estimates <- list( loadings = c(1, t(samples[i, 5:7])), state.var = samples[i, 13],
-                                            error.var = c(t(samples[i, 8:11])), ar.effect = samples[i, 12])
-                  between.estimates <- list( trait.ind.var = c(t(samples[i, c(14, 16, 19, 23)])))
-                  pdist.var.coeff[i, ] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                  within.estimates  <- list(loadings  = c(1, t(samples[i, 5:7])), 
+                                            state.var = samples[i, 13],
+                                            error.var = c(t(samples[i, 8:11])), 
+                                            ar.effect = samples[i, 12])
+                  between.estimates <- list(trait.ind.var = c(t(samples[i, c(14, 16, 19, 23)])))
+                  pdist.var.coeff[i, ] <- tso.var.coeff(I = I, nT = nT, 
+                                                        within.parameters  = within.estimates,
                                                         between.parameters = between.estimates)[,nT]
                 }
                 
@@ -1614,99 +1858,114 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
                 psd.var.coeff[a - 5, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save fit measures
-                if(!is.null(fit$summaries$DIC)){fit.measures[a, 4] <- c(fit$summaries$DIC)}
+                if (!is.null(fit$summaries$Parameters)) {
+                  fit.measures[a, 1] <- c(fit$summaries$Parameters)
+                }
+                if (!is.null(fit$summaries$DIC)) {
+                  fit.measures[a, 11] <- c(fit$summaries$DIC)
+                }
+                if (!is.null(fit$summaries$pD)) {
+                  fit.measures[a, 12] <- c(fit$summaries$pD)
+                }
+                if (!is.null(fit$summaries$PostPred_PValue)) {
+                  fit.measures[a, 13] <- c(fit$summaries$PostPred_PValue)
+                }
                 
                 rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
                 
-              }else{
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                parameters[a, ] <- -999
-                se_psd[a, ] <- -999 
-                var.coeff[a, ] <- -999 
-                fit.measures[a, ] <- -999
+              } else {
+                perf[1, a]             <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a]            <- round(tf[3], 2)
+                parameters[a, ]        <- -999
+                se_psd[a, ]            <- -999 
+                var.coeff[a, ]         <- -999 
+                fit.measures[a, ]      <- -999
                 psd.var.coeff[a - 5, ] <- -999
               }
               rm(fit, a, t0, tf)
             }
             
             # Remove Mplus files of previous analysis 
-            if(file.exists(paste0(folder,file.name,".dat"))){unlink(paste0(folder,file.name,".dat"))}
-            if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
-            if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
-            if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
+            if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
             # tso + long + Bayesian ----
-            #give analysis a number
+            # Give analysis a number
             a <- 11
             
-            file.name <- paste("tso", "long", "bayes", cond, r,sep = "_")
+            file.name <- paste("tso", "long", "bayes", cond, r, sep = "_")
             
             # Prepare data: Write data in Mplus format and write input file template
-            prepareMplusData(data$data.long, paste0(folder,file.name,".dat"), inpfile = T)
+            prepareMplusData(data$data.long, paste0(folder, file.name, ".dat"), inpfile = T)
             
             # Complete Mplus syntax
-            analysis_syntax <- write.Mplus.options(usevariables = names(data$data.long)[-(1:2)],
-                                                   cluster = names(data$data.long)[1],
+            analysis_syntax <- write.Mplus.options(usevariables  = names(data$data.long)[-(1:2)],
+                                                   cluster       = names(data$data.long)[1],
                                                    analysis_type = "TWOLEVEL",
-                                                   estimator = "BAYES",
-                                                   iterations = 5000)
+                                                   estimator     = "BAYES",
+                                                   iterations    = 5000)
             
             ml_syntax <- write.mltso.to.Mplus(data$data.long[, -c(1, 2)])
-            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", paste0("samples_", file.name, ".dat"),
-                                        ";", "\nOUTPUT: TECH8;")
+            saveoutput_syntax <- paste0("\nSAVEDATA: BPARAMETERS = ", 
+                                        "samples_", 
+                                        file.name, 
+                                        ".dat;", 
+                                        "\nOUTPUT: TECH8;")
             
-            write(analysis_syntax, paste0(folder,file.name,".inp"), append = T) # Write Analysis specifications
-            write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
-            write(saveoutput_syntax, paste0(folder,file.name,".inp"), append = T)
+            # Write analysis specifications in input file
+            write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(ml_syntax, paste0(folder, file.name, ".inp"), append = T)
+            write(saveoutput_syntax, paste0(folder, file.name, ".inp"), append = T)
             
             rm(analysis_syntax, ml_syntax, saveoutput_syntax)
             
             # Run modelin Mplus
             assign("last.warning", NULL, envir = baseenv())
-            t0 <- proc.time()
-            run <- runModels_2(paste0(getwd(),"/", folder,file.name,".inp"), timeout = timeout)
-            tf <- proc.time() - t0
+            t0  <- proc.time()
+            run <- runModels_2(paste0(getwd(), "/", folder, file.name, ".inp"), timeout = timeout)
+            tf  <- proc.time() - t0
             
-            if(run == "timeout"){
+            if (run == "timeout") {
               
-              perf[1, a] <- "timeout"
-              times[1, a] <- round(tf[3], 2)
-              parameters[a, ] <- -999
-              se_psd[a, ] <- -999 
-              var.coeff[a, ] <- -999 
-              fit.measures[a, ] <- -999
+              perf[1, a]             <- "timeout"
+              times[1, a]            <- round(tf[3], 2)
+              parameters[a, ]        <- -999
+              se_psd[a, ]            <- -999 
+              var.coeff[a, ]         <- -999 
+              fit.measures[a, ]      <- -999
               psd.var.coeff[a - 5, ] <- -999
               assign("last.warning", NULL, envir = baseenv())
               
               rm(a, data, dataModel, nT, na.prop, seed, t0, tf)
-            }else{
-              fit <- readModels(paste0(getwd(),"/",folder,file.name,".out")) #read Mplus output
+            } else {
+              fit <- readModels(paste0(getwd(), "/", folder, file.name, ".out")) #read Mplus output
               
-              if(check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out")) == "Ok"){
+              if (check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out")) == "Ok") {
                 
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
+                perf[1, a]  <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
                 times[1, a] <- round(tf[3], 2)
                 
                 # Save estimates
-                estimates <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                             (2 * I + 2), # state var
+                estimates <- fit$parameters$unstandardized[c(1:I,                   # loadings
+                                                             (2 * I + 2),           # state var
                                                              ((I + 2):(2 * I + 1)), # error variances
-                                                             (I + 1), # autoregressive effect
+                                                             (I + 1),               # autoregressive effect
                                                              (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2), # intercepts and indicator trait variances
-                                                             (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), #Covariances 
+                                                             (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)),                    # Covariances 
                                                            3]
                 
                 parameters[a, c(1:10, 15:18, 21:30)] <- estimates
                 
                 # Save posterior standard deviations
-                post.sd <- fit$parameters$unstandardized[c(1:I, #loadings
-                                                           (2 * I + 2), # state var
+                post.sd <- fit$parameters$unstandardized[c(1:I,                   # loadings
+                                                           (2 * I + 2),           # state var
                                                            ((I + 2):(2 * I + 1)), # error variances
-                                                           (I + 1), # autoregressive effect
+                                                           (I + 1),               # autoregressive effect
                                                            (4 * I + (I * (I - 1) / 2) + 3):(6 * I + (I * (I - 1) / 2) + 2), # intercepts and indicator trait variances
-                                                           (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)), #Covariances 
+                                                           (3 * I + 3):(3 * I + (I * (I - 1) / 2) + 2)),                    # Covariances 
                                                          4]
                 
                 se_psd[a, c(1:10, 15:18, 21:30)] <- post.sd
@@ -1717,16 +1976,19 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
                 samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
                 
                 # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2)/2 + 1)), -(1:2)]
+                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
                 
                 # Create matrix to store variance coefficients draws
                 pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
                 
                 for(i in 1:dim(samples)[1]){
-                  within.estimates <- list( loadings = c(1, t(samples[i, 1:3])), state.var = samples[i, 9],
-                                            error.var = c(t(samples[i, 4:7])), ar.effect = samples[i, 8])
-                  between.estimates <- list( trait.ind.var = c(t(samples[i, c(14, 16, 19, 23)])))
-                  pdist.var.coeff[i, ] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.estimates,
+                  within.estimates  <- list(loadings  = c(1, t(samples[i, 1:3])), 
+                                            state.var = samples[i, 9],
+                                            error.var = c(t(samples[i, 4:7])), 
+                                            ar.effect = samples[i, 8])
+                  between.estimates <- list(trait.ind.var = c(t(samples[i, c(14, 16, 19, 23)])))
+                  pdist.var.coeff[i, ] <- tso.var.coeff(I = I, nT = nT, 
+                                                        within.parameters  = within.estimates,
                                                         between.parameters = between.estimates)[,nT]
                 }
                 
@@ -1734,16 +1996,28 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
                 psd.var.coeff[a - 5, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save fit measures
-                if(!is.null(fit$summaries$DIC)){fit.measures[a, 4] <- c(fit$summaries$DIC)}
+                if (!is.null(fit$summaries$Parameters)) {
+                  fit.measures[a, 1] <- c(fit$summaries$Parameters)
+                }
+                if (!is.null(fit$summaries$DIC)) {
+                  fit.measures[a, 11] <- c(fit$summaries$DIC)
+                }
+                if (!is.null(fit$summaries$pD)) {
+                  fit.measures[a, 12] <- c(fit$summaries$pD)
+                }
+                if (!is.null(fit$summaries$PostPred_PValue)) {
+                  fit.measures[a, 13] <- c(fit$summaries$PostPred_PValue)
+                }
                 
                 rm(within.estimates, between.estimates, estimates, post.sd, samples, pdist.var.coeff, i)
-              }else{
-                perf[1, a] <- check.mplus(fit, paste0(getwd(),"/",folder,file.name,".out"))
-                times[1, a] <- round(tf[3], 2)
-                parameters[a, ] <- -999
-                se_psd[a, ] <- -999 
-                var.coeff[a, ] <- -999 
-                fit.measures[a, ] <- -999
+                
+              } else {
+                perf[1, a]             <- check.mplus(fit, paste0(getwd(), "/", folder, file.name, ".out"))
+                times[1, a]            <- round(tf[3], 2)
+                parameters[a, ]        <- -999
+                se_psd[a, ]            <- -999 
+                var.coeff[a, ]         <- -999 
+                fit.measures[a, ]      <- -999
                 psd.var.coeff[a - 5, ] <- -999
               }
               
@@ -1751,10 +2025,10 @@ outcome.simulation <- foreach(cond=args[1]:args[2], .combine='list', .multicombi
             }
             
             # Remove Mplus files of previous analysis 
-            if(file.exists(paste0(folder,file.name,".dat"))){unlink(paste0(folder,file.name,".dat"))}
-            if(file.exists(paste0(folder,file.name,".inp"))){unlink(paste0(folder,file.name,".inp"))}
-            if(file.exists(paste0(folder,file.name,".out"))){unlink(paste0(folder,file.name,".out"))}
-            if(file.exists(paste0(folder, "samples_", file.name, ".dat"))){unlink(paste0(folder, "samples_", file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
+            if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
+            if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
             # Export output to outer foreach ----
