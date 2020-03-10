@@ -16,6 +16,8 @@ library(foreach)
 library(MplusAutomation)
 library(MASS)
 library(bayesplot)
+library(coda)
+library(mcmcr)
 # Easy code to source all the needed files
 file.sources <- paste0("R/", list.files(paste0(getwd(), "/R")))
 sapply(file.sources,source,.GlobalEnv)
@@ -145,8 +147,8 @@ colnames(fit.measures.base) <- c("\\# Parameters", "Chitest", "df", "Chipval",
 # 3.0 Simulation foreach loops ----
 
 # Setup parallel backend to use 6 parallel tasks between 6 to 24(when bayes) processors (cores):
-cl <- makeCluster(2)
-registerDoParallel(cl, cores = 2)
+cl <- makeCluster(8)
+registerDoParallel(cl, cores = 8)
 
 # Get conditions and replications from the batch file
 args <- commandArgs(trailingOnly = TRUE)
@@ -154,7 +156,7 @@ args <- commandArgs(trailingOnly = TRUE)
 time0 <- proc.time()
 outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multicombine = TRUE) %:%
   foreach(r = args[3]:args[4], .combine = 'comb', .multicombine = TRUE, 
-          .packages = c("MplusAutomation", "MASS")) %dopar% {
+          .packages = c("MplusAutomation", "MASS", "bayesplot", "coda", "mcmcr")) %dopar% {
             
             # Copy table(s) to save results
             perf          <- perf.base
@@ -826,7 +828,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                                         "samples_", 
                                         file.name, 
                                         ".dat;", 
-                                        "\nOUTPUT: TECH8;")
+                                        "\nOUTPUT: TECH8;",
+                                        "\nPLOT: TYPE = PLOT2;")
             
             # Write analysis specifications in input file
             write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
@@ -889,7 +892,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Put valid samples in an array 
                 fit_samples <- as.array(fit$bparameters$valid_draw)
-                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- aperm(fit_samples, perm = c(1, 3, 2))
                 fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
                 # Rearrange samples in a matrix
@@ -913,25 +916,23 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Save mcmc diagnosis plots
                 if (dplots) {
-                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
-                  
-                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
+                  print(mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x)))))
                   # Diagnosis within loadings
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(4, 6, 8)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(4, 6, 8)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(4, 6, 8)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(4, 6, 8)]))
                   # Diagnosis between loadings 
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)]))
                   # Diagnosis error variances and state variance
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(10:13, 15)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(10:13, 15)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(10:13, 15)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(10:13, 15)]))
                   # Diagnosis trait mean and trait variance
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16)]))
                   # Diagnosis intercepts
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:3])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:3])
-                  
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:3]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:3]))
                   dev.off()
                 }
                 
@@ -967,6 +968,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
             if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
             if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
             if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, file.name, ".gh5"))) {unlink(paste0(folder, file.name, ".gh5"))}
             if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
@@ -994,7 +996,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                                         "samples_", 
                                         file.name, 
                                         ".dat;", 
-                                        "\nOUTPUT: TECH8;")
+                                        "\nOUTPUT: TECH8;",
+                                        "\nPLOT: TYPE = PLOT2;")
             
             # Write analysis specifications in input file
             write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
@@ -1053,7 +1056,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Put valid samples in an array 
                 fit_samples <- as.array(fit$bparameters$valid_draw)
-                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- aperm(fit_samples, perm = c(1, 3, 2))
                 fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
                 # Rearrange samples in a matrix
@@ -1076,9 +1079,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 psd.var.coeff[a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save mcmc diagnosis plots
+                pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
                 if (dplots) {
-                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
-                  
                   mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
                   # Diagnosis within loadings
                   mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(1:3)])
@@ -1095,9 +1097,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                   # Diagnosis intercepts
                   mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[9:11])
                   mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[9:11])
-                  
-                  dev.off()
                 }
+                dev.off()
+                if (!dplots) {unlink(paste0(folder, "Plots/", file.name, ".pdf"))}
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -1132,6 +1134,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
             if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
             if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
             if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, file.name, ".gh5"))) {unlink(paste0(folder, file.name, ".gh5"))}
             if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
@@ -1425,7 +1428,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                                         "samples_", 
                                         file.name, 
                                         ".dat;", 
-                                        "\nOUTPUT: TECH8;")
+                                        "\nOUTPUT: TECH8;",
+                                        "\nPLOT: TYPE = PLOT2;")
             
             # Write analysis specifications in input file
             write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
@@ -1488,7 +1492,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Put valid samples in an array 
                 fit_samples <- as.array(fit$bparameters$valid_draw)
-                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- aperm(fit_samples, perm = c(1, 3, 2))
                 fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
                 # Rearrange samples in a matrix
@@ -1512,9 +1516,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 psd.var.coeff[a - 4, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save mcmc diagnosis plots
+                pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
                 if (dplots) {
-                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
-                  
                   mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
                   # Diagnosis within loadings
                   mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)])
@@ -1531,9 +1534,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                   # Diagnosis intercepts
                   mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:4])
                   mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:4])
-                  
-                  dev.off()
                 }
+                dev.off()
+                if (!dplots) {unlink(paste0(folder, "Plots/", file.name, ".pdf"))}
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -1567,6 +1570,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
             if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
             if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
             if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, file.name, ".gh5"))) {unlink(paste0(folder, file.name, ".gh5"))}
             if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
@@ -1591,7 +1595,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                                         "samples_", 
                                         file.name, 
                                         ".dat;", 
-                                        "\nOUTPUT: TECH8;")
+                                        "\nOUTPUT: TECH8;",
+                                        "\nPLOT: TYPE = PLOT2;")
             
             # Write analysis specifications in input file
             write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
@@ -1640,7 +1645,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Put valid samples in an array 
                 fit_samples <- as.array(fit$bparameters$valid_draw)
-                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- aperm(fit_samples, perm = c(1, 3, 2))
                 fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
                 # Rearrange samples in a matrix
@@ -1664,9 +1669,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 psd.var.coeff[a - 4, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save mcmc diagnosis plots
+                pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
                 if (dplots) {
-                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
-                  
                   mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
                   # Diagnosis within loadings
                   mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:3])
@@ -1683,9 +1687,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                   # Diagnosis intercepts
                   mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[9:12])
                   mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[9:12])
-                  
-                  dev.off()
                 }
+                dev.off()
+                if (!dplots) {unlink(paste0(folder, "Plots/", file.name, ".pdf"))}
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -1720,6 +1724,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
             if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
             if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
             if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, file.name, ".gh5"))) {unlink(paste0(folder, file.name, ".gh5"))}
             if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
@@ -1889,7 +1894,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                                         "samples_", 
                                         file.name, 
                                         ".dat;", 
-                                        "\nOUTPUT: TECH8;")
+                                        "\nOUTPUT: TECH8;",
+                                        "\nPLOT: TYPE = PLOT2;")
             
             # Write analysis specifications in input file
             write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
@@ -1952,7 +1958,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Put valid samples in an array 
                 fit_samples <- as.array(fit$bparameters$valid_draw)
-                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- aperm(fit_samples, perm = c(1, 3, 2))
                 fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
                 # Rearrange samples in a matrix
@@ -1976,9 +1982,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 psd.var.coeff[a - 5, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save mcmc diagnosis plots
+                pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
                 if (dplots) {
-                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
-                  
                   mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
                   # Diagnosis within loadings
                   mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[5:7])
@@ -1995,9 +2000,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                   # Diagnosis intercepts
                   mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:4])
                   mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:4])
-                  
-                  dev.off()
                 }
+                dev.off()
+                if (!dplots) {unlink(paste0(folder, "Plots/", file.name, ".pdf"))}
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -2031,6 +2036,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
             if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
             if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
             if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, file.name, ".gh5"))) {unlink(paste0(folder, file.name, ".gh5"))}
             if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
@@ -2055,7 +2061,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                                         "samples_", 
                                         file.name, 
                                         ".dat;", 
-                                        "\nOUTPUT: TECH8;")
+                                        "\nOUTPUT: TECH8;",
+                                        "\nPLOT: TYPE = PLOT2;")
             
             # Write analysis specifications in input file
             write(analysis_syntax, paste0(folder, file.name, ".inp"), append = T)
@@ -2116,7 +2123,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Put valid samples in an array 
                 fit_samples <- as.array(fit$bparameters$valid_draw)
-                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- aperm(fit_samples, perm = c(1, 3, 2))
                 fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
                 # Rearrange samples in a matrix
@@ -2140,9 +2147,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 psd.var.coeff[a - 5, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save mcmc diagnosis plots
+                pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
                 if (dplots) {
-                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
-                  
                   mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
                   # Diagnosis within loadings
                   mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:3])
@@ -2159,9 +2165,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                   # Diagnosis intercepts
                   mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[10:13])
                   mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[10:13])
-                  
-                  dev.off()
                 }
+                dev.off()
+                if (!dplots) {unlink(paste0(folder, "Plots/", file.name, ".pdf"))}
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -2196,6 +2202,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
             if (file.exists(paste0(folder, file.name, ".dat"))) {unlink(paste0(folder, file.name, ".dat"))}
             if (file.exists(paste0(folder, file.name, ".inp"))) {unlink(paste0(folder, file.name, ".inp"))}
             if (file.exists(paste0(folder, file.name, ".out"))) {unlink(paste0(folder, file.name, ".out"))}
+            if (file.exists(paste0(folder, file.name, ".gh5"))) {unlink(paste0(folder, file.name, ".gh5"))}
             if (file.exists(paste0(folder, "samples_", file.name, ".dat"))) {unlink(paste0(folder, "samples_", file.name, ".dat"))}
             rm(file.name, run)
             
