@@ -39,6 +39,7 @@ if (!dir.exists(paste(getwd(), folder, sep = "/"))) {
   dir.create(paste(getwd(), folder, "Var_Coeff", sep = "/"), recursive = TRUE)
   dir.create(paste(getwd(), folder, "Fit_Measures", sep = "/"), recursive = TRUE)
   dir.create(paste(getwd(), folder, "PSD_Var_Coeff", sep = "/"), recursive = TRUE)
+  dir.create(paste(getwd(), folder, "Plots", sep = "/"), recursive = TRUE)
 } else {
   if (!dir.exists(paste(getwd(), folder, "Performance", sep = "/"))) {
     dir.create(paste(getwd(), folder, "Performance", sep = "/"))
@@ -61,6 +62,9 @@ if (!dir.exists(paste(getwd(), folder, sep = "/"))) {
   if (!dir.exists(paste(getwd(), folder, "PSD_Var_Coeff", sep = "/"))) {
     dir.create(paste(getwd(), folder, "PSD_Var_Coeff", sep = "/"))
   }
+  if (!dir.exists(paste(getwd(), folder, "Plots", sep = "/"))) {
+    dir.create(paste(getwd(), folder, "Plots", sep = "/"))
+  }
 }
 
 # Create function needed to combine foreach output ----
@@ -81,6 +85,7 @@ folder <- paste0(folder, "/")
 N       <- 100   # Sample size
 I       <- 4     # Number of variables
 timeout <- 3600  # Time limit in seconds to force ending an analysis in Mplus
+dplots  <- TRUE  # Save diagnosis plots for bayesian analyses.
 
 # Manipulated conditions
 timepoints       <- c(10, 15, 20, 30, 40, 50, 60, 90) # Number of measurement occasions
@@ -875,11 +880,13 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Compute and save variance coefficients
                 
-                # Read MCMC draws
-                samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+                # Put valid samples in an array 
+                fit_samples <- as.array(fit$bparameters$valid_draw)
+                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
-                # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+                # Rearrange samples in a matrix
+                samples <- matrix(fit_samples, prod(dim(fit_samples)[1:2]), dim(fit_samples)[3])
                 
                 # Create matrix to store variance coefficients draws
                 pdist.var.coeff <- matrix(NA, dim(samples)[1], 12)
@@ -896,6 +903,30 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 var.coeff[a, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, median)
                 psd.var.coeff[a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
+                
+                # Save mcmc diagnosis plots
+                if (dplots) {
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
+                  
+                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  # Diagnosis within loadings
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(4, 6, 8)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(4, 6, 8)])
+                  # Diagnosis between loadings 
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)])
+                  # Diagnosis error variances and state variance
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(10:13, 15)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(10:13, 15)])
+                  # Diagnosis trait mean and trait variance
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16)])
+                  # Diagnosis intercepts
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:3])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:3])
+                  
+                  dev.off()
+                }
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -1013,11 +1044,13 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Compute and save variance coefficients
                 
-                # Read MCMC draws
-                samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+                # Put valid samples in an array 
+                fit_samples <- as.array(fit$bparameters$valid_draw)
+                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
-                # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+                # Rearrange samples in a matrix
+                samples <- matrix(fit_samples, prod(dim(fit_samples)[1:2]), dim(fit_samples)[3])
                 
                 # Create matrix to store variance coefficients draws
                 pdist.var.coeff <- matrix(NA, dim(samples)[1], 12)
@@ -1034,6 +1067,30 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 var.coeff[a, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, median)
                 psd.var.coeff[a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
+                
+                # Save mcmc diagnosis plots
+                if (dplots) {
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
+                  
+                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  # Diagnosis within loadings
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(1:3)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(1:3)])
+                  # Diagnosis between loadings 
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[13:15])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[13:15])
+                  # Diagnosis error variances and state variance
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[4:8])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[4:8])
+                  # Diagnosis trait mean and trait variance
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(12, 16)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(12, 16)])
+                  # Diagnosis intercepts
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[9:11])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[9:11])
+                  
+                  dev.off()
+                }
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -1422,11 +1479,13 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Compute variance coefficients
                 
-                # Read MCMC draws
-                samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+                # Put valid samples in an array 
+                fit_samples <- as.array(fit$bparameters$valid_draw)
+                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
-                # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+                # Rearrange samples in a matrix
+                samples <- matrix(fit_samples, prod(dim(fit_samples)[1:2]), dim(fit_samples)[3])
                 
                 # Create matrix to store variance coefficients draws
                 pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
@@ -1444,6 +1503,30 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 var.coeff[a, ] <- apply(pdist.var.coeff, 2, median)
                 psd.var.coeff[a - 4, ] <- apply(pdist.var.coeff, 2, sd)
+                
+                # Save mcmc diagnosis plots
+                if (dplots) {
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
+                  
+                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  # Diagnosis within loadings
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)])
+                  # Diagnosis between loadings 
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(6, 8, 10)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(6, 8, 10)])
+                  # Diagnosis unique and common state variances
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[11:15])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[11:15])
+                  # Diagnosis unique and common trait variances
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[16:20])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[16:20])
+                  # Diagnosis intercepts
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:4])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:4])
+                  
+                  dev.off()
+                }
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -1548,11 +1631,13 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Compute variance coefficients
                 
-                # Read MCMC draws
-                samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+                # Put valid samples in an array 
+                fit_samples <- as.array(fit$bparameters$valid_draw)
+                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
-                # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+                # Rearrange samples in a matrix
+                samples <- matrix(fit_samples, prod(dim(fit_samples)[1:2]), dim(fit_samples)[3])
                 
                 # Create matrix to store variance coefficients draws
                 pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
@@ -1570,6 +1655,30 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 var.coeff[a, ] <- apply(pdist.var.coeff, 2, median)
                 psd.var.coeff[a - 4, ] <- apply(pdist.var.coeff, 2, sd)
+                
+                # Save mcmc diagnosis plots
+                if (dplots) {
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
+                  
+                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  # Diagnosis within loadings
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:3])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:3])
+                  # Diagnosis between loadings 
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[13:15])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[13:14])
+                  # Diagnosis unique and common state variances
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[4:8])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[4:8])
+                  # Diagnosis unique and common trait variances
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[16:20])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[16:20])
+                  # Diagnosis intercepts
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[9:12])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[9:12])
+                  
+                  dev.off()
+                }
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -1834,11 +1943,13 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Compute and save variance coefficients
                 
-                # Read MCMC draws
-                samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+                # Put valid samples in an array 
+                fit_samples <- as.array(fit$bparameters$valid_draw)
+                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
-                # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+                # Rearrange samples in a matrix
+                samples <- matrix(fit_samples, prod(dim(fit_samples)[1:2]), dim(fit_samples)[3])
                 
                 # Create matrix to store variance coefficients draws
                 pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
@@ -1856,6 +1967,30 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 var.coeff[a, ] <- apply(pdist.var.coeff, 2, median)
                 psd.var.coeff[a - 5, ] <- apply(pdist.var.coeff, 2, sd)
+                
+                # Save mcmc diagnosis plots
+                if (dplots) {
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
+                  
+                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  # Diagnosis within loadings
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[5:7])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[5:7])
+                  # Diagnosis error variances and state variance
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(9:11, 13)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(9:11, 13)])
+                  # Diagnosis autoregressive effect
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[12])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[12])
+                  # Diagnosis trait indicator variances
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)])
+                  # Diagnosis intercepts
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:4])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:4])
+                  
+                  dev.off()
+                }
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -1972,11 +2107,13 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Compute and save variance coefficients
                 
-                # Read MCMC draws
-                samples <- read.table(paste0(getwd(), "/", folder, "samples_", file.name, ".dat"))
+                # Put valid samples in an array 
+                fit_samples <- as.array(fit$bparameters$valid_draw)
+                fit_samples <- aperm(fit_samples, perm = c(3, 2, 1))
+                fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
                 
-                # Delete burn-in and indicator for chain and draw
-                samples <- samples[which(samples$V2 >= (max(samples$V2) / 2 + 1)), -(1:2)]
+                # Rearrange samples in a matrix
+                samples <- matrix(fit_samples, prod(dim(fit_samples)[1:2]), dim(fit_samples)[3])
                 
                 # Create matrix to store variance coefficients draws
                 pdist.var.coeff <- matrix(NA, dim(samples)[1], 20)
@@ -1994,6 +2131,30 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 var.coeff[a, ] <- apply(pdist.var.coeff, 2, median)
                 psd.var.coeff[a - 5, ] <- apply(pdist.var.coeff, 2, sd)
+                
+                # Save mcmc diagnosis plots
+                if (dplots) {
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"),)
+                  
+                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  # Diagnosis within loadings
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:3])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:3])
+                  # Diagnosis error variances and state variance
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(4:7, 9)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(4:7, 9)])
+                  # Diagnosis autoregressive effect
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[8])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[8])
+                  # Diagnosis trait indicator variances
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)])
+                  # Diagnosis intercepts
+                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[10:13])
+                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[10:13])
+                  
+                  dev.off()
+                }
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
