@@ -2,7 +2,7 @@
 
 write.Mplus.options <- function(usevariables, cluster = NULL, analysis_type = c("GENERAL", "TWOLEVEL"),
                                   estimator = c("ML", "MLR", "BAYES"), iterations, h1iterations = 50000, 
-                                  processors = 4, chains = 4, thin = 10){
+                                  processors = 3, chains = 3, thin = 10){
   usevariables_syntax <- paste("USEVAR", "=", paste(usevariables, collapse = "\n"), ";", sep = " ")
   if(!is.null(cluster)){
     cluster_syntax <- paste("CLUSTER", "=", cluster, ";", sep = " ")

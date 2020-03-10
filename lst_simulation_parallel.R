@@ -15,6 +15,7 @@ library(doParallel)
 library(foreach)
 library(MplusAutomation)
 library(MASS)
+library(bayesplot)
 # Easy code to source all the needed files
 file.sources <- paste0("R/", list.files(paste0(getwd(), "/R")))
 sapply(file.sources,source,.GlobalEnv)
@@ -186,9 +187,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
               
               if (ratio == "1:3") {
                 # Within Parameters
-                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
-                var_state      <- 3                   # Variance latent state residual
-                var_m_error    <- c(1, 0.5, 1.3, 0.8)           # Variance of measurement errors
+                state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+                var_state      <- 1.8                    # Variance latent state residual
+                var_m_error    <- c(0.6, 0.25, 0.7, 0.5) # Variance of measurement errors
                 
                 within.parameters <- list(loadings  = state_loadings, 
                                           state.var = var_state, 
@@ -197,7 +198,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 # Between Paramaters
                 intercepts     <- seq(0, by = 0.2, length.out = I) # intercepts
                 trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent trait
-                var_trait      <- 1                                # variance latent trait variable
+                var_trait      <- 0.6                                # variance latent trait variable
                 mean_trait     <- 4                                # mean latent trait variable
                 
                 between.parameters <- list(loadings   = trait_loadings, 
@@ -220,9 +221,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
               
               if (ratio == "1:1") {
                 # Within Parameters
-                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
-                var_state      <- 2                   # Variance latent state residual
-                var_m_error    <- rep(1, I)           # Variance of measurement errors
+                state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+                var_state      <- 1.2                    # Variance latent state residual
+                var_m_error    <- c(0.6, 0.25, 0.7, 0.5) # Variance of measurement errors
                 
                 within.parameters <- list(loadings  = state_loadings, 
                                           state.var = var_state, 
@@ -231,7 +232,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 # Between Paramaters
                 intercepts     <- seq(0, by = 0.2, length.out = I) # intercepts
                 trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent trait
-                var_trait      <- 2                                # variance latent trait variable
+                var_trait      <- 1.2                              # variance latent trait variable
                 mean_trait     <- 4                                # mean latent trait variable
                 
                 between.parameters <- list(loadings   = trait_loadings, 
@@ -254,9 +255,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
               
               if (ratio == "3:1") {
                 # Within Parameters
-                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
-                var_state      <- 1                   # Variance latent state residual
-                var_m_error    <- rep(1, I)           # Variance of measurement errors
+                state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+                var_state      <- 0.6                    # Variance latent state residual
+                var_m_error    <- c(0.6, 0.25, 0.7, 0.5) # Variance of measurement errors
                 
                 within.parameters <- list(loadings  = state_loadings, 
                                           state.var = var_state, 
@@ -265,7 +266,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 # Between Paramaters
                 intercepts     <- seq(0, by = 0.2, length.out = I) # intercepts
                 trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent trait
-                var_trait      <- 3                                # variance latent trait variable
+                var_trait      <- 1.8                              # variance latent trait variable
                 mean_trait     <- 4                                # mean latent trait variable
                 
                 between.parameters <- list(loadings   = trait_loadings, 
@@ -291,9 +292,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
               
               if (ratio == "1:3") {
                 # Within Parameters
-                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent common state
-                var_CS         <- 2                   # Variance latent common state
-                var_US         <- c(1, 0.5, 1.5, 0.8) # Variance of latent unique states
+                state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent common state
+                var_CS         <- 1.8                    # Variance latent common state
+                var_US         <- c(0.6, 0.25, 0.8, 0.5) # Variance of latent unique states
                 
                 within.parameters <- list(loadings = state_loadings, 
                                           CS.var   = var_CS, 
@@ -301,9 +302,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Between Paramaters
                 intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
-                trait_loadings <- c(1, 0.8, 1.2, 0.9)              # loading parametes for the latent common trait
-                var_CT         <- 1.5                              # variance latent common trait
-                var_UT         <- c(0.5, 1, 0.3, 0.8)              # variance latent unique traits
+                trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent common trait
+                var_CT         <- 0.4                              # variance latent common trait
+                var_UT         <- c(0.2, 0.1, 0.25, 0.15)          # variance latent unique traits
                 
                 between.parameters <- list(loadings   = trait_loadings, 
                                            intercepts = intercepts, 
@@ -324,9 +325,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
               
               if (ratio == "1:1") {
                 # Within Parameters
-                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent common state
-                var_CS         <- 2                   # Variance latent common state
-                var_US         <- c(1, 0.5, 1.5, 0.8) # Variance of latent unique states
+                state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent common state
+                var_CS         <- 1.2                    # Variance latent common state
+                var_US         <- c(0.6, 0.25, 0.8, 0.5) # Variance of latent unique states
                 
                 within.parameters <- list(loadings = state_loadings, 
                                           CS.var   = var_CS, 
@@ -334,9 +335,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Between Paramaters
                 intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
-                trait_loadings <- c(1, 0.8, 1.2, 0.9)              # loading parametes for the latent common trait
-                var_CT         <- 1.5                              # variance latent common trait
-                var_UT         <- c(0.5, 1, 0.3, 0.8)              # variance latent unique traits
+                trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent common trait
+                var_CT         <- 1.2                              # variance latent common trait
+                var_UT         <- c(0.2, 0.1, 0.25, 0.15)          # variance latent unique traits
                 
                 between.parameters <- list(loadings   = trait_loadings, 
                                            intercepts = intercepts, 
@@ -357,9 +358,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
               
               if (ratio == "3:1") {
                 # Within Parameters
-                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent common state
-                var_CS         <- 2                   # Variance latent common state
-                var_US         <- c(1, 0.5, 1.5, 0.8) # Variance of latent unique states
+                state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent common state
+                var_CS         <- 0.6                    # Variance latent common state
+                var_US         <- c(0.6, 0.25, 0.8, 0.5) # Variance of latent unique states
                 
                 within.parameters <- list(loadings = state_loadings, 
                                           CS.var   = var_CS, 
@@ -367,9 +368,9 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Between Paramaters
                 intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
-                trait_loadings <- c(1, 0.8, 1.2, 0.9)              # loading parametes for the latent common trait
-                var_CT         <- 1.5                              # variance latent common trait
-                var_UT         <- c(0.5, 1, 0.3, 0.8)              # variance latent unique traits
+                trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent common trait
+                var_CT         <- 1.8                              # variance latent common trait
+                var_UT         <- c(0.2, 0.1, 0.25, 0.15)          # variance latent unique traits
                 
                 between.parameters <- list(loadings   = trait_loadings, 
                                            intercepts = intercepts, 
@@ -393,10 +394,10 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
               
               if (ratio == "1:3") {
                 # Within Parameters
-                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
-                var_state      <- 2                   # Variance latent state residual
-                var_error      <- c(1, 0.5, 1.5, 0.8) # Variance of latent measurement errors
-                ar_effect      <- 0.5                 # autoregressive effect on the latent state residuals
+                state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+                var_state      <- 1.8                    # Variance latent state residual
+                var_error      <- c(0.6, 0.25, 0.7, 0.5) # Variance of latent measurement errors
+                ar_effect      <- 0.5                    # autoregressive effect on the latent state residuals
                 
                 within.parameters <- list(loadings  = state_loadings, 
                                           ar.effect = ar_effect, 
@@ -407,14 +408,16 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Between Paramaters 
                 intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
-                var_ind_traits <- c(2, 1.5, 2.5, 1.75)             # variance latent indicator trait variables
+                var_ind_traits <- c(0.6, 0.2, 0.8, 0.5)            # variance latent indicator trait variables
                 
-                # Create positive definite correlation matrix
-                set.seed(13002)
-                Rcor <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
-                Rcor[lower.tri(Rcor)] = t(Rcor)[lower.tri(Rcor)]
-                diag(Rcor) <- 1
-                set.seed(seed)
+                # Correlation matrix of the trait indicators
+                # Correlation are high between 0.7 and 0.9. This correlation matrix was
+                # generated with the seed 13001 during the first run of the simulation.
+                Rcor <- matrix(c(1.0, 0.8, 0.9, 0.9,
+                                 0.8, 1.0, 0.8, 0.7,
+                                 0.9, 0.8, 1.0, 0.7,
+                                 0.9, 0.7, 0.7, 1.0), 
+                               nrow = I, ncol = I, byrow = TRUE)
                 
                 between.parameters <- list(intercepts    = intercepts, 
                                            trait.ind.var = var_ind_traits, 
@@ -434,10 +437,10 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
               
               if (ratio == "1:1") {
                 # Within Parameters
-                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
-                var_state      <- 2                   # Variance latent state residual
-                var_error      <- c(1, 0.5, 1.5, 0.8) # Variance of latent measurement errors
-                ar_effect      <- 0.5                 # autoregressive effect on the latent state residuals
+                state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+                var_state      <- 1.2                    # Variance latent state residual
+                var_error      <- c(0.6, 0.25, 0.7, 0.5) # Variance of latent measurement errors
+                ar_effect      <- 0.5                    # autoregressive effect on the latent state residuals
                 
                 within.parameters <- list(loadings  = state_loadings, 
                                           ar.effect = ar_effect, 
@@ -448,14 +451,16 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Between Paramaters 
                 intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
-                var_ind_traits <- c(2, 1.5, 2.5, 1.75)             # variance latent indicator trait variables
+                var_ind_traits <- c(1.2, 0.35, 1.8, 0.8)           # variance latent indicator trait variables
                 
-                # Create positive definite correlation matrix
-                set.seed(13002)
-                Rcor <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
-                Rcor[lower.tri(Rcor)] = t(Rcor)[lower.tri(Rcor)]
-                diag(Rcor) <- 1
-                set.seed(seed)
+                # Correlation matrix of the trait indicators
+                # Correlation are high between 0.7 and 0.9. This correlation matrix was
+                # generated with the seed 13001 during the first run of the simulation.
+                Rcor <- matrix(c(1.0, 0.8, 0.9, 0.9,
+                                 0.8, 1.0, 0.8, 0.7,
+                                 0.9, 0.8, 1.0, 0.7,
+                                 0.9, 0.7, 0.7, 1.0), 
+                               nrow = I, ncol = I, byrow = TRUE)
                 
                 between.parameters <- list(intercepts    = intercepts, 
                                            trait.ind.var = var_ind_traits, 
@@ -475,10 +480,10 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
               
               if (ratio == "3:1") {
                 # Within Parameters
-                state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
-                var_state      <- 2                   # Variance latent state residual
-                var_error      <- c(1, 0.5, 1.5, 0.8) # Variance of latent measurement errors
-                ar_effect      <- 0.5                 # autoregressive effect on the latent state residuals
+                state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+                var_state      <- 0.6                    # Variance latent state residual
+                var_error      <- c(0.6, 0.25, 0.7, 0.5) # Variance of latent measurement errors
+                ar_effect      <- 0.5                    # autoregressive effect on the latent state residuals
                 
                 within.parameters <- list(loadings  = state_loadings, 
                                           ar.effect = ar_effect, 
@@ -489,14 +494,16 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Between Paramaters 
                 intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
-                var_ind_traits <- c(2, 1.5, 2.5, 1.75)             # variance latent indicator trait variables
+                var_ind_traits <- c(1.8, 0.5, 2.5, 1.1)            # variance latent indicator trait variables
                 
-                # Create positive definite correlation matrix
-                set.seed(13002)
-                Rcor <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
-                Rcor[lower.tri(Rcor)] = t(Rcor)[lower.tri(Rcor)]
-                diag(Rcor) <- 1
-                set.seed(seed)
+                # Correlation matrix of the trait indicators
+                # Correlation are high between 0.7 and 0.9. This correlation matrix was
+                # generated with the seed 13001 during the first run of the simulation.
+                Rcor <- matrix(c(1.0, 0.8, 0.9, 0.9,
+                                 0.8, 1.0, 0.8, 0.7,
+                                 0.9, 0.8, 1.0, 0.7,
+                                 0.9, 0.7, 0.7, 1.0), 
+                               nrow = I, ncol = I, byrow = TRUE)
                 
                 between.parameters <- list(intercepts    = intercepts, 
                                            trait.ind.var = var_ind_traits, 
