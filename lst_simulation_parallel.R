@@ -1680,8 +1680,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                   print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[4:8]))
                   print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[4:8]))
                   # Diagnosis unique and common trait variances
-                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[20, 16:19]))
-                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[20, 16:19]))
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(20, 16:19)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(20, 16:19)]))
                   # Diagnosis intercepts
                   print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[9:12]))
                   print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[9:12]))
