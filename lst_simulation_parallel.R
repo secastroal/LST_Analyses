@@ -1079,27 +1079,26 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 psd.var.coeff[a - 2, (2 * I + 1):(5 * I)] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save mcmc diagnosis plots
-                pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
                 if (dplots) {
-                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
+                  print(mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x)))))
                   # Diagnosis within loadings
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(1:3)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(1:3)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(1:3)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(1:3)]))
                   # Diagnosis between loadings 
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[13:15])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[13:15])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[13:15]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[13:15]))
                   # Diagnosis error variances and state variance
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[4:8])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[4:8])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[4:8]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[4:8]))
                   # Diagnosis trait mean and trait variance
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(12, 16)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(12, 16)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(12, 16)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(12, 16)]))
                   # Diagnosis intercepts
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[9:11])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[9:11])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[9:11]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[9:11]))
+                  dev.off()
                 }
-                dev.off()
-                if (!dplots) {unlink(paste0(folder, "Plots/", file.name, ".pdf"))}
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -1516,27 +1515,26 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 psd.var.coeff[a - 4, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save mcmc diagnosis plots
-                pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
                 if (dplots) {
-                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
+                  print(mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x)))))
                   # Diagnosis within loadings
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(5, 7, 9)]))
                   # Diagnosis between loadings 
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(6, 8, 10)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(6, 8, 10)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(6, 8, 10)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(6, 8, 10)]))
                   # Diagnosis unique and common state variances
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[11:15])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[11:15])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[11:15]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[11:15]))
                   # Diagnosis unique and common trait variances
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[16:20])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[16:20])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[16:20]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[16:20]))
                   # Diagnosis intercepts
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:4])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:4])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:4]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:4]))
+                  dev.off()
                 }
-                dev.off()
-                if (!dplots) {unlink(paste0(folder, "Plots/", file.name, ".pdf"))}
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -1669,27 +1667,26 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 psd.var.coeff[a - 4, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save mcmc diagnosis plots
-                pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
                 if (dplots) {
-                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
+                  print(mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x)))))
                   # Diagnosis within loadings
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:3])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:3])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:3]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:3]))
                   # Diagnosis between loadings 
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[13:15])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[13:14])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[13:15]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[13:14]))
                   # Diagnosis unique and common state variances
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[4:8])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[4:8])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[4:8]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[4:8]))
                   # Diagnosis unique and common trait variances
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[16:20])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[16:20])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[20, 16:19]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[20, 16:19]))
                   # Diagnosis intercepts
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[9:12])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[9:12])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[9:12]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[9:12]))
+                  dev.off()
                 }
-                dev.off()
-                if (!dplots) {unlink(paste0(folder, "Plots/", file.name, ".pdf"))}
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -1982,27 +1979,26 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 psd.var.coeff[a - 5, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save mcmc diagnosis plots
-                pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
                 if (dplots) {
-                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
+                  print(mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x)))))
                   # Diagnosis within loadings
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[5:7])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[5:7])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[5:7]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[5:7]))
                   # Diagnosis error variances and state variance
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(9:11, 13)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(9:11, 13)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(8:11, 13)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(8:11, 13)]))
                   # Diagnosis autoregressive effect
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[12])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[12])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[12]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[12]))
                   # Diagnosis trait indicator variances
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)]))
                   # Diagnosis intercepts
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:4])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:4])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:4]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:4]))
+                  dev.off()
                 }
-                dev.off()
-                if (!dplots) {unlink(paste0(folder, "Plots/", file.name, ".pdf"))}
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
@@ -2147,27 +2143,26 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 psd.var.coeff[a - 5, ] <- apply(pdist.var.coeff, 2, sd)
                 
                 # Save mcmc diagnosis plots
-                pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
                 if (dplots) {
-                  mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x))))
+                  pdf(file = paste0(folder, "Plots/", file.name, ".pdf"))
+                  print(mcmc_rhat(apply(fit_samples, 3, function (x) mcmcr::rhat(coda::as.mcmc(x)))))
                   # Diagnosis within loadings
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:3])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:3])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[1:3]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[1:3]))
                   # Diagnosis error variances and state variance
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(4:7, 9)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(4:7, 9)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(4:7, 9)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(4:7, 9)]))
                   # Diagnosis autoregressive effect
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[8])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[8])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[8]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[8]))
                   # Diagnosis trait indicator variances
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[c(14, 16, 19, 23)]))
                   # Diagnosis intercepts
-                  mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[10:13])
-                  mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[10:13])
+                  print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[10:13]))
+                  print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[10:13]))
+                  dev.off()
                 }
-                dev.off()
-                if (!dplots) {unlink(paste0(folder, "Plots/", file.name, ".pdf"))}
                 
                 # Save fit measures
                 if (!is.null(fit$summaries$Parameters)) {
