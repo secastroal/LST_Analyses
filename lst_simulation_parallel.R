@@ -91,13 +91,13 @@ timeout <- 3600  # Time limit in seconds to force ending an analysis in Mplus
 dplots  <- TRUE  # Save diagnosis plots for bayesian analyses.
 
 # Manipulated conditions
-timepoints       <- c(10, 15, 20, 30, 40, 50, 60, 90) # Number of measurement occasions
-missingness      <- c(0.0, 0.1, 0.2)                  # Proportion of NAs
-dataModel_to_sim <- c("msst", "cuts", "tso")          # Model to simulate the data
-var_ratio        <- c("1:3", "1:1", "3:1")            # Ratio between consistency and occasion-specificity
+timepoints       <- c(10, 15, 20, 30, 60, 90) # Number of measurement occasions
+missingness      <- c(0.0, 0.1, 0.2)          # Proportion of NAs
+dataModel_to_sim <- c("msst", "cuts", "tso")  # Model to simulate the data
+var_ratio        <- c("1:3", "1:1", "3:1")    # Ratio between consistency and occasion-specificity
 
-Cond        <- expand.grid(timepoints, missingness, dataModel_to_sim, var_ratio)
-names(Cond) <- c("nT", "na.prop", "dataModel", "ratio")
+Cond        <- expand.grid(timepoints, missingness, var_ratio, dataModel_to_sim)
+names(Cond) <- c("nT", "na.prop", "ration", "dataModel")
 
 rm(timepoints, missingness, dataModel_to_sim, var_ratio)
 
@@ -338,7 +338,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 # Between Paramaters
                 intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
                 trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent common trait
-                var_CT         <- 1.2                              # variance latent common trait
+                var_CT         <- 1.0                              # variance latent common trait
                 var_UT         <- c(0.2, 0.1, 0.25, 0.15)          # variance latent unique traits
                 
                 between.parameters <- list(loadings   = trait_loadings, 
@@ -371,7 +371,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 # Between Paramaters
                 intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
                 trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent common trait
-                var_CT         <- 1.8                              # variance latent common trait
+                var_CT         <- 1.6                              # variance latent common trait
                 var_UT         <- c(0.2, 0.1, 0.25, 0.15)          # variance latent unique traits
                 
                 between.parameters <- list(loadings   = trait_loadings, 
