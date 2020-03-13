@@ -88,7 +88,6 @@ folder <- paste0(folder, "/")
 N       <- 100   # Sample size
 I       <- 4     # Number of variables
 timeout <- 3600  # Time limit in seconds to force ending an analysis in Mplus
-dplots  <- TRUE  # Save diagnosis plots for bayesian analyses.
 
 # Manipulated conditions
 timepoints       <- c(10, 15, 20, 30, 60, 90) # Number of measurement occasions
@@ -182,6 +181,10 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
             ratio     <- Cond[cond, 4]
             seed      <- 1000 * cond + r
             set.seed(seed)
+            # Value to define whether convergence check plots for bayesian analyses
+            # are saved in this run. Convergence check plots will be sabe for 1.5%
+            # of the total analyses.
+            dplots  <- rbinom(1, 1, 0.015)  # Save diagnosis plots for bayesian analyses.
             
             # Data simulation given dataModel and ratio ----
             
@@ -410,7 +413,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Between Paramaters 
                 intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
-                var_ind_traits <- c(0.6, 0.2, 0.8, 0.5)            # variance latent indicator trait variables
+                var_ind_traits <- c(0.3, 0.1, 0.4, 0.2)            # variance latent indicator trait variables
                 
                 # Correlation matrix of the trait indicators
                 # Correlation are high between 0.7 and 0.9. This correlation matrix was
@@ -453,7 +456,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Between Paramaters 
                 intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
-                var_ind_traits <- c(1.2, 0.35, 1.8, 0.8)           # variance latent indicator trait variables
+                var_ind_traits <- c(0.8, 0.2, 1.3, 0.5)           # variance latent indicator trait variables
                 
                 # Correlation matrix of the trait indicators
                 # Correlation are high between 0.7 and 0.9. This correlation matrix was
@@ -496,7 +499,7 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
                 
                 # Between Paramaters 
                 intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
-                var_ind_traits <- c(1.8, 0.5, 2.5, 1.1)            # variance latent indicator trait variables
+                var_ind_traits <- c(1.6, 0.55, 2.2, 1.2)           # variance latent indicator trait variables
                 
                 # Correlation matrix of the trait indicators
                 # Correlation are high between 0.7 and 0.9. This correlation matrix was
