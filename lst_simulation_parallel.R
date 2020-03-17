@@ -177,8 +177,8 @@ outcome.simulation <- foreach(cond = args[1]:args[2], .combine = 'list', .multic
             # Define seed and conditions to be use
             nT        <- Cond[cond, 1]
             na.prop   <- Cond[cond, 2]
-            dataModel <- Cond[cond, 3]
-            ratio     <- Cond[cond, 4]
+            ratio     <- Cond[cond, 3]
+            dataModel <- Cond[cond, 4]
             seed      <- 1000 * cond + r
             set.seed(seed)
             # Value to define whether convergence check plots for bayesian analyses
