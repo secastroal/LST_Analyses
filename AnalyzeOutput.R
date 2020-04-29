@@ -13,6 +13,19 @@ I  <- 4
 nT <- 30
 R  <- 100
 
+# Manipulated conditions
+timepoints       <- c(10, 15, 20, 30, 60, 90) # Number of measurement occasions
+missingness      <- c(0.0, 0.1, 0.2)          # Proportion of NAs
+dataModel_to_sim <- c("msst", "cuts", "tso")  # Model to simulate the data
+var_ratio        <- c("1:3", "1:1", "3:1")    # Ratio between consistency and occasion-specificity
+
+Cond        <- expand.grid(timepoints, missingness, var_ratio, dataModel_to_sim)
+names(Cond) <- c("nT", "na.prop", "ration", "dataModel")
+
+Cond.ex <- Cond[rep(1:162, each = 100), ]
+
+rm(timepoints, missingness, dataModel_to_sim, var_ratio)
+
 # Create labels for the 11 types of analyses 
 models    <- c("msst", "cuts", "tso")
 data_str  <- c("wide", "long")
@@ -21,6 +34,19 @@ labels    <- expand.grid(data_str, estimator, models)
 labels    <- labels[-10, c(3,1,2)]
 labels    <- apply(labels, 1, function(vec) paste(vec, collapse = "_"))
 rm(models, data_str, estimator)
+
+# Variables to loop through to get plots by crossing ratio and missingness proportion.
+Cond.ind <- cbind(which(Cond$na.prop == 0.0 & Cond$ration == "1:3"),
+                  which(Cond$na.prop == 0.0 & Cond$ration == "1:1"),
+                  which(Cond$na.prop == 0.0 & Cond$ration == "3:1"),
+                  which(Cond$na.prop == 0.1 & Cond$ration == "1:3"),
+                  which(Cond$na.prop == 0.1 & Cond$ration == "1:1"),
+                  which(Cond$na.prop == 0.1 & Cond$ration == "3:1"),
+                  which(Cond$na.prop == 0.2 & Cond$ration == "1:3"),
+                  which(Cond$na.prop == 0.2 & Cond$ration == "1:1"),
+                  which(Cond$na.prop == 0.2 & Cond$ration == "3:1"))
+file.name <- paste0(rep(c("na0_", "na10", "na20"), each=3), c("ra1to3", "ra1to1", "ra3to1"))
+
 
 # matrix to store True parameters
  
@@ -553,36 +579,41 @@ print(xtable(na.omit(t(var_coeff.true.ex[7:9, ])),
 
 rm(var_coeff.true.ex, parameters.true.ex)
 
-# Repeat true parameters in a matrix with 19800 rows ----
-parameters.true <- parameters.true[rep(1:3, each = 11 * R * 6),]
-
-var_coeff.true <- var_coeff.true[rep(1:3, each = 11 * R * 6),]
+# Repeat true parameters in a matrix with 178200 rows ----
+parameters.true <- parameters.true[rep(1:9, each = 11 * R * 18), ]
+var_coeff.true  <- var_coeff.true[rep(1:9, each = 11 * R * 18), ]
 
 # Create factor variables for anova analyses ----
-cond <- factor(rep(1:18, each = R * 11))
-b.model <- factor(rep(1:3, each = R * 6 * 11), levels = c("1", "2", "3"), labels = c("b.msst", "b.cuts", "b.tso"))
-NA.prop  <- factor(rep(rep(1:2, 3), each = R * 3 * 11), levels = c("1", "2"), labels = c("0%", "10%"))
-times   <- factor(rep(rep(1:3, 6), each = R * 11), levels = c("1", "2", "3"), labels = c("30", "60", "90"))
-model   <- factor(rep(rep(1:3, each = 4)[1:11], R * 3 * 6), levels = c("1", "2", "3"), labels = c("msst", "cuts", "tso"))
-est.method <- factor(rep(c(1,1,2,2,1,1,2,2,1,2,2), R * 3 * 6), levels = c("1", "2"), labels = c("ml", "bayes"))
-format  <- factor(rep(c(1,2,1,2,1,2,1,2,1,1,2), R * 3 * 6), levels = c("1", "2"), labels = c("wide", "long"))
+cond       <- factor(rep(1:162, each = R * 11))
+b.model    <- factor(rep(1:3, each = R * 54 * 11), levels = c("1", "2", "3"), labels = c("b.msst", "b.cuts", "b.tso"))
+ts.ratio   <- factor(rep(rep(1:3, 3), each = R * 18 * 11 ), levels = c("1", "2", "3"), labels = c("1:3", "1:1", "3:1"))
+NA.prop    <- factor(rep(rep(1:3, 9), each = R * 6 * 11), levels = c("1", "2", "3"), labels = c("0%", "10%", "20%"))
+times      <- factor(rep(rep(1:6, 27), each = R * 11), levels = c("1", "2", "3", "4", "5", "6"), labels = c("10", "15", "20", "30", "60", "90"))
+model      <- factor(rep(rep(1:3, each = 4)[1:11], R * 3 * 54), levels = c("1", "2", "3"), labels = c("msst", "cuts", "tso"))
+est.method <- factor(rep(c(1,1,2,2,1,1,2,2,1,2,2), R * 3 * 54), levels = c("1", "2"), labels = c("ml", "bayes"))
+format     <- factor(rep(c(1,2,1,2,1,2,1,2,1,1,2), R * 3 * 54), levels = c("1", "2"), labels = c("wide", "long"))
 
 factor.var <- data.frame(cond, b.model, NA.prop, times, model, est.method, format)
 rm(cond, b.model, NA.prop, times, model, est.method, format)
 
 # Performances ----
-files <- paste(getwd(), "Mplus_Simulation" , "Performance", paste0("performance_",  1:18, ".dat"), sep = "/")
+files   <- paste(getwd(), "Mplus_Simulation" , "Performance", paste0("performance_",  1:162, ".dat"), sep = "/")
+files.b <- paste(getwd(), "Mplus_Simulation" , "Performance", paste0("performance_bayes_",  1:162, ".dat"), sep = "/")
 
 performances <- lapply(files, function(x) read.table(file = x, header = TRUE, colClasses = "character"))
-
 performances <- ldply(performances, data.frame)
 
-rm(files)
+performances.b <- lapply(files.b, function(x) read.table(file = x, header = TRUE, colClasses = "character"))
+performances.b <- ldply(performances.b, data.frame)
+
+performances[, c(3, 4, 7, 8, 10, 11)] <- performances.b[, c(3, 4, 7, 8, 10, 11)]
+
+rm(files, files.b, performances.b)
 
 perf.table <- rbind(apply(performances, 2, function(x) length(which(x == "Ok"))),
-      apply(performances, 2, function(x) length(which(x == "Errors/Warnings"))),
-      apply(performances, 2, function(x) length(which(x == "Non-convergence"))),
-      apply(performances, 2, function(x) length(which(x == "timeout"))))
+                    apply(performances, 2, function(x) length(which(x == "Errors/Warnings"))),
+                    apply(performances, 2, function(x) length(which(x == "Non-convergence"))),
+                    apply(performances, 2, function(x) length(which(x == "timeout"))))
 
 perf.prop <- t(round(prop.table(as.table(perf.table), margin = 2)*100, 2))
 
@@ -599,11 +630,11 @@ perf.prop <- cbind(c("MSST", "ML-MSST", "MSST", "ML-MSST", "CUTS", "ML-CUTS", "C
 
 dimnames(perf.prop)[[2]] <- c("Model", "Est.Method", "Successful", "Warnings/Errors", "Non-convergence", "Timeout")
 
-perf.cond <- matrix(NA, 18, 11*4)
+perf.cond <- matrix(NA, 162, 11*4)
 colnames(perf.cond) <- c(paste(rep(labels, 4),rep(c("Ok", "WE", "NC", "TOut"), each = 11), 
                                sep = " "))
 
-for(i in 1:18){
+for(i in 1:162){
   perf.subset <- performances[((100 *(i-1))+1):(100*i),]
   perf.cond[i, ] <- c(apply(perf.subset, 2, function(x) length(which(x == "Ok"))),
                       apply(perf.subset, 2, function(x) length(which(x == "Errors/Warnings"))),
@@ -613,322 +644,192 @@ for(i in 1:18){
 rm(i, perf.subset)
 
 # Table: Performance ----
-print(xtable(perf.table, type = "latex", align = c("l", "l", "l", "c", "c", "c", "c"), label = "tab:perf", 
-             caption = "Number of Successes and Failures per Type of Analysis on 1800 Analyses Each"), 
-include.rownames = FALSE, caption.placement = "top", file = "Mplus_Simulation/performancesnumbers.txt")
+print(xtable(perf.table, 
+             type    = "latex", 
+             align   = c("l", "l", "l", "c", "c", "c", "c"), 
+             label   = "tab:perf", 
+             caption = "Number of Successes and Failures per Type of Analysis on 16200 Analyses Each"),
+      include.rownames  = FALSE, 
+      caption.placement = "top", 
+      file = "Tables/performancesnumbers.txt")
 
-print(xtable(perf.prop, type = "latex", align = c("l", "l", "l", "c", "c", "c", "c"), label = "tab:perf", 
-             caption = "Percentages of Successes and Failures per Type of Analysis on 1800 Analyses Each"), 
-      include.rownames = FALSE, caption.placement = "top", file = "Mplus_Simulation/performancespercentages.txt")
+print(xtable(perf.prop, 
+             type    = "latex", 
+             align   = c("l", "l", "l", "c", "c", "c", "c"), 
+             label   = "tab:perf", 
+             caption = "Percentages of Successes and Failures per Type of Analysis on 16200 Analyses Each"), 
+      include.rownames  = FALSE, 
+      caption.placement = "top", 
+      file = "Tables/performancespercentages.txt")
 
 
 # Plot: Successful analysis ----
-pdf("Mplus_Simulation/Okplot.pdf", width = 9.5)
-par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
-matplot(1:3,perf.cond[1:3,1:4],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[1:3,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[1:3,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1)
-legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
-matplot(1:3,perf.cond[13:15,1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30, 60, 90), cex.axis =1.35)
-matplot(1:3,perf.cond[13:15,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30, 60, 90), cex.axis =1.35)
-matplot(1:3,perf.cond[13:15,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1)
-axis(1, at=1:3, labels=c(30, 60, 90), cex.axis =1.35)
 
-mtext("Number of Successful Analyses", 2, outer=TRUE, line=3, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
-mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
-mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
-dev.off()
-
-pdf("Mplus_Simulation/Okplot10.pdf", width = 9.5)
-par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
-matplot(1:3,perf.cond[4:6,1:4],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[4:6,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[4:6,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty = c(1,5,6,2),lwd = c(3,4.5,3,4),seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
-matplot(1:3,perf.cond[16:18,1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[16:18,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[16:18,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-
-mtext("Number of Successful Analyses", 2, outer=TRUE, line=3, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
-mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
-mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
-dev.off()
+for (i in 1:9) {
+  pdf(paste0("Plots/Ok_", file.name[i], ".pdf"), width = 9.5)
+  par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 1:4],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
+          xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+          xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+          xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  
+  mtext("Number of Successful Analyses", 2, outer=TRUE, line=3, cex = 1.5)
+  mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+  mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
+  mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
+  mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
+  mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
+  mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
+  dev.off()
+}
 
 # Plot: Analyses with warnings and error messages ----
-pdf("Mplus_Simulation/warningplot.pdf", width =9.5)
-par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
-matplot(1:3,perf.cond[1:3,12:15],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[1:3,16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[1:3,20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,12:15],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
-matplot(1:3,perf.cond[13:15,12:15],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[13:15,16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[13:15,20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
 
-mtext("Number of Analyses with Warnings or Errors", 2, outer=TRUE, line=3, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
-mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
-mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
-dev.off()
-
-pdf("Mplus_Simulation/warningplot10.pdf", width =9.5)
-par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
-matplot(1:3,perf.cond[4:6,12:15],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[4:6,16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[4:6,20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,12:15],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
-matplot(1:3,perf.cond[16:18,12:15],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[16:18,16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[16:18,20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-
-mtext("Number of Analyses with Warnings or Errors", 2, outer=TRUE, line=3, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
-mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
-mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
-dev.off()
+for (i in 1:9) {
+  pdf(paste0("Plots/warnings_", file.name[i], ".pdf"), width = 9.5)
+  par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 12:15],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 12:15],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 12:15],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 16:19],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 20:22],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  
+  mtext("Number of Analyses with Warnings or Errors", 2, outer=TRUE, line=3, cex = 1.5)
+  mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+  mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
+  mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
+  mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
+  mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
+  mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
+  dev.off()
+}
 
 # Plot: Analyses that did not converge ----
-pdf("Mplus_Simulation/nonconvergenceplot.pdf", width =9.5)
-par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
-matplot(1:3,perf.cond[1:3,23:26],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[1:3,27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[1:3,31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,23:26],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
-matplot(1:3,perf.cond[13:15,23:26],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[13:15,27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[13:15,31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
 
-mtext("Number of Analyses that did not Converge", 2, outer=TRUE, line=3, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
-mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
-mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
-dev.off()
-
-pdf("Mplus_Simulation/nonconvergenceplot10.pdf", width =9.5)
-par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
-matplot(1:3,perf.cond[4:6,23:26],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[4:6,27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[4:6,31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,23:26],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
-matplot(1:3,perf.cond[16:18,23:26],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[16:18,27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[16:18,31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-
-mtext("Number of Analyses that did not Converge", 2, outer=TRUE, line=3, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
-mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
-mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
-dev.off()
+for (i in 1:9) {
+  pdf(paste0("Plots/nonconv_", file.name[i], ".pdf"), width = 9.5)
+  par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 23:26],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 23:26],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 23:26],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 27:30],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 31:33],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  
+  mtext("Number of Analyses that did not Converge", 2, outer=TRUE, line=3, cex = 1.5)
+  mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+  mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
+  mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
+  mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
+  mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
+  mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
+  dev.off()
+}
 
 # Plot: Analyses that time out ----
-pdf("Mplus_Simulation/timeoutplot.pdf", width =9.5)
-par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
-matplot(1:3,perf.cond[1:3,34:37],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[1:3,38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[1:3,42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,34:37],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[7:9,42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
-matplot(1:3,perf.cond[13:15,34:37],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[13:15,38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[13:15,42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
 
-mtext("Number of Analyses that Timeout", 2, outer=TRUE, line=3, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
-mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
-mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
-dev.off()
-
-pdf("Mplus_Simulation/timeoutplot10.pdf", width =9.5)
-par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
-matplot(1:3,perf.cond[4:6,34:37],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[4:6,38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[4:6,42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,34:37],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-matplot(1:3,perf.cond[10:12,42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
-matplot(1:3,perf.cond[16:18,34:37],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[16:18,38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,perf.cond[16:18,42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-        xlim=c(0.7,3.2),ylim=c(0,110),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-
-mtext("Number of Analyses that Timeout", 2, outer=TRUE, line=3, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
-mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
-mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
-mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
-mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
-dev.off()
+for (i in 1:9) {
+  pdf(paste0("Plots/timeout_", file.name[i], ".pdf"), width = 9.5)
+  par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,6,4,20),xpd=NA)
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 34:37],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[1:6, i], 42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 34:37],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  print(matplot(1:6, perf.cond[Cond.ind[7:12, i], 42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 34:37],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 38:41],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,5,6,2), lwd = c(3,4.5,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  print(matplot(1:6, perf.cond[Cond.ind[13:18, i], 42:44],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+                xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
+  axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
+  
+  mtext("Number of Analyses that Timeout", 2, outer=TRUE, line=3, cex = 1.5)
+  mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+  mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
+  mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
+  mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
+  mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
+  mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
+  mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
+  dev.off()
+}
 
 # Running times ----
 files <- paste(getwd(), "Mplus_Simulation" , "Times", paste0("times_",  1:18, ".dat"), sep = "/")
