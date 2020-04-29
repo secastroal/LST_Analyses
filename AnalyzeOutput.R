@@ -9,135 +9,450 @@ sapply(file.sources,source,.GlobalEnv)
 rm(file.sources)
 
 # Create true parameters ----
-I <- 4
+I  <- 4
 nT <- 30
-R <- 100
+R  <- 100
 
 # Create labels for the 11 types of analyses 
-models <- c("msst", "cuts", "tso")
-data_str <- c("wide", "long")
+models    <- c("msst", "cuts", "tso")
+data_str  <- c("wide", "long")
 estimator <- c("ml", "bayes")
-labels <- expand.grid(data_str, estimator, models)
-labels <- labels[-10, c(3,1,2)]
-labels <- apply(labels, 1, function(vec) paste(vec, collapse = "_"))
+labels    <- expand.grid(data_str, estimator, models)
+labels    <- labels[-10, c(3,1,2)]
+labels    <- apply(labels, 1, function(vec) paste(vec, collapse = "_"))
 rm(models, data_str, estimator)
 
 # matrix to store True parameters
  
-parameters.true <- matrix(NA, 3, 30)
-colnames(parameters.true) <- c(paste0("w_loading", 1:I), "common_state_var", paste0("unique_state_error_var", 1:I),
-                               "ar_effect", paste0("b_loading", 1:I), paste0("intercept", 1:I), "common_trait_var",
-                               "trait_mean", paste0("unique_indicator_trait_var", 1:I), paste0("cov", c(12, 13, 23, 14, 24, 34)))
-row.names(parameters.true) <- c("MSST", "CUTS", "TSO")
+parameters.true            <- matrix(NA, 9, 30)
+colnames(parameters.true)  <- c(paste0("w_loading", 1:I), 
+                                "common_state_var", 
+                                paste0("unique_state_error_var", 1:I),
+                                "ar_effect", 
+                                paste0("b_loading", 1:I), 
+                                paste0("intercept", 1:I), 
+                                "common_trait_var",
+                                "trait_mean", 
+                                paste0("unique_indicator_trait_var", 1:I), 
+                                paste0("cov", c(12, 13, 23, 14, 24, 34)))
+row.names(parameters.true) <- paste0(rep(c("MSST_", "CUTS_", "TSO_"), each = 3),
+                                     c("1:3", "1:1", "3:1"))
 
-var_coeff.true <- matrix(NA, 3, 20)
-colnames(var_coeff.true) <- paste0(rep(c( "ccon_pred_y", "ucon_upred_y", "tcon_con_y", "spe_y", "rel_y"), each = I), 
+var_coeff.true            <- matrix(NA, 9, 20)
+colnames(var_coeff.true)  <- paste0(rep(c( "ccon_pred_y", "ucon_upred_y", "tcon_con_y", "spe_y", "rel_y"), each = I), 
                                    1:I)
-row.names(var_coeff.true) <- c("MSST", "CUTS", "TSO")
+row.names(var_coeff.true) <- paste0(rep(c("MSST_", "CUTS_", "TSO_"), each = 3),
+                                    c("1:3", "1:1", "3:1"))
 
-# MSST true parameters
+# MSST 1:3 true parameters
 
-state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
-var_state <- 2 # Variance latent state residual
-var_m_error <- c(1, 0.5, 1.5, 0.8) # Variance of measurement errors
+# Within Parameters
+state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+var_state      <- 1.8                    # Variance latent state residual
+var_m_error    <- c(0.6, 0.25, 0.7, 0.5) # Variance of measurement errors
 
-within.parameters <- list(loadings = state_loadings, state.var = var_state, error.var = var_m_error)
+within.parameters <- list(loadings  = state_loadings, 
+                          state.var = var_state, 
+                          error.var = var_m_error)
 
 # Between Paramaters
+intercepts     <- seq(0, by = 0.2, length.out = I) # intercepts
+trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent trait
+var_trait      <- 0.6                                # variance latent trait variable
+mean_trait     <- 4                                # mean latent trait variable
 
-intercepts <- seq(0, by = 0.2, length.out = I) # intercepts
-trait_loadings <- c(1, 0.8, 1.2, 0.9) # loading parametes for the latent trait
-
-var_trait <- 2 # variance latent trait variable
-mean_trait <- 4 # mean latent trait variable
-
-between.parameters <- list(loadings = trait_loadings, intercepts = intercepts, trait.mean = mean_trait,
-                           trait.var = var_trait)
+between.parameters <- list(loadings   = trait_loadings, 
+                           intercepts = intercepts, 
+                           trait.mean = mean_trait,
+                           trait.var  = var_trait)
 
 # Save True parameters to parameters matrix
-parameters.true[1, c(1:9, 11:20)] <- c(state_loadings, var_state, var_m_error, trait_loadings,
-                                  intercepts, var_trait, mean_trait) 
+parameters.true[1, c(1:9, 11:20)] <- c(state_loadings, 
+                                       var_state, 
+                                       var_m_error, 
+                                       trait_loadings,
+                                       intercepts, 
+                                       var_trait, 
+                                       mean_trait) 
 
 rm(state_loadings, var_state, var_m_error, intercepts, trait_loadings, var_trait, 
    mean_trait)
 
 # Compute true variance coefficients
-var_coeff.true[1, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters = within.parameters, 
-                                                      between.parameters = between.parameters)) 
+var_coeff.true[1, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters  = within.parameters, 
+                                                           between.parameters = between.parameters)) 
 
 rm(within.parameters, between.parameters)
 
-# CUTS true parameters
+# MSST 1:1 true parameters
 
-state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent common state
-var_CS <- 2 # Variance latent common state
-var_US <- c(1, 0.5, 1.5, 0.8) # Variance of latent unique states
+# Within Parameters
+state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+var_state      <- 1.2                    # Variance latent state residual
+var_m_error    <- c(0.6, 0.25, 0.7, 0.5) # Variance of measurement errors
 
-within.parameters <- list(loadings = state_loadings, CS.var = var_CS, US.var = var_US)
+within.parameters <- list(loadings  = state_loadings, 
+                          state.var = var_state, 
+                          error.var = var_m_error)
 
 # Between Paramaters
+intercepts     <- seq(0, by = 0.2, length.out = I) # intercepts
+trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent trait
+var_trait      <- 1.2                              # variance latent trait variable
+mean_trait     <- 4                                # mean latent trait variable
 
-intercepts <- seq(2, by = 0.5, length.out = I) # intercepts
-trait_loadings <- c(1, 0.8, 1.2, 0.9) # loading parametes for the latent common trait
-var_CT <- 1.5 # variance latent common trait
-var_UT <- c(0.5, 1, 0.3, 0.8) # variance latent unique traits
-
-between.parameters <- list(loadings = trait_loadings, intercepts = intercepts, CT.var = var_CT, UT.var = var_UT)
+between.parameters <- list(loadings   = trait_loadings, 
+                           intercepts = intercepts, 
+                           trait.mean = mean_trait,
+                           trait.var  = var_trait)
 
 # Save True parameters to parameters matrix
-parameters.true[2, c(1:9, 11:19, 21:24)] <- c(state_loadings, var_CS, var_US, trait_loadings,
-                                         intercepts, var_CT, var_UT) 
+parameters.true[2, c(1:9, 11:20)] <- c(state_loadings, 
+                                       var_state, 
+                                       var_m_error, 
+                                       trait_loadings,
+                                       intercepts, 
+                                       var_trait, 
+                                       mean_trait) 
+
+rm(state_loadings, var_state, var_m_error, intercepts, trait_loadings, var_trait, 
+   mean_trait)
+
+# Compute true variance coefficients
+var_coeff.true[2, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters  = within.parameters, 
+                                                           between.parameters = between.parameters)) 
+
+rm(within.parameters, between.parameters)
+
+# MSST 3:1 true parameters
+
+# Within Parameters
+state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+var_state      <- 0.6                    # Variance latent state residual
+var_m_error    <- c(0.6, 0.25, 0.7, 0.5) # Variance of measurement errors
+
+within.parameters <- list(loadings  = state_loadings, 
+                          state.var = var_state, 
+                          error.var = var_m_error)
+
+# Between Paramaters
+intercepts     <- seq(0, by = 0.2, length.out = I) # intercepts
+trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent trait
+var_trait      <- 1.8                              # variance latent trait variable
+mean_trait     <- 4                                # mean latent trait variable
+
+between.parameters <- list(loadings   = trait_loadings, 
+                           intercepts = intercepts, 
+                           trait.mean = mean_trait,
+                           trait.var  = var_trait)
+
+# Save True parameters to parameters matrix
+parameters.true[3, c(1:9, 11:20)] <- c(state_loadings, 
+                                       var_state, 
+                                       var_m_error, 
+                                       trait_loadings,
+                                       intercepts, 
+                                       var_trait, 
+                                       mean_trait) 
+
+rm(state_loadings, var_state, var_m_error, intercepts, trait_loadings, var_trait, 
+   mean_trait)
+
+# Compute true variance coefficients
+var_coeff.true[3, (2 * I + 1):(5 * I)] <- t(msst.var.coeff(within.parameters  = within.parameters, 
+                                                           between.parameters = between.parameters)) 
+
+rm(within.parameters, between.parameters)
+
+# CUTS 1:3 true parameters
+
+# Within Parameters
+state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent common state
+var_CS         <- 1.8                    # Variance latent common state
+var_US         <- c(0.6, 0.25, 0.8, 0.5) # Variance of latent unique states
+
+within.parameters <- list(loadings = state_loadings, 
+                          CS.var   = var_CS, 
+                          US.var   = var_US)
+
+# Between Paramaters
+intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
+trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent common trait
+var_CT         <- 0.4                              # variance latent common trait
+var_UT         <- c(0.2, 0.1, 0.25, 0.15)          # variance latent unique traits
+
+between.parameters <- list(loadings   = trait_loadings, 
+                           intercepts = intercepts, 
+                           CT.var     = var_CT, 
+                           UT.var     = var_UT)
+
+# Save True parameters to parameters matrix
+parameters.true[4, c(1:9, 11:19, 21:24)] <- c(state_loadings, 
+                                              var_CS, 
+                                              var_US, 
+                                              trait_loadings,
+                                              intercepts, 
+                                              var_CT, 
+                                              var_UT) 
 
 rm(state_loadings, var_CS, var_US, intercepts, trait_loadings, var_CT, var_UT)
 
 # Compute true variance coefficients
 
-var_coeff.true[2, ] <- t(cuts.var.coeff(within.parameters = within.parameters, 
-                                   between.parameters = between.parameters)) 
+var_coeff.true[4, ] <- t(cuts.var.coeff(within.parameters  = within.parameters,
+                                        between.parameters = between.parameters)) 
 
 rm(within.parameters, between.parameters)
 
-# TSO true parameters
+# CUTS 1:1 true parameters
 
-state_loadings <- c(1, 0.5, 1.3, 0.8) # loading parameters for the latent state
-var_state <- 2 # Variance latent state residual
-var_error <- c(1, 0.5, 1.5, 0.8) # Variance of latent measurement errors
+# Within Parameters
+state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent common state
+var_CS         <- 1.2                    # Variance latent common state
+var_US         <- c(0.6, 0.25, 0.8, 0.5) # Variance of latent unique states
 
-ar_effect <- 0.5 # autoregressive effect on the latent state residuals
+within.parameters <- list(loadings = state_loadings, 
+                          CS.var   = var_CS, 
+                          US.var   = var_US)
 
-within.parameters <- list(loadings = state_loadings, ar.effect = ar_effect, error.var = var_error,
+# Between Paramaters
+intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
+trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent common trait
+var_CT         <- 1.0                              # variance latent common trait
+var_UT         <- c(0.2, 0.1, 0.25, 0.15)          # variance latent unique traits
+
+between.parameters <- list(loadings   = trait_loadings, 
+                           intercepts = intercepts, 
+                           CT.var     = var_CT, 
+                           UT.var     = var_UT)
+
+# Save True parameters to parameters matrix
+parameters.true[5, c(1:9, 11:19, 21:24)] <- c(state_loadings, 
+                                              var_CS, 
+                                              var_US, 
+                                              trait_loadings,
+                                              intercepts, 
+                                              var_CT, 
+                                              var_UT) 
+
+rm(state_loadings, var_CS, var_US, intercepts, trait_loadings, var_CT, var_UT)
+
+# Compute true variance coefficients
+
+var_coeff.true[5, ] <- t(cuts.var.coeff(within.parameters  = within.parameters,
+                                        between.parameters = between.parameters)) 
+
+rm(within.parameters, between.parameters)
+
+# CUTS 3:1 true parameters
+
+# Within Parameters
+state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent common state
+var_CS         <- 0.6                    # Variance latent common state
+var_US         <- c(0.6, 0.25, 0.8, 0.5) # Variance of latent unique states
+
+within.parameters <- list(loadings = state_loadings, 
+                          CS.var   = var_CS, 
+                          US.var   = var_US)
+
+# Between Paramaters
+intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
+trait_loadings <- c(1, 0.5, 1.3, 0.8)              # loading parametes for the latent common trait
+var_CT         <- 1.6                              # variance latent common trait
+var_UT         <- c(0.2, 0.1, 0.25, 0.15)          # variance latent unique traits
+
+between.parameters <- list(loadings   = trait_loadings, 
+                           intercepts = intercepts, 
+                           CT.var     = var_CT, 
+                           UT.var     = var_UT)
+
+# Save True parameters to parameters matrix
+parameters.true[6, c(1:9, 11:19, 21:24)] <- c(state_loadings, 
+                                              var_CS, 
+                                              var_US, 
+                                              trait_loadings,
+                                              intercepts, 
+                                              var_CT, 
+                                              var_UT) 
+
+rm(state_loadings, var_CS, var_US, intercepts, trait_loadings, var_CT, var_UT)
+
+# Compute true variance coefficients
+
+var_coeff.true[6, ] <- t(cuts.var.coeff(within.parameters  = within.parameters,
+                                        between.parameters = between.parameters)) 
+
+rm(within.parameters, between.parameters)
+
+
+# TSO 1:3 true parameters
+
+# Within Parameters
+state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+var_state      <- 1.8                    # Variance latent state residual
+var_error      <- c(0.6, 0.25, 0.7, 0.5) # Variance of latent measurement errors
+ar_effect      <- 0.5                    # autoregressive effect on the latent state residuals
+
+within.parameters <- list(loadings  = state_loadings, 
+                          ar.effect = ar_effect, 
+                          error.var = var_error,
                           state.var = var_state)
 
 rm(state_loadings, var_state, var_error, ar_effect)
 
 # Between Paramaters 
+intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
+var_ind_traits <- c(0.3, 0.1, 0.4, 0.2)            # variance latent indicator trait variables
 
-intercepts <- seq(2, by = 0.5, length.out = I) # intercepts
+# Correlation matrix of the trait indicators
+# Correlation are high between 0.7 and 0.9. This correlation matrix was
+# generated with the seed 13001 during the first run of the simulation.
+Rcor <- matrix(c(1.0, 0.8, 0.9, 0.9,
+                 0.8, 1.0, 0.8, 0.7,
+                 0.9, 0.8, 1.0, 0.7,
+                 0.9, 0.7, 0.7, 1.0), 
+               nrow = I, ncol = I, byrow = TRUE)
 
-var_ind_traits <- c(2, 1.5, 2.5, 1.75) # variance latent indicator trait variables
+#Variance-Covariance matrix of the trait indicators
+D     <- diag(sqrt(var_ind_traits))
+Sigma <- D%*%Rcor%*%D 
 
-set.seed(13001)
-Rcor <- matrix(sample((7:9)/10, size = I * I, replace = TRUE), I) #correlation matrix trait indicators
-Rcor[lower.tri(Rcor)] = t(Rcor)[lower.tri(Rcor)]
-diag(Rcor) <- 1
-
-D <- diag(sqrt(var_ind_traits))
-Sigma <- D%*%Rcor%*%D #Variance-Covariance matrix of the trait indicators
-
-between.parameters <- list(intercepts = intercepts, trait.ind.var = var_ind_traits, 
-                           cor.matrix = Rcor, Sigma = Sigma)
+between.parameters <- list(intercepts    = intercepts, 
+                           trait.ind.var = var_ind_traits, 
+                           cor.matrix    = Rcor,
+                           Sigma         = Sigma)
 
 rm(intercepts, var_ind_traits, Rcor, D, Sigma)
 
 # Save True parameters to parameters matrix
-parameters.true[3, c(1:10, 15:18, 21:30)] <- c(within.parameters$loadings, within.parameters$state.var,
-                                          within.parameters$error.var, within.parameters$ar.effect,
-                                          between.parameters$intercepts, between.parameters$trait.ind.var,
-                                          round(between.parameters$Sigma[t(lower.tri(between.parameters$Sigma))], 2))
+parameters.true[7, c(1:10, 15:18, 21:30)] <- c(within.parameters$loadings, 
+                                               within.parameters$state.var,
+                                               within.parameters$error.var, 
+                                               within.parameters$ar.effect,
+                                               between.parameters$intercepts, 
+                                               between.parameters$trait.ind.var,
+                                               round(between.parameters$Sigma[t(lower.tri(between.parameters$Sigma))], 2)
+                                               )
 
 # Compute true variance coefficients
-var_coeff.true[3, ] <- tso.var.coeff(I = I, nT = nT, within.parameters = within.parameters, 
-                                between.parameters = between.parameters)[,nT] 
+var_coeff.true[7, ] <- tso.var.coeff(I  = I, 
+                                     nT = nT, 
+                                     within.parameters  = within.parameters, 
+                                     between.parameters = between.parameters)[,nT] 
+
+rm(within.parameters, between.parameters)
+
+# TSO 1:1 true parameters
+
+# Within Parameters
+state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+var_state      <- 1.2                    # Variance latent state residual
+var_error      <- c(0.6, 0.25, 0.7, 0.5) # Variance of latent measurement errors
+ar_effect      <- 0.5                    # autoregressive effect on the latent state residuals
+
+within.parameters <- list(loadings  = state_loadings, 
+                          ar.effect = ar_effect, 
+                          error.var = var_error,
+                          state.var = var_state)
+
+rm(state_loadings, var_state, var_error, ar_effect)
+
+# Between Paramaters 
+intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
+var_ind_traits <- c(0.8, 0.2, 1.3, 0.5)           # variance latent indicator trait variables
+
+# Correlation matrix of the trait indicators
+# Correlation are high between 0.7 and 0.9. This correlation matrix was
+# generated with the seed 13001 during the first run of the simulation.
+Rcor <- matrix(c(1.0, 0.8, 0.9, 0.9,
+                 0.8, 1.0, 0.8, 0.7,
+                 0.9, 0.8, 1.0, 0.7,
+                 0.9, 0.7, 0.7, 1.0), 
+               nrow = I, ncol = I, byrow = TRUE)
+
+#Variance-Covariance matrix of the trait indicators
+D     <- diag(sqrt(var_ind_traits))
+Sigma <- D%*%Rcor%*%D 
+
+between.parameters <- list(intercepts    = intercepts, 
+                           trait.ind.var = var_ind_traits, 
+                           cor.matrix    = Rcor,
+                           Sigma         = Sigma)
+
+rm(intercepts, var_ind_traits, Rcor, D, Sigma)
+
+# Save True parameters to parameters matrix
+parameters.true[8, c(1:10, 15:18, 21:30)] <- c(within.parameters$loadings, 
+                                               within.parameters$state.var,
+                                               within.parameters$error.var, 
+                                               within.parameters$ar.effect,
+                                               between.parameters$intercepts, 
+                                               between.parameters$trait.ind.var,
+                                               round(between.parameters$Sigma[t(lower.tri(between.parameters$Sigma))], 2)
+)
+
+# Compute true variance coefficients
+var_coeff.true[8, ] <- tso.var.coeff(I  = I, 
+                                     nT = nT, 
+                                     within.parameters  = within.parameters, 
+                                     between.parameters = between.parameters)[,nT] 
+
+rm(within.parameters, between.parameters)
+
+# TSO 3:1 true parameters
+
+# Within Parameters
+state_loadings <- c(1, 0.5, 1.3, 0.8)    # loading parameters for the latent state
+var_state      <- 0.6                    # Variance latent state residual
+var_error      <- c(0.6, 0.25, 0.7, 0.5) # Variance of latent measurement errors
+ar_effect      <- 0.5                    # autoregressive effect on the latent state residuals
+
+within.parameters <- list(loadings  = state_loadings, 
+                          ar.effect = ar_effect, 
+                          error.var = var_error,
+                          state.var = var_state)
+
+rm(state_loadings, var_state, var_error, ar_effect)
+
+# Between Paramaters 
+intercepts     <- seq(2, by = 0.5, length.out = I) # intercepts
+var_ind_traits <- c(1.6, 0.55, 2.2, 1.2)           # variance latent indicator trait variables
+
+# Correlation matrix of the trait indicators
+# Correlation are high between 0.7 and 0.9. This correlation matrix was
+# generated with the seed 13001 during the first run of the simulation.
+Rcor <- matrix(c(1.0, 0.8, 0.9, 0.9,
+                 0.8, 1.0, 0.8, 0.7,
+                 0.9, 0.8, 1.0, 0.7,
+                 0.9, 0.7, 0.7, 1.0), 
+               nrow = I, ncol = I, byrow = TRUE)
+
+#Variance-Covariance matrix of the trait indicators
+D     <- diag(sqrt(var_ind_traits))
+Sigma <- D%*%Rcor%*%D 
+
+between.parameters <- list(intercepts    = intercepts, 
+                           trait.ind.var = var_ind_traits, 
+                           cor.matrix    = Rcor,
+                           Sigma         = Sigma)
+
+rm(intercepts, var_ind_traits, Rcor, D, Sigma)
+
+# Save True parameters to parameters matrix
+parameters.true[9, c(1:10, 15:18, 21:30)] <- c(within.parameters$loadings, 
+                                               within.parameters$state.var,
+                                               within.parameters$error.var, 
+                                               within.parameters$ar.effect,
+                                               between.parameters$intercepts, 
+                                               between.parameters$trait.ind.var,
+                                               round(between.parameters$Sigma[t(lower.tri(between.parameters$Sigma))], 2)
+)
+
+# Compute true variance coefficients
+var_coeff.true[9, ] <- tso.var.coeff(I  = I, 
+                                     nT = nT, 
+                                     within.parameters  = within.parameters, 
+                                     between.parameters = between.parameters)[,nT] 
 
 rm(within.parameters, between.parameters)
 
@@ -146,40 +461,96 @@ rm(within.parameters, between.parameters)
 parameters.true.ex <- parameters.true
 colnames(parameters.true.ex) <- c(paste0("Within loading $\\lambda_{S_{", 1:I,"}}$"), 
                                   "(Common) State variance $var(\\zeta)$", 
-                               paste0("Unique state/ Error variance $var(\\varepsilon_", 1:I, ")$"), 
-                               "Autoregressive effect $\\beta$", 
-                               paste0("Between loading $\\lambda_{T_{", 1:I, "}}$"), 
-                               paste0("Intercept $\\alpha_", 1:I, "$"), 
-                               "(Common) Trait variance $var(\\xi)$",
-                               "Trait mean $\\hat{\\xi}$", 
-                               paste0("Unique trait/ Indicator trait variance $var(\\vartheta/\\xi_", 1:I, ")$"), 
-                               paste0("$Cov(", c("\\xi_1, \\xi_2)$", "\\xi_1, \\xi_3)$", 
-                                                "\\xi_2, \\xi_3)$", "\\xi_1, \\xi_4)$", 
-                                                "\\xi_2, \\xi_4)$", "\\xi_3, \\xi_4)$")))
+                                  paste0("Unique state/ Error variance $var(\\varepsilon_", 1:I, ")$"),
+                                  "Autoregressive effect $\\beta$", 
+                                  paste0("Between loading $\\lambda_{T_{", 1:I, "}}$"), 
+                                  paste0("Intercept $\\alpha_", 1:I, "$"), 
+                                  "(Common) Trait variance $var(\\xi)$",
+                                  "Trait mean $\\hat{\\xi}$", 
+                                  paste0("Unique trait/ Indicator trait variance $var(\\vartheta/\\xi_", 1:I, ")$"), 
+                                  paste0("$Cov(", c("\\xi_1, \\xi_2)$", "\\xi_1, \\xi_3)$", 
+                                                    "\\xi_2, \\xi_3)$", "\\xi_1, \\xi_4)$",
+                                                    "\\xi_2, \\xi_4)$", "\\xi_3, \\xi_4)$")))
 
-print(xtable(t(parameters.true.ex), type = "latex", caption = "True Parameters Used per Model",
-             label = "tab:Truepar", align = c("l", "c", "c", "c")),
-      include.colnames=T, sanitize.rownames.function = identity,
-      include.rownames = TRUE, NA.string = "-", caption.placement = "top", file = "Mplus_Simulation/trueparameters.txt")
+print(xtable(na.omit(t(parameters.true.ex[1:3, ])), 
+             type    = "latex", 
+             caption = "MSST True Parameters per Trait-State Variance Ratio",
+             label   = "tab:Trueparmsst", 
+             align   = c("l", "c", "c", "c")),
+      sanitize.rownames.function = identity,
+      include.colnames  = TRUE, 
+      include.rownames  = TRUE, 
+      caption.placement = "top", 
+      file              = "Tables/trueparmsst.txt")
 
+print(xtable(na.omit(t(parameters.true.ex[4:6, ])), 
+             type    = "latex", 
+             caption = "CUTS True Parameters per Trait-State Variance Ratio",
+             label   = "tab:Trueparcuts", 
+             align   = c("l", "c", "c", "c")),
+      sanitize.rownames.function = identity,
+      include.colnames  = TRUE, 
+      include.rownames  = TRUE, 
+      caption.placement = "top", 
+      file              = "Tables/trueparcuts.txt")
+
+print(xtable(na.omit(t(parameters.true.ex[7:9, ])), 
+             type    = "latex", 
+             caption = "TSO True Parameters per Trait-State Variance Ratio",
+             label   = "tab:Truepartso", 
+             align   = c("l", "c", "c", "c")),
+      sanitize.rownames.function = identity,
+      include.colnames  = TRUE, 
+      include.rownames  = TRUE, 
+      caption.placement = "top", 
+      file              = "Tables/truepartso.txt")
 
 var_coeff.true.ex <- var_coeff.true[, c(17:20, 9:12, 1:8, 1:8, 13:16)]
-var_coeff.true.ex[2, 17:24] <- NA
-var_coeff.true.ex[3, 9:16] <- NA
-colnames(var_coeff.true.ex) <- paste0(rep(c( "Reliability $Y_",
-                                             "\\hspace{0.5cm}(Total) Consistency $Y_",
-                                             "\\hspace{1cm}Common Consistency $Y_", 
-                                             "\\hspace{1cm}Unique Consistency $Y_", 
-                                             "\\hspace{1cm}Predictability by Trait $Y_", 
-                                             "\\hspace{1cm}Unpredictability by Trait $Y_", 
-                                             "\\hspace{0.5cm}Occasion Specificity $Y_" 
-                                          ), each = I), 
-                                   1:I, "$")
+var_coeff.true.ex[4:6, 17:24] <- NA
+var_coeff.true.ex[7:9, 9:16]  <- NA
+colnames(var_coeff.true.ex)   <- paste0(rep(c( "Reliability $Y_",
+                                               "\\hspace{0.5cm}(Total) Consistency $Y_",
+                                               "\\hspace{1cm}Common Consistency $Y_",
+                                               "\\hspace{1cm}Unique Consistency $Y_",
+                                               "\\hspace{1cm}Predictability by Trait $Y_",
+                                               "\\hspace{1cm}Unpredictability by Trait $Y_",
+                                               "\\hspace{0.5cm}Occasion Specificity $Y_"
+                                               ), each = I), 
+                                        1:I, "$")
 
-print(xtable(t(var_coeff.true.ex), type = "latex", caption = "True Variance Coefficient Components",
-             label = "tab:Truevar", align = c("l", "c", "c", "c"), digits = c(0,2,2,2)), 
-      include.rownames = TRUE, NA.string = "-", sanitize.text.function = function(x){x}, 
-      caption.placement = "top", file = "Mplus_Simulation/truevarcoeff.txt")
+print(xtable(na.omit(t(var_coeff.true.ex[1:3, ])), 
+             type    = "latex", 
+             caption = "MSST True Variance Coefficient Components per Trait-State Variance Ratio",
+             label   = "tab:Truevarmsst", 
+             align   = c("l", "c", "c", "c"), 
+             digits  = c(0,2,2,2)),
+      sanitize.text.function = function(x){x},
+      include.rownames = TRUE, 
+      caption.placement = "top", 
+      file = "Tables/truevarcoeffmsst.txt")
+
+print(xtable(na.omit(t(var_coeff.true.ex[4:6, ])), 
+             type    = "latex", 
+             caption = "CUTS True Variance Coefficient Components per Trait-State Variance Ratio",
+             label   = "tab:Truevarcuts", 
+             align   = c("l", "c", "c", "c"), 
+             digits  = c(0,2,2,2)),
+      sanitize.text.function = function(x){x},
+      include.rownames = TRUE, 
+      caption.placement = "top", 
+      file = "Tables/truevarcoeffcuts.txt")
+
+print(xtable(na.omit(t(var_coeff.true.ex[7:9, ])), 
+             type    = "latex", 
+             caption = "TSO True Variance Coefficient Components per Trait-State Variance Ratio",
+             label   = "tab:Truevartso", 
+             align   = c("l", "c", "c", "c"), 
+             digits  = c(0,2,2,2)),
+      sanitize.text.function = function(x){x},
+      include.rownames = TRUE, 
+      caption.placement = "top", 
+      file = "Tables/truevarcoefftso.txt")
+
 rm(var_coeff.true.ex, parameters.true.ex)
 
 # Repeat true parameters in a matrix with 19800 rows ----
