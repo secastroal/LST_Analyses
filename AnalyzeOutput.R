@@ -1401,465 +1401,333 @@ rm(j, bias.cond, ylabel, ylimits.down, ylimits.up)
 
 # Plot: Unique Consistency Base Model MSST----
 
-Ucon.cond <- matrix(NA, 6 * I, 3)
+con.msst <- length(which(Cond$dataModel == "msst"))
+
+Ucon.cond <- matrix(NA, con.msst * I, 3)
 colnames(Ucon.cond) <- labels[6:8]
-for(i in 1:6){
-  for(j in 5:8){
+for (i in which(Cond$dataModel == "msst")) {
+  for (j in 5:8) {
     Ucon.subset <- subset(var_coeff, factor.var$cond == i)[,j]
     Ucon.subset <- matrix(Ucon.subset, 100, 11, byrow = TRUE)
-    Ucon.cond[((j-5)*6)+i,] <- apply(Ucon.subset, 2, function(x) mean(x, na.rm = TRUE))[6:8]
+    Ucon.cond[((j - 5) * con.msst) + i,] <- apply(Ucon.subset, 2, function(x) mean(x, na.rm = TRUE))[6:8]
   }
 }
 rm(i,j, Ucon.subset)
-Ucon.cond[1:6,][which(perf.cond[1:6,6:8] < 10, arr.ind = TRUE)] <- NA
-Ucon.cond[7:12,][which(perf.cond[1:6,6:8] < 10, arr.ind = TRUE)] <- NA
-Ucon.cond[13:18,][which(perf.cond[1:6,6:8] < 10, arr.ind = TRUE)] <- NA
-Ucon.cond[19:24,][which(perf.cond[1:6,6:8] < 10, arr.ind = TRUE)] <- NA
+
+Ucon.cond[1:con.msst,][which(perf.cond[1:con.msst, 6:8] < 10, arr.ind = TRUE)] <- NA
+Ucon.cond[(con.msst + 1):(con.msst * 2),][which(perf.cond[1:con.msst, 6:8] < 10, arr.ind = TRUE)] <- NA
+Ucon.cond[(con.msst * 2 + 1):(con.msst * 3),][which(perf.cond[1:con.msst, 6:8] < 10, arr.ind = TRUE)] <- NA
+Ucon.cond[(con.msst * 3 + 1):(con.msst * 4),][which(perf.cond[1:con.msst, 6:8] < 10, arr.ind = TRUE)] <- NA
 
 ylabel <- "Unique Consistency Estimate"
 ylimits.down <- -0.0125
 ylimits.up <- 0.0125
 
-pdf(paste0("Mplus_Simulation/Ucon_msst_plot.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Ucon.cond[1:3,],type="l",lty = c(5,6,2),xaxt="n",xlab="",ylab="", col = gray((2:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(4.5,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[7:9,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((2:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,6,2), cex = 1.5, lwd = c(4.5,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[13:15,],type="l",xaxt="n",xlab="",ylab="",col = gray((2:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,6,2), cex.axis = 1.35, lwd = c(4.5,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Ucon.cond[19:21,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((2:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,6,2), cex = 1.5, lwd = c(4.5,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
+for (n in 1:9) {
+  pdf(paste0("Plots/Ucon_msst_", file.name[n], ".pdf"), width =9.5)
+  par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n], ],type="l",lty = c(5,6,2),xaxt="n",xlab="",ylab="", col = gray((2:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(4.5,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n] + con.msst, ],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((2:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,6,2), cex = 1.5, lwd = c(4.5,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n] + con.msst * 2, ],type="l",xaxt="n",xlab="",ylab="",col = gray((2:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,6,2), cex.axis = 1.35, lwd = c(4.5,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n] + con.msst * 3, ],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((2:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,6,2), cex = 1.5, lwd = c(4.5,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  
+  legend("topright",c("Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((2:4)/8),
+         lty = c(5,6,2),lwd = c(4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.25))
+  mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
+  mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+  dev.off()
+}
 
-legend("topright",c("Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((2:4)/8),
-       lty = c(5,6,2),lwd = c(4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.25))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-pdf(paste0("Mplus_Simulation/Ucon_msst_plot10.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Ucon.cond[4:6,],type="l",lty = c(5,6,2),xaxt="n",xlab="",ylab="", col = gray((2:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(4.5,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[10:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((2:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,6,2), cex = 1.5, lwd = c(4.5,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[16:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((2:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,6,2), cex.axis = 1.35, lwd = c(4.5,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Ucon.cond[22:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((2:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(5,6,2), cex = 1.5, lwd = c(4.5,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-
-legend("topright",c("Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((2:4)/8),
-       lty = c(5,6,2),lwd = c(4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.25))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-rm(Ucon.cond,ylabel, ylimits.down, ylimits.up)
+rm(Ucon.cond, ylabel, ylimits.down, ylimits.up, con.msst)
 
 # Plot: Unique Consistency Base Model TSO----
 
-Ucon.cond <- matrix(NA, 6 * I, 2)
+con.tso <- length(which(Cond$dataModel == "tso"))
+
+Ucon.cond <- matrix(NA, con.tso * I, 2)
 colnames(Ucon.cond) <- labels[7:8]
-for(i in 13:18){
+for(i in which(Cond$dataModel == "tso")){
   for(j in 5:8){
     Ucon.subset <- subset(var_coeff, factor.var$cond == i)[,j]
     Ucon.subset <- matrix(Ucon.subset, 100, 11, byrow = TRUE)
-    Ucon.cond[((j-5)*6)+(i-12),] <- apply(Ucon.subset, 2, function(x) mean(x, na.rm = TRUE))[7:8]
+    Ucon.cond[((j - 5) * con.tso) + (i - con.tso * 2),] <- apply(Ucon.subset, 2, function(x) mean(x, na.rm = TRUE))[7:8]
   }
 }
 rm(i,j, Ucon.subset)
-Ucon.cond[1:6,][which(perf.cond[13:18,7:8] < 10, arr.ind = TRUE)] <- NA
-Ucon.cond[7:12,][which(perf.cond[13:18,7:8] < 10, arr.ind = TRUE)] <- NA
-Ucon.cond[13:18,][which(perf.cond[13:18,7:8] < 10, arr.ind = TRUE)] <- NA
-Ucon.cond[19:24,][which(perf.cond[13:18,7:8] < 10, arr.ind = TRUE)] <- NA
+
+Ucon.cond[1:con.tso,][which(perf.cond[which(Cond$dataModel == "tso"), 7:8] < 10, arr.ind = TRUE)] <- NA
+Ucon.cond[(con.tso + 1):(con.tso * 2),][which(perf.cond[which(Cond$dataModel == "tso"), 7:8] < 10, arr.ind = TRUE)] <- NA
+Ucon.cond[(con.tso * 2 + 1):(con.tso * 3),][which(perf.cond[which(Cond$dataModel == "tso"), 7:8] < 10, arr.ind = TRUE)] <- NA
+Ucon.cond[(con.tso * 3 + 1):(con.tso * 4),][which(perf.cond[which(Cond$dataModel == "tso"), 7:8] < 10, arr.ind = TRUE)] <- NA
 
 ylabel <- "Unique Consistency Estimate"
 ylimits.down <- -0.01
 ylimits.up <- 0.225
 
-pdf(paste0("Mplus_Simulation/Ucon_tso_plot.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Ucon.cond[1:3,],type="l",lty = c(2,6),xaxt="n",xlab="",ylab="", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[7:9,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[13:15,],type="l",xaxt="n",xlab="",ylab="",col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex.axis = 1.35, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Ucon.cond[19:21,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
+for (n in 1:9) {
+  pdf(paste0("Plots/Ucon_tso_", file.name[n], ".pdf"), width =9.5)
+  par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n] + con.tso * 0,], type="l",lty = c(2,6),xaxt="n",xlab="",ylab="", col = gray((3:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n] + con.tso * 1,], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n] + con.tso * 2,], type="l",xaxt="n",xlab="",ylab="",col = gray((3:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex.axis = 1.35, lwd = c(3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n] + con.tso * 3,], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  
+  legend("topright",c("Wide-Bayes","Long-Bayes"), col = gray((3:4)/8),
+         lty = c(2,6),lwd = c(3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.125))
+  mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
+  mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+  dev.off()
+}
 
-legend("topright",c("Wide-Bayes","Long-Bayes"), col = gray((3:4)/8),
-       lty = c(2,6),lwd = c(3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.125))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-pdf(paste0("Mplus_Simulation/Ucon_tso_plot10.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Ucon.cond[4:6,],type="l",lty = c(2,6),xaxt="n",xlab="",ylab="", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[10:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[16:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex.axis = 1.35, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Ucon.cond[22:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-
-legend("topright",c("Wide-Bayes","Long-Bayes"), col = gray((3:4)/8),
-       lty = c(2,6),lwd = c(3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.125))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-rm(Ucon.cond,ylabel, ylimits.down, ylimits.up)
+rm(Ucon.cond, ylabel, ylimits.down, ylimits.up, con.tso)
 
 # Plot: Unpredictability Base Model MSST----
 
-Upred.cond <- matrix(NA, 6 * I, 2)
+con.msst <- length(which(Cond$dataModel == "msst"))
+
+Upred.cond <- matrix(NA, con.msst * I, 2)
 colnames(Upred.cond) <- labels[10:11]
-for(i in 1:6){
-  for(j in 5:8){
+for (i in which(Cond$dataModel == "msst")) {
+  for (j in 5:8) {
     Upred.subset <- subset(var_coeff, factor.var$cond == i)[,j]
     Upred.subset <- matrix(Upred.subset, 100, 11, byrow = TRUE)
-    Upred.cond[((j-5)*6)+i,] <- apply(Upred.subset, 2, function(x) mean(x, na.rm = TRUE))[10:11]
+    Upred.cond[((j - 5) * con.msst) + i,] <- apply(Upred.subset, 2, function(x) mean(x, na.rm = TRUE))[10:11]
   }
 }
-rm(i,j, Upred.subset)
-Upred.cond[1:6,][which(perf.cond[1:6,10:11] < 10, arr.ind = TRUE)] <- NA
-Upred.cond[7:12,][which(perf.cond[1:6,10:11] < 10, arr.ind = TRUE)] <- NA
-Upred.cond[13:18,][which(perf.cond[1:6,10:11] < 10, arr.ind = TRUE)] <- NA
-Upred.cond[19:24,][which(perf.cond[1:6,10:11] < 10, arr.ind = TRUE)] <- NA
+rm(i, j, Upred.subset)
+
+Upred.cond[(con.msst * 0 + 1):(con.msst * 1),][which(perf.cond[1:con.msst, 10:11] < 10, arr.ind = TRUE)] <- NA
+Upred.cond[(con.msst * 1 + 1):(con.msst * 2),][which(perf.cond[1:con.msst, 10:11] < 10, arr.ind = TRUE)] <- NA
+Upred.cond[(con.msst * 2 + 1):(con.msst * 3),][which(perf.cond[1:con.msst, 10:11] < 10, arr.ind = TRUE)] <- NA
+Upred.cond[(con.msst * 3 + 1):(con.msst * 4),][which(perf.cond[1:con.msst, 10:11] < 10, arr.ind = TRUE)] <- NA
 
 ylabel <- "Trait Unpredictability Estimate"
 ylimits.down <- -0.000125
-ylimits.up <- 0.00125
+ylimits.up <- 0.00145
 
-pdf(paste0("Mplus_Simulation/Upred_msst_plot.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Upred.cond[1:3,],type="l",lty = c(2,6),xaxt="n",xlab="",ylab="", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[7:9,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[13:15,],type="l",xaxt="n",xlab="",ylab="",col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex.axis = 1.35, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Upred.cond[19:21,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
+for (n in 1:9) {
+  pdf(paste0("Plots/Upred_msst_", file.name[n], ".pdf"), width =9.5)
+  par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n], ], type="l",lty = c(2,6),xaxt="n",xlab="",ylab="", col = gray((3:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n], ], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n], ], type="l",xaxt="n",xlab="",ylab="",col = gray((3:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex.axis = 1.35, lwd = c(3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n], ], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  
+  legend("topright",c("Wide-Bayes","Long-Bayes"), col = gray((3:4)/8),
+         lty = c(2,6),lwd = c(3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.125))
+  mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
+  mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+  dev.off()
+}
 
-legend("topright",c("Wide-Bayes","Long-Bayes"), col = gray((3:4)/8),
-       lty = c(2,6),lwd = c(3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.125))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-pdf(paste0("Mplus_Simulation/Upred_msst_plot10.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Upred.cond[4:6,],type="l",lty = c(2,6),xaxt="n",xlab="",ylab="", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[10:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[16:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex.axis = 1.35, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Upred.cond[22:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((3:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(2,6), cex = 1.5, lwd = c(3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-
-legend("topright",c("Wide-Bayes","Long-Bayes"), col = gray((3:4)/8),
-       lty = c(2,6),lwd = c(3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.125))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-rm(Upred.cond,ylabel, ylimits.down, ylimits.up)
+rm(Upred.cond, ylabel, ylimits.down, ylimits.up, con.msst)
 
 # Plot: Unpredictability Base Model CUTS----
 
-Upred.cond <- matrix(NA, 6 * I, 3)
+con.cuts <- length(which(Cond$dataModel == "cuts"))
+
+Upred.cond <- matrix(NA, con.cuts * I, 3)
 colnames(Upred.cond) <- labels[9:11]
-for(i in 7:12){
-  for(j in 5:8){
+for (i in which(Cond$dataModel == "cuts")) {
+  for (j in 5:8) {
     Upred.subset <- subset(var_coeff, factor.var$cond == i)[,j]
     Upred.subset <- matrix(Upred.subset, 100, 11, byrow = TRUE)
-    Upred.cond[((j-5)*6)+(i-6),] <- apply(Upred.subset, 2, function(x) mean(x, na.rm = TRUE))[9:11]
+    Upred.cond[((j - 5) * con.cuts) + (i - con.cuts),] <- apply(Upred.subset, 2, function(x) mean(x, na.rm = TRUE))[9:11]
   }
 }
 rm(i,j, Upred.subset)
-Upred.cond[1:6,][which(perf.cond[7:12,9:11] < 10, arr.ind = TRUE)] <- NA
-Upred.cond[7:12,][which(perf.cond[7:12,9:11] < 10, arr.ind = TRUE)] <- NA
-Upred.cond[13:18,][which(perf.cond[7:12,9:11] < 10, arr.ind = TRUE)] <- NA
-Upred.cond[19:24,][which(perf.cond[7:12,9:11] < 10, arr.ind = TRUE)] <- NA
+
+Upred.cond[(con.cuts * 0 + 1):(con.cuts * 1),][which(perf.cond[which(Cond$dataModel == "cuts"), 9:11] < 10, arr.ind = TRUE)] <- NA
+Upred.cond[(con.cuts * 1 + 1):(con.cuts * 2),][which(perf.cond[which(Cond$dataModel == "cuts"), 9:11] < 10, arr.ind = TRUE)] <- NA
+Upred.cond[(con.cuts * 2 + 1):(con.cuts * 3),][which(perf.cond[which(Cond$dataModel == "cuts"), 9:11] < 10, arr.ind = TRUE)] <- NA
+Upred.cond[(con.cuts * 3 + 1):(con.cuts * 4),][which(perf.cond[which(Cond$dataModel == "cuts"), 9:11] < 10, arr.ind = TRUE)] <- NA
 
 ylabel <- "Trait Unpredictability Estimate"
 ylimits.down <- -0.000125
-ylimits.up <- 0.00125
+ylimits.up <- 0.00145
 
-pdf(paste0("Mplus_Simulation/Upred_cuts_plot.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Upred.cond[1:3,],type="l",lty = c(1,6,2),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[7:9,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[13:15,],type="l",xaxt="n",xlab="",ylab="",col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex.axis = 1.35, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Upred.cond[19:21,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
+for (n in 1:9) {
+  pdf(paste0("Plots/Upred_cuts_", file.name[n], ".pdf"), width =9.5)
+  par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 0, ], type="l",lty = c(1,6,2),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 1, ], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 2, ], type="l",xaxt="n",xlab="",ylab="",col = gray((c(1,3,4))/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex.axis = 1.35, lwd = c(3,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 3, ], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  
+  legend("topright",c("Wide-MLE", "Wide-Bayes","Long-Bayes"), col = gray(c(1,3,4)/8),
+         lty = c(1,6,2),lwd = c(3,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.2))
+  mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
+  mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+  dev.off()
+}
 
-legend("topright",c("Wide-MLE", "Wide-Bayes","Long-Bayes"), col = gray(c(1,3,4)/8),
-       lty = c(1,6,2),lwd = c(3,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.2))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-pdf(paste0("Mplus_Simulation/Upred_cuts_plot10.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Upred.cond[4:6,],type="l",lty = c(1,6,2),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[10:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[16:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex.axis = 1.35, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Upred.cond[22:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-
-legend("topright",c("Wide-MLE", "Wide-Bayes","Long-Bayes"), col = gray(c(1,3,4)/8),
-       lty = c(1,6,2),lwd = c(3,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.2))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-rm(Upred.cond,ylabel, ylimits.down, ylimits.up)
+rm(Upred.cond, ylabel, ylimits.down, ylimits.up, con.cuts)
 
 # Plot: Unique Consistency Bias----
 
-Ucon.cond <- matrix(NA, 6 * I, 4)
+con.cuts <- length(which(Cond$dataModel == "cuts"))
+
+Ucon.cond <- matrix(NA, con.cuts * I, 4)
 colnames(Ucon.cond) <- labels[5:8]
-for(i in 7:12){
-  for(j in 5:8){
+for (i in which(Cond$dataModel == "cuts")) {
+  for (j in 5:8) {
     Ucon.subset <- subset(var_coeff.bias, factor.var$cond == i)[,j]
     Ucon.subset <- matrix(Ucon.subset, 100, 11, byrow = TRUE)
-    Ucon.cond[((j-5)*6)+(i-6),] <- apply(Ucon.subset, 2, function(x) mean(x, na.rm = TRUE))[5:8]
+    Ucon.cond[((j - 5) * con.cuts) + (i - con.cuts),] <- apply(Ucon.subset, 2, function(x) mean(x, na.rm = TRUE))[5:8]
   }
 }
 rm(i,j, Ucon.subset)
-Ucon.cond[1:6,][which(perf.cond[7:12,5:8] < 10, arr.ind = TRUE)] <- NA
-Ucon.cond[7:12,][which(perf.cond[7:12,5:8] < 10, arr.ind = TRUE)] <- NA
-Ucon.cond[13:18,][which(perf.cond[7:12,5:8] < 10, arr.ind = TRUE)] <- NA
-Ucon.cond[19:24,][which(perf.cond[7:12,5:8] < 10, arr.ind = TRUE)] <- NA
+
+Ucon.cond[(con.cuts * 0 + 1):(con.cuts * 1),][which(perf.cond[which(Cond$dataModel == "cuts"), 5:8] < 10, arr.ind = TRUE)] <- NA
+Ucon.cond[(con.cuts * 0 + 1):(con.cuts * 1),][which(perf.cond[which(Cond$dataModel == "cuts"), 5:8] < 10, arr.ind = TRUE)] <- NA
+Ucon.cond[(con.cuts * 0 + 1):(con.cuts * 1),][which(perf.cond[which(Cond$dataModel == "cuts"), 5:8] < 10, arr.ind = TRUE)] <- NA
+Ucon.cond[(con.cuts * 0 + 1):(con.cuts * 1),][which(perf.cond[which(Cond$dataModel == "cuts"), 5:8] < 10, arr.ind = TRUE)] <- NA
 
 ylabel <- "Bias Unique Consistency"
 ylimits.down <- -0.0165
 ylimits.up <- 0.0165
 
-pdf(paste0("Mplus_Simulation/Ucon_bias_plot.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Ucon.cond[1:3,],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,4.5,3,4), las =1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[7:9,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las =1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[13:15,],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las =1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Ucon.cond[19:21,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las =1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
+for (n in 1:9) {
+  pdf(paste0("Plots/Ucon_bias_", file.name[n], ".pdf"), width =9.5)
+  par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n] + con.cuts * 0,],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,4.5,3,4), las =1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n] + con.cuts * 1,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las =1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n] + con.cuts * 2,],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las =1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  print(matplot(1:6, Ucon.cond[Cond.ind[1:6, n] + con.cuts * 3,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las =1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  
+  legend("topright",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+         lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.25))
+  mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
+  mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+  dev.off()
+}
 
-legend("topright",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.25))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-pdf(paste0("Mplus_Simulation/Ucon_bias_plot10.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Ucon.cond[4:6,],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,4.5,3,4), las =1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[10:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las =1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Ucon.cond[16:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las =1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Ucon.cond[22:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las =1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-
-legend("topright",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-       lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.25))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-rm(Ucon.cond,ylabel, ylimits.down, ylimits.up)
+rm(Ucon.cond, ylabel, ylimits.down, ylimits.up, con.cuts)
 
 # Plot: Unpredictability Bias----
 
-Upred.cond <- matrix(NA, 6 * I, 3)
+con.tso <- length(which(Cond$dataModel == "tso"))
+
+Upred.cond <- matrix(NA, con.tso * I, 3)
 colnames(Upred.cond) <- labels[9:11]
-for(i in 13:18){
-  for(j in 5:8){
+for (i in which(Cond$dataModel == "tso")) {
+  for (j in 5:8) {
     Upred.subset <- subset(var_coeff.bias, factor.var$cond == i)[,j]
     Upred.subset <- matrix(Upred.subset, 100, 11, byrow = TRUE)
-    Upred.cond[((j-5)*6)+(i-12),] <- apply(Upred.subset, 2, function(x) mean(x, na.rm = TRUE))[9:11]
+    Upred.cond[((j - 5) * con.tso) + (i - con.tso * 2),] <- apply(Upred.subset, 2, function(x) mean(x, na.rm = TRUE))[9:11]
   }
 }
 rm(i,j, Upred.subset)
-Upred.cond[1:6,][which(perf.cond[13:18,9:11] < 10, arr.ind = TRUE)] <- NA
-Upred.cond[7:12,][which(perf.cond[13:18,9:11] < 10, arr.ind = TRUE)] <- NA
-Upred.cond[13:18,][which(perf.cond[13:18,9:11] < 10, arr.ind = TRUE)] <- NA
-Upred.cond[19:24,][which(perf.cond[13:18,9:11] < 10, arr.ind = TRUE)] <- NA
+
+Upred.cond[(con.tso * 0 + 1):(con.tso * 1),][which(perf.cond[which(Cond$dataModel == "tso"), 9:11] < 10, arr.ind = TRUE)] <- NA
+Upred.cond[(con.tso * 1 + 1):(con.tso * 2),][which(perf.cond[which(Cond$dataModel == "tso"), 9:11] < 10, arr.ind = TRUE)] <- NA
+Upred.cond[(con.tso * 2 + 1):(con.tso * 3),][which(perf.cond[which(Cond$dataModel == "tso"), 9:11] < 10, arr.ind = TRUE)] <- NA
+Upred.cond[(con.tso * 3 + 1):(con.tso * 4),][which(perf.cond[which(Cond$dataModel == "tso"), 9:11] < 10, arr.ind = TRUE)] <- NA
 
 ylabel <- "Bias Trait Unpredictability"
 ylimits.down <- -0.0165
 ylimits.up <- 0.0165
 
-pdf(paste0("Mplus_Simulation/Upred_bias_plot.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Upred.cond[1:3,],type="l",lty = c(1,6,2),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[7:9,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[13:15,],type="l",xaxt="n",xlab="",ylab="",col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex.axis = 1.35, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Upred.cond[19:21,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
+for (n in 1:9) {
+  pdf(paste0("Plots/Upred_bias_", file.name[n], ".pdf"), width =9.5)
+  par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 0, ], type="l",lty = c(1,6,2),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 1, ], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 2, ], type="l",xaxt="n",xlab="",ylab="",col = gray((c(1,3,4))/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex.axis = 1.35, lwd = c(3,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 3, ], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
+          xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
+  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+  mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
+  axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+  
+  legend("topright",c("Wide-MLE", "Wide-Bayes","Long-Bayes"), col = gray(c(1,3:4)/8),
+         lty = c(1,6,2),lwd = c(3,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.2))
+  mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
+  mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+  dev.off()
+}
 
-legend("topright",c("Wide-MLE", "Wide-Bayes","Long-Bayes"), col = gray(c(1,3:4)/8),
-       lty = c(1,6,2),lwd = c(3,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.2))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-pdf(paste0("Mplus_Simulation/Upred_bias_plot10.pdf"), width =9.5)
-par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-matplot(1:3,Upred.cond[4:6,],type="l",lty = c(1,6,2),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[10:12,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-matplot(1:3,Upred.cond[16:18,],type="l",xaxt="n",xlab="",ylab="",col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex.axis = 1.35, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-matplot(1:3,Upred.cond[22:24,],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
-        xlim=c(0.7,3.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
-axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-
-legend("topright",c("Wide-MLE", "Wide-Bayes","Long-Bayes"), col = gray(c(1,3:4)/8),
-       lty = c(1,6,2),lwd = c(3,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = c(-1, -0.2))
-mtext(ylabel, 2, outer=TRUE, line=5, cex = 1.5)
-mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-dev.off()
-
-rm(Upred.cond,ylabel, ylimits.down, ylimits.up)
+rm(Upred.cond, ylabel, ylimits.down, ylimits.up, con.tso)
 
 
 # Posterior sd of variance coefficients ----
