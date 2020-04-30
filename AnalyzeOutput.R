@@ -1085,16 +1085,20 @@ for (j in 2:9) {
 rm(bias.cond, j, ylabel, ylimits)
 
 # Standard errors and/or posterior sd ----
-files <- paste(getwd(), "Mplus_Simulation" , "SE_PSD", paste0("se_psd_",  1:18, ".dat"), sep = "/")
+files <- paste(getwd(), "Mplus_Simulation" , "SE_PSD", paste0("se_psd_",  1:162, ".dat"), sep = "/")
+files.b <- paste(getwd(), "Mplus_Simulation" , "SE_PSD", paste0("se_psd_bayes_",  1:162, ".dat"), sep = "/")
 
-se_psd <- lapply(files, function(x) read.table(file = x, header = TRUE))
+se_psd   <- lapply(files, function(x) read.table(file = x, header = TRUE))
+se_psd.b <- lapply(files.b, function(x) read.table(file = x, header = TRUE))
 
-rm(files)
+se_psd   <- ldply(se_psd, data.frame)
+se_psd.b <- ldply(se_psd.b, data.frame)
 
-se_psd <- ldply(se_psd, data.frame)
+se_psd[is.na(se_psd$w_loading1), ] <- se_psd.b[is.na(se_psd$w_loading1), ]
 
 se_psd[which(se_psd == -999, arr.ind = TRUE)] <- NA
 
+rm(files, files.b, se_psd.b)
 
 # Plots: SE/PSD----
 ylabel <- c(expression(paste("SE/PSD ", lambda["S"[2]])),
@@ -1106,12 +1110,12 @@ ylabel <- c(expression(paste("SE/PSD ", lambda["S"[2]])),
             expression(paste("SE/PSD var(", epsilon[3], ")")),
             expression(paste("SE/PSD var(", epsilon[4], ")")))
 ylimits.down <- c(-0.005, -0.005, -0.005, -0.01, -0.005, -0.005, -0.01, -0.005 )
-ylimits.up <- c(0.065, 0.065, 0.065, 0.165, 0.065, 0.065, 0.165, 0.065 )
+ylimits.up <- c(0.065, 0.125, 0.085, 0.165, 0.065, 0.065, 0.165, 0.065 )
 
-for(j in 2:9){
-  se.psd.cond <- matrix(NA, 18, 11)
+for (j in 2:9) {
+  se.psd.cond <- matrix(NA, 162, 11)
   colnames(se.psd.cond) <- labels
-  for(i in 1:18){
+  for (i in 1:162) {
     se.psd.subset <- subset(se_psd, factor.var$cond == i)[,j]
     se.psd.subset <- matrix(se.psd.subset, 100, 11, byrow = TRUE)
     se.psd.cond[i,] <- apply(se.psd.subset, 2, function(x) mean(x, na.rm = TRUE))
@@ -1119,53 +1123,56 @@ for(j in 2:9){
   rm(i, se.psd.subset)
   se.psd.cond[which(perf.cond[,1:11] < 10, arr.ind = TRUE)] <- NA
   
-  pdf(paste0("Mplus_Simulation/mean.se.psd.par", j, "plot.pdf"), width =9.5)
-  par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,7,4,20),xpd=NA)
-  matplot(1:3,se.psd.cond[1:3,1:4],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,3.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-  matplot(1:3,se.psd.cond[1:3,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,3.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-  matplot(1:3,se.psd.cond[1:3,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
-          xlim=c(0.7,3.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-  matplot(1:3,se.psd.cond[7:9,1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
-          xlim=c(0.7,3.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-  matplot(1:3,se.psd.cond[7:9,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,3.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-  matplot(1:3,se.psd.cond[7:9,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,3.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-  legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
-         lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
-  matplot(1:3,se.psd.cond[13:15,1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
-          xlim=c(0.7,3.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1)
-  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-  axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-  matplot(1:3,se.psd.cond[13:15,5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
-          xlim=c(0.7,3.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
-  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-  axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-  matplot(1:3,se.psd.cond[13:15,9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
-          xlim=c(0.7,3.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1)
-  abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
-  axis(1, at=1:3, labels=c(30,60,90), cex.axis = 1.35)
-  
-  mtext(ylabel[j-1], 2, outer=TRUE, line=3.75, cex = 1.5)
-  mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
-  mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
-  mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
-  mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
-  mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
-  mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
-  mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
-  mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
-  mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
-  dev.off()
+  for (n in 1:9) {
+    pdf(paste0("Plots/mean_se_psd_par", j, "_", file.name[n], ".pdf"), width =9.5)
+    par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,7,4,20),xpd=NA)
+    print(matplot(1:6, se.psd.cond[Cond.ind[1:6, n], 1:4], type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+            xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    print(matplot(1:6, se.psd.cond[Cond.ind[1:6, n], 5:8], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+            xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    print(matplot(1:6, se.psd.cond[Cond.ind[1:6, n], 9:11], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
+            xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    print(matplot(1:6, se.psd.cond[Cond.ind[7:12, n], 1:4], type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+            xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    print(matplot(1:6, se.psd.cond[Cond.ind[7:12, n], 5:8], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+            xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    print(matplot(1:6, se.psd.cond[Cond.ind[7:12, n], 9:11], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+            xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+           lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
+    print(matplot(1:6, se.psd.cond[Cond.ind[13:18, n], 1:4], type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
+            xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+    print(matplot(1:6, se.psd.cond[Cond.ind[13:18, n], 5:8], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+            xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+    print(matplot(1:6, se.psd.cond[Cond.ind[13:18, n], 9:11], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+            xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
+    
+    mtext(ylabel[j-1], 2, outer=TRUE, line=3.75, cex = 1.5)
+    mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+    mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
+    mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
+    mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
+    mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
+    mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
+    mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
+    mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
+    mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
+    dev.off()
+  }
 }
+
 rm(j, se.psd.cond, ylabel, ylimits.down, ylimits.up)
 
 # Variance coefficients ----
