@@ -832,13 +832,25 @@ for (i in 1:9) {
 }
 
 # Running times ----
-files <- paste(getwd(), "Mplus_Simulation" , "Times", paste0("times_",  1:18, ".dat"), sep = "/")
+files   <- paste(getwd(), "Mplus_Simulation" , "Times", paste0("times_",  1:162, ".dat"), sep = "/")
+files.b <- paste(getwd(), "Mplus_Simulation" , "Times", paste0("times_bayes_",  1:162, ".dat"), sep = "/")
 
-running.times <- lapply(files, function(x) read.table(file = x, header = TRUE))
+running.times   <- lapply(files, function(x) read.table(file = x, header = TRUE))
+running.times.b <- lapply(files.b, function(x) read.table(file = x, header = TRUE))
 
-rm(files)
+running.times   <- ldply(running.times, data.frame)
+running.times.b <- ldply(running.times.b, data.frame)
 
-running.times <- ldply(running.times, data.frame)
+running.times[, c(3, 4, 7, 8, 10, 11)] <- running.times.b[, c(3, 4, 7, 8, 10, 11)]
+
+rm(files, files.b, running.times.b)
+
+running.times[which(performances == "timeout", arr.ind = TRUE)]
+
+summary(running.times[which(performances == "timeout", arr.ind = TRUE)])
+length(which(running.times[which(performances == "timeout", arr.ind = TRUE)] < 3600))
+
+hist(running.times[which(performances == "timeout", arr.ind = TRUE)])
 
 # Parameter estimates ----
 files <- paste(getwd(), "Mplus_Simulation" , "Parameters", paste0("parameters_", 1:162, ".dat"), sep = "/")
@@ -850,7 +862,7 @@ parameters.b <- lapply(files.b, function(x) read.table(file = x, header = TRUE))
 parameters <- ldply(parameters, data.frame)
 parameters.b <- ldply(parameters.b, data.frame)
 
-parameters[is.na(parameters$w_loading1), ] <- parameters.b[is.na(parameters$w_loading1), ]
+parameters[factor.var$est.method == "bayes", ] <- parameters.b[factor.var$est.method == "bayes", ]
 
 parameters[which(parameters == -999, arr.ind = TRUE)] <- NA
 
@@ -1094,7 +1106,7 @@ se_psd.b <- lapply(files.b, function(x) read.table(file = x, header = TRUE))
 se_psd   <- ldply(se_psd, data.frame)
 se_psd.b <- ldply(se_psd.b, data.frame)
 
-se_psd[is.na(se_psd$w_loading1), ] <- se_psd.b[is.na(se_psd$w_loading1), ]
+se_psd[factor.var$est.method == "bayes", ] <- se_psd.b[factor.var$est.method == "bayes", ]
 
 se_psd[which(se_psd == -999, arr.ind = TRUE)] <- NA
 
@@ -1185,7 +1197,7 @@ var_coeff.b <- lapply(files.b, function(x) read.table(file = x, header = TRUE))
 var_coeff   <- ldply(var_coeff, data.frame)
 var_coeff.b <- ldply(var_coeff.b, data.frame)
 
-var_coeff[is.na(var_coeff$rel_y1), ] <- var_coeff.b[is.na(var_coeff$rel_y1), ]
+var_coeff[factor.var$est.method == "bayes", ] <- var_coeff.b[factor.var$est.method == "bayes", ]
 
 var_coeff[which(var_coeff == -999, arr.ind = TRUE)] <- NA
 
@@ -1695,26 +1707,26 @@ Upred.cond[(con.tso * 2 + 1):(con.tso * 3),][which(perf.cond[which(Cond$dataMode
 Upred.cond[(con.tso * 3 + 1):(con.tso * 4),][which(perf.cond[which(Cond$dataModel == "tso"), 9:11] < 10, arr.ind = TRUE)] <- NA
 
 ylabel <- "Bias Trait Unpredictability"
-ylimits.down <- -0.0165
+ylimits.down <- -0.0285
 ylimits.up <- 0.0165
 
 for (n in 1:9) {
   pdf(paste0("Plots/Upred_bias_", file.name[n], ".pdf"), width =9.5)
   par(mfrow=c(2,2),mar=c(0,0,0,0),oma=c(6,8,4,17.5),xpd=NA)
-  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 0, ], type="l",lty = c(1,6,2),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.tso * 0, ], type="l",lty = c(1,6,2),xaxt="n",xlab="",ylab="", col = gray((c(1,3,4))/8),
           xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up), cex.axis = 1.35, lwd = c(3,3,4), las = 1))
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   mtext("Y1", 3, outer = FALSE, line = -1.5, cex = 1)
-  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 1, ], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.tso * 1, ], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
           xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   mtext("Y2", 3, outer = FALSE, line = -1.5, cex = 1)
-  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 2, ], type="l",xaxt="n",xlab="",ylab="",col = gray((c(1,3,4))/8),
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.tso * 2, ], type="l",xaxt="n",xlab="",ylab="",col = gray((c(1,3,4))/8),
           xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex.axis = 1.35, lwd = c(3,3,4), las = 1))
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   mtext("Y3", 3, outer = FALSE, line = -1.5, cex = 1)
   axis(1, at=1:6, labels = c(10, 15, 20, 30, 60, 90), cex.axis = 1.35)
-  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.cuts * 3, ], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
+  print(matplot(1:6, Upred.cond[Cond.ind[1:6, n] + con.tso * 3, ], type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((c(1,3,4))/8),
           xlim=c(0.7,6.2),ylim=c(ylimits.down,ylimits.up),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
   abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
   mtext("Y4", 3, outer = FALSE, line = -1.5, cex = 1)
@@ -1729,9 +1741,8 @@ for (n in 1:9) {
 
 rm(Upred.cond, ylabel, ylimits.down, ylimits.up, con.tso)
 
-
 # Posterior sd of variance coefficients ----
-files <- paste(getwd(), "Mplus_Simulation" , "PSD_Var_Coeff", paste0("psd_var_coeff_",  1:18, ".dat"), sep = "/")
+files <- paste(getwd(), "Mplus_Simulation" , "PSD_Var_Coeff", paste0("psd_var_coeff_bayes_",  1:162, ".dat"), sep = "/")
 
 psd_var_coeff <- lapply(files, function(x) read.table(file = x, header = TRUE))
 
@@ -1740,14 +1751,20 @@ rm(files)
 psd_var_coeff <- ldply(psd_var_coeff, data.frame)
 
 # Fit measures ----
-files <- paste(getwd(), "Mplus_Simulation" , "Fit_Measures", paste0("fit_measures_",  1:18, ".dat"), sep = "/")
+files   <- paste(getwd(), "Mplus_Simulation" , "Fit_Measures", paste0("fit_measures_",  1:162, ".dat"), sep = "/")
+files.b <- paste(getwd(), "Mplus_Simulation" , "Fit_Measures", paste0("fit_measures_bayes_",  1:162, ".dat"), sep = "/")
 
-fit_measures <- lapply(files, function(x) read.table(file = x, header = TRUE))
+fit_measures   <- lapply(files, function(x) read.table(file = x, header = TRUE))
+fit_measures.b <- lapply(files.b, function(x) read.table(file = x, header = TRUE))
 
-rm(files)
+fit_measures   <- ldply(fit_measures, data.frame)
+fit_measures.b <- ldply(fit_measures.b, data.frame)
 
-fit_measures <- ldply(fit_measures, data.frame)
+fit_measures[factor.var$est.method == "bayes", ] <- fit_measures.b[factor.var$est.method == "bayes", ]
+
 fit_measures[which(fit_measures == -999, arr.ind = TRUE)] <- NA
+
+rm(files, files.b, fit_measures.b)
 
 # Plot: DIC selection ----
 

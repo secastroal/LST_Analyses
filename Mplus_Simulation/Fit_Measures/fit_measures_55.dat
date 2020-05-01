@@ -1,4 +1,4 @@
-\# Parameters Chitest df Chipval CFI TLI RMSEA AIC BIC aBIC DIC pD ppp
+ParametersN Chitest df Chipval CFI TLI RMSEA AIC BIC aBIC DIC pD ppp
 msst_wide_ml_r1 16 1234.403 844 0 0.881 0.89 0.068 11979.35 12021.033 11970.501 NA NA NA
 msst_long_ml_r1 16 304.965 8 0 0.889 0.834 0.193 11978.834 12057.358 12006.541 NA NA NA
 msst_wide_bayes_r1 NA NA NA NA NA NA NA NA NA NA NA NA NA
