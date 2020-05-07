@@ -610,6 +610,25 @@ performances[, c(3, 4, 7, 8, 10, 11)] <- performances.b[, c(3, 4, 7, 8, 10, 11)]
 
 rm(files, files.b, performances.b)
 
+# Running times ----
+files   <- paste(getwd(), "Mplus_Simulation" , "Times", paste0("times_",  1:162, ".dat"), sep = "/")
+files.b <- paste(getwd(), "Mplus_Simulation" , "Times", paste0("times_bayes_",  1:162, ".dat"), sep = "/")
+
+running.times   <- lapply(files, function(x) read.table(file = x, header = TRUE))
+running.times.b <- lapply(files.b, function(x) read.table(file = x, header = TRUE))
+
+running.times   <- ldply(running.times, data.frame)
+running.times.b <- ldply(running.times.b, data.frame)
+
+running.times[, c(3, 4, 7, 8, 10, 11)] <- running.times.b[, c(3, 4, 7, 8, 10, 11)]
+
+rm(files, files.b, running.times.b)
+
+# Fix perfomances when timeouts were not timeouts ----
+# performances[which(performances == "timeout" & running.times < 3600, arr.ind = TRUE)] <- "No memory"
+
+# Table: Performance ----
+
 perf.table <- rbind(apply(performances, 2, function(x) length(which(x == "Ok"))),
                     apply(performances, 2, function(x) length(which(x == "Errors/Warnings"))),
                     apply(performances, 2, function(x) length(which(x == "Non-convergence"))),
@@ -621,29 +640,15 @@ perf.table <- cbind(c("MSST", "ML-MSST", "MSST", "ML-MSST", "CUTS", "ML-CUTS", "
                       "TSO", "TSO", "ML-TSO"), 
                     c("MLE", "MLE", "Bayes", "Bayes", "MLE", "MLE", "Bayes", "Bayes", "MLE", "Bayes", "Bayes"), 
                     t(perf.table))
-dimnames(perf.table)[[2]] <- c("Model", "Est.Method", "Successful", "Warnings/Errors", "Non-convergence", "Timeout")
+dimnames(perf.table)[[2]] <- c("Model", "Est.Method", "Successful", "Warnings/Errors", "Non-convergence", "Out of Resources")
 
 perf.prop <- cbind(c("MSST", "ML-MSST", "MSST", "ML-MSST", "CUTS", "ML-CUTS", "CUTS", "ML-CUTS",
                       "TSO", "TSO", "ML-TSO"), 
                     c("MLE", "MLE", "Bayes", "Bayes", "MLE", "MLE", "Bayes", "Bayes", "MLE", "Bayes", "Bayes"), 
                     perf.prop)
 
-dimnames(perf.prop)[[2]] <- c("Model", "Est.Method", "Successful", "Warnings/Errors", "Non-convergence", "Timeout")
+dimnames(perf.prop)[[2]] <- c("Model", "Est.Method", "Successful", "Warnings/Errors", "Non-convergence", "Out of Resources")
 
-perf.cond <- matrix(NA, 162, 11*4)
-colnames(perf.cond) <- c(paste(rep(labels, 4),rep(c("Ok", "WE", "NC", "TOut"), each = 11), 
-                               sep = " "))
-
-for(i in 1:162){
-  perf.subset <- performances[((100 *(i-1))+1):(100*i),]
-  perf.cond[i, ] <- c(apply(perf.subset, 2, function(x) length(which(x == "Ok"))),
-                      apply(perf.subset, 2, function(x) length(which(x == "Errors/Warnings"))),
-                      apply(perf.subset, 2, function(x) length(which(x == "Non-convergence"))),
-                      apply(perf.subset, 2, function(x) length(which(x == "timeout"))))
-}
-rm(i, perf.subset)
-
-# Table: Performance ----
 print(xtable(perf.table, 
              type    = "latex", 
              align   = c("l", "l", "l", "c", "c", "c", "c"), 
@@ -662,6 +667,54 @@ print(xtable(perf.prop,
       caption.placement = "top", 
       file = "Tables/performancespercentages.txt")
 
+baseModel <- c("msst", "cuts", "tso")
+var_ratio <- c("1:3", "1:1", "3:1")
+
+for (i in 1:3) {
+  for (j in 1:3) {
+    perf.table <- rbind(apply(performances[which(Cond.ex$dataModel == baseModel[i] & Cond.ex$ration == var_ratio[j]), ], 2, function(x) length(which(x == "Ok"))),
+                        apply(performances[which(Cond.ex$dataModel == baseModel[i] & Cond.ex$ration == var_ratio[j]), ], 2, function(x) length(which(x == "Errors/Warnings"))),
+                        apply(performances[which(Cond.ex$dataModel == baseModel[i] & Cond.ex$ration == var_ratio[j]), ], 2, function(x) length(which(x == "Non-convergence"))),
+                        apply(performances[which(Cond.ex$dataModel == baseModel[i] & Cond.ex$ration == var_ratio[j]), ], 2, function(x) length(which(x == "timeout"))))
+    
+    perf.prop <- t(round(prop.table(as.table(perf.table), margin = 2)*100, 2))
+    
+    perf.prop <- cbind(c("MSST", "ML-MSST", "MSST", "ML-MSST", "CUTS", "ML-CUTS", "CUTS", "ML-CUTS",
+                         "TSO", "TSO", "ML-TSO"), 
+                       c("MLE", "MLE", "Bayes", "Bayes", "MLE", "MLE", "Bayes", "Bayes", "MLE", "Bayes", "Bayes"), 
+                       perf.prop)
+    
+    dimnames(perf.prop)[[2]] <- c("Model", "Est.Method", "Successful", "Warnings/Errors", "Non-convergence", "Out of Resources")
+    
+    print(xtable(perf.prop, 
+                 type    = "latex", 
+                 align   = c("l", "l", "l", "c", "c", "c", "c"), 
+                 label   = "tab:perf", 
+                 caption = paste0("Percentages of Successes and Failures per Type of Analysis on 1800 Analyses Each",
+                                  " when ", var_ratio[j], " Trait-State Variance and Base Model ",
+                                  toupper(baseModel[i]))), 
+          include.rownames  = FALSE, 
+          caption.placement = "top", 
+          file = paste0("Tables/performancespercentages", baseModel[i], gsub(":", "to", var_ratio[j]), ".txt"))
+  }
+}
+
+rm(baseModel, var_ratio, i, j, perf.table, perf.prop)
+
+# Compute number of succesful analyses, error and warnings, etc. per condition.
+
+perf.cond <- matrix(NA, 162, 11*4)
+colnames(perf.cond) <- c(paste(rep(labels, 4),rep(c("Ok", "WE", "NC", "TOut"), each = 11), 
+                               sep = " "))
+
+for(i in 1:162){
+  perf.subset <- performances[((100 *(i-1))+1):(100*i),]
+  perf.cond[i, ] <- c(apply(perf.subset, 2, function(x) length(which(x == "Ok"))),
+                      apply(perf.subset, 2, function(x) length(which(x == "Errors/Warnings"))),
+                      apply(perf.subset, 2, function(x) length(which(x == "Non-convergence"))),
+                      apply(perf.subset, 2, function(x) length(which(x == "timeout"))))
+}
+rm(i, perf.subset)
 
 # Plot: Successful analysis ----
 
@@ -789,7 +842,7 @@ for (i in 1:9) {
   dev.off()
 }
 
-# Plot: Analyses that time out ----
+# Plot: Analyses that run out of resources ----
 
 for (i in 1:9) {
   pdf(paste0("Plots/timeout_", file.name[i], ".pdf"), width = 9.5)
@@ -818,7 +871,7 @@ for (i in 1:9) {
                 xlim=c(0.7,6.2),ylim=c(0,110),lty = c(1,6,2), lwd = c(3,3,4), las = 1))
   axis(1, at=1:6, labels=c(10, 15, 20, 30, 60, 90), cex.axis =1.35)
   
-  mtext("Number of Analyses that Timeout", 2, outer=TRUE, line=3, cex = 1.5)
+  mtext("Number of Analyses that Run Out of Resources", 2, outer=TRUE, line=3, cex = 1.5)
   mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
   mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
   mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
@@ -830,27 +883,6 @@ for (i in 1:9) {
   mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
   dev.off()
 }
-
-# Running times ----
-files   <- paste(getwd(), "Mplus_Simulation" , "Times", paste0("times_",  1:162, ".dat"), sep = "/")
-files.b <- paste(getwd(), "Mplus_Simulation" , "Times", paste0("times_bayes_",  1:162, ".dat"), sep = "/")
-
-running.times   <- lapply(files, function(x) read.table(file = x, header = TRUE))
-running.times.b <- lapply(files.b, function(x) read.table(file = x, header = TRUE))
-
-running.times   <- ldply(running.times, data.frame)
-running.times.b <- ldply(running.times.b, data.frame)
-
-running.times[, c(3, 4, 7, 8, 10, 11)] <- running.times.b[, c(3, 4, 7, 8, 10, 11)]
-
-rm(files, files.b, running.times.b)
-
-running.times[which(performances == "timeout", arr.ind = TRUE)]
-
-summary(running.times[which(performances == "timeout", arr.ind = TRUE)])
-length(which(running.times[which(performances == "timeout", arr.ind = TRUE)] < 3600))
-
-hist(running.times[which(performances == "timeout", arr.ind = TRUE)])
 
 # Parameter estimates ----
 files <- paste(getwd(), "Mplus_Simulation" , "Parameters", paste0("parameters_", 1:162, ".dat"), sep = "/")
@@ -927,6 +959,82 @@ for (j in 2:9) {
     axis(1, at=1:6, labels=c(10, 15, 20, 30,60,90), cex.axis = 1.35)
     print(matplot(1:6, bias.cond[Cond.ind[13:18, n],9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
             xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    axis(1, at=1:6, labels=c(10, 15, 20, 30,60,90), cex.axis = 1.35)
+    
+    mtext(ylabel[j-1], 2, outer=TRUE, line=3.75, cex = 1.5)
+    mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+    mtext("Model", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
+    mtext("MSST", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
+    mtext("CUTS", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
+    mtext("TSO", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
+    mtext("Base Model", 4, at=3/6,cex=1.5, outer=TRUE, line=3)
+    mtext("MSST", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75)
+    mtext("CUTS", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75)
+    mtext("TSO", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75)
+    dev.off()
+  }
+}
+
+rm(j, bias.cond, ylabel, ylimits.down, ylimits.up)
+
+# Plots: Relative Bias Parameters----
+ylabel <- c(expression(paste("Relative Bias ", lambda["S"[2]])),
+            expression(paste("Relative Bias ", lambda["S"[3]])),
+            expression(paste("Relative Bias ", lambda["S"[4]])),
+            expression(paste("Relative Bias var(", zeta, ")")),
+            expression(paste("Relative Bias var(", epsilon[1], ")")),
+            expression(paste("Relative Bias var(", epsilon[2], ")")),
+            expression(paste("Relative Bias var(", epsilon[3], ")")),
+            expression(paste("Relative Bias var(", epsilon[4], ")")))
+ylimits.down <- rep(-0.5, 8)
+ylimits.up <- rep(0.5, 8)
+
+for (j in 2:9) {
+  bias.cond <- matrix(NA, 162, 11)
+  colnames(bias.cond) <- labels
+  for (i in 1:162) {
+    bias.subset <- subset(parameters.bias, factor.var$cond == i)[,j]
+    bias.subset <- bias.subset / subset(parameters.true, factor.var$cond == i)[,j]
+    bias.subset <- matrix(bias.subset, 100, 11, byrow = TRUE)
+    bias.cond[i,] <- apply(bias.subset, 2, function(x) mean(x, na.rm = TRUE))
+  }
+  rm(i, bias.subset)
+  bias.cond[which(perf.cond[,1:11] < 10, arr.ind = TRUE)] <- NA
+  
+  for (n in 1:9) {
+    pdf(paste0("Plots/biasrelpar", j, "_", file.name[n], ".pdf"), width =9.5)
+    par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,7,4,20),xpd=NA)
+    print(matplot(1:6, bias.cond[Cond.ind[1:6, n], 1:4],type="l",lty = c(1,5,6,2),xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+                  xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    print(matplot(1:6, bias.cond[Cond.ind[1:6, n], 5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+                  xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    print(matplot(1:6, bias.cond[Cond.ind[1:6, n], 9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8), 
+                  xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    print(matplot(1:6, bias.cond[Cond.ind[7:12, n], 1:4],type="l",xaxt="n",xlab="",ylab="", col = gray((1:4)/8),
+                  xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    matplot(1:6, bias.cond[Cond.ind[7:12, n], 5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+            xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1)
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    print(matplot(1:6, bias.cond[Cond.ind[7:12, n], 9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+                  xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    legend("right",c("Wide-MLE","Long-MLE", "Wide-Bayes","Long-Bayes"), col = gray((1:4)/8),
+           lty = c(1,5,6,2),lwd = c(3,4.5,3,4), seg.len = 4, cex = 1.5, pt.cex = 1, inset = -1.25)
+    print(matplot(1:6, bias.cond[Cond.ind[13:18, n],1:4],type="l",xaxt="n",xlab="",ylab="",col = gray((1:4)/8),
+                  xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex.axis = 1.35, lwd = c(3,4.5,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    axis(1, at=1:6, labels=c(10, 15, 20, 30,60,90), cex.axis = 1.35)
+    print(matplot(1:6, bias.cond[Cond.ind[13:18, n],5:8],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray((1:4)/8),
+                  xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,5,6,2), cex = 1.5, lwd = c(3,4.5,3,4), las = 1))
+    abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
+    axis(1, at=1:6, labels=c(10, 15, 20, 30,60,90), cex.axis = 1.35)
+    print(matplot(1:6, bias.cond[Cond.ind[13:18, n],9:11],type="l",xaxt="n",xlab="",ylab="",yaxt="n", col = gray(c(1,3,4)/8),
+                  xlim=c(0.7,6.2),ylim=c(ylimits.down[j-1],ylimits.up[j-1]),lty = c(1,6,2), cex = 1.5, lwd = c(3,3,4), las = 1))
     abline(h = 0, xpd = FALSE, col = rgb(.211, .211, .211, .25))
     axis(1, at=1:6, labels=c(10, 15, 20, 30,60,90), cex.axis = 1.35)
     
