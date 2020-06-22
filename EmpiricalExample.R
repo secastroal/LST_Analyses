@@ -33,6 +33,24 @@ HND_data_filtered_NA <- HND_data_filtered[NA_ind == 6,] # 61417 valid observatio
 
 length(unique(HND_data_filtered_NA$id)) # number of persons with at least 1 observation.1302
 
+# Plot distribution of valid observations
+
+total_obs <- HND_data_filtered$Observations_valid90[HND_data_filtered$time == 1]
+
+par(mar = c(4, 4, 1, 1))
+hist(total_obs, main = NULL, breaks = 90, 
+     ylim = c(0, 200), xlim = c(0, 100),
+     col = "black",
+     xlab = "Number of responses in the diary study of a person")
+
+hist(total_obs[total_obs >= 59], main = NULL, breaks = 30, 
+     ylim = c(0, 50), xlim = c(50, 100),
+     col = "black",
+     xlab = "Number of responses in the diary study of a person")
+
+dev.off()
+rm(total_obs)
+
 # Subset data with person that have enough observations to get personalized feedback 65% ~ 58.5 observations
 
 HND_data_filtered_65 <- HND_data_filtered[HND_data_filtered$Observations_valid90 >= 59, ]
@@ -54,7 +72,7 @@ sum(c(is.na(HND_data_filtered_65[,7:12])))/length(c(is.na(HND_data_filtered_65[,
 
 ### There are 4 persons from belgium, and another 4 persons from other country, should I deleted them to have only dutch people?
 
-# Data long to data wide: to sumirize time-invariant variables (sex)
+# Data long to data wide: to sumarize time-invariant variables (sex)
 
 HND_data_filtered_65_w <- reshape(HND_data_filtered_65, v.names = names(HND_data_filtered_65)[7:12],
         timevar = "time", idvar="id", direction="wide")
@@ -63,42 +81,66 @@ summary(HND_data_filtered_65_w$age)
 
 # plot person's time series
 
-persons <- sample(1:644, 50)
-pdf("HND/relaxed.pdf", height = 4)
+persons <- sample(1:644, 30)
+pdf("Plots/relaxed.pdf", height = 4)
 ts.plot(t(HND_data_filtered_65_w[persons,seq(6,545, by = 6)]), col = gray(0.5), gpars = list(ylab = "Relaxed", las = 1))
 lines(1:90, apply(t(HND_data_filtered_65_w[,seq(6,545, by = 6)]), 1, function(x) mean(x, na.rm = TRUE)), 
         col = "black", lty = 1, lwd = 4 )
 dev.off()
 
-pdf("HND/energetic.pdf", height = 4)
+pdf("Plots/energetic.pdf", height = 4)
 ts.plot(t(HND_data_filtered_65_w[persons,seq(7,545, by = 6)]), col = gray(0.5), gpars = list(ylab = "Energetic", las = 1))
 lines(1:90, apply(t(HND_data_filtered_65_w[,seq(7,545, by = 6)]), 1, function(x) mean(x, na.rm = TRUE)), 
       col = "black", lty = 1, lwd = 4 )
 dev.off()
 
-pdf("HND/enthusiastic.pdf", height = 4)
+pdf("Plots/enthusiastic.pdf", height = 4)
 ts.plot(t(HND_data_filtered_65_w[persons,seq(8,545, by = 6)]), col = gray(0.5), gpars = list(ylab = "Enthusiastic", las = 1))
 lines(1:90, apply(t(HND_data_filtered_65_w[,seq(8,545, by = 6)]), 1, function(x) mean(x, na.rm = TRUE)), 
       col = "black", lty = 1, lwd = 4 )
 dev.off()
 
-pdf("HND/content.pdf", height = 4)
+pdf("Plots/content.pdf", height = 4)
 ts.plot(t(HND_data_filtered_65_w[persons,seq(9,545, by = 6)]), col = gray(0.5), gpars = list(ylab = "Content", las = 1))
 lines(1:90, apply(t(HND_data_filtered_65_w[,seq(9,545, by = 6)]), 1, function(x) mean(x, na.rm = TRUE)), 
       col = "black", lty = 1, lwd = 4 )
 dev.off()
 
-pdf("HND/calm.pdf", height = 4)
+pdf("Plots/calm.pdf", height = 4)
 ts.plot(t(HND_data_filtered_65_w[persons,seq(10,545, by = 6)]), col = gray(0.5), gpars = list(ylab = "Calm", las = 1))
 lines(1:90, apply(t(HND_data_filtered_65_w[,seq(10,545, by = 6)]), 1, function(x) mean(x, na.rm = TRUE)), 
       col = "black", lty = 1, lwd = 4 )
 dev.off()
 
-pdf("HND/cheerful.pdf", height = 4)
+pdf("Plots/cheerful.pdf", height = 4)
 ts.plot(t(HND_data_filtered_65_w[persons,seq(11,545, by = 6)]), col = gray(0.5), gpars = list(ylab = "Cheerful", las = 1))
 lines(1:90, apply(t(HND_data_filtered_65_w[,seq(11,545, by = 6)]), 1, function(x) mean(x, na.rm = TRUE)), 
       col = "black", lty = 1, lwd = 4 )
 dev.off()
+
+pdf("Plots/timeseries.pdf", height = 5)
+par(mfrow = c(2,1), mar = c(0, 4, 0.5, 2), oma = c(4, 0, 1, 0))
+ts.plot(t(HND_data_filtered_65_w[persons,seq(6,545, by = 6)]), col = gray(0.5), gpars = list(ylab = "Relaxed", las = 1, xaxt="n"))
+lines(1:90, apply(t(HND_data_filtered_65_w[,seq(6,545, by = 6)]), 1, function(x) mean(x, na.rm = TRUE)), 
+      col = "black", lty = 1, lwd = 4)
+ts.plot(t(HND_data_filtered_65_w[persons,seq(7,545, by = 6)]), col = gray(0.5), gpars = list(ylab = "Energetic", las = 1))
+lines(1:90, apply(t(HND_data_filtered_65_w[,seq(7,545, by = 6)]), 1, function(x) mean(x, na.rm = TRUE)), 
+      col = "black", lty = 1, lwd = 4 )
+mtext("Time point", side = 1, line = 2, at = 40)
+dev.off()
+
+rm(persons)
+
+persons <- sample(unique(HND_data_filtered_65$id), 2)
+
+ts.plot(HND_data_filtered_65[HND_data_filtered_65$id == persons[1], c(7, 10, 11)],
+        col = gray((0:2)/3))
+ts.plot(HND_data_filtered_65[HND_data_filtered_65$id == persons[1], c(8, 9, 12)],
+        col = gray((0:5)/6))
+ts.plot(HND_data_filtered_65[HND_data_filtered_65$id == persons[2], c(7, 10, 11)],
+        col = gray((0:5)/6))
+ts.plot(HND_data_filtered_65[HND_data_filtered_65$id == persons[2], c(8, 9, 12)],
+        col = gray((0:5)/6))
 
 # plot intraindividual means and intraindividual standard deviations histograms
 
@@ -233,6 +275,70 @@ plot(SPE, apply(SDS, 2, function(x) mean(x)), ylab = "Mean Intraindividual SD", 
 abline(lm(apply(SDS, 2, function(x) mean(x)) ~ SPE))
 
 dev.off()
+
+pdf("Plots/corplot_intrameans.pdf", height = 5)
+pairs.panels(MEANS[, c(1, 4, 5, 2, 3, 6)],
+             smooth = FALSE,
+             scale = FALSE,
+             density = TRUE,
+             ellipses = FALSE,
+             pch = 20,
+             hist.col = gray(0.75),
+             rug = FALSE,
+             cex.labels = 1,
+             label.pos = 0.85,
+             labels=c("Relax","Conte", "Calm", "Energ", "Enthu", "Cheer"))
+dev.off()
+
+pairs.panels(HND_data_filtered_65[, c(7, 10, 11, 8, 9, 12)],
+             smooth = FALSE,
+             scale = FALSE,
+             density = TRUE,
+             ellipses = FALSE,
+             pch = 20,
+             hist.col = gray(0.75),
+             rug = FALSE,
+             cex.labels = 1,
+             label.pos = 0.85,
+             labels=c("Relax","Conte", "Calm", "Energ", "Enthu", "Cheer"))
+
+hist(HND_data_filtered_65[HND_data_filtered_65$id == 103772, 12], freq = FALSE)
+
+pdf("Plots/hist_relax.pdf", height = 3)
+par(mfrow = c(1, 2), mar = c(6, 2, 3, 1), oma = c(0, 3, 0, 0), xpd = NA)
+hist(HND_data_filtered_65[, 7], 
+     freq = FALSE, 
+     breaks = 98, 
+     main = NULL, 
+     xlab = "Raw Data",
+     cex.axis = 0.8,
+     col = gray(0.5),
+     border = gray(0.5))
+mtext("A", side = 3, line = 1, at = -35, font = 2)
+
+hist(MEANS[,1], 
+     freq = FALSE,
+     breaks = 48, 
+     main = NULL,
+     ylab = NULL,
+     xlab = "Intraindividual Means",
+     cex.axis = 0.8,
+     col = gray(0.5),
+     border = gray(0.5))
+mtext("B", side = 3, line = 1, at = -20, font = 2)
+dev.off()
+
+
+hist(HND_data_filtered_65[, 8], freq = TRUE, breaks = 98)
+hist(HND_data_filtered_65[, 9], freq = TRUE, breaks = 98)
+hist(HND_data_filtered_65[, 10], freq = TRUE, breaks = 98)
+hist(HND_data_filtered_65[, 11], freq = TRUE, breaks = 98)
+hist(HND_data_filtered_65[, 12], freq = TRUE, breaks = 98)
+hist(MEANS[,2], freq = FALSE)
+hist(MEANS[,3], freq = FALSE)
+hist(MEANS[,4], freq = FALSE)
+hist(MEANS[,5], freq = FALSE)
+hist(MEANS[,6], freq = FALSE)
 
 # Fit the MSST ----
 
@@ -444,5 +550,127 @@ write(ml_syntax, paste0(folder,file.name,".inp"), append = T)
 
 rm(analysis_syntax, ml_syntax)
 
+# Analyses removing non-stationary timeseries ----
+
+library(tseries)
+
+#HND_data_filtered_65_stat <- HND_data_filtered_65[apply(HND_data_filtered_65[, 7:12], 1, function(x) sum(is.na(x))) == 0, ]
+HND_data_filtered_65_stat <- HND_data_filtered_65
+
+# Stationarity checks: Here, we use the Kwiatkowski–Phillips–Schmidt–Shin test 
+#                      to identify the non-stationary time series.
+
+# Get IDs
+ids <- unique(HND_data_filtered_65_stat$id)
+
+# Create matrix to store the p-value of the KPSS tests.
+statcheck <- matrix(NA, length(ids), 13)
+statcheck[, 1] <- ids
+
+for (i in 1:length(ids)){
+  tseries_id        <- HND_data_filtered_65_stat[HND_data_filtered_65_stat$id == ids[i], 7:12]
+  tseries_id        <- na.omit(tseries_id)
+  statcheck[i, 2:7] <- apply(tseries_id, 2, function(x) kpss.test(x, null = "Trend")[[3]])
+}
+rm(i, ids, tseries_id)
+
+# Compute which time series are non-stationary given a p-value lower than 0.05 in the KPSS tests
+statcheck[, 8:13] <- statcheck[, 2:7] <= 0.05
+
+id_keep    <- statcheck[which(apply(statcheck[, 8:13], 1, sum) == 0), 1] # Get IDs to keep.
+HND_data_filtered_65_stat <- HND_data_filtered_65_stat[which(HND_data_filtered_65_stat$id %in% id_keep),]       # Create new data with stationary time series.
+length(unique(HND_data_filtered_65_stat$id))
+rm(id_keep)
+
+file.name <- paste("hnd", "non", "stationary",sep = "_")
+
+# Prepare data: Write data in Mplus format and write input file template
+prepareMplusData(HND_data_filtered_65_stat[,c(1:2, 7:12)], paste0(folder,file.name,".dat"), inpfile = F)
+
+runModels(paste0(getwd(),"/", folder,"hnd_tso_3itemsa_grandcenter_noint_plots_stat.inp"))
+
+runModels(paste0(getwd(),"/", folder,"Stationary_Analyses/"))
+
+summary(lm(HND_data_filtered_65[, 7] ~ HND_data_filtered_65$time))
+summary(lm(HND_data_filtered_65[, 8] ~ HND_data_filtered_65$time))
+summary(lm(HND_data_filtered_65[, 9] ~ HND_data_filtered_65$time))
+summary(lm(HND_data_filtered_65[, 10] ~ HND_data_filtered_65$time))
+summary(lm(HND_data_filtered_65[, 11] ~ HND_data_filtered_65$time))
+summary(lm(HND_data_filtered_65[, 12] ~ HND_data_filtered_65$time))
+
+files.names <- list.files(paste0(getwd(), "/", folder, "Plus65_Analyses/"), 
+                          pattern = ".inp",
+                          full.names = TRUE)
+
+for (i in c(2, 3, 6, 8, 16, 17, 20, 22, 29, 30, 31, 34)) {
+  runModels(files.names[i])
+}
+
+c(2, 3, 6, 8, 24, 25, 28, 29, 38, 39, 40, 42)
+for (i in c(2, 6, 24, 28,38, 40)) {
+  runModels(files.names[i])
+}
+
+
+
+# Fit empty models ----
+
+library(lme4)
+library(mlmRev)
+
+emptyfit1 <- lmer(PA1 ~ 1 + (1 | id), data = HND_data_filtered_65)
+emptyfit2 <- lmer(PA2 ~ 1 + (1 | id), data = HND_data_filtered_65)
+emptyfit3 <- lmer(PA3 ~ 1 + (1 | id), data = HND_data_filtered_65)
+emptyfit4 <- lmer(PA4 ~ 1 + (1 | id), data = HND_data_filtered_65)
+emptyfit5 <- lmer(PA5 ~ 1 + (1 | id), data = HND_data_filtered_65)
+emptyfit6 <- lmer(PA6 ~ 1 + (1 | id), data = HND_data_filtered_65)
+
+summary(emptyfit1)
+summary(emptyfit2)
+summary(emptyfit3)
+summary(emptyfit4)
+summary(emptyfit5)
+summary(emptyfit6)
+
+emp1 <- summary(emptyfit1)
+
+c(as.data.frame(VarCorr(emptyfit1))$vcov[1] / 
+  sum(as.data.frame(VarCorr(emptyfit1))$vcov),
+as.data.frame(VarCorr(emptyfit2))$vcov[1] / 
+  sum(as.data.frame(VarCorr(emptyfit2))$vcov),
+as.data.frame(VarCorr(emptyfit3))$vcov[1] / 
+  sum(as.data.frame(VarCorr(emptyfit3))$vcov),
+as.data.frame(VarCorr(emptyfit4))$vcov[1] / 
+  sum(as.data.frame(VarCorr(emptyfit4))$vcov),
+as.data.frame(VarCorr(emptyfit5))$vcov[1] / 
+  sum(as.data.frame(VarCorr(emptyfit5))$vcov),
+as.data.frame(VarCorr(emptyfit6))$vcov[1] / 
+  sum(as.data.frame(VarCorr(emptyfit6))$vcov))
+
+# Make traceplot Figure
+library(ggplot2)
+library(bayesplot)
+library(coda)
+library(mcmcr)
+
+fit <- readModels("HND/Plus65_Analyses/hnd_tso_3itemsa.out")
+
+# Put valid samples in an array 
+fit_samples <- as.array(fit$bparameters$valid_draw)
+fit_samples <- aperm(fit_samples, perm = c(1, 3, 2))
+fit_samples <- fit_samples[, , -(1:2)] # Take out chain and iteration number.
+
+# Rearrange samples in a matrix
+samples <- matrix(fit_samples, prod(dim(fit_samples)[1:2]), dim(fit_samples)[3])
+
+print(mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[8:10]))
+print(mcmc_acf(fit_samples, pars = dimnames(fit_samples)$var[8:10]))
+
+color_scheme_set("darkgray")
+pdf(file = "Plots/InterceptTrace.pdf", height = 4)
+mcmc_trace(fit_samples, pars = dimnames(fit_samples)$var[8]) + 
+  ylab("Intercept Variable Relaxed") + 
+  xlab("Sample interation")
+dev.off()
 
 # End ----

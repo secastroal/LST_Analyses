@@ -987,8 +987,8 @@ ylabel <- c(expression(paste("Relative Bias ", lambda["S"[2]])),
             expression(paste("Relative Bias var(", epsilon[2], ")")),
             expression(paste("Relative Bias var(", epsilon[3], ")")),
             expression(paste("Relative Bias var(", epsilon[4], ")")))
-ylimits.down <- rep(-0.5, 8)
-ylimits.up <- rep(0.5, 8)
+ylimits.down <- rep(-0.15, 8)
+ylimits.up <- rep(0.65, 8)
 
 for (j in 2:9) {
   bias.cond <- matrix(NA, 162, 11)
@@ -1204,6 +1204,98 @@ for (j in 2:9) {
 
 rm(bias.cond, j, ylabel, ylimits)
 
+# Checking auto-regressive effect of the TSO model----
+
+ar.bias.cond <- matrix(NA, 162, 11)
+colnames(ar.bias.cond) <- labels
+for (i in 1:162) {
+  bias.subset <- subset(parameters.bias, factor.var$cond == i)[,10]
+  bias.subset <- matrix(bias.subset, 100, 11, byrow = TRUE)
+  ar.bias.cond[i,] <- apply(bias.subset, 2, function(x) mean(x, na.rm = TRUE))
+}
+rm(i, bias.subset)
+ar.bias.cond[which(perf.cond[,1:11] < 10, arr.ind = TRUE)] <- NA
+
+ar.bias.cond <- ar.bias.cond[Cond$dataModel == "tso", 9:11]
+
+pdf(paste0("Plots/biasAReffect.pdf"), width =9.5)
+par(mfrow=c(3,3),mar=c(0,0,0,0),oma=c(6,7,4,20),xpd=NA)
+matplot(1:6, ar.bias.cond[1:6, ], type = "l", lwd = 2, lty = 1, col = gray((1:3)/4),
+        ylim = c(-0.05, 0.05), xlab = "", ylab = "", xlim = c(0.7,6.2), las = 1,
+        cex.axis = 1.35, xaxt = "n")
+abline(h = 0, lty = 2, col = gray(0.5), xpd = FALSE)
+matplot(1:6, ar.bias.cond[7:12, ], type = "l", lwd = 2, lty = 1, col = gray((1:3)/4),
+        ylim = c(-0.05, 0.05), xlab = "", ylab = "", xlim = c(0.7,6.2), las = 1,
+        cex.axis = 1.35, yaxt = "n", xaxt = "n")
+abline(h = 0, lty = 2, col = gray(0.5), xpd = FALSE)
+matplot(1:6, ar.bias.cond[13:18, ], type = "l", lwd = 2, lty = 1, col = gray((1:3)/4),
+        ylim = c(-0.05, 0.05), xlab = "", ylab = "", xlim = c(0.7,6.2), las = 1,
+        cex.axis = 1.35, yaxt = "n", xaxt = "n")
+abline(h = 0, lty = 2, col = gray(0.5), xpd = FALSE)
+matplot(1:6, ar.bias.cond[19:24, ], type = "l", lwd = 2, lty = 1, col = gray((1:3)/4),
+        ylim = c(-0.05, 0.05), xlab = "", ylab = "", xlim = c(0.7,6.2), las = 1,
+        cex.axis = 1.35, xaxt = "n")
+abline(h = 0, lty = 2, col = gray(0.5), xpd = FALSE)
+matplot(1:6, ar.bias.cond[25:30, ], type = "l", lwd = 2, lty = 1, col = gray((1:3)/4),
+        ylim = c(-0.05, 0.05), xlab = "", ylab = "", xlim = c(0.7,6.2), las = 1,
+        cex.axis = 1.35, yaxt = "n", xaxt = "n")
+abline(h = 0, lty = 2, col = gray(0.5), xpd = FALSE)
+matplot(1:6, ar.bias.cond[31:36, ], type = "l", lwd = 2, lty = 1, col = gray((1:3)/4),
+        ylim = c(-0.05, 0.05), xlab = "", ylab = "", xlim = c(0.7,6.2), las = 1,
+        cex.axis = 1.35, yaxt = "n", xaxt = "n")
+legend("right",c("Wide-MLE","Wide-Bayes","Long-Bayes"), col = gray((1:3)/4),
+       lty = 1,lwd = 2, seg.len = 2, cex = 1.5, pt.cex = 1, inset = -1.25)
+abline(h = 0, lty = 2, col = gray(0.5), xpd = FALSE)
+matplot(1:6, ar.bias.cond[37:42, ], type = "l", lwd = 2, lty = 1, col = gray((1:3)/4),
+        ylim = c(-0.05, 0.05), xlab = "", ylab = "", xlim = c(0.7,6.2), las = 1,
+        cex.axis = 1.35, xaxt = "n")
+abline(h = 0, lty = 2, col = gray(0.5), xpd = FALSE)
+axis(1, at=1:6, labels=c(10, 15, 20, 30,60,90), cex.axis = 1.35)
+matplot(1:6, ar.bias.cond[43:48, ], type = "l", lwd = 2, lty = 1, col = gray((1:3)/4),
+        ylim = c(-0.05, 0.05), xlab = "", ylab = "", xlim = c(0.7,6.2), las = 1,
+        cex.axis = 1.35, yaxt = "n", xaxt = "n")
+abline(h = 0, lty = 2, col = gray(0.5), xpd = FALSE)
+axis(1, at=1:6, labels=c(10, 15, 20, 30,60,90), cex.axis = 1.35)
+matplot(1:6, ar.bias.cond[49:54, ], type = "l", lwd = 2, lty = 1, col = gray((1:3)/4),
+        ylim = c(-0.05, 0.05), xlab = "", ylab = "", xlim = c(0.7,6.2), las = 1,
+        cex.axis = 1.35, yaxt = "n", xaxt = "n")
+abline(h = 0, lty = 2, col = gray(0.5), xpd = FALSE)
+axis(1, at=1:6, labels=c(10, 15, 20, 30,60,90), cex.axis = 1.35)
+
+mtext("Average Bias Autoregressive Effect", 2, outer=TRUE, line=4.25, cex = 1.5)
+mtext("Number of Measurement Occasions", 1, outer=TRUE, line=3.5, cex=1.5)
+mtext("Proportion of Missing values", 3, at=3/6,cex=1.5, outer=TRUE, line=2)
+mtext("0%", 3, at=1/6,cex=1.2, outer=TRUE, line=0.5)
+mtext("10%", 3, at=3/6,cex=1.2, outer=TRUE, line=0.5)
+mtext("20%", 3, at=5/6,cex=1.2, outer=TRUE, line=0.5)
+mtext("Trait-State Variance Ratio", 4, at=3/6,cex=1.5, outer=TRUE, line=3.75)
+mtext("1:3", 4, at=5/6,cex=1.2, outer=TRUE, line=0.75, las = 1)
+mtext("1:1", 4, at=3/6,cex=1.2, outer=TRUE, line=0.75, las = 1)
+mtext("3:1", 4, at=1/6,cex=1.2, outer=TRUE, line=0.75, las = 1)
+dev.off()
+
+ar.cond <- matrix(NA, 162, 11)
+colnames(ar.cond) <- labels
+for (i in 1:162) {
+  bias.subset <- subset(parameters, factor.var$cond == i)[,10]
+  bias.subset <- matrix(bias.subset, 100, 11, byrow = TRUE)
+  ar.cond[i,] <- apply(bias.subset, 2, function(x) mean(x, na.rm = TRUE))
+}
+rm(i, bias.subset)
+ar.cond[which(perf.cond[,1:11] < 10, arr.ind = TRUE)] <- NA
+
+ar.cond <- ar.cond[, 9:11]
+
+matplot(1:54, ar.cond[1:54, ], type = "l", lwd = 2, lty = 1, 
+        col = gray((1:3)/4), ylim = c(-0.05, 0.05))
+abline(h = 0, lty = 2, col = gray(0.5))
+matplot(1:54, ar.cond[55:108, ], type = "l", lwd = 2, lty = 1, 
+        col = gray((1:3)/4), ylim = c(-0.05, 0.05))
+abline(h = 0, lty = 2, col = gray(0.5))
+matplot(1:54, ar.cond[109:162, ], type = "l", lwd = 2, lty = 1, 
+        col = gray((1:3)/4), ylim = c(0.45, 0.55))
+abline(h = 0.5, lty = 2, col = gray(0.5))
+
 # Standard errors and/or posterior sd ----
 files <- paste(getwd(), "Mplus_Simulation" , "SE_PSD", paste0("se_psd_",  1:162, ".dat"), sep = "/")
 files.b <- paste(getwd(), "Mplus_Simulation" , "SE_PSD", paste0("se_psd_bayes_",  1:162, ".dat"), sep = "/")
@@ -1383,8 +1475,8 @@ rm(j, bias.cond, ylabel, ylimits.down, ylimits.up)
 
 # Plot: Relative Bias Variance Coefficients ----
 ylabel <- paste0(rep("Relative Bias ", 3 * I),rep(c("Consistency Y", "Specificity Y", "Reliability Y"), each = I), rep(1:I, 3))
-ylimits.down <- rep(-0.5, 12)
-ylimits.up   <- rep(0.5, 12)
+ylimits.down <- rep(-0.45, 12)
+ylimits.up   <- rep(0.15, 12)
 
 for (j in 9:20) {
   bias.cond <- matrix(NA, 162, 11)
@@ -1945,30 +2037,31 @@ rm(files, files.b, fit_measures.b)
 
 # Plot: DIC selection ----
 
-fit.AIC <- matrix(fit_measures[,1], R * 18, 11, byrow = TRUE) 
+fit.AIC <- matrix(fit_measures$AIC, R * 162, 11, byrow = TRUE)
 fit.AIC <- fit.AIC[,c(1,2,5,6,9)]
 AIC.select <- unlist(apply(fit.AIC, 1, function(x) which(x == min(x, na.rm = TRUE))[1]))
 AIC.select <- factor(AIC.select, levels = 1:5, labels = c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO"))
 
-fit.BIC <- matrix(fit_measures[,2], R * 18, 11, byrow = TRUE) 
+fit.BIC <- matrix(fit_measures$BIC, R * 162, 11, byrow = TRUE) 
 fit.BIC <- fit.BIC[,c(1,2,5,6,9)]
 BIC.select <- unlist(apply(fit.BIC, 1, function(x) which(x == min(x, na.rm = TRUE))[1]))
 BIC.select <- factor(BIC.select, levels = 1:5, labels = c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO"))
 
-fit.aBIC <- matrix(fit_measures[,2], R * 18, 11, byrow = TRUE) 
+fit.aBIC <- matrix(fit_measures$aBIC, R * 162, 11, byrow = TRUE) 
 fit.aBIC <- fit.aBIC[,c(1,2,5,6,9)]
 aBIC.select <- unlist(apply(fit.aBIC, 1, function(x) which(x == min(x, na.rm = TRUE))[1]))
 aBIC.select <- factor(aBIC.select, levels = 1:5, labels = c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO"))
 
-fit.DIC <- matrix(fit_measures[,4], R * 18, 11, byrow = TRUE) 
-fit.DIC <- fit.DIC[,c(4,8,11)]
-DIC.select <- unlist(apply(fit.DIC, 1, function(x) which(x == min(x, na.rm = TRUE))))
-DIC.select <- factor(DIC.select, levels = 1:3, labels = c("ML-MSST", "ML-CUTS", "ML-TSO"))
+fit.DIC <- matrix(fit_measures$DIC, R * 162, 11, byrow = TRUE) 
+fit.DIC <- fit.DIC[,c(3, 4, 7, 8, 10, 11)]
+DIC.select <- unlist(apply(fit.DIC, 1, function(x) which(x == min(x, na.rm = TRUE))[1]))
+DIC.select <- factor(DIC.select, levels = 1:6, 
+                     labels = c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO", "ML-TSO"))
 
 mle.models <- sort(c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO"))
 
-AIC.select <- matrix(AIC.select, 600, 3, byrow = FALSE)
-X <- apply(AIC.select, 2, function(x) summary(as.factor(x)))
+AIC.select <- matrix(AIC.select, 5400, 3, byrow = FALSE)
+X <- apply(AIC.select, 2, function(x) summary(as.factor(na.omit(x))))
 
 AIC.cond <- matrix(0, 3, 5)
 colnames(AIC.cond) <- mle.models
@@ -1978,8 +2071,8 @@ for(i in 1:3){
 }
 rm(X)
 
-BIC.select <- matrix(BIC.select, 600, 3, byrow = FALSE)
-X <- apply(BIC.select, 2, function(x) summary(as.factor(x)))
+BIC.select <- matrix(BIC.select, 5400, 3, byrow = FALSE)
+X <- apply(BIC.select, 2, function(x) summary(as.factor(na.omit(x))))
 
 BIC.cond <- matrix(0, 3, 5)
 colnames(BIC.cond) <- mle.models
@@ -1989,8 +2082,8 @@ for(i in 1:3){
 }
 rm(X)
 
-aBIC.select <- matrix(aBIC.select, 600, 3, byrow = FALSE)
-X <- apply(aBIC.select, 2, function(x) summary(as.factor(x)))
+aBIC.select <- matrix(aBIC.select, 5400, 3, byrow = FALSE)
+X <- apply(aBIC.select, 2, function(x) summary(as.factor(na.omit(x))))
 
 aBIC.cond <- matrix(0, 3, 5)
 colnames(aBIC.cond) <- mle.models
@@ -2000,22 +2093,24 @@ for(i in 1:3){
 }
 rm(X)
 
-mcmc.models <- sort(c("ML-MSST", "ML-CUTS", "ML-TSO"))
+mcmc.models <- sort(c("MSST", "ML-MSST", "CUTS", "ML-CUTS", "TSO", "ML-TSO"))
 
-DIC.select <- matrix(DIC.select, 600, 3, byrow = FALSE)
-X <- apply(DIC.select, 2, function(x) summary(as.factor(x)))
+DIC.select <- matrix(DIC.select, 5400, 3, byrow = FALSE)
+X <- apply(DIC.select, 2, function(x) summary(as.factor(na.omit(x))))
 
-DIC.cond <- matrix(0, 3, 3)
+DIC.cond <- matrix(0, 3, 6)
 colnames(DIC.cond) <- mcmc.models
 
-DIC.cond[,3] <- X
+for(i in 1:3){
+  DIC.cond[i, which(mcmc.models%in%names(X[[i]]))]<-X[[i]]
+}
 rm(X)
 
 AIC.cond <- AIC.cond[, c(4,3,1,2,5)]
 BIC.cond <- BIC.cond[, c(4,3,1,2,5)]
 aBIC.cond <- aBIC.cond[, c(4,3,1,2,5)]
 
-DIC.cond <- DIC.cond[, c(2,1,3)]
+DIC.cond <- DIC.cond[, c(5, 3, 1, 2, 6, 4)]
 
 mle.ic <- rbind(AIC.cond, BIC.cond, aBIC.cond)
 mle.ic <- round(prop.table(mle.ic, 1)*100, 1) 
@@ -2025,13 +2120,13 @@ mle.ic <- cbind(rep(c("MSST", "CUTS", "TSO"), each = 3),
                 mle.ic)
 colnames(mle.ic)[1:2]<- c("Base Model", "Information Criterion")
 
-print(xtable(mle.ic, type = "latex", align = c("l", "l", "l", "c", "c", "c", "c", "c"), label = "tab:fitmle", 
+print(xtable(mle.ic, 
+             type = "latex", 
+             align = c("l", "l", "l", "c", "c", "c", "c", "c"), 
+             label = "tab:fitmle", 
              caption = "Percentage of Times a Model was Selected as Best Model According to the Information Criteria Indices Available with Maximum Likelihood Estimation"), 
-      include.rownames = FALSE, caption.placement = "top", file = "Mplus_Simulation/fitmle.txt")
-
-
-AIC.delta <- matrix(apply(fit.AIC, 1, function(x) max(x, na.rm = TRUE)[1] - min(x, na.rm = TRUE)[1]), 100, 18, byrow = FALSE)
-
-apply(AIC.delta, 2, mean)
+      include.rownames = FALSE, 
+      caption.placement = "top", 
+      file = "Tables/fitmle.txt")
 
 # End ----
